@@ -26,5 +26,6 @@ namespace CPMS_Accounting.Models
         /// </summary>
         public int PurchaseOrderNumber { get; set; }
         public double RemainingQuantity { get; set; }
+        public string Location { get; set; }
     }
 }

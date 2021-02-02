@@ -23,5 +23,6 @@ namespace CPMS_Accounting.Models
         public string BranchCode { get; set; }
         public string OldBranchCode { get; set; }
         public string Location { get; set; }
+        public string Name3 { get; set; }
     }
 }

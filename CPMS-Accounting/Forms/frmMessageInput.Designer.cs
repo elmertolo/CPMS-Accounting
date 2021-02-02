@@ -73,6 +73,7 @@ namespace CPMS_Accounting
             this.txtInput.Size = new System.Drawing.Size(286, 21);
             this.txtInput.TabIndex = 0;
             this.txtInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInput_KeyDown);
+            this.txtInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInput_KeyPress);
             // 
             // frmMessageInput
             // 

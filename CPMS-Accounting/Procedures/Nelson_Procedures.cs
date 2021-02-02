@@ -12,7 +12,7 @@ using CrystalDecisions.Shared;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
-using CPMS_Accounting.Procedures;
+//using ProducersBank.Services;
 
 namespace CPMS_Accounting.Procedures
 {
@@ -111,11 +111,6 @@ namespace CPMS_Accounting.Procedures
                     crystalDoucument.SetParameterValue("prVatAmount", gSalesInvoiceFinished.VatAmount.ToString() ?? "");
                     crystalDoucument.SetParameterValue("prNetOfVatAmount", gSalesInvoiceFinished.NetOfVatAmount.ToString() ?? "");
                     crystalDoucument.SetParameterValue("prClientCode", gClient.ClientCode.ToString() ?? "");
-
-                    if (gClient.ShortName == "PNB")
-                    {
-
-                    }
 
                     break;
 

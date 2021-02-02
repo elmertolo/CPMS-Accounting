@@ -24,6 +24,7 @@ namespace CPMS_Accounting.Forms
         ProcessServices proc = new ProcessServices();
         List<SalesInvoiceModel> listofSI = new List<SalesInvoiceModel>();
         List<DocStampModel> docstamp = new List<DocStampModel>();
+        List<DocStampModel> tempdocstamp = new List<DocStampModel>();
         List<PriceListModel> priceList = new List<PriceListModel>();
         PriceListModel priceA = new PriceListModel();
         List<TempModel> tempSI = new List<TempModel>();
@@ -36,24 +37,7 @@ namespace CPMS_Accounting.Forms
             lblUser.Text = gUser.FirstName;
           //  LoadUsers(cboPreparedBy);
             LoadUsers(cboCheckBy);
-            //proc.ListofProcessSI(listofSI);
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("Sales Invoice Date");
-            //dt.Columns.Add("Sales Invoice Number");
-            //dt.Columns.Add("Quantity");
-            //dt.Columns.Add("Type");
-            //dt.Columns.Add("Cheque Name");
-            //dt.Columns.Add("Batch");
-
-            //listofSI.ForEach(a =>
-            //{
-            //    dt.Rows.Add(new object[] { a.salesInvoiceDate.ToString("yyyy-MM-dd"), a.salesInvoiceNumber, a.Quantity,a.checkType, a.checkName, a.Batch });
-            //});
-            //DgvDSalesInvoice.DataSource = dt;
-
-            //DgvDSalesInvoice.Columns[0].Width = 130;
-            //DgvDSalesInvoice.Columns[3].Width =50 ;
-            //DgvDSalesInvoice.Columns[4].Width = 50;
+           
         }
         private void GetDocStampNumber()
         {
@@ -88,10 +72,10 @@ namespace CPMS_Accounting.Forms
         {
             try
             {
-                if (docstamp == null || docstamp.Count == 0)
+                if (docstamp != null || docstamp.Count != 0)
                 {
                     proc.UpdateDocstamp(docstamp);
-                    proc.GetDocStampDetails(docstamp, docstamp[0].DocStampNumber);
+                    proc.GetDocStampDetails(tempdocstamp, docstamp[0].DocStampNumber);
                     MessageBox.Show("Documetn Stamp has been process!!!");
                     ViewReports vp = new ViewReports();
                     DeliveryReport.report = "DOC";
@@ -122,10 +106,11 @@ namespace CPMS_Accounting.Forms
                 dt.Columns.Add("ChkType");
                 dt.Columns.Add("Cheque Name");
                 dt.Columns.Add("Batch");
+                dt.Columns.Add("Branch Location");
 
                 tempSI.ForEach(r =>
                 {
-                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch });
+                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch,r.Location });
                 });
 
                 DgvDSalesInvoice.DataSource = dt;
@@ -135,6 +120,7 @@ namespace CPMS_Accounting.Forms
                 DgvDSalesInvoice.Columns[3].Width = 70;
                 DgvDSalesInvoice.Columns[4].Width = 190;
                 DgvDSalesInvoice.Columns[5].Width = 100;
+                DgvDSalesInvoice.Columns[6].Width = 100;
             }
             catch(Exception error)
             {
@@ -150,41 +136,54 @@ namespace CPMS_Accounting.Forms
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
+            
             try
             {
                 if (txtDocStampNo.Text == "")
                     MessageBox.Show("Please input Document Stamp Number!");
+
                 else
                 {
                     docstamp.Clear();
+
+                    int docs = int.Parse(txtDocStampNo.Text);
+                   
                     if (DgvDSalesInvoice.SelectedRows != null && DgvDSalesInvoice.SelectedRows.Count > 0)
                     {
-
+                       
                         foreach (DataGridViewRow row in DgvDSalesInvoice.SelectedRows)
                         {
-                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
                             DocStampModel doc = new DocStampModel();
+                            doc.DocStampNumber = docs;
+                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
+                            
 
                             doc.BankCode = priceA.Bank;
-                            doc.DocStampNumber = int.Parse(txtDocStampNo.Text);
+                          
                             doc.DocStampDate = dtpDocDate.Value;
                             doc.batches = row.Cells["Batch"].Value.ToString();
                             doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(), dtpDocDate.Value);
                             doc.DocStampPrice = priceA.DocStampPrice;
                             doc.ChkType = row.Cells["ChkType"].Value.ToString();
                             doc.DocDesc = priceA.ChequeDescription;
+                            doc.Location = row.Cells["Branch Location"].Value.ToString();
                             // doc.unitprice = priceA.unitprice;
                             doc.TotalQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
                             doc.TotalAmount = doc.TotalQuantity * doc.DocStampPrice;
                             // doc.PreparedBy = 
-                            docstamp.Add(doc);
-                            TotalQty += doc.TotalQuantity;
-                        }
+                            
 
+                            docstamp.Add(doc);
+                            docs++;
+                            TotalQty += doc.TotalQuantity;
+                            
+                        }
+                       
                         //created 'list' variable column sorting by line for datagrid view 
                         //var sortedList = docstamp
                         //    .Select
                         //    (i => new { i.batches, i.SalesInvoiceNumber, i.TotalQuantity, i.DocStampPrice, i.TotalAmount }).ToList();
+
                         DataTable dt = new DataTable();
 
                         dt.Columns.Add("Docstamp No.");
@@ -203,7 +202,7 @@ namespace CPMS_Accounting.Forms
                         dgvOutput.Columns[0].Width = 100;
                         dgvOutput.Columns[1].Width = 120;
                         dgvOutput.Columns[2].Width = 70;
-                        dgvOutput.Columns[3].Width = 250;
+                        dgvOutput.Columns[3].Width = 270;
                         dgvOutput.Columns[4].Width = 70;
                         dgvOutput.Columns[5].Width = 90;
                         dgvOutput.Columns[6].Width = 100;

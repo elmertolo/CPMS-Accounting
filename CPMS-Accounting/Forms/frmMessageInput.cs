@@ -78,5 +78,13 @@ namespace CPMS_Accounting
                 this.Close();
             }
         }
+
+        private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (p.IsKeyPressedNumeric(ref sender, ref e))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

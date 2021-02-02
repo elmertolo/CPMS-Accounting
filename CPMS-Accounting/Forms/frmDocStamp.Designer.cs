@@ -131,9 +131,9 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvOutput.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOutput.Location = new System.Drawing.Point(327, 30);
+            this.dgvOutput.Location = new System.Drawing.Point(295, 30);
             this.dgvOutput.Name = "dgvOutput";
-            this.dgvOutput.Size = new System.Drawing.Size(687, 250);
+            this.dgvOutput.Size = new System.Drawing.Size(719, 250);
             this.dgvOutput.TabIndex = 5;
             // 
             // menuStrip1
@@ -150,9 +150,8 @@ namespace CPMS_Accounting.Forms
             // generateToolStripMenuItem
             // 
             this.generateToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-          //  this.generateToolStripMenuItem.Image = global::ProducersBank.Properties.Resources.generate;
             this.generateToolStripMenuItem.Name = "generateToolStripMenuItem";
-            this.generateToolStripMenuItem.Size = new System.Drawing.Size(99, 24);
+            this.generateToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.generateToolStripMenuItem.Text = "Generate";
             this.generateToolStripMenuItem.Click += new System.EventHandler(this.generateToolStripMenuItem_Click);
             // 
@@ -268,7 +267,7 @@ namespace CPMS_Accounting.Forms
             this.DgvDSalesInvoice.Location = new System.Drawing.Point(17, 53);
             this.DgvDSalesInvoice.Name = "DgvDSalesInvoice";
             this.DgvDSalesInvoice.ReadOnly = true;
-            this.DgvDSalesInvoice.Size = new System.Drawing.Size(773, 177);
+            this.DgvDSalesInvoice.Size = new System.Drawing.Size(858, 177);
             this.DgvDSalesInvoice.TabIndex = 2;
             // 
             // groupBox2
@@ -279,7 +278,7 @@ namespace CPMS_Accounting.Forms
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(20, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(800, 237);
+            this.groupBox2.Size = new System.Drawing.Size(890, 237);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Processed Sales Invoice";

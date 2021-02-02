@@ -42,18 +42,20 @@ namespace CPMS_Accounting
 
         private void frmSalesInvoice_Load(object sender, EventArgs e)
         {
-           
-            DataTable dt = new DataTable();
-            if (!proc.LoadUnprocessedSalesInvoiceData(ref dt))
-            {
-                MessageBox.Show("Server Connection Error (LoadInitialData) \r\n" + proc.errorMessage);
-                return;
-            }
-            
-            dgvDRList.DataSource = dt;
-            dgvDRList.ClearSelection(); // remove first highlighted row in datagrid
 
-            txtSalesInvoiceNumber.Focus();
+            //DataTable dt = new DataTable();
+            //if (!proc.LoadUnprocessedSalesInvoiceData(ref dt))
+            //{
+            //    MessageBox.Show("Server Connection Error (LoadInitialData) \r\n" + proc.errorMessage);
+            //    return;
+            //}
+
+            //dgvDRList.DataSource = dt;
+            //dgvDRList.ClearSelection(); // remove first highlighted row in datagrid
+
+            //txtSalesInvoiceNumber.Focus();
+
+            RefreshView();
         }
 
         private void frmSalesInvoice_FormClosing(object sender, FormClosingEventArgs e)
@@ -78,28 +80,63 @@ namespace CPMS_Accounting
 
             //Rename datagrid columns programmatically
             dgvDRList.EditMode = DataGridViewEditMode.EditProgrammatically;
-            dgvDRList.ColumnCount = 5; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
-            //Column names and width setup
-            dgvDRList.Columns[0].Name = "QUANTITY";
-            dgvDRList.Columns[0].Width = 70;
-            dgvDRList.Columns[0].DataPropertyName = "Quantity";
+            //Added location field if PNB
+            if (gClient.ShortName == "PNB")
+            {
+                //Column names and width setup
+                dgvDRList.ColumnCount = 6; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
-            dgvDRList.Columns[1].Name = "BATCH NAME";
-            dgvDRList.Columns[1].Width = 150;
-            dgvDRList.Columns[1].DataPropertyName = "batch"; //this must be the actual table name in sql
+                dgvDRList.Columns[0].Name = "QUANTITY";
+                dgvDRList.Columns[0].Width = 70;
+                dgvDRList.Columns[0].DataPropertyName = "Quantity";
 
-            dgvDRList.Columns[2].Name = "CHECK NAME";
-            dgvDRList.Columns[2].Width = 200;
-            dgvDRList.Columns[2].DataPropertyName = "chequename";
+                dgvDRList.Columns[1].Name = "BATCH NAME";
+                dgvDRList.Columns[1].Width = 150;
+                dgvDRList.Columns[1].DataPropertyName = "batch"; //this must be the actual table name in sql
 
-            dgvDRList.Columns[3].Name = "CHECK TYPE";
-            dgvDRList.Columns[3].Width = 104;
-            dgvDRList.Columns[3].DataPropertyName = "ChkType";
+                dgvDRList.Columns[2].Name = "CHECK NAME";
+                dgvDRList.Columns[2].Width = 200;
+                dgvDRList.Columns[2].DataPropertyName = "chequename";
 
-            dgvDRList.Columns[4].Name = "DELIVERY DATE";
-            dgvDRList.Columns[4].Width = 500;
-            dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+                dgvDRList.Columns[3].Name = "CHECK TYPE";
+                dgvDRList.Columns[3].Width = 104;
+                dgvDRList.Columns[3].DataPropertyName = "ChkType";
+
+                dgvDRList.Columns[4].Name = "DELIVERY DATE";
+                dgvDRList.Columns[4].Width = 100;
+                dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+
+                dgvDRList.Columns[5].Name = "LOCATION";
+                dgvDRList.Columns[5].Width = 500;
+                dgvDRList.Columns[5].DataPropertyName = "location";
+            }
+            else
+            {
+                //Column names and width setup
+                dgvDRList.ColumnCount = 5; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
+
+                dgvDRList.Columns[0].Name = "QUANTITY";
+                dgvDRList.Columns[0].Width = 70;
+                dgvDRList.Columns[0].DataPropertyName = "Quantity";
+
+                dgvDRList.Columns[1].Name = "BATCH NAME";
+                dgvDRList.Columns[1].Width = 150;
+                dgvDRList.Columns[1].DataPropertyName = "batch"; //this must be the actual table name in sql
+
+                dgvDRList.Columns[2].Name = "CHECK NAME";
+                dgvDRList.Columns[2].Width = 200;
+                dgvDRList.Columns[2].DataPropertyName = "chequename";
+
+                dgvDRList.Columns[3].Name = "CHECK TYPE";
+                dgvDRList.Columns[3].Width = 104;
+                dgvDRList.Columns[3].DataPropertyName = "ChkType";
+
+                dgvDRList.Columns[4].Name = "DELIVERY DATE";
+                dgvDRList.Columns[4].Width = 500;
+                dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+            }
+           
 
             //GRID 2
             //dgvDRList.AutoGenerateColumns = true;
@@ -183,9 +220,28 @@ namespace CPMS_Accounting
                     line.salesInvoiceDate = DateTime.Parse(dtpInvoiceDate.Value.ToShortDateString());
                     line.deliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
                     line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
-                    line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate);
+
+
+                    //Include Location field if PNB
+                    if (gClient.ShortName == "PNB")
+                    {
+                        line.Location = row.Cells["location"].Value.ToString();
+                    }
+                    
+                    
+                    
+                    
+                    line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
                     line.unitPrice = double.Parse(proc.GetUnitPrice(line.checkName).ToString("#.##"));
                     line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
+
+                    //Check if record is already inserted
+                    if (p.BatchRecordHasDuplicate(line, salesInvoiceList))
+                    {
+                        MessageBox.Show("Selected Batch already added");
+                        return;
+                    }
+
 
                     //(Validation) Checing of Onhand quantity for PNB
                     if (gClient.ShortName == "PNB")
@@ -198,12 +254,13 @@ namespace CPMS_Accounting
                             line.PurchaseOrderNumber = int.Parse(xfrm.userInput);
                             double remainingQuantity = 0;
                             //Check if quantity is sufficient
-                            if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.checkName, line.PurchaseOrderNumber, ref remainingQuantity))
+                            if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.checkName, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
                             {
                                 MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n" + proc.errorMessage);
                                 return;
                             }
                             line.RemainingQuantity = remainingQuantity;
+                            
 
                         }
                         else if(result == DialogResult.Cancel)
@@ -212,12 +269,7 @@ namespace CPMS_Accounting
                         }
                     }
 
-                    //Check if record is already inserted
-                    if (p.BatchRecordHasDuplicate(line, salesInvoiceList))
-                    {
-                        MessageBox.Show("Selected Batch already added");
-                        return;
-                    }
+                   
 
                     salesInvoiceList.Add(line);
 
@@ -266,13 +318,11 @@ namespace CPMS_Accounting
 
                     ProcessServices_Nelson proc = new ProcessServices_Nelson();
 
-
                     if (!proc.UpdateTempTableSI(salesInvoiceList))
                     {
                         MessageBox.Show("Sales Invoice Temp Table Update Error (UpdateTempTable). \r\n" + proc.errorMessage);
                         return;
                     }
-
 
                     //Fill gSalesInvoiceFinished Model Class
                     //gSalesInvoiceList = salesInvoiceList;
@@ -289,7 +339,6 @@ namespace CPMS_Accounting
                     ///Sort Sales Invoice By Batch before saving and Printing
                     var sortedList = salesInvoiceList.OrderBy(x => x.Batch).ToList();
 
-
                     ///Update Database
                     if (!proc.UpdateSalesInvoiceHistory(sortedList))
                     {
@@ -302,23 +351,17 @@ namespace CPMS_Accounting
                     {
                         foreach(var item in sortedList)
                         {
-                            int quantity = item.Quantity;
-                            string checkname = item.checkName;
-                            int purchaseOrderNumber = item.PurchaseOrderNumber;
 
-                            if (!proc.UpdateItemQuantityOnhand(quantity, checkname, purchaseOrderNumber))
+                            if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.checkName, item.PurchaseOrderNumber))
                             {
-                                MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n" + proc.errorMessage);
+                                MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
                                 return;
                             }
                         }
-
                     }
-
 
                     //Create new instance of the document/ Prepare report using Crystal Reports
                     ReportDocument crystalDocument = new ReportDocument();
-                    
                     
                     //Check RPT File
                     if (!p.LoadReportPath("SalesInvoice", ref crystalDocument))
@@ -394,19 +437,13 @@ namespace CPMS_Accounting
             txtSalesInvoiceNumber.Focus();
             cbCheckedBy.Text = "";
             cbApprovedBy.Text = "";
+
+            salesInvoiceList.Clear();
             
-            DataTable dt = new DataTable();
-            proc.LoadUnprocessedSalesInvoiceData(ref dt);
-            dgvDRList.DataSource = dt;
-            dgvDRList.ClearSelection();
 
-            var sortedList = salesInvoiceList
-                     .Select
-                     (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
-                     .ToList();
+            DisableControls();
 
-            dgvListToProcess.DataSource = sortedList;
-            dgvListToProcess.ClearSelection();
+           
 
 
         }
@@ -507,6 +544,11 @@ namespace CPMS_Accounting
                 gSalesInvoiceFinished.VatAmount = row.Field<double>("VatAmount");
                 gSalesInvoiceFinished.NetOfVatAmount = row.Field<double>("NetOfVatAmount");
 
+                //PNB
+                if (gClient.ShortName == "PNB")
+                {
+                }
+
             }
 
             //Get Sales Invoice List Details to be supplied to Global Report Datatable
@@ -520,6 +562,7 @@ namespace CPMS_Accounting
 
             //Create new instance of the document.
             ReportDocument crystalDocument = new ReportDocument();
+
 
             //Load path of the report
             if (!p.LoadReportPath("SalesInvoice", ref crystalDocument))
@@ -543,7 +586,6 @@ namespace CPMS_Accounting
 
         }
 
-
         public void ConfigureDesignLabels()
         {
             string fullname = gUser.UserName + " " + gUser.LastName ;
@@ -557,7 +599,195 @@ namespace CPMS_Accounting
         {
             AddSelectedDRRow();
         }
-    }
 
+        public void DisableControls()
+        {
+
+            gbSearch.Enabled = false;
+            gbBatchList.Enabled = false;
+            gbDetails.Enabled = false;
+            gbBatchToProcess.Enabled = false;
+            pnlActionButtons.Enabled = false;
+            gbSINo.Enabled = true;
+
+            dgvDRList.ClearSelection();
+
+            var sortedList = salesInvoiceList
+                    .Select
+                    (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+                    .ToList();
+
+            dgvListToProcess.DataSource = sortedList;
+            dgvListToProcess.ClearSelection();
+
+            txtSalesInvoiceNumber.Focus();
+          
+        }
+
+        public void EnableControls()
+        {
+          
+
+            gbSearch.Enabled = true;
+            gbBatchList.Enabled = true;
+            gbDetails.Enabled = true;
+            gbBatchToProcess.Enabled = true;
+            pnlActionButtons.Enabled = true;
+            gbSINo.Enabled = false;
+
+            //Enable all Action Buttons
+            btnDeleteSiRecord.Enabled = false;
+            btnReprint.Enabled = false;
+            btnReloadDrList.Enabled = true;
+            btnPrintSalesInvoice.Enabled = true;
+            btnViewSelected.Enabled = true;
+
+
+
+            DataTable dt = new DataTable();
+            proc.LoadUnprocessedSalesInvoiceData(ref dt);
+            dgvDRList.DataSource = dt;
+            dgvDRList.ClearSelection();
+
+            var sortedList = salesInvoiceList
+                    .Select
+                    (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+                    .ToList();
+
+            dgvListToProcess.DataSource = sortedList;
+            dgvListToProcess.ClearSelection();
+
+            txtSalesInvoiceNumber.Focus();
+
+        }
+
+        private void btnAddRecord_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtSalesInvoiceNumber.Text.ToString()))
+            {
+                DataTable dt = new DataTable();
+                if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
+                {
+                    DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
+
+                }
+                else
+                {
+                    EnableControls();
+                }
+                
+            }
+        }
+
+        private void txtSalesInvoiceNumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!string.IsNullOrWhiteSpace(txtSalesInvoiceNumber.Text.ToString()))
+                {
+                    DataTable dt = new DataTable();
+                    if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
+                    {
+                        DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
+
+                    }
+                    else
+                    {
+                        EnableControls();
+                    }
+
+                }
+
+            }
+           
+        }
+
+
+        private void DisplayOldSalesInvoiceList(int salesInvoiceNumber, ref DataTable dt)
+        {
+            
+            //Get Sales Invoice List Details to be supplied to Global Report Datatable
+            DataTable siListDT = new DataTable();
+            if (!proc.GetOldSalesInvoiceList(salesInvoiceNumber, ref siListDT))
+            {
+                MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
+                RefreshView();
+                return;
+            }
+
+            //Display values on Front End from Finished Table
+            foreach (DataRow row in dt.Rows)
+            {
+
+                gSalesInvoiceFinished.ClientCode = row.Field<string>("ClientCode");
+                gSalesInvoiceFinished.SalesInvoiceDateTime = row.Field<DateTime>("SalesInvoiceDateTime");
+                gSalesInvoiceFinished.GeneratedBy = row.Field<string>("GeneratedBy");
+                gSalesInvoiceFinished.CheckedBy = row.Field<string>("CheckedBy");
+                gSalesInvoiceFinished.ApprovedBy = row.Field<string>("ApprovedBy");
+                gSalesInvoiceFinished.SalesInvoiceNumber = row.Field<double>("SalesInvoiceNumber");
+                gSalesInvoiceFinished.TotalAmount = row.Field<double>("TotalAmount");
+                gSalesInvoiceFinished.VatAmount = row.Field<double>("VatAmount");
+                gSalesInvoiceFinished.NetOfVatAmount = row.Field<double>("NetOfVatAmount");
+
+                dtpInvoiceDate.Value = gSalesInvoiceFinished.SalesInvoiceDateTime;
+                cbCheckedBy.Text = gSalesInvoiceFinished.CheckedBy;
+                cbApprovedBy.Text = gSalesInvoiceFinished.ApprovedBy;
+
+            }
+
+           
+
+            foreach (DataRow row in siListDT.Rows)
+            {
+
+                SalesInvoiceModel line = new SalesInvoiceModel();
+
+                line.Batch = row.Field<string>("Batch");
+                line.checkName = row.Field<string>("CheckName");
+                line.checkType = row.Field<string>("ChkType");
+                line.deliveryDate = row.Field<DateTime>("deliverydate");
+                line.Quantity = Convert.ToInt32(row.Field<Int64>("Quantity"));
+                line.drList = row.Field<string>("DRList");
+                line.unitPrice = row.Field<double>("UnitPrice");
+                line.lineTotalAmount = row.Field<double>("LineTotalAmount");
+                line.salesInvoiceDate = row.Field<DateTime>("SalesInvoiceDate");
+
+                if (gClient.ShortName == "PNB")
+                {
+                    //ABANG MUNA
+                    //line.PurchaseOrderNumber = Convert.ToInt32(row.Field<Int64>("PurchaseOrderNumber"));
+                }
+               
+                salesInvoiceList.Add(line);
+            }
+           
+
+
+            //created 'list' variable column sorting by line for datagrid view 
+            var sortedList = salesInvoiceList
+                .Select
+                (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+
+                .ToList();
+
+            dgvListToProcess.DataSource = sortedList;
+            dgvListToProcess.ClearSelection();
+
+            gbSINo.Enabled = false;
+            pnlActionButtons.Enabled = true;
+            btnDeleteSiRecord.Enabled = true;
+            btnReprint.Enabled = true;
+            btnReloadDrList.Enabled = true;
+            btnPrintSalesInvoice.Enabled = false;
+            btnViewSelected.Enabled = false;
+
+        }
+
+
+
+
+
+
+    }
 
 }

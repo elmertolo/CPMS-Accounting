@@ -1443,6 +1443,8 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnBatch;
             
+            private global::System.Data.DataColumn columnLocation;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DocStampDataTable() {
@@ -1590,6 +1592,14 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn LocationColumn {
+                get {
+                    return this.columnLocation;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1625,7 +1635,7 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, string DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, string PONumber, double BalanceOrder, string Batch) {
+            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, string DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, string PONumber, double BalanceOrder, string Batch, string Location) {
                 DocStampRow rowDocStampRow = ((DocStampRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Bank,
@@ -1641,7 +1651,8 @@ namespace CPMS_Accounting {
                         CheckedBy,
                         PONumber,
                         BalanceOrder,
-                        Batch};
+                        Batch,
+                        Location};
                 rowDocStampRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDocStampRow);
                 return rowDocStampRow;
@@ -1678,6 +1689,7 @@ namespace CPMS_Accounting {
                 this.columnPONumber = base.Columns["PONumber"];
                 this.columnBalanceOrder = base.Columns["BalanceOrder"];
                 this.columnBatch = base.Columns["Batch"];
+                this.columnLocation = base.Columns["Location"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1711,6 +1723,8 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnBalanceOrder);
                 this.columnBatch = new global::System.Data.DataColumn("Batch", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBatch);
+                this.columnLocation = new global::System.Data.DataColumn("Location", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLocation);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3227,6 +3241,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Location {
+                get {
+                    try {
+                        return ((string)(this[this.tableDocStamp.LocationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Location\' in table \'DocStamp\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDocStamp.LocationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBankNull() {
                 return this.IsNull(this.tableDocStamp.BankColumn);
             }
@@ -3391,6 +3421,18 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetBatchNull() {
                 this[this.tableDocStamp.BatchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsLocationNull() {
+                return this.IsNull(this.tableDocStamp.LocationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetLocationNull() {
+                this[this.tableDocStamp.LocationColumn] = global::System.Convert.DBNull;
             }
         }
         

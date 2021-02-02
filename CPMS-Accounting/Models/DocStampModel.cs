@@ -24,5 +24,6 @@ namespace CPMS_Accounting.Models
         public string CheckedBy { get; set; }
         public int QuantityOnHand { get; set; }
 
+        public string Location { get; set; }
     }
 }

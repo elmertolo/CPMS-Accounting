@@ -70,7 +70,6 @@ namespace CPMS_Accounting
                 reportsToolStripMenuItem.Enabled = true;
             }
         }
-
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             GetData();
@@ -128,7 +127,7 @@ namespace CPMS_Accounting
                     else if (gClient.DataBaseName == "pnb_history")
                     {
                         sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                 "CK_NO_B,CK_NO_E,BRANCHCODE,OLDBCODE FROM " + filePath;
+                                 "CK_NO_B,CK_NO_E,BRANCHCODE,BRANCHCD2,ACCT_NAME3 FROM " + filePath;
 
                     }
                     OleDbCommand cmd = new OleDbCommand(sql, con);
@@ -145,7 +144,7 @@ namespace CPMS_Accounting
                         order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
                         order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                         order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
-
+                        
                         order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                         order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                         //PNB Required fields
@@ -153,7 +152,10 @@ namespace CPMS_Accounting
                         {
                             order.BranchCode = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
                             order.OldBranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                            order.Name3 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                             proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
+                           
+
                             if (branch.Flag == 0)
                                 order.Location = "Direct";
                             else
@@ -161,17 +163,17 @@ namespace CPMS_Accounting
 
                         }
 
-                        if (order.ChkType == "A" && comboBox1.Text == "Regular Checks")
+                        if (order.ChkType == "A" )
                             order.ChequeName = "Regular Personal Checks";
-                        else if (order.ChkType == "B" && comboBox1.Text == "Regular Checks")
+                        else if (order.ChkType == "B")
                             order.ChequeName = "Regular Commercial Checks";
+                        else if(order.ChkType == "C" )
+                            order.ChequeName = "Manager's Checks";
                         else
                         {
+                            MessageBox.Show("Cheque Type is invalid :" + order.ChkType);
                             errorMessage += "\r\nCheque Type " + order.ChkType + " on batch : " + order.BRSTN.Trim() + ": " + order.BranchName.Trim() + " does not match\r\n";
                         }
-                        if (order.ChkType == "A" && comboBox1.Text == "Manager's Checks")
-                            order.ChequeName = "Manager's Checks";
-
 
                         orderList.Add(order);
                     }
@@ -181,7 +183,7 @@ namespace CPMS_Accounting
                 else
                 {
                     errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
-                Application.Exit();
+                    Application.Exit();
                 }
                 var totalB = orderList.Where(a => a.ChkType == "B").ToList();
                 var totalA = orderList.Where(a => a.ChkType == "A").ToList();

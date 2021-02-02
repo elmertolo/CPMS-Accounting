@@ -67,7 +67,18 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                string sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType";
+                string sql;
+
+                if (gClient.ShortName == "PNB")
+                {
+                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity, location from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType, location";
+                }
+                else
+                {
+                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType";
+                }
+
+                
                 //string sql = "select count(*) as count from producers_history";
                 MySqlCommand cmd = new MySqlCommand(sql, con);
                 da = new MySqlDataAdapter(cmd);
@@ -125,7 +136,7 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public string GetDRList(string batch, string checktype, DateTime deliveryDate)
+        public string GetDRList(string batch, string checktype, DateTime deliveryDate, string location)
         {
 
             try
@@ -133,13 +144,27 @@ namespace CPMS_Accounting.Procedures
 
 
                 DataTable dt = new DataTable();
+                string sql;
 
-
-                string sql = "select group_concat(distinct(drnumber) separator ', ') from " + gClient.DataBaseName + " " +
-                "WHERE salesinvoice is null " +
-                "and batch = '" + batch + "' " +
-                "and chktype = '" + checktype + "' " +
-                "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
+                //Include Location on query if PNB
+                if (gClient.ShortName == "PNB")
+                {
+                    sql = "select group_concat(distinct(drnumber) separator ', ') from " + gClient.DataBaseName + " " +
+                    "WHERE salesinvoice is null " +
+                    "and batch = '" + batch + "' " +
+                    "and chktype = '" + checktype + "' " +
+                    "and location = '" + location + "' " +
+                    "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
+                }
+                else
+                {
+                   sql = "select group_concat(distinct(drnumber) separator ', ') from " + gClient.DataBaseName + " " +
+                   "WHERE salesinvoice is null " +
+                   "and batch = '" + batch + "' " +
+                   "and chktype = '" + checktype + "' " +
+                   "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
+                }
+               
 
                 MySqlCommand cmd = new MySqlCommand(sql, con);
                 da = new MySqlDataAdapter(cmd);
@@ -238,6 +263,7 @@ namespace CPMS_Accounting.Procedures
                         ") and batch = '" + item.Batch + "'" +
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.checkType.ToString() + "'" +
+                        " and location = '" + item.Location + "'" +
                         " and chequename = '" + item.checkName + "';";
                     }
                     else
@@ -246,7 +272,6 @@ namespace CPMS_Accounting.Procedures
                         //Update History Table
                         sql = "update " + gClient.DataBaseName + " set " +
                         "unitprice = " + item.unitPrice + ", " +
-
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
                         "Salesinvoicedate = '" + item.salesInvoiceDate.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
@@ -257,8 +282,6 @@ namespace CPMS_Accounting.Procedures
                         " and chktype = '" + item.checkType.ToString() + "'" +
                         " and chequename = '" + item.checkName + "';";
                     }
-
-
 
                     cmd = new MySqlCommand(sql, con);
                     rowNumbersAffected = cmd.ExecuteNonQuery();
@@ -448,13 +471,32 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                string sql =
+                string sql;
+
+                
+                if (gClient.ShortName == "PNB")
+                {
+                    sql =
                     "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList, " +
                     "ChkType, deliverydate, (select unitPrice from " + gClient.PriceListTable + " where ChequeName = CheckName) as Unitprice, " +
-                    "count(ChkType) * UnitPrice as LineTotalAmount " +
+                    "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate, location " +
+                    "from " + gClient.DataBaseName + " " +
+                    "where salesinvoice = " + salesInvoiceNumber + " " +
+                    "group by batch, CheckName, ChkType, location order by Batch;";
+
+                }
+                else
+                {
+                    sql =
+                    "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList, " +
+                    "ChkType, deliverydate, (select unitPrice from " + gClient.PriceListTable + " where ChequeName = CheckName) as Unitprice, " +
+                    "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate " +
                     "from " + gClient.DataBaseName + " " +
                     "where salesinvoice = " + salesInvoiceNumber + " " +
                     "group by batch, CheckName, ChkType order by Batch;";
+
+                }
+
 
 
                 //"select batch as BatchName, chequename as CheckName, ChkType, deliverydate, count(ChkType) as Quantity, group_concat(distinct(drnumber) separator ', ') as drList " +
@@ -539,7 +581,7 @@ namespace CPMS_Accounting.Procedures
 
 
         //PNB
-        public bool IsQuantityOnHandSufficient(double toProcessQuantity, string chequeName, int purchaseOrderNumber, ref double remainingQuantity)
+        public bool IsQuantityOnHandSufficient(double toProcessQuantity, string chequeName, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)
         {
             
             try
@@ -550,7 +592,18 @@ namespace CPMS_Accounting.Procedures
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
                 double onhandQuantity = double.Parse(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", "double").ToString());
                 double processedQuantity = double.Parse(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", "double").ToString());
-                remainingQuantity = onhandQuantity - processedQuantity - toProcessQuantity;
+                int punchedItemQuantity = 0;
+
+                //Check and add Punched Item on grid
+                foreach (var item in salesInvoiceList)
+                {
+                    if (item.checkName == chequeName)
+                    {
+                        punchedItemQuantity = item.Quantity;
+                    }
+                }
+                
+                remainingQuantity = onhandQuantity - processedQuantity - punchedItemQuantity - toProcessQuantity;
 
                 if (remainingQuantity < 0)
                 {

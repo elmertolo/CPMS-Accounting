@@ -64,10 +64,12 @@ namespace CPMS_Accounting
             if (gClient.DataBaseName != "producers_history")
             {
                 documentStampToolStripMenuItem.Enabled = true;
-
+               
             }
             else
                 documentStampToolStripMenuItem.Enabled = false;
+
+            this.Text = gClient.Description;
         }
 
         private void recentBatchToolStripMenuItem_Click(object sender, EventArgs e)
@@ -95,5 +97,12 @@ namespace CPMS_Accounting
             poFrm.Show();
         }
 
+        private void changeBankToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            Form frm = new frmLogIn();
+            frm.Show();
+            this.Hide();
+         }
     }
 }
