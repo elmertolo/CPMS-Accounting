@@ -542,13 +542,20 @@ namespace CPMS_Accounting.Procedures
             }
             if (type.ToLower() == "int")
             {
-                int i = (int)Convert.ChangeType(result, typeof(int));
+                int i = (int)Convert.ChangeType(result ?? 0, typeof(int));
                 return i;
 
             }
             if (type.ToLower() == "decimal")
             {
-                decimal i = (decimal)Convert.ChangeType(result, typeof(decimal));
+                decimal i = (decimal)Convert.ChangeType(result ?? 0, typeof(decimal));
+                return i;
+
+            }
+
+            if (type.ToLower() == "boolean")
+            {
+                bool i = (bool)Convert.ChangeType(result ?? 0, typeof(bool));
                 return i;
 
             }
@@ -592,18 +599,19 @@ namespace CPMS_Accounting.Procedures
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
                 double onhandQuantity = double.Parse(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", "double").ToString());
                 double processedQuantity = double.Parse(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", "double").ToString());
-                int punchedItemQuantity = 0;
+                int totalPunchedItemQuantity = 0;
 
                 //Check and add Punched Item on grid
+
                 foreach (var item in salesInvoiceList)
                 {
                     if (item.checkName == chequeName)
                     {
-                        punchedItemQuantity = item.Quantity;
+                        totalPunchedItemQuantity += item.Quantity;
                     }
                 }
                 
-                remainingQuantity = onhandQuantity - processedQuantity - punchedItemQuantity - toProcessQuantity;
+                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - toProcessQuantity;
 
                 if (remainingQuantity < 0)
                 {
@@ -644,7 +652,46 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
+        public bool RemoveSalesInvoiceTagOnHistory(double salesInvoiceNumber)
+        {
+            try
+            {
+                string sql;
+                if (gClient.ShortName == "PNB")
+                {
+                    sql = "update " + gClient.DataBaseName + " set salesinvoice = null, purchaseordernumber = null where salesinvoice = " + salesInvoiceNumber + "";
+                }
+                else
+                {
+                    sql = "update " + gClient.DataBaseName + " set salesinvoice = null where sales invoice = " + salesInvoiceNumber + "";
+                }
+                
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
 
+        public bool UpdateSalesInvoiceStatusOnfinished(double salesInvoiceNumber, int status)
+        {
+            try
+            {
+                string sql = "update " + gClient.SalesInvoiceFinishedTable + " set IsCancelled = " + status + " where salesinvoicenumber = " + salesInvoiceNumber + "";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
 
 
 

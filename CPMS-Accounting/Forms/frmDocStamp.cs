@@ -75,7 +75,7 @@ namespace CPMS_Accounting.Forms
                 if (docstamp != null || docstamp.Count != 0)
                 {
                     proc.UpdateDocstamp(docstamp);
-                    proc.GetDocStampDetails(tempdocstamp, docstamp[0].DocStampNumber);
+                    proc.GetDocStampDetails(tempdocstamp, docstamp);
                     MessageBox.Show("Documetn Stamp has been process!!!");
                     ViewReports vp = new ViewReports();
                     DeliveryReport.report = "DOC";

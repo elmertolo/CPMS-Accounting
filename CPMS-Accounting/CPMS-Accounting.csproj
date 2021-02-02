@@ -306,6 +306,7 @@
     <None Include="Resources\background-red-header.png" />
     <None Include="Resources\Header_Main.png" />
     <None Include="Resources\FormBackground.jpg" />
+    <Content Include="DLL\FastMember.dll" />
     <Content Include="Image\background-red-header.png" />
     <Content Include="Image\Button_Yellow.png" />
     <Content Include="Image\Captive.ico" />

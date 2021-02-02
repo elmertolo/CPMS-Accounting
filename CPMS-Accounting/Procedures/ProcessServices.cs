@@ -113,7 +113,7 @@ namespace CPMS_Accounting.Procedures
 
             return _orders;
         }
-        public List<OrderModel> Process2(List<OrderModel> _orders, DeliveryReport _main, int DrNumber, int packNumber)
+        public List<OrderModel> Process2(List<OrderModel> _orders, DeliveryReport _main, int DrNumber, int packNumber,int _dReportStyle, int _pReportStyle)
         {
             TypeofCheckModel checkType = new TypeofCheckModel();
             //int counter = 0;
@@ -128,31 +128,51 @@ namespace CPMS_Accounting.Procedures
             foreach (OrderModel _check in _orders)
             {
 
+                if (_dReportStyle != 0 && _pReportStyle != 0)
+                {
+                    if (_check.ChkType == "A" && _check.Location == "Direct")
+                    {
+                        checkType.Regular_Personal_Direct.Add(_check);
+                    }
+                    if (_check.ChkType == "A" && _check.Location == "Provincial")
+                    {
+                        checkType.Regular_Personal_Provincial.Add(_check);
+                    }
+                    if (_check.ChkType == "B" && _check.Location == "Direct")
+                    {
+                        checkType.Regular_Commercial_Direct.Add(_check);
+                    }
+                    if (_check.ChkType == "B" && _check.Location == "Provincial")
+                    {
+                        checkType.Regular_Commercial_Provincial.Add(_check);
+                    }
+                    
+                }
+                else
+                {
 
-                if (_check.ChkType == "A"  && _check.Location == "Direct")
-                {
-                    checkType.Regular_Personal_Direct.Add(_check);
-                }
-                if (_check.ChkType == "A" && _check.Location == "Provincial")
-                {
-                    checkType.Regular_Personal_Provincial.Add(_check);
-                }
-                if (_check.ChkType == "B" && _check.Location == "Direct")
-                {
-                    checkType.Regular_Commercial_Direct.Add(_check);
-                }
-                if (_check.ChkType == "B" && _check.Location == "Provincial")
-                {
-                    checkType.Regular_Commercial_Provincial.Add(_check);
+                    if (_check.ChkType == "A" )
+                    {
+                        checkType.Regular_Personal.Add(_check);
+                    }
+                    if (_check.ChkType == "B")
+                    {
+                        checkType.Regular_Commercial.Add(_check);
+                    }
+                  
                 }
                 
             }
             checkType.Regular_Personal.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
-            if (gClient.DataBaseName != "producers_history")
-                GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
-            else
-                Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
+            checkType.Regular_Personal_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Regular_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Regular_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.Regular_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
+          //  if (gClient.DataBaseName != "producers_history")
+                GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber, _dReportStyle,_pReportStyle);
+          //  else
+          //      Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
             // Generate(checkType, DrNumber, _main.deliveryDate, "ELMER", packNumber);
 
             return _orders;
@@ -252,381 +272,148 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
-        //public void Generate2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
-        //{
-        //    DBConnect();
-        //    int counter = 0;
-        //    var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
-        //    if (Personal.Count > 0)
-        //    {
-        //        var _list = Personal.Select(r => r.BRSTN).Distinct().ToList();
-        //        //Working Proccess Jan. 27 2021
-        //        foreach (string Brstn in _list)
-        //        {
-        //            var _model = Personal.Where(t => t.BRSTN == Brstn && t.Location == "Direct");
-
-        //            foreach (var r in _model)
-        //            {
-        //                //if (gClient.DataBaseName == "producers_history")
-        //                //{
-
-        //                //    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                //          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
-        //                //          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                //          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                //          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                //          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                //          "','" + r.Location + "');";
-        //                //    cmd = new MySqlCommand(Sql, myConnect);
-        //                //    cmd.ExecuteNonQuery();
-        //                //}
-        //                //else 
-        //                //if (gClient.DataBaseName == "pnb_history")
-        //                //{
-        //                    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-        //                          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                          "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-        //                    cmd = new MySqlCommand(Sql, myConnect);
-        //                    cmd.ExecuteNonQuery();
-        //                //}
-        //            }
-        //            counter++;
-        //            _packNumber++;
-        //            _DrNumber++;
-        //            //if (counter == 10)
-        //            //{
-        //            //    _DrNumber++;
-        //            //    counter = 0;
-        //            //}
-
-
-        //        }
-        //        _DrNumber++;
-        //        foreach (string Brstn in _list)
-        //        {
-                   
-        //            var _model = Personal.Where(t => t.BRSTN == Brstn && t.Location == "Provincial");
-
-        //            foreach (var r in _model)
-        //            {
-        //                //if (gClient.DataBaseName == "producers_history")
-        //                //{
-
-        //                //    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                //          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
-        //                //          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                //          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                //          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                //          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                //          "','" + r.Location + "');";
-        //                //    cmd = new MySqlCommand(Sql, myConnect);
-        //                //    cmd.ExecuteNonQuery();
-        //                //}
-        //                //else 
-        //                //if (gClient.DataBaseName == "pnb_history")
-        //                //{
-        //                Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                      "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-        //                      "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                      "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                      "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                      r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                      "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-        //                cmd = new MySqlCommand(Sql, myConnect);
-        //                cmd.ExecuteNonQuery();
-        //                //}
-        //            }
-        //            counter++;
-        //            _packNumber++;
-
-        //            if (counter == 10)
-        //            {
-        //                _DrNumber++;
-        //                counter = 0;
-        //            }
-
-
-        //        }
-                
-        //    }
-        //    counter = 0;
-            
-
-        //    var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
-        //    if (Comm.Count > 0)
-        //    {
-        //        var _List = Comm.Select(r => r.BRSTN).Distinct().ToList();
-        //        //var sorted = (from c in _checks.Regular_Commercial
-        //        //              orderby c.BranchName
-        //        //                       ascending
-        //        //              select c).ToList();
-
-        //        foreach (string Brstn in _List)
-        //        {
-        //            var _model = Comm.Where(a => a.BRSTN == Brstn && a.Location == "Direct");
-        //            foreach (var r in _model)
-        //            {
-
-        //                //if (gClient.DataBaseName == "producers_history")
-        //                //{
-
-        //                //    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                //          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time )" +
-        //                //          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                //          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                //          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                //          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                //          "');";
-        //                //    cmd = new MySqlCommand(Sql, myConnect);
-        //                //    cmd.ExecuteNonQuery();
-        //                //}
-        //                //else 
-        //                //if (gClient.DataBaseName == "pnb_history")
-        //                //{
-        //                    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,BranchCode,OldBranchCode )" +
-        //                          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                          "','"+r.Location+"','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-        //                    cmd = new MySqlCommand(Sql, myConnect);
-        //                    cmd.ExecuteNonQuery();
-        //            //    }
-
-        //            }
-        //            counter++;
-        //            _packNumber++;
-        //            if (counter == 10)
-        //            {
-        //                _DrNumber++;
-        //                counter = 0;
-        //            }
-        //        }
-        //        counter = 0;
-        //        _DrNumber++;
-        //        foreach (string Brstn in _List)
-        //        {
-        //            var _model = Comm.Where(a => a.BRSTN == Brstn && a.Location == "Provincial");
-        //            foreach (var r in _model)
-        //            {
-
-        //                //if (gClient.DataBaseName == "producers_history")
-        //                //{
-
-        //                //    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                //          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time )" +
-        //                //          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                //          "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                //          "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                //          r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                //          "');";
-        //                //    cmd = new MySqlCommand(Sql, myConnect);
-        //                //    cmd.ExecuteNonQuery();
-        //                //}
-        //                //else 
-        //                //if (gClient.DataBaseName == "pnb_history")
-        //                //{
-        //                Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-        //                      "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,BranchCode,OldBranchCode )" +
-        //                      "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-        //                      "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-        //                      "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-        //                      r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-        //                      "','"+r.Location+"','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-        //                cmd = new MySqlCommand(Sql, myConnect);
-        //                cmd.ExecuteNonQuery();
-        //                //    }
-
-        //            }
-        //            counter++;
-        //            _packNumber++;
-        //            if (counter == 10)
-        //            {
-        //                _DrNumber++;
-        //                counter = 0;
-        //            }
-        //        }
-        //    }
-        //    DBClosed();
-        //    return;
-        //}
-
-        public void GenerateData2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        
+        public void GenerateData2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber,int _dReportStyle,int _pReportStyle)
         {
-            int counter = 0;
-            DBConnect();
-            
-            if(_checks.Regular_Personal_Direct.Count > 0 )
+
+            if (_dReportStyle == 0 && _pReportStyle == 0)
+                ByChequetType(_checks, _DrNumber, _deliveryDate, _username, _packNumber);
+            else if(_dReportStyle == 0 && _pReportStyle == 1 )
             {
-                // generating DR number per Branches with ChkType A
-                            var dBranch = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
-                            dBranch.ForEach(y => 
-                            {
-                                var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y).ToList();
-                                dRecord.ForEach(r =>
-                                {
-
-                                    Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                                    "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-                                    "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'","''") +
-                                    "','" + r.Name2.Replace("'","''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                                    "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                                    r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                                    "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-                                    cmd = new MySqlCommand(Sql, myConnect);
-                                    cmd.ExecuteNonQuery();
-
-                                });
-                               // counter++;
-                                _packNumber++;
-                               // if (counter == 10)
-                               // {
-                                    _DrNumber++;
-                                //    counter = 0;
-                              //  }
-
-                            });
-                       
-            }
-            DBClosed();
-            DBConnect();
-            if (_checks.Regular_Personal_Provincial.Count > 0)
-            {
-                //Generating DR per CheckType in Provincial Branches
-                var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch.ForEach(y =>
-                {
-                    var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y).ToList();
-                    dRecord.ForEach(r =>
-                    {
-
-                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'","''") +
-                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-                        cmd = new MySqlCommand(Sql, myConnect);
-                        cmd.ExecuteNonQuery();
-
-                    });
-                     counter++;
-                    _packNumber++;
-                    if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
-                    {
-                        _DrNumber++;
-                        counter = 0;
-                    }
-                });
 
             }
-            _DrNumber++;
-            if (_checks.Regular_Commercial_Direct.Count > 0)
+            else if(_dReportStyle == 0 && _pReportStyle == 2)
             {
-                // generating DR number per Branches with ChkType B in Direct Branches
-                var dBranch = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch.ForEach(y =>
-                {
-                    var dRecord = _checks.Regular_Commercial_Direct.Where(g => g.BRSTN == y).ToList();
-                    dRecord.ForEach(r =>
-                    {
-
-                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
-                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-                        cmd = new MySqlCommand(Sql, myConnect);
-                        cmd.ExecuteNonQuery();
-
-                    });
-                    //counter++;
-                    _packNumber++;
-                    //if (counter == 10)
-                    //{
-                        _DrNumber++;
-                      //  counter = 0;
-                    //}
-
-
-                });
 
             }
-
-            if (_checks.Regular_Commercial_Provincial.Count > 0)
+            else if (_dReportStyle == 0 && _pReportStyle == 3)
             {
-                //Generating DR per CheckType in Provincial Branches
-                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch.ForEach(y =>
-                {
-                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y).ToList();
-                    dRecord.ForEach(r =>
-                    {
-
-                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
-                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-                        cmd = new MySqlCommand(Sql, myConnect);
-                        cmd.ExecuteNonQuery();
-
-                    });
-                    counter++;
-                    _packNumber++;
-                    if (counter == 10)
-                    {
-                        _DrNumber++;
-                        counter = 0;
-                    }
-
-
-                });
 
             }
-            //    });
+            else if (_dReportStyle == 0 && _pReportStyle == 4)
+            {
 
-            //});
+            }
+            else if (_dReportStyle == 0 && _pReportStyle == 5)
+            {
 
-            // loc = _checks.Regular_Personal.Where(d => d.Location == "Provincial").ToList();
-            //loc.ForEach(r => {
-            //    //var _byBrstn = _checks.Regular_Personal.Select(d => d.BRSTN).Distinct().ToList();
+            }
+            else if (_dReportStyle == 1 && _pReportStyle == 0)
+            {
 
-            //    //_byBrstn.ForEach(d =>
-            //    //{
-            //    //    var _byRecord = _checks.Regular_Personal.Where(e => e.BRSTN == d).ToList();
-            //    //    _byRecord.ForEach(r =>
-            //    //    {
-            //            Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-            //            "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
-            //            "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1 +
-            //            "','" + r.Name2 + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-            //            "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-            //            r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-            //            "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
-            //            cmd = new MySqlCommand(Sql, myConnect);
-            //            cmd.ExecuteNonQuery();
+            }
+            else if (_dReportStyle == 1 && _pReportStyle == 1)
+            {
+               
+            }
+            else if (_dReportStyle == 1 && _pReportStyle == 3)
+            {
 
-            //    //    });
+            }
+            else if (_dReportStyle == 1 && _pReportStyle == 4)
+            {
 
-            //    //});
+            }
+            else if (_dReportStyle == 1 && _pReportStyle == 5)
+            {
 
-            //});
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 0)
+            {
 
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 1)
+            {
 
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 2)
+            {
+                ByLocation(_checks, _DrNumber, _deliveryDate, _username, _packNumber);
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 3)
+            {
 
-            DBClosed();
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 4)
+            {
 
+            }
+            else if (_dReportStyle == 2 && _pReportStyle == 5)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 0)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 1)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 2)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 3)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 4)
+            {
+
+            }
+            else if (_dReportStyle == 3 && _pReportStyle == 5)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 0)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 1)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 2)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 3)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 4)
+            {
+
+            }
+            else if (_dReportStyle == 4 && _pReportStyle == 5)
+            {
+                ByLocationAndType(_checks, _DrNumber, _deliveryDate, _username, _packNumber);
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 0)
+            {
+
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 1)
+            {
+
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 2)
+            {
+
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 3)
+            {
+
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 4)
+            {
+                ByLocationAndType(_checks, _DrNumber, _deliveryDate, _username, _packNumber);
+            }
+            else if (_dReportStyle == 5 && _pReportStyle == 5)
+            {
+
+            }
         }
         //public void GenerateData(List<OrderModel> _orderList, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         //{
@@ -1213,11 +1000,6 @@ namespace CPMS_Accounting.Procedures
                 return false;
 
         }
-        public bool CheckTypeNotMatch(string _type)
-        {
-
-            return true;
-        }
         public static string ErrorMessage(string _errorMessage)
         {
             try
@@ -1261,13 +1043,7 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
-        public void ChangeDR(List<TempModel> _Dr)
-        {
-            Sql = "Update ";
-            return;
-
-
-        }
+  
         public static DialogResult InputBox(string title, string promptText, ref string value)
         {
 
@@ -1490,20 +1266,20 @@ namespace CPMS_Accounting.Procedures
         }
         //public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
         //{
-         public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
+         public void GetDocStampDetails(List<DocStampModel> _temp, List<DocStampModel> _docStampNumber)
          {
-                //Orginal Query
-                //Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " +
-                //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
-                //      "(Count(ChkType) * H.DocStamp) as TotalAmount from " + gClient.DataBaseName +
-                //      " H left join " + gClient.PriceListTable +"  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
-                //      " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
-
+            //Orginal Query
+            //Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " +
+            //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
+            //      "(Count(ChkType) * H.DocStamp) as TotalAmount from " + gClient.DataBaseName +
+            //      " H left join " + gClient.PriceListTable +"  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
+            //      " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
+            _docStampNumber.ForEach(x => { 
                 Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
                   "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
                   "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                   " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
-                  " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
+                  " where  DocStampNumber= " + x.DocStampNumber + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -1537,8 +1313,8 @@ namespace CPMS_Accounting.Procedures
             cmd.ExecuteNonQuery();
             DBClosed();
             DBConnect();
-            _temp.ForEach(d =>
-            {
+                _temp.ForEach(d =>
+                {
                 string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
                             "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location)Values('" + d.BankCode + "'," + d.DocStampNumber +
                             ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'","''") +
@@ -1546,6 +1322,7 @@ namespace CPMS_Accounting.Procedures
                             ",'" + d.batches + "',"+d.TotalAmount+",'"+d.Location+"')";
                 MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                 cmd2.ExecuteNonQuery();
+                });
             });
             DBClosed();
             return;
@@ -1611,6 +1388,489 @@ namespace CPMS_Accounting.Procedures
             reader.Close();
             DBClosed();
 
+        }
+        private void ByLocationAndType(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        {
+            int counter = 0;
+            DBConnect();
+
+            if (_checks.Regular_Personal_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    // counter++;
+                    _packNumber++;
+                    // if (counter == 10)
+                    // {
+                    _DrNumber++;
+                    //    counter = 0;
+                    //  }
+
+                });
+
+            }
+            DBClosed();
+            DBConnect();
+            if (_checks.Regular_Personal_Provincial.Count > 0)
+            {
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+                });
+
+            }
+            _DrNumber++;
+            if (_checks.Regular_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Commercial_Direct.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    //counter++;
+                    _packNumber++;
+                    //if (counter == 10)
+                    //{
+                    _DrNumber++;
+                    //  counter = 0;
+                    //}
+
+
+                });
+
+            }
+
+            if (_checks.Regular_Commercial_Provincial.Count > 0)
+            {
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                });
+
+            }
+            DBClosed();
+
+        }
+        private void ByLocationAndType2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        {
+            int counter = 0;
+            DBConnect();
+
+            if (_checks.Regular_Personal_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                     counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+                });
+
+            }
+            DBClosed();
+            DBConnect();
+            if (_checks.Regular_Personal_Provincial.Count > 0)
+            {
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    //counter++;
+                    _packNumber++;
+                   // if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                   // {
+                        _DrNumber++;
+                     //   counter = 0;
+                   // }
+                });
+
+            }
+            _DrNumber++;
+            if (_checks.Regular_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Commercial_Direct.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                });
+
+            }
+
+            if (_checks.Regular_Commercial_Provincial.Count > 0)
+            {
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                        "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
+                        "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                        "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                        "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                        r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                        "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+                    });
+                    //counter++;
+                    _packNumber++;
+                    //if (counter == 10)
+                    //{
+                        _DrNumber++;
+                      //  counter = 0;
+                    //}
+
+
+                });
+
+            }
+            DBClosed();
+
+        }
+
+        public void ByChequetType(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        {
+            DBConnect();
+            int counter = 0;
+            var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
+            if (Personal.Count > 0)
+            {
+                //counter++;
+                //_checks.Regular_Personal.ForEach(r =>
+                //{
+                //_checks.Regular_Personal.OrderBy(r => r.BranchName).ToList();
+                var _list = Personal.Select(r => r.BRSTN).Distinct().ToList();
+                //var sorted = (from c in _checks.Regular_Personal
+                //                orderby c.BranchName
+                //                         ascending
+                //                select c).ToList();
+
+
+                //Working Proccess Jan. 27 2021
+                foreach (string Brstn in _list)
+                {
+                    var _model = Personal.Where(t => t.BRSTN == Brstn);
+
+                    foreach (var r in _model)
+                    {
+
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "','" + r.Location + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+
+
+                    }
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                }
+
+            }
+            counter = 0;
+            _DrNumber++;
+
+            var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
+            if (Comm.Count > 0)
+            {
+                var _List = Comm.Select(r => r.BRSTN).Distinct().ToList();
+                //var sorted = (from c in _checks.Regular_Commercial
+                //              orderby c.BranchName
+                //                       ascending
+                //              select c).ToList();
+
+                foreach (string Brstn in _List)
+                {
+                    var _model = Comm.Where(a => a.BRSTN == Brstn);
+                    foreach (var r in _model)
+                    {
+
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+                }
+            }
+            DBClosed();
+            return;
+        }
+        public void ByLocation(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        {
+            DBConnect();
+            int counter = 0;
+            var PersonalD = _checks.Regular_Personal_Direct.OrderBy(t => t.BranchName).ToList();
+            var PersonalP = _checks.Regular_Personal_Provincial.OrderBy(t => t.BranchName).ToList();
+            var CommercialD = _checks.Regular_Commercial_Direct.OrderBy(t => t.BranchName).ToList();
+            var CommercialP = _checks.Regular_Commercial_Provincial.OrderBy(t => t.BranchName).ToList();
+            if (PersonalD.Count > 0 || CommercialD.Count > 0)
+            {
+                
+                List<OrderModel> listofChecks = new List<OrderModel>();
+                PersonalD.ForEach(x => {
+                    listofChecks.Add(x);
+                });
+                CommercialD.ForEach(x => { 
+                    listofChecks.Add(x); 
+                });
+                var _list = listofChecks.Select(r => r.BRSTN).Distinct().ToList();
+                //Working Proccess Jan. 27 2021
+                foreach (string Brstn in _list)
+                {
+                    var _model = listofChecks.Where(t => t.BRSTN == Brstn);
+
+                    foreach (var r in _model)
+                    {
+
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "','" + r.Location + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+
+
+                    }
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                }
+
+            }
+            counter = 0;
+            _DrNumber++;
+            if (PersonalP.Count > 0 || CommercialP.Count > 0)
+            {
+
+                List<OrderModel> listofChecks = new List<OrderModel>();
+                PersonalP.ForEach(x => {
+                    listofChecks.Add(x);
+                });
+                CommercialP.ForEach(x => {
+                    listofChecks.Add(x);
+                });
+                var _list = listofChecks.Select(r => r.BRSTN).Distinct().ToList();
+                //Working Proccess Jan. 27 2021
+                foreach (string Brstn in _list)
+                {
+                    var _model = listofChecks.Where(t => t.BRSTN == Brstn);
+
+                    foreach (var r in _model)
+                    {
+
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "','" + r.Location + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+
+
+                    }
+                    counter++;
+                    _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                }
+
+            }
+           
+           
+            DBClosed();
+            return;
         }
     }
 }

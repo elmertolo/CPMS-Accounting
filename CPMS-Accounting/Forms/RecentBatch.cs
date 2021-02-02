@@ -53,7 +53,7 @@ namespace CPMS_Accounting
                         {
                             if (flag == true)
                             {
-                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
+                                proc.GetDocStampDetails(docTemp,docTemp);
                                 flag = false;
                             }
 

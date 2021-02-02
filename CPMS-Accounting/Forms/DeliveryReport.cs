@@ -34,6 +34,8 @@ namespace CPMS_Accounting
         Int32 pNumber = 0;
         Int64 _dr = 0;
         Main frm;
+        int DirectReportStyle = 0;
+        int ProvincialReportStyle = 0;
         string errorMessage = "";
         public DeliveryReport(Main frm1)
         {
@@ -54,11 +56,11 @@ namespace CPMS_Accounting
             else
             {
 
-
-                if(gClient.DataBaseName != "producers_history")
-                    proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
-                else
-                    proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+                sReport();
+              //  if (gClient.DataBaseName != "producers_history")
+                    proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle,ProvincialReportStyle);
+              ///  else
+                 //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
 
                 proc.GetDRDetails(orderList[0].Batch, tempDr);
                 proc.GetStickerDetails(tempSticker, orderList[0].Batch);
@@ -88,7 +90,51 @@ namespace CPMS_Accounting
         //    cmbBank.Items.Add("PNB");
         //    cmbBank.SelectedIndex = 0;
         //}
+        private void sReport()
+        {
+            if (cbDirect.Text == "By Cheque Type")
+                DirectReportStyle = 0;
+            else if (cbDirect.Text == "By Branches")
+                DirectReportStyle = 1;
+            else if (cbDirect.Text == "By Location")
+                DirectReportStyle = 2;
+            else if (cbDirect.Text == "Cheque Type per Branch")
+                DirectReportStyle = 3;
+            else if (cbDirect.Text == "Cheque Type per Location")
+                DirectReportStyle = 4;
+            else if (cbDirect.Text == "Location,Cheque Type and Branch")
+                DirectReportStyle = 5;
 
+            if (cbProvincial.Text == "By Cheque Type")
+                ProvincialReportStyle = 0;
+            else if (cbProvincial.Text == "By Branches")
+                ProvincialReportStyle = 1;
+            else if (cbProvincial.Text == "By Location")
+                ProvincialReportStyle = 2;
+            else if (cbProvincial.Text == "Cheque Type per Branch")
+                ProvincialReportStyle = 3;
+            else if (cbProvincial.Text == "Cheque Type per Location")
+                ProvincialReportStyle = 4;
+            else if (cbProvincial.Text == "Location,Cheque Type and Branch")
+                ProvincialReportStyle = 5;
+        }
+        private void ReporStyle()
+        {
+            cbDirect.Items.Add("By Cheque Type");
+            cbDirect.Items.Add("By Location");
+            cbDirect.Items.Add("By Branches");
+            cbDirect.Items.Add("Cheque Type per Branch");
+            cbDirect.Items.Add("Cheque Type per Location");
+            cbDirect.Items.Add("Location,Cheque Type and Branch");
+            cbProvincial.Items.Add("By Cheque Type");
+            cbProvincial.Items.Add("By Location");
+            cbProvincial.Items.Add("By Branches");
+            cbProvincial.Items.Add("Cheque Type per Branch");
+            cbProvincial.Items.Add("Cheque Type per Location");
+            cbProvincial.Items.Add("Location,Cheque Type and Branch");
+            cbDirect.SelectedIndex = 0;
+            cbProvincial.SelectedIndex = 0;
+        }
         private void GetData()
         {
             var fileContent = string.Empty;
@@ -230,8 +276,9 @@ namespace CPMS_Accounting
         {
             
             ChequeName();
-            //  BankName();
-            // MessageBox.Show(proc.myConnect.ConnectionString);
+            ReporStyle();
+
+
         }
         private void GetPack()
         {
