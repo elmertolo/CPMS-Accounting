@@ -44,6 +44,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPackNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbProvincial = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbDirect = new System.Windows.Forms.ComboBox();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.lblTotalA = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -56,17 +61,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbDirect = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cbProvincial = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -135,6 +135,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(202, 24);
             this.comboBox1.TabIndex = 3;
+            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox1_KeyPress);
             // 
             // dateTimePicker1
             // 
@@ -217,6 +218,59 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input Data";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.cbProvincial);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.cbDirect);
+            this.groupBox3.Location = new System.Drawing.Point(15, 185);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(292, 137);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Report";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(28, 73);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(85, 16);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "Provincial :";
+            // 
+            // cbProvincial
+            // 
+            this.cbProvincial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbProvincial.FormattingEnabled = true;
+            this.cbProvincial.Location = new System.Drawing.Point(30, 94);
+            this.cbProvincial.Name = "cbProvincial";
+            this.cbProvincial.Size = new System.Drawing.Size(234, 24);
+            this.cbProvincial.TabIndex = 8;
+            this.cbProvincial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbProvincial_KeyPress);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(28, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(57, 16);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Direct :";
+            // 
+            // cbDirect
+            // 
+            this.cbDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDirect.FormattingEnabled = true;
+            this.cbDirect.Location = new System.Drawing.Point(31, 44);
+            this.cbDirect.Name = "cbDirect";
+            this.cbDirect.Size = new System.Drawing.Size(234, 24);
+            this.cbDirect.TabIndex = 0;
+            this.cbDirect.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbDirect_KeyPress);
             // 
             // btnGenerate
             // 
@@ -339,57 +393,6 @@
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.cbProvincial);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.cbDirect);
-            this.groupBox3.Location = new System.Drawing.Point(15, 185);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(292, 137);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Report";
-            // 
-            // cbDirect
-            // 
-            this.cbDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbDirect.FormattingEnabled = true;
-            this.cbDirect.Location = new System.Drawing.Point(31, 44);
-            this.cbDirect.Name = "cbDirect";
-            this.cbDirect.Size = new System.Drawing.Size(234, 24);
-            this.cbDirect.TabIndex = 0;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(28, 25);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(57, 16);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Direct :";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(28, 73);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(85, 16);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "Provincial :";
-            // 
-            // cbProvincial
-            // 
-            this.cbProvincial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbProvincial.FormattingEnabled = true;
-            this.cbProvincial.Location = new System.Drawing.Point(30, 94);
-            this.cbProvincial.Name = "cbProvincial";
-            this.cbProvincial.Size = new System.Drawing.Size(234, 24);
-            this.cbProvincial.TabIndex = 8;
-            // 
             // DeliveryReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -418,12 +421,12 @@
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -141,7 +141,7 @@ namespace CPMS_Accounting
             this.dgvDRList.Location = new System.Drawing.Point(13, 73);
             this.dgvDRList.Name = "dgvDRList";
             this.dgvDRList.ReadOnly = true;
-            this.dgvDRList.Size = new System.Drawing.Size(860, 248);
+            this.dgvDRList.Size = new System.Drawing.Size(860, 364);
             this.dgvDRList.TabIndex = 1;
             this.dgvDRList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDRList_CellContentClick);
             // 
@@ -168,7 +168,7 @@ namespace CPMS_Accounting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 344);
+            this.ClientSize = new System.Drawing.Size(885, 449);
             this.Controls.Add(this.txtRecentBatch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvDRList);

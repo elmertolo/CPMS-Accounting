@@ -555,7 +555,7 @@ namespace CPMS_Accounting.Procedures
 
             if (type.ToLower() == "boolean")
             {
-                bool i = (bool)Convert.ChangeType(result ?? 0, typeof(bool));
+                bool i = (bool)Convert.ChangeType(_= result != null ? result : false, typeof(bool));
                 return i;
 
             }

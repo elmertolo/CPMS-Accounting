@@ -132,8 +132,16 @@ namespace CPMS_Accounting
             cbProvincial.Items.Add("Cheque Type per Branch");
             cbProvincial.Items.Add("Cheque Type per Location");
             cbProvincial.Items.Add("Location,Cheque Type and Branch");
-            cbDirect.SelectedIndex = 0;
-            cbProvincial.SelectedIndex = 0;
+            if(gClient.DataBaseName != "producers_history")
+            {
+                cbDirect.SelectedIndex = 5;
+                cbProvincial.SelectedIndex = 4;
+            }
+            else
+            {
+                cbDirect.SelectedIndex = 0;
+                cbProvincial.SelectedIndex = 0;
+            }
         }
         private void GetData()
         {
@@ -376,6 +384,32 @@ namespace CPMS_Accounting
             GetPack();
          
             MessageBox.Show("Getting DrNumber and PackNumber done!!");
+        }
+
+        private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+        }
+
+        private void cbDirect_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+        }
+
+        private void cbProvincial_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

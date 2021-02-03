@@ -611,7 +611,7 @@ namespace CPMS_Accounting {
                         string DeliveryDate, 
                         string username, 
                         string location, 
-                        string DRNumber, 
+                        int DRNumber, 
                         string PackNumber, 
                         string AttentionTo, 
                         string Multiplier, 
@@ -705,7 +705,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnusername);
                 this.columnlocation = new global::System.Data.DataColumn("location", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnlocation);
-                this.columnDRNumber = new global::System.Data.DataColumn("DRNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDRNumber = new global::System.Data.DataColumn("DRNumber", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDRNumber);
                 this.columnPackNumber = new global::System.Data.DataColumn("PackNumber", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPackNumber);
@@ -2043,10 +2043,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string DRNumber {
+            public int DRNumber {
                 get {
                     try {
-                        return ((string)(this[this.tableDeliveryReceipt.DRNumberColumn]));
+                        return ((int)(this[this.tableDeliveryReceipt.DRNumberColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DRNumber\' in table \'DeliveryReceipt\' is DBNull.", e);
