@@ -104,12 +104,19 @@ namespace CPMS_Accounting.Forms
             //Assign Click event to the Header CheckBox.
             cbHeader.Click += new EventHandler(cbHeader_CheckedChanged);
             dgvData.Controls.Add(cbHeader);
-            
-            dgvData.Columns.Add(chk);
+
+            if (dgvData.Columns.Contains(chk))
+            {
+
+            }
+            else
+            {
+                dgvData.Columns.Add(chk);
+            }
             dgvData.DataSource = dt2;
             //Assign Click event to the DataGridView Cell.
-            dgvData.CellContentClick += new DataGridViewCellEventHandler(dgvData_CellClick);
-
+            // dgvData.CellContentClick += new DataGridViewCellEventHandler(dgvData_CellClick);
+            dgvData.CurrentCell = dgvData.Rows[0].Cells[1];
         }
 
         private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -122,7 +129,8 @@ namespace CPMS_Accounting.Forms
             //Loop and check and uncheck all row CheckBoxes based on Header Cell CheckBox.
             foreach (DataGridViewRow row in dgvData.Rows)
             {
-                DataGridViewCheckBoxCell checkBox = (row.Cells["Chk"] as DataGridViewCheckBoxCell);
+
+                DataGridViewCheckBoxCell checkBox = (row.Cells[0] as DataGridViewCheckBoxCell);
                 checkBox.Value = cbHeader.Checked;
             }
         }
