@@ -93,6 +93,11 @@ namespace CPMS_Accounting
 
         private void purchaseOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (gClient.ShortName != "PNB")
+            {
+                MessageBox.Show("Purchase Order Feature is applicable on PNB transctions only for the meantime", "Ooooops..");
+                return;
+            }
             frmPurchaseOrder poFrm = new frmPurchaseOrder(this);
             poFrm.Show();
         }

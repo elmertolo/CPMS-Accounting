@@ -29,14 +29,14 @@ namespace CPMS_Accounting
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSalesInvoice));
             this.dgvDRList = new System.Windows.Forms.DataGridView();
             this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
@@ -68,6 +68,7 @@ namespace CPMS_Accounting
             this.btnAddRecord = new System.Windows.Forms.Button();
             this.pnlActionButtons = new System.Windows.Forms.GroupBox();
             this.btnCancelSiRecord = new System.Windows.Forms.Button();
+            this.btnCancelClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListToProcess)).BeginInit();
             this.gbSearch.SuspendLayout();
@@ -82,40 +83,40 @@ namespace CPMS_Accounting
             // 
             // dgvDRList
             // 
-            dataGridViewCellStyle33.BackColor = System.Drawing.Color.LightBlue;
-            dataGridViewCellStyle33.ForeColor = System.Drawing.Color.Black;
-            this.dgvDRList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightBlue;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            this.dgvDRList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvDRList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDRList.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvDRList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDRList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDRList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvDRList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDRList.DefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDRList.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvDRList.Location = new System.Drawing.Point(6, 19);
             this.dgvDRList.Name = "dgvDRList";
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDRList.RowHeadersDefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDRList.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvDRList.Size = new System.Drawing.Size(542, 269);
             this.dgvDRList.TabIndex = 0;
             this.dgvDRList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDRList_CellContentClick);
@@ -162,54 +163,54 @@ namespace CPMS_Accounting
             // 
             // dgvListToProcess
             // 
-            dataGridViewCellStyle37.BackColor = System.Drawing.Color.LightBlue;
-            dataGridViewCellStyle37.ForeColor = System.Drawing.Color.Black;
-            this.dgvListToProcess.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle37;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.LightBlue;
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.Black;
+            this.dgvListToProcess.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvListToProcess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvListToProcess.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvListToProcess.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle38.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle38.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle38.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle38.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle38.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvListToProcess.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListToProcess.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvListToProcess.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle39.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle39.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle39.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle39.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvListToProcess.DefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvListToProcess.DefaultCellStyle = dataGridViewCellStyle15;
             this.dgvListToProcess.Location = new System.Drawing.Point(6, 19);
             this.dgvListToProcess.Name = "dgvListToProcess";
-            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle40.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle40.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle40.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle40.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvListToProcess.RowHeadersDefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListToProcess.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dgvListToProcess.Size = new System.Drawing.Size(796, 194);
             this.dgvListToProcess.TabIndex = 8;
             // 
             // btnViewSelected
             // 
             this.btnViewSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnViewSelected.BackColor = System.Drawing.Color.Transparent;
+            this.btnViewSelected.BackColor = System.Drawing.SystemColors.Control;
             this.btnViewSelected.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnViewSelected.BackgroundImage")));
             this.btnViewSelected.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnViewSelected.FlatAppearance.BorderSize = 0;
             this.btnViewSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnViewSelected.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnViewSelected.ForeColor = System.Drawing.Color.White;
-            this.btnViewSelected.Location = new System.Drawing.Point(6, 80);
+            this.btnViewSelected.Location = new System.Drawing.Point(6, 81);
             this.btnViewSelected.Name = "btnViewSelected";
             this.btnViewSelected.Size = new System.Drawing.Size(158, 62);
             this.btnViewSelected.TabIndex = 9;
@@ -220,14 +221,14 @@ namespace CPMS_Accounting
             // btnPrintSalesInvoice
             // 
             this.btnPrintSalesInvoice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrintSalesInvoice.BackColor = System.Drawing.Color.Transparent;
+            this.btnPrintSalesInvoice.BackColor = System.Drawing.SystemColors.Control;
             this.btnPrintSalesInvoice.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPrintSalesInvoice.BackgroundImage")));
             this.btnPrintSalesInvoice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnPrintSalesInvoice.FlatAppearance.BorderSize = 0;
             this.btnPrintSalesInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrintSalesInvoice.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrintSalesInvoice.ForeColor = System.Drawing.Color.White;
-            this.btnPrintSalesInvoice.Location = new System.Drawing.Point(6, 525);
+            this.btnPrintSalesInvoice.Location = new System.Drawing.Point(6, 451);
             this.btnPrintSalesInvoice.Name = "btnPrintSalesInvoice";
             this.btnPrintSalesInvoice.Size = new System.Drawing.Size(158, 62);
             this.btnPrintSalesInvoice.TabIndex = 10;
@@ -416,14 +417,14 @@ namespace CPMS_Accounting
             // btnReloadDrList
             // 
             this.btnReloadDrList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReloadDrList.BackColor = System.Drawing.Color.Transparent;
+            this.btnReloadDrList.BackColor = System.Drawing.SystemColors.Control;
             this.btnReloadDrList.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnReloadDrList.BackgroundImage")));
             this.btnReloadDrList.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnReloadDrList.FlatAppearance.BorderSize = 0;
             this.btnReloadDrList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReloadDrList.Font = new System.Drawing.Font("Cooper Black", 12F);
             this.btnReloadDrList.ForeColor = System.Drawing.Color.White;
-            this.btnReloadDrList.Location = new System.Drawing.Point(6, 12);
+            this.btnReloadDrList.Location = new System.Drawing.Point(6, 13);
             this.btnReloadDrList.Name = "btnReloadDrList";
             this.btnReloadDrList.Size = new System.Drawing.Size(158, 62);
             this.btnReloadDrList.TabIndex = 22;
@@ -434,14 +435,14 @@ namespace CPMS_Accounting
             // btnReprint
             // 
             this.btnReprint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReprint.BackColor = System.Drawing.Color.Transparent;
+            this.btnReprint.BackColor = System.Drawing.SystemColors.Control;
             this.btnReprint.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnReprint.BackgroundImage")));
             this.btnReprint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnReprint.FlatAppearance.BorderSize = 0;
             this.btnReprint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReprint.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReprint.ForeColor = System.Drawing.Color.White;
-            this.btnReprint.Location = new System.Drawing.Point(6, 457);
+            this.btnReprint.Location = new System.Drawing.Point(6, 383);
             this.btnReprint.Name = "btnReprint";
             this.btnReprint.Size = new System.Drawing.Size(158, 62);
             this.btnReprint.TabIndex = 23;
@@ -502,29 +503,46 @@ namespace CPMS_Accounting
             this.pnlActionButtons.Controls.Add(this.btnReprint);
             this.pnlActionButtons.Controls.Add(this.btnPrintSalesInvoice);
             this.pnlActionButtons.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pnlActionButtons.Location = new System.Drawing.Point(826, 86);
+            this.pnlActionButtons.Location = new System.Drawing.Point(826, 160);
             this.pnlActionButtons.Name = "pnlActionButtons";
-            this.pnlActionButtons.Size = new System.Drawing.Size(170, 593);
+            this.pnlActionButtons.Size = new System.Drawing.Size(170, 519);
             this.pnlActionButtons.TabIndex = 36;
             this.pnlActionButtons.TabStop = false;
             // 
             // btnCancelSiRecord
             // 
             this.btnCancelSiRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancelSiRecord.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancelSiRecord.BackColor = System.Drawing.SystemColors.Control;
             this.btnCancelSiRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCancelSiRecord.BackgroundImage")));
             this.btnCancelSiRecord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnCancelSiRecord.FlatAppearance.BorderSize = 0;
             this.btnCancelSiRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelSiRecord.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelSiRecord.ForeColor = System.Drawing.Color.White;
-            this.btnCancelSiRecord.Location = new System.Drawing.Point(6, 389);
+            this.btnCancelSiRecord.Location = new System.Drawing.Point(6, 315);
             this.btnCancelSiRecord.Name = "btnCancelSiRecord";
             this.btnCancelSiRecord.Size = new System.Drawing.Size(158, 62);
             this.btnCancelSiRecord.TabIndex = 24;
             this.btnCancelSiRecord.Text = "TAG AS CANCELLED";
             this.btnCancelSiRecord.UseVisualStyleBackColor = false;
             this.btnCancelSiRecord.Click += new System.EventHandler(this.btnCancelSiRecord_Click);
+            // 
+            // btnCancelClose
+            // 
+            this.btnCancelClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCancelClose.BackgroundImage")));
+            this.btnCancelClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCancelClose.FlatAppearance.BorderSize = 0;
+            this.btnCancelClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelClose.Font = new System.Drawing.Font("Cooper Black", 12F);
+            this.btnCancelClose.ForeColor = System.Drawing.Color.White;
+            this.btnCancelClose.Location = new System.Drawing.Point(832, 91);
+            this.btnCancelClose.Name = "btnCancelClose";
+            this.btnCancelClose.Size = new System.Drawing.Size(158, 62);
+            this.btnCancelClose.TabIndex = 37;
+            this.btnCancelClose.Text = "CANCEL / CLOSE";
+            this.btnCancelClose.UseVisualStyleBackColor = true;
+            this.btnCancelClose.Click += new System.EventHandler(this.btnCancelClose_Click);
             // 
             // frmSalesInvoice
             // 
@@ -533,6 +551,7 @@ namespace CPMS_Accounting
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.btnCancelClose);
             this.Controls.Add(this.pnlActionButtons);
             this.Controls.Add(this.gbSINo);
             this.Controls.Add(this.pictureBox1);
@@ -601,5 +620,6 @@ namespace CPMS_Accounting
         private System.Windows.Forms.Button btnAddRecord;
         private System.Windows.Forms.GroupBox pnlActionButtons;
         private System.Windows.Forms.Button btnCancelSiRecord;
+        private System.Windows.Forms.Button btnCancelClose;
     }
 }
