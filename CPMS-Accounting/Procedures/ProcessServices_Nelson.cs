@@ -17,8 +17,8 @@ namespace CPMS_Accounting.Procedures
 {
     public class ProcessServices_Nelson
     {
-        
 
+        private int test;
         //For Number of Affected Rows upon CRUD
         private int rowNumbersAffected;
         public int RowNumbersAffected
