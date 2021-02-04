@@ -23,6 +23,7 @@ namespace CPMS_Accounting
          List<TempModel> tempRecent = new List<TempModel>();
         List<TempModel> batchTemp = new List<TempModel>();
         List<DocStampModel> docTemp = new List<DocStampModel>();
+        List<int> docStampNumber = new List<int>();
         public RecentBatch(Main frm1)
         {
             InitializeComponent();
@@ -38,6 +39,8 @@ namespace CPMS_Accounting
             if (txtRecentBatch.Text != "")
             {
                 tempRecent.Clear();
+                docStampNumber.Clear();
+              //  batchTemp.Clear();
                 proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
                 tempRecent.Clear();
                 proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
@@ -48,13 +51,16 @@ namespace CPMS_Accounting
                 {
                     foreach (string batch in dBatchtemp)
                     {
+                      
                         var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
                         _dbatch.ForEach(f =>
                         {
+                            //  docStampNumber.Add(f.DocStampNumber);
                             if (flag == true)
                             {
-                                proc.GetDocStampDetails(docTemp,docTemp);
-                                flag = false;
+                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
+
+                               // flag = false;
                             }
 
                         });
@@ -121,8 +127,10 @@ namespace CPMS_Accounting
         private void RecentBatch_Load(object sender, EventArgs e)
         {
             txtRecentBatch.Focus();
+          
         }
 
+      
         private void txtRecentBatch_TextChanged(object sender, EventArgs e)
         {
             batchTemp.Clear();

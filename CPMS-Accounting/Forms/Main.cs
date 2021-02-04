@@ -104,5 +104,11 @@ namespace CPMS_Accounting
             frm.Show();
             this.Hide();
          }
+
+        private void changeDRToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new frmCorrection(this);
+            frm.ShowDialog();
+        }
     }
 }

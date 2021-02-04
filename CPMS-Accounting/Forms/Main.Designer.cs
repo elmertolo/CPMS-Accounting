@@ -111,15 +111,16 @@
             // purchaseOrderToolStripMenuItem
             // 
             this.purchaseOrderToolStripMenuItem.Name = "purchaseOrderToolStripMenuItem";
-            this.purchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(184, 24);
+            this.purchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.purchaseOrderToolStripMenuItem.Text = "Purchase Order";
             this.purchaseOrderToolStripMenuItem.Click += new System.EventHandler(this.purchaseOrderToolStripMenuItem_Click);
             // 
             // changeDRToolStripMenuItem
             // 
             this.changeDRToolStripMenuItem.Name = "changeDRToolStripMenuItem";
-            this.changeDRToolStripMenuItem.Size = new System.Drawing.Size(184, 24);
-            this.changeDRToolStripMenuItem.Text = "Change DR";
+            this.changeDRToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.changeDRToolStripMenuItem.Text = "Data Correction";
+            this.changeDRToolStripMenuItem.Click += new System.EventHandler(this.changeDRToolStripMenuItem_Click);
             // 
             // changeBankToolStripMenuItem
             // 

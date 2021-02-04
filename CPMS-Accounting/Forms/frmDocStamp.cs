@@ -25,6 +25,7 @@ namespace CPMS_Accounting.Forms
         List<SalesInvoiceModel> listofSI = new List<SalesInvoiceModel>();
         List<DocStampModel> docstamp = new List<DocStampModel>();
         List<DocStampModel> tempdocstamp = new List<DocStampModel>();
+        List<int> _temp = new List<int>();
         List<PriceListModel> priceList = new List<PriceListModel>();
         PriceListModel priceA = new PriceListModel();
         List<TempModel> tempSI = new List<TempModel>();
@@ -75,7 +76,11 @@ namespace CPMS_Accounting.Forms
                 if (docstamp != null || docstamp.Count != 0)
                 {
                     proc.UpdateDocstamp(docstamp);
-                    proc.GetDocStampDetails(tempdocstamp, docstamp);
+                    docstamp.ForEach(x => {
+
+                        proc.GetDocStampDetails(tempdocstamp, x.DocStampNumber);
+                    });
+                    
                     MessageBox.Show("Documetn Stamp has been process!!!");
                     ViewReports vp = new ViewReports();
                     DeliveryReport.report = "DOC";

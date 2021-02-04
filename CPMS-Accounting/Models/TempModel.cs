@@ -30,6 +30,7 @@ namespace CPMS_Accounting.Models
         public int SalesInvoice { get; set; }
         public int DocStampNumber { get; set; }
         public string Location { get; set; }
-
+        public DateTime DateProcessed { get; set; }
+     //   public int DrNumber { get; set; }
     }
 }
