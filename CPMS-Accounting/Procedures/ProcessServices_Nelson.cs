@@ -234,8 +234,11 @@ namespace CPMS_Accounting.Procedures
 
 
             MySqlCommand cmd = new MySqlCommand("select unitprice as UnitPrice from " + gClient.PriceListTable + " where chequename = '" + checkName + "'", con);
-            var result = (double)cmd.ExecuteScalar();
-            return result;
+
+            var result = cmd.ExecuteScalar() ?? 0;
+
+            
+            return Convert.ToDouble(result);
 
         }
 
@@ -727,6 +730,9 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
+
+
+
 
 
     }
