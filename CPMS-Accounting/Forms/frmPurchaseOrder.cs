@@ -170,6 +170,9 @@ namespace CPMS_Accounting
                     );
 
                 }
+
+                dgvListToProcess.ReadOnly = false;
+                
                 //Disable editing on other columns
                 foreach (DataGridViewColumn col in dgvListToProcess.Columns)
                 {
@@ -209,14 +212,13 @@ namespace CPMS_Accounting
 
         private void btnSavePrintPO_Click(object sender, EventArgs e)
         {
-
-            if (!p.ValidateInputFieldsPO(txtPONumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
-            {
-                MessageBox.Show("Please supply values in blank field(s)");
-            }
-            else if (dgvListToProcess.Rows.Count == 0)
+            if (dgvListToProcess.Rows.Count == 0)
             {
                 MessageBox.Show("Please select record from Item List.");
+            }
+            else if (!p.ValidateInputFieldsPO(txtPONumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
+            {
+                MessageBox.Show("Please supply values in blank field(s)");
             }
             else
             {
@@ -302,7 +304,6 @@ namespace CPMS_Accounting
         private void btnReloadDrList_Click(object sender, EventArgs e)
         {
             RefreshView();
-            DisableControls();
         }
 
         private void RefreshView()
@@ -344,13 +345,7 @@ namespace CPMS_Accounting
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (string.IsNullOrWhiteSpace(txtPONumber.Text.ToString()))
-                {
-                    MessageBox.Show("Please enter a valid PO number");
-                    return;
-                }
-                EnableControls();
-
+               AddRecord();
             }
         }
 
@@ -362,6 +357,13 @@ namespace CPMS_Accounting
             gbListToProcess.Enabled = true;
             pnlActionButtons.Enabled = true;
             gbPONo.Enabled = false;
+
+            //Enable all Action Buttons
+            btnRefreshPage.Enabled = true;
+            btnAddSelectedItem.Enabled = true;
+            btnDeletePORecord.Enabled = false;
+            btnSavePrintPO.Enabled = true;
+            
 
             DataTable dt = new DataTable();
             if (!proc.LoadPriceListData(ref dt))
@@ -397,13 +399,17 @@ namespace CPMS_Accounting
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtPONumber.Text.ToString()))
-            {
-                MessageBox.Show("Please enter a valid PO number");
-                txtPONumber.Focus();
-                return;
-            }
-            EnableControls();
+            //if (string.IsNullOrWhiteSpace(txtPONumber.Text.ToString()))
+            //{
+            //    MessageBox.Show("Please enter a valid PO number");
+            //    txtPONumber.Focus();
+            //    return;
+            //}
+            //EnableControls();
+
+            AddRecord();
+
+            
         }
 
         private void btnCancelClose_Click(object sender, EventArgs e)
@@ -444,5 +450,115 @@ namespace CPMS_Accounting
                 SearchItem();
             }
         }
+
+
+        private void DisplayOldPurchaseOrderList(int purchaseOrderNumber, ref DataTable dt)
+        {
+            //Get Sales Invoice List Details to be supplied to Global Report Datatable
+            DataTable poListDt = new DataTable();
+            if (!proc.GetOldPurchaseOrderList(purchaseOrderNumber, ref poListDt))
+            {
+                MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
+                RefreshView();
+                return;
+            }
+
+            //Display values on Front End from Finished Table
+            foreach (DataRow row in dt.Rows)
+            {
+                //insert record to Items to process in datagrid
+                dgvListToProcess.Rows.Add
+                (
+                row.Field<int>("Quantity"),
+                row.Field<string>("ProductCode"),
+                row.Field<string>("ChequeName"),
+                row.Field<double>("UnitPrice"),
+                row.Field<double>("DocStamp"),
+                row.Field<string>("Description")
+                );
+
+
+                gPurchaseOrderFinished.ApprovedBy = row.Field<string>("ApprovedBy");
+                gPurchaseOrderFinished.GeneratedBy = row.Field<string>("GeneratedBy");
+                gPurchaseOrderFinished.CheckedBy = row.Field<string>("CheckedBy");
+                gPurchaseOrderFinished.PurchaseOrderDateTime = row.Field<DateTime>("PurchaseOrderDateTime");
+
+                dtpPODate.Value = gPurchaseOrderFinished.PurchaseOrderDateTime;
+                cbCheckedBy.Text = gPurchaseOrderFinished.CheckedBy;
+                cbApprovedBy.Text = gPurchaseOrderFinished.ApprovedBy;
+            }
+
+            //Make Datagridview read only
+            dgvListToProcess.ReadOnly = true;
+           
+            dgvListToProcess.ClearSelection();
+
+            gbPONo.Enabled = false;
+            pnlActionButtons.Enabled = true;
+
+
+            btnCancelClose.Enabled = true;
+            btnRefreshPage.Enabled = true;
+            btnAddSelectedItem.Enabled = false;
+            btnDeletePORecord.Enabled = true;
+            btnSavePrintPO.Enabled = false;
+        }
+
+
+        private void AddRecord()
+        {
+            if (!string.IsNullOrWhiteSpace(txtPONumber.Text.ToString()))
+            {
+                DataTable dt = new DataTable();
+                int purchaseOrderNumber = int.Parse(txtPONumber.Text.ToString());
+                if (proc.PurchaseOrderExist(purchaseOrderNumber, ref dt))
+                {
+
+                    DisplayOldPurchaseOrderList(purchaseOrderNumber, ref dt);
+                }
+                else
+                {
+                    EnableControls();
+                }
+            }
+        }
+
+        private void btnDeletePORecord_Click(object sender, EventArgs e)
+        {
+            DeletePurchaseOrderRecord();
+        }
+
+        private void DeletePurchaseOrderRecord()
+        {
+            int purchaseOrderNumber = int.Parse(txtPONumber.Text.ToString());
+
+            //check purchase order number if it has record on history table
+            if (Convert.ToInt64(proc.SeekReturn("select count(PurchaseOrderNumber) from " + gClient.DataBaseName + " where purchaseordernumber = " + purchaseOrderNumber + "", 0)) > 0)
+            {
+                MessageBox.Show("This P.O. number has Sales Invoice record already.", "UNABLE TO DELETE", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("You will about to delete P.O. Number " + purchaseOrderNumber.ToString() + " \r\n Please Press 'Yes' to continue.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+
+                if (!proc.DeletePurchaseOrderRecordOnfinished(purchaseOrderNumber))
+                {
+                    MessageBox.Show("Error on (proc.DeletePurchaseOrderRecordOnfinished()\r\n \r\n" + proc.errorMessage);
+                    return;
+                }
+                lblRowsAffected.Text = "Total Rows Updated: " + proc.RowNumbersAffected.ToString();
+                MessageBox.Show("Record Deleted!");
+                RefreshView();
+            }
+
+
+
+        }
+
+
+
     }
 }

@@ -292,13 +292,13 @@ namespace CPMS_Accounting
         {
 
 
-            if (!p.ValidateInputFieldsSI(txtSalesInvoiceNumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
-            {
-                MessageBox.Show("Please supply values in blank field(s)");
-            }
-            else if(dgvListToProcess.Rows.Count == 0)
+            if (dgvListToProcess.Rows.Count == 0)
             {
                 MessageBox.Show("Please select record from Batch List.");
+            }
+            else if (!p.ValidateInputFieldsSI(txtSalesInvoiceNumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
+            {
+                MessageBox.Show("Please supply values in blank field(s)");
             }
             else
             {
@@ -446,6 +446,8 @@ namespace CPMS_Accounting
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 MessageBox.Show("Please input batch number to search");
+                RefreshDrList();
+
             }
             else
             {
@@ -455,7 +457,22 @@ namespace CPMS_Accounting
                     return;
                 }
 
-                var check = dt.Rows.Count != 0 ? dgvDRList.DataSource = dt : MessageBox.Show("No results found");
+
+
+                //_ = dt.Rows.Count != 0 ? dgvDRList.DataSource = dt : MessageBox.Show("No results found");
+                ///02032021 Updated statement above. Made Dr List refreshed if  no records found
+                if (dt.Rows.Count > 0)
+                {
+                    dgvDRList.DataSource = dt;
+                }
+                else
+                {
+                    MessageBox.Show("No results found");
+                    RefreshDrList();
+                }
+                
+
+                
                 txtSearch.Focus();
                 txtSearch.SelectAll();
                 dgvDRList.ClearSelection();
@@ -633,12 +650,7 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = true;
             btnViewSelected.Enabled = true;
 
-
-
-            DataTable dt = new DataTable();
-            proc.LoadUnprocessedSalesInvoiceData(ref dt);
-            dgvDRList.DataSource = dt;
-            dgvDRList.ClearSelection();
+            RefreshDrList();
 
             var sortedList = salesInvoiceList
                     .Select
@@ -750,18 +762,17 @@ namespace CPMS_Accounting
 
         }
 
-    
         private void AddRecord()
         {
             if (!string.IsNullOrWhiteSpace(txtSalesInvoiceNumber.Text.ToString()))
             {
                 DataTable dt = new DataTable();
                 int salesInvoiceNumber = int.Parse(txtSalesInvoiceNumber.Text.ToString());
-                bool isSalesInvoiceCancelled = bool.Parse(proc.SeekReturn("select iscancelled from "+ gClient.SalesInvoiceFinishedTable +" where salesinvoicenumber = "+ salesInvoiceNumber +"","boolean").ToString());
+                bool isSalesInvoiceCancelled = Convert.ToBoolean(proc.SeekReturn("select iscancelled from "+ gClient.SalesInvoiceFinishedTable +" where salesinvoicenumber = "+ salesInvoiceNumber +"", false));
 
                 if (proc.SalesInvoiceExist(salesInvoiceNumber, ref dt) && isSalesInvoiceCancelled == true)
                 {
-                    MessageBox.Show("Sales Invoice Number Entered is already cancelled");
+                    MessageBox.Show("Entered S.I. Number is already cancelled");
                     RefreshView();
                 }
                 else if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
@@ -772,7 +783,6 @@ namespace CPMS_Accounting
                 {
                     EnableControls();
                 }
-
             }
         }
 
@@ -787,7 +797,7 @@ namespace CPMS_Accounting
 
             int salesInvoiceNumber = int.Parse(txtSalesInvoiceNumber.Text.ToString());
 
-            DialogResult result = MessageBox.Show("Cancel Invoice Number " + salesInvoiceNumber.ToString() + "?", "Confirmation", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Cancel Invoice Number " + salesInvoiceNumber.ToString() + "?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
@@ -810,10 +820,18 @@ namespace CPMS_Accounting
 
         }
 
+        private void RefreshDrList()
+        {
+            DataTable dt = new DataTable();
+            proc.LoadUnprocessedSalesInvoiceData(ref dt);
+            dgvDRList.DataSource = dt;
+            dgvDRList.ClearSelection();
+        }
 
-
-
-
+        private void btnCancelClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 
 }

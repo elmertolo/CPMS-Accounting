@@ -467,6 +467,31 @@ namespace CPMS_Accounting.Procedures
 
         }
 
+        public bool PurchaseOrderExist(int purchaseOrderNumber, ref DataTable dt)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select * from " + gClient.PurchaseOrderFinishedTable + " where purchaseorderno = " + purchaseOrderNumber + ";", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+        }
+
+
+
         public bool GetOldSalesInvoiceList(double salesInvoiceNumber, ref DataTable dt)
         {
             try
@@ -517,51 +542,45 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-        public object SeekReturn(string query, string type)
+        public bool GetOldPurchaseOrderList(double purchaseOrderNumber, ref DataTable dt)
+        {
+            try
+            {
+                string sql = "";
+                if (gClient.ShortName == "PNB")
+                {
 
+                    sql = "select purchaseorderno, purchaseorderdatetime, clientcode, productcode, quantity, chequename, description, unitprice,docstamp, generatedby, checkedby,approvedby " +
+                    "from " + gClient.PurchaseOrderFinishedTable + " where purchaseorderno = " + purchaseOrderNumber + "";
+
+                }
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+        }
+        public object SeekReturn(string query, object def)
         {
            
             MySqlCommand cmd = new MySqlCommand(query, con);
             var result = cmd.ExecuteScalar();
 
-
-            //Catch Null Values
-            if (type.ToLower() == "string")
+            if (result is null || result.ToString() == "")
             {
-                string i;
-                i = (string)Convert.ChangeType(result ?? "", typeof(string));
-                return i;
-
+                return def;
             }
-            if (type.ToLower() == "double")
+            else
             {
-                double i;
-                i = (double)Convert.ChangeType(result ?? 0, typeof(double));
-                return i;
-
+                return result;
             }
-            if (type.ToLower() == "int")
-            {
-                int i = (int)Convert.ChangeType(result ?? 0, typeof(int));
-                return i;
-
-            }
-            if (type.ToLower() == "decimal")
-            {
-                decimal i = (decimal)Convert.ChangeType(result ?? 0, typeof(decimal));
-                return i;
-
-            }
-
-            if (type.ToLower() == "boolean")
-            {
-                bool i = (bool)Convert.ChangeType(_= result != null ? result : false, typeof(bool));
-                return i;
-
-            }
-
-            return null;
-
 
 
         }
@@ -597,8 +616,8 @@ namespace CPMS_Accounting.Procedures
                 //Check Onhand quantity first. cancel update if onhand quantity is insufficient
                 //double onhandQuantity = double.Parse(SeekReturn("select (quantityonhand) from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
-                double onhandQuantity = double.Parse(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", "double").ToString());
-                double processedQuantity = double.Parse(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", "double").ToString());
+                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 int totalPunchedItemQuantity = 0;
 
                 //Check and add Punched Item on grid
@@ -637,8 +656,8 @@ namespace CPMS_Accounting.Procedures
                 //double onhandQuantity = double.Parse(SeekReturn("select quantityonhand from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //double newItemQuantity = onhandQuantity - quantity;
 
-                double onhandQuantity = double.Parse(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", "double").ToString());
-                double processedQuantity = double.Parse(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", "double").ToString());
+                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 double newItemQuantity = onhandQuantity - processedQuantity;
 
                 MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName + "'", con);
@@ -663,7 +682,7 @@ namespace CPMS_Accounting.Procedures
                 }
                 else
                 {
-                    sql = "update " + gClient.DataBaseName + " set salesinvoice = null where sales invoice = " + salesInvoiceNumber + "";
+                    sql = "update " + gClient.DataBaseName + " set salesinvoice = null where salesinvoice = " + salesInvoiceNumber + "";
                 }
                 
                 MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -693,7 +712,21 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-
+        public bool DeletePurchaseOrderRecordOnfinished(int purchaseOrderNumber)
+        {
+            try
+            {
+                string sql = "delete from " + gClient.PurchaseOrderFinishedTable + " where purchaseorderno = " + purchaseOrderNumber + "";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
 
 
     }
