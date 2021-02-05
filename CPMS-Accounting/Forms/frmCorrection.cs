@@ -24,7 +24,9 @@ namespace CPMS_Accounting.Forms
         ProcessServices proc = new ProcessServices();
         List<TempModel> temp = new List<TempModel>();
         List<TempModel> tempData = new List<TempModel>();
+        List<TempModel> selectedData = new List<TempModel>();
         DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
+       
         private void frmCorrection_Load(object sender, EventArgs e)
         {
 
@@ -32,6 +34,7 @@ namespace CPMS_Accounting.Forms
 
         private void txtBatch_TextChanged(object sender, EventArgs e)
         {
+          
             temp.Clear();
             proc.DisplayAllBatches2(txtBatch.Text, temp);
             DataTable dt = new DataTable();
@@ -50,7 +53,7 @@ namespace CPMS_Accounting.Forms
             });
 
             dgvView.DataSource = dt;
-
+            bg_dtg(dgvView);
             dgvView.Columns[0].Width = 70;
             dgvView.Columns[3].Width = 60;
         }
@@ -64,13 +67,14 @@ namespace CPMS_Accounting.Forms
             // student.Stud_ID = int.Parse(dtgList.Rows[rowindex].Cells[columnindex].Value.ToString());
 
             txtBatch.Text = dgvView.Rows[rowindex].Cells[columnindex].Value.ToString();
+         
             proc.DisplayAllBatchData(txtBatch.Text, tempData);
-            
+
             DataTable dt2 = new DataTable();
 
-            dt2.Clear();
-           
-            
+                dt2.Clear();
+
+
             dt2.Columns.Add("Batch");
             dt2.Columns.Add("Delivery Receipt No.");
             dt2.Columns.Add("Sales Invoice No.");
@@ -114,9 +118,19 @@ namespace CPMS_Accounting.Forms
                 dgvData.Columns.Add(chk);
             }
             dgvData.DataSource = dt2;
+            bg_dtg(dgvData);
             //Assign Click event to the DataGridView Cell.
             // dgvData.CellContentClick += new DataGridViewCellEventHandler(dgvData_CellClick);
             dgvData.CurrentCell = dgvData.Rows[0].Cells[1];
+            dgvData.Columns[1].Width = 70;
+            dgvData.Columns[2].Width = 100;
+            dgvData.Columns[3].Width = 100;
+            dgvData.Columns[4].Width = 70;
+            dgvData.Columns[5].Width = 70;
+            dgvData.Columns[6].Width = 150;
+            dgvData.Columns[7].Width = 70;
+            dgvData.Columns[8].Width = 70;
+            dgvData.Columns[9].Width = 70;
         }
 
         private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -133,6 +147,121 @@ namespace CPMS_Accounting.Forms
                 DataGridViewCheckBoxCell checkBox = (row.Cells[0] as DataGridViewCheckBoxCell);
                 checkBox.Value = cbHeader.Checked;
             }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            selectedData.Clear();   
+            foreach (DataGridViewRow row in dgvData.Rows)
+            {
+                TempModel dtemp = new TempModel();
+                bool isSelected = Convert.ToBoolean(row.Cells["Chk"].Value);
+                 
+                    if (isSelected)
+                    {
+                            dtemp.DrNumber = row.Cells["Delivery Receipt No."].Value.ToString();
+                        selectedData.Add(dtemp);
+                    }
+                 
+            }
+
+            if (selectedData.Count > 0)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    //do something
+
+                    proc.DeleteItems(selectedData);
+                    MessageBox.Show("Data has succesfully deleted!!");
+                    ClearTools();
+                }
+                else
+                    MessageBox.Show("Deletion has been cancelled!!!");
+            }
+            else
+            {
+                MessageBox.Show("Please select item to delete!");
+            }
+
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+            TempModel tempModel = new TempModel();
+            //if (dgvData.SelectedRows != null && dgvData.SelectedRows.Count > 0)
+            //{
+            string val = txtNewDr.Text;
+            
+                foreach (DataGridViewRow row in dgvData.Rows)
+                {
+                    bool isSelected = Convert.ToBoolean(row.Cells["Chk"].Value);
+                    if(isSelected)
+                    {
+                        tempModel.DrNumber = row.Cells["Delivery Receipt No."].Value.ToString();
+                    //  MessageBox.Show(tempModel.DrNumber);
+                        
+                    }
+                }
+            // 
+            if (txtNewDr.Text != "")
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    //do something
+               
+                 proc.UpdateItem(tempModel, val);
+                
+                MessageBox.Show("Data has been Updated!!");
+                ClearTools();
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do something else
+                    MessageBox.Show("Updating has been cancelled!!!");
+                }
+            }
+            else
+                MessageBox.Show("Please Input new Series");
+
+        }
+        private void ClearTools()
+        {
+            txtNewDr.Text = "";
+            temp.Clear();
+            tempData.Clear();
+            dgvData.Refresh();
+            dgvData.DataSource = "";
+            cbHeader.Visible = false;
+            txtBatch.Text = "";
+
+            txtBatch.TabIndex = 0;
+            cbHeader.Checked = false;
+        }
+        public static void bg_dtg(DataGridView dgv)
+        {
+            try
+            {
+
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    if (IsOdd(i))
+                    {
+
+                        dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightBlue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("" + ex);
+            }
+        }
+
+        public static bool IsOdd(int value)
+        {
+            return value % 2 != 0;
         }
     }
 }

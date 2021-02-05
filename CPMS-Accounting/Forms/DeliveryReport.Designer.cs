@@ -34,6 +34,7 @@
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -71,7 +72,7 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.menuStrip1.BackColor = System.Drawing.Color.SteelBlue;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateToolStripMenuItem,
             this.reportsToolStripMenuItem});
@@ -85,6 +86,7 @@
             // 
             this.generateToolStripMenuItem.Enabled = false;
             this.generateToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.generateToolStripMenuItem.Name = "generateToolStripMenuItem";
             this.generateToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl + G";
             this.generateToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
@@ -95,7 +97,8 @@
             // 
             this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stickerToolStripMenuItem,
-            this.packingToolStripMenuItem});
+            this.packingToolStripMenuItem,
+            this.deliveryReportToolStripMenuItem});
             this.reportsToolStripMenuItem.Enabled = false;
             this.reportsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
@@ -105,26 +108,39 @@
             // stickerToolStripMenuItem
             // 
             this.stickerToolStripMenuItem.Name = "stickerToolStripMenuItem";
-            this.stickerToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.stickerToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.stickerToolStripMenuItem.Text = "Sticker";
             this.stickerToolStripMenuItem.Click += new System.EventHandler(this.stickerToolStripMenuItem_Click);
             // 
             // packingToolStripMenuItem
             // 
             this.packingToolStripMenuItem.Name = "packingToolStripMenuItem";
-            this.packingToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.packingToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.packingToolStripMenuItem.Text = "Packing";
             this.packingToolStripMenuItem.Click += new System.EventHandler(this.packingToolStripMenuItem_Click);
             // 
+            // deliveryReportToolStripMenuItem
+            // 
+            this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
+            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.deliveryReportToolStripMenuItem.Text = "Delivery Report";
+            this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
+            // 
             // btnBrowse
             // 
+            this.btnBrowse.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnBrowse.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBrowse.BackgroundImage")));
+            this.btnBrowse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBrowse.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnBrowse.FlatAppearance.BorderSize = 0;
+            this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBrowse.Location = new System.Drawing.Point(21, 155);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 50);
             this.btnBrowse.TabIndex = 1;
             this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.UseVisualStyleBackColor = false;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // comboBox1
@@ -339,7 +355,8 @@
             // 
             this.lblTotalChecks.AutoSize = true;
             this.lblTotalChecks.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalChecks.Location = new System.Drawing.Point(174, 91);
+            this.lblTotalChecks.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblTotalChecks.Location = new System.Drawing.Point(176, 89);
             this.lblTotalChecks.Name = "lblTotalChecks";
             this.lblTotalChecks.Size = new System.Drawing.Size(16, 16);
             this.lblTotalChecks.TabIndex = 12;
@@ -359,7 +376,7 @@
             // 
             this.lblTotalB.AutoSize = true;
             this.lblTotalB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalB.Location = new System.Drawing.Point(174, 67);
+            this.lblTotalB.Location = new System.Drawing.Point(176, 66);
             this.lblTotalB.Name = "lblTotalB";
             this.lblTotalB.Size = new System.Drawing.Size(16, 16);
             this.lblTotalB.TabIndex = 11;
@@ -377,6 +394,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(354, 127);
             this.dataGridView1.Name = "dataGridView1";
@@ -468,5 +486,6 @@
         private System.Windows.Forms.ComboBox cbProvincial;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cbDirect;
+        private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
     }
 }

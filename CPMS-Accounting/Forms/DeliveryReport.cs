@@ -10,6 +10,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CPMS_Accounting.Forms;
 using CPMS_Accounting.Models;
 using CPMS_Accounting.Procedures;
 using CrystalDecisions.Shared;
@@ -37,6 +38,9 @@ namespace CPMS_Accounting
         int DirectReportStyle = 0;
         int ProvincialReportStyle = 0;
         string errorMessage = "";
+        int AremainingBalance = 0;
+        int BremainingBalance = 0;
+        List<int> poNumber;
         public DeliveryReport(Main frm1)
         {
             InitializeComponent();
@@ -165,7 +169,7 @@ namespace CPMS_Accounting
                     OleDbConnection con = new OleDbConnection(ConString);
 
 
-
+                    orderList.Clear();
                     //Get the path of specified file
                     filePath = Path.GetFileNameWithoutExtension(op.FileName);
 
@@ -198,9 +202,19 @@ namespace CPMS_Accounting
                         order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
                         order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                         order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
-                        
                         order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                         order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
+                        if (order.ChkType == "A")
+                            order.ChequeName = "Regular Personal Checks";
+                        else if (order.ChkType == "B")
+                            order.ChequeName = "Regular Commercial Checks";
+                        else if (order.ChkType == "C")
+                            order.ChequeName = "Manager's Checks";
+                        else
+                        {
+                            MessageBox.Show("Cheque Type is invalid :" + order.ChkType);
+                            errorMessage += "\r\nCheque Type " + order.ChkType + " on batch : " + order.BRSTN.Trim() + ": " + order.BranchName.Trim() + " does not match\r\n";
+                        }
                         //PNB Required fields
                         if (gClient.DataBaseName == "pnb_history") // Additional  field if the  Bank is PNB
                         {
@@ -208,7 +222,20 @@ namespace CPMS_Accounting
                             order.OldBranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                             order.Name3 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                             proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
-                           
+
+                            order.PONumber = proc.GetPONUmber(order.ChequeName);
+                            //proc.GetPONUmber(order.ChequeName, poNumber);
+                            //poNumber.ForEach(x => { 
+                                                                  
+                            //});
+
+//                            order.PONumber = proc.GetPONUmber(order.ChequeName); //getting Purchase Order Number from the database 
+                            if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                            {
+                                MessageBox.Show("Please add Purchase Order Number!!");
+                                break;
+                            }
+                            
 
                             if (branch.Flag == 0)
                                 order.Location = "Direct";
@@ -216,20 +243,7 @@ namespace CPMS_Accounting
                                 order.Location = "Provincial";
 
                         }
-
-                        if (order.ChkType == "A" )
-                            order.ChequeName = "Regular Personal Checks";
-                        else if (order.ChkType == "B")
-                            order.ChequeName = "Regular Commercial Checks";
-                        else if(order.ChkType == "C" )
-                            order.ChequeName = "Manager's Checks";
-                        else
-                        {
-                            MessageBox.Show("Cheque Type is invalid :" + order.ChkType);
-                            errorMessage += "\r\nCheque Type " + order.ChkType + " on batch : " + order.BRSTN.Trim() + ": " + order.BranchName.Trim() + " does not match\r\n";
-                        }
-
-                        orderList.Add(order);
+                             orderList.Add(order);
                     }
 
 
@@ -241,45 +255,79 @@ namespace CPMS_Accounting
                 }
                 var totalB = orderList.Where(a => a.ChkType == "B").ToList();
                 var totalA = orderList.Where(a => a.ChkType == "A").ToList();
-                // BindingSource checkBind = new BindingSource();
-                // checkBind.DataSource = orderList;
-                //     proc.CheckBatchifExisted(orderList[0].Batch.Trim());
 
-
+            
+              if (orderList.Count > 0)
+              { 
                 if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
                 {
+
+
+
+                  
                     errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
                     MessageBox.Show(errorMessage);
 
 
 
                 }
-
-
-                //                }
-                if (errorMessage != "")
-                {
-                    ProcessServices.ErrorMessage(errorMessage);
-                    MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
-                    this.Close();
-                }
                 else
                 {
-                    MessageBox.Show("Checking files done! No Errors found");
-                    dataGridView1.DataSource = orderList;
-                    lblTotalA.Text = totalA.Count.ToString();
-                    lblTotalB.Text = totalB.Count.ToString();
-                    lblTotalChecks.Text = orderList.Count.ToString();
+                    var po = orderList.Select(x => x.PONumber).Distinct().ToList();
+                    var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
+                    AremainingBalance = proc.CheckPOQuantity(po[0], chkType[0]);
+                    BremainingBalance = proc.CheckPOQuantity(po[1], chkType[1]);
+                    
+                    AremainingBalance -= totalA.Count;
+                    BremainingBalance -= totalB.Count;
+                    if (AremainingBalance < 0 )
+                    {
+                        MessageBox.Show("Insufficient Balance for Purchase Order No. :" +po[0]+ " for Cheque Name: " + chkType[0] );
+                            
+                    }
+                    else if (BremainingBalance <0)
+                    { 
+                        //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
+                        MessageBox.Show("Insufficient Balance for Purchase Order No. :" + po[1] + " for Cheque Name: " + chkType[1]);
 
+                    }
+                    else
+                    {
+                        if (errorMessage != "")
+                        {
+                            ProcessServices.ErrorMessage(errorMessage);
+                            MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
+                            this.Close();
+                        }
+                        else
+                        {
+
+
+                            MessageBox.Show("Checking files done! No Errors found");
+                            dataGridView1.DataSource = orderList;
+                                frmCorrection.bg_dtg(dataGridView1);
+                            lblTotalA.Text = totalA.Count.ToString();
+                            lblTotalB.Text = totalB.Count.ToString();
+                            lblTotalChecks.Text = orderList.Count.ToString();
+
+                        }
+                    }
                 }
 
+              }
+
+
             }
+
+
+
+            
             catch (Exception error)
             {
                 MessageBox.Show(error.Message, error.StackTrace);
             }
         }
-
+       
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
             
@@ -410,6 +458,13 @@ namespace CPMS_Accounting
             {
                 e.Handled = true;
             }
+        }
+
+        private void deliveryReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report = "DRR";
+            ViewReports vp = new ViewReports();
+            vp.Show();
         }
     }
 }

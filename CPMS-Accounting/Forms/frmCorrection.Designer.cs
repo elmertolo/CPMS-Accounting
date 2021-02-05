@@ -29,6 +29,7 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCorrection));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -39,9 +40,12 @@ namespace CPMS_Accounting.Forms
             this.dgvView = new System.Windows.Forms.DataGridView();
             this.txtBatch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmbFilter = new System.Windows.Forms.ComboBox();
             this.dgvData = new System.Windows.Forms.DataGridView();
             this.cbHeader = new System.Windows.Forms.CheckBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnModify = new System.Windows.Forms.Button();
+            this.txtNewDr = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
@@ -49,16 +53,17 @@ namespace CPMS_Accounting.Forms
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::CPMS_Accounting.Properties.Resources.Header_Main;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, -2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1258, 80);
+            this.pictureBox1.Size = new System.Drawing.Size(1245, 80);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // dgvView
             // 
+            this.dgvView.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -76,7 +81,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvView.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvView.Location = new System.Drawing.Point(15, 143);
+            this.dgvView.Location = new System.Drawing.Point(15, 127);
             this.dgvView.Name = "dgvView";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -86,14 +91,14 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvView.Size = new System.Drawing.Size(392, 359);
+            this.dgvView.Size = new System.Drawing.Size(377, 322);
             this.dgvView.TabIndex = 1;
             this.dgvView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvView_CellClick);
             // 
             // txtBatch
             // 
             this.txtBatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBatch.Location = new System.Drawing.Point(89, 102);
+            this.txtBatch.Location = new System.Drawing.Point(74, 91);
             this.txtBatch.Name = "txtBatch";
             this.txtBatch.Size = new System.Drawing.Size(134, 22);
             this.txtBatch.TabIndex = 3;
@@ -103,25 +108,18 @@ namespace CPMS_Accounting.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(13, 105);
+            this.label1.Location = new System.Drawing.Point(13, 94);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "Batch  :";
-            // 
-            // cmbFilter
-            // 
-            this.cmbFilter.FormattingEnabled = true;
-            this.cmbFilter.Location = new System.Drawing.Point(288, 102);
-            this.cmbFilter.Name = "cmbFilter";
-            this.cmbFilter.Size = new System.Drawing.Size(224, 21);
-            this.cmbFilter.TabIndex = 5;
             // 
             // dgvData
             // 
             this.dgvData.AllowUserToAddRows = false;
             this.dgvData.AllowUserToDeleteRows = false;
             this.dgvData.AllowUserToOrderColumns = true;
+            this.dgvData.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -139,7 +137,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvData.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvData.Location = new System.Drawing.Point(428, 143);
+            this.dgvData.Location = new System.Drawing.Point(408, 127);
             this.dgvData.Name = "dgvData";
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
@@ -149,14 +147,14 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvData.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvData.Size = new System.Drawing.Size(761, 359);
+            this.dgvData.Size = new System.Drawing.Size(801, 322);
             this.dgvData.TabIndex = 6;
             this.dgvData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellClick);
             // 
             // cbHeader
             // 
             this.cbHeader.AutoSize = true;
-            this.cbHeader.Location = new System.Drawing.Point(450, 151);
+            this.cbHeader.Location = new System.Drawing.Point(440, 142);
             this.cbHeader.Name = "cbHeader";
             this.cbHeader.Size = new System.Drawing.Size(15, 14);
             this.cbHeader.TabIndex = 7;
@@ -164,14 +162,73 @@ namespace CPMS_Accounting.Forms
             this.cbHeader.Visible = false;
             this.cbHeader.CheckedChanged += new System.EventHandler(this.cbHeader_CheckedChanged);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.Color.Transparent;
+            this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
+            this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnDelete.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnDelete.Location = new System.Drawing.Point(1006, 81);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(95, 43);
+            this.btnDelete.TabIndex = 8;
+            this.btnDelete.Text = "DELETE";
+            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelete.UseVisualStyleBackColor = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnModify
+            // 
+            this.btnModify.BackColor = System.Drawing.Color.Transparent;
+            this.btnModify.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModify.BackgroundImage")));
+            this.btnModify.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnModify.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnModify.FlatAppearance.BorderSize = 0;
+            this.btnModify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnModify.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnModify.Location = new System.Drawing.Point(1115, 81);
+            this.btnModify.Name = "btnModify";
+            this.btnModify.Size = new System.Drawing.Size(95, 43);
+            this.btnModify.TabIndex = 9;
+            this.btnModify.Text = "MODIFY";
+            this.btnModify.UseVisualStyleBackColor = false;
+            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
+            // 
+            // txtNewDr
+            // 
+            this.txtNewDr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNewDr.Location = new System.Drawing.Point(564, 94);
+            this.txtNewDr.Name = "txtNewDr";
+            this.txtNewDr.Size = new System.Drawing.Size(134, 22);
+            this.txtNewDr.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(430, 97);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(130, 16);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "New DR Number :";
+            // 
             // frmCorrection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1221, 514);
+            this.ClientSize = new System.Drawing.Size(1221, 463);
+            this.Controls.Add(this.txtNewDr);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnModify);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.cbHeader);
             this.Controls.Add(this.dgvData);
-            this.Controls.Add(this.cmbFilter);
             this.Controls.Add(this.txtBatch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvView);
@@ -194,8 +251,11 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.DataGridView dgvView;
         private System.Windows.Forms.TextBox txtBatch;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbFilter;
         private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.CheckBox cbHeader;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnModify;
+        private System.Windows.Forms.TextBox txtNewDr;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -27,6 +27,7 @@ namespace CPMS_Accounting.Models
 
         public string DocStampTempTable { get; set; } // Added By ET Jan. 22, 2021
         public string BranchesTable { get; set; } // Added By ET Jan. 27, 2021
+        public string CancelledTable { get; set; }  // Added By ET Feb. 05, 2021
 
     }
 }

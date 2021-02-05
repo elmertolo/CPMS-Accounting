@@ -122,6 +122,7 @@ namespace CPMS_Accounting.Forms
             // 
             // dgvOutput
             // 
+            this.dgvOutput.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -255,6 +256,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.DgvDSalesInvoice.AllowUserToAddRows = false;
             this.DgvDSalesInvoice.AllowUserToDeleteRows = false;
+            this.DgvDSalesInvoice.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
