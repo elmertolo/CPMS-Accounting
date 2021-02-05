@@ -125,6 +125,7 @@ namespace CPMS_Accounting
                     gClient.PurchaseOrderFinishedTable = row.Field<string>("ShortName").ToLower() + "_purchaseorder_finished" ?? "";
                     gClient.DocStampTempTable =  "docstamp_temp" ?? "";
                     gClient.BranchesTable = row.Field<string>("ShortName").ToLower() + "_branches" ?? "";
+                    gClient.CancelledTable = "cancelled_transaction" ?? "";
                 }
             }
            

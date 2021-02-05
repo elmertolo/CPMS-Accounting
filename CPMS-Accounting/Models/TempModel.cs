@@ -31,6 +31,8 @@ namespace CPMS_Accounting.Models
         public int DocStampNumber { get; set; }
         public string Location { get; set; }
         public DateTime DateProcessed { get; set; }
-     //   public int DrNumber { get; set; }
+        public int PONumber { get; set; }
+        public int PrimaryKey { get; set; }
     }
+
 }

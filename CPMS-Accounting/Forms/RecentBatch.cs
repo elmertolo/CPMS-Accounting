@@ -226,5 +226,12 @@ namespace CPMS_Accounting
             }
 
         }
+
+        private void deliveryReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report = "DRR";
+            ViewReports vp = new ViewReports();
+            vp.Show();
+        }
     }
 }

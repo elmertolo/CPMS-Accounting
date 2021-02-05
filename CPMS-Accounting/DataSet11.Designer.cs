@@ -383,7 +383,13 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnOldBranchCode;
             
-            private global::System.Data.DataColumn columnPO;
+            private global::System.Data.DataColumn columnDocStamp;
+            
+            private global::System.Data.DataColumn columnUnitPrice;
+            
+            private global::System.Data.DataColumn columnTotalAmount;
+            
+            private global::System.Data.DataColumn columnPONumber;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -556,9 +562,33 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn POColumn {
+            public global::System.Data.DataColumn DocStampColumn {
                 get {
-                    return this.columnPO;
+                    return this.columnDocStamp;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn UnitPriceColumn {
+                get {
+                    return this.columnUnitPrice;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TotalAmountColumn {
+                get {
+                    return this.columnTotalAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn PONumberColumn {
+                get {
+                    return this.columnPONumber;
                 }
             }
             
@@ -612,12 +642,15 @@ namespace CPMS_Accounting {
                         string username, 
                         string location, 
                         int DRNumber, 
-                        string PackNumber, 
+                        int PackNumber, 
                         string AttentionTo, 
                         string Multiplier, 
                         string BranchCode, 
                         string OldBranchCode, 
-                        string PO) {
+                        int DocStamp, 
+                        string UnitPrice, 
+                        string TotalAmount, 
+                        int PONumber) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -637,7 +670,10 @@ namespace CPMS_Accounting {
                         Multiplier,
                         BranchCode,
                         OldBranchCode,
-                        PO};
+                        DocStamp,
+                        UnitPrice,
+                        TotalAmount,
+                        PONumber};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -677,7 +713,10 @@ namespace CPMS_Accounting {
                 this.columnMultiplier = base.Columns["Multiplier"];
                 this.columnBranchCode = base.Columns["BranchCode"];
                 this.columnOldBranchCode = base.Columns["OldBranchCode"];
-                this.columnPO = base.Columns["PO"];
+                this.columnDocStamp = base.Columns["DocStamp"];
+                this.columnUnitPrice = base.Columns["UnitPrice"];
+                this.columnTotalAmount = base.Columns["TotalAmount"];
+                this.columnPONumber = base.Columns["PONumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -707,7 +746,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnlocation);
                 this.columnDRNumber = new global::System.Data.DataColumn("DRNumber", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDRNumber);
-                this.columnPackNumber = new global::System.Data.DataColumn("PackNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPackNumber = new global::System.Data.DataColumn("PackNumber", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPackNumber);
                 this.columnAttentionTo = new global::System.Data.DataColumn("AttentionTo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAttentionTo);
@@ -717,8 +756,14 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnBranchCode);
                 this.columnOldBranchCode = new global::System.Data.DataColumn("OldBranchCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOldBranchCode);
-                this.columnPO = new global::System.Data.DataColumn("PO", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPO);
+                this.columnDocStamp = new global::System.Data.DataColumn("DocStamp", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDocStamp);
+                this.columnUnitPrice = new global::System.Data.DataColumn("UnitPrice", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUnitPrice);
+                this.columnTotalAmount = new global::System.Data.DataColumn("TotalAmount", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalAmount);
+                this.columnPONumber = new global::System.Data.DataColumn("PONumber", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPONumber);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2059,10 +2104,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string PackNumber {
+            public int PackNumber {
                 get {
                     try {
-                        return ((string)(this[this.tableDeliveryReceipt.PackNumberColumn]));
+                        return ((int)(this[this.tableDeliveryReceipt.PackNumberColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PackNumber\' in table \'DeliveryReceipt\' is DBNull.", e);
@@ -2139,17 +2184,65 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string PO {
+            public int DocStamp {
                 get {
                     try {
-                        return ((string)(this[this.tableDeliveryReceipt.POColumn]));
+                        return ((int)(this[this.tableDeliveryReceipt.DocStampColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PO\' in table \'DeliveryReceipt\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'DocStamp\' in table \'DeliveryReceipt\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDeliveryReceipt.POColumn] = value;
+                    this[this.tableDeliveryReceipt.DocStampColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string UnitPrice {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.UnitPriceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UnitPrice\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.UnitPriceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string TotalAmount {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.TotalAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalAmount\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.TotalAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int PONumber {
+                get {
+                    try {
+                        return ((int)(this[this.tableDeliveryReceipt.PONumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PONumber\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.PONumberColumn] = value;
                 }
             }
             
@@ -2359,14 +2452,50 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsPONull() {
-                return this.IsNull(this.tableDeliveryReceipt.POColumn);
+            public bool IsDocStampNull() {
+                return this.IsNull(this.tableDeliveryReceipt.DocStampColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetPONull() {
-                this[this.tableDeliveryReceipt.POColumn] = global::System.Convert.DBNull;
+            public void SetDocStampNull() {
+                this[this.tableDeliveryReceipt.DocStampColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsUnitPriceNull() {
+                return this.IsNull(this.tableDeliveryReceipt.UnitPriceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetUnitPriceNull() {
+                this[this.tableDeliveryReceipt.UnitPriceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTotalAmountNull() {
+                return this.IsNull(this.tableDeliveryReceipt.TotalAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTotalAmountNull() {
+                this[this.tableDeliveryReceipt.TotalAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsPONumberNull() {
+                return this.IsNull(this.tableDeliveryReceipt.PONumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetPONumberNull() {
+                this[this.tableDeliveryReceipt.PONumberColumn] = global::System.Convert.DBNull;
             }
         }
         
