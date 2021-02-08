@@ -40,7 +40,7 @@ namespace CPMS_Accounting
         string errorMessage = "";
         int AremainingBalance = 0;
         int BremainingBalance = 0;
-        List<int> poNumber;
+      //  List<int> poNumber;
         public DeliveryReport(Main frm1)
         {
             InitializeComponent();
@@ -160,8 +160,8 @@ namespace CPMS_Accounting
             op.Filter = "dbf files (*.dbf)|*.dbf|All files (*.*)|*.*";
             op.FilterIndex = 2;
             op.RestoreDirectory = true;
-            try
-            {
+            //try
+            //{
 
                 if (op.ShowDialog().Equals(DialogResult.OK))
                 {
@@ -258,13 +258,13 @@ namespace CPMS_Accounting
 
             
               if (orderList.Count > 0)
-              { 
+              {
                 if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
                 {
 
 
 
-                  
+
                     errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
                     MessageBox.Show(errorMessage);
 
@@ -273,23 +273,26 @@ namespace CPMS_Accounting
                 }
                 else
                 {
-                    var po = orderList.Select(x => x.PONumber).Distinct().ToList();
-                    var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
-                    AremainingBalance = proc.CheckPOQuantity(po[0], chkType[0]);
-                    BremainingBalance = proc.CheckPOQuantity(po[1], chkType[1]);
-                    
-                    AremainingBalance -= totalA.Count;
-                    BremainingBalance -= totalB.Count;
-                    if (AremainingBalance < 0 )
+                    if (gClient.DataBaseName != "producers_history")
                     {
-                        MessageBox.Show("Insufficient Balance for Purchase Order No. :" +po[0]+ " for Cheque Name: " + chkType[0] );
-                            
-                    }
-                    else if (BremainingBalance <0)
-                    { 
-                        //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
-                        MessageBox.Show("Insufficient Balance for Purchase Order No. :" + po[1] + " for Cheque Name: " + chkType[1]);
+                        var po = orderList.Select(x => x.PONumber).Distinct().ToList();
+                        var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
+                        AremainingBalance = proc.CheckPOQuantity(po[0], chkType[0]);
+                        BremainingBalance = proc.CheckPOQuantity(po[1], chkType[1]);
 
+                        AremainingBalance -= totalA.Count;
+                        BremainingBalance -= totalB.Count;
+                        if (AremainingBalance < 0)
+                        {
+                            MessageBox.Show("Insufficient Balance for Purchase Order No. :" + po[0] + " for Cheque Name: " + chkType[0]);
+
+                        }
+                        else if (BremainingBalance < 0)
+                        {
+                            //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
+                            MessageBox.Show("Insufficient Balance for Purchase Order No. :" + po[1] + " for Cheque Name: " + chkType[1]);
+
+                        }
                     }
                     else
                     {
@@ -305,7 +308,7 @@ namespace CPMS_Accounting
 
                             MessageBox.Show("Checking files done! No Errors found");
                             dataGridView1.DataSource = orderList;
-                                frmCorrection.bg_dtg(dataGridView1);
+                            frmCorrection.bg_dtg(dataGridView1);
                             lblTotalA.Text = totalA.Count.ToString();
                             lblTotalB.Text = totalB.Count.ToString();
                             lblTotalChecks.Text = orderList.Count.ToString();
@@ -317,15 +320,15 @@ namespace CPMS_Accounting
               }
 
 
-            }
+            //}
 
 
 
             
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message, error.StackTrace);
-            }
+            //catch (Exception error)
+            //{
+            //    MessageBox.Show(error.Message, error.StackTrace);
+            //}
         }
        
         private void DeliveryReport_Load(object sender, EventArgs e)
