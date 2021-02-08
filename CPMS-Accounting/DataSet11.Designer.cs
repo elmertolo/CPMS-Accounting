@@ -391,6 +391,10 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnPONumber;
             
+            private global::System.Data.DataColumn columnConcatinatedDRA;
+            
+            private global::System.Data.DataColumn columnConcatinatedDRB;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DeliveryReceiptDataTable() {
@@ -594,6 +598,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ConcatinatedDRAColumn {
+                get {
+                    return this.columnConcatinatedDRA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ConcatinatedDRBColumn {
+                get {
+                    return this.columnConcatinatedDRB;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -650,7 +670,9 @@ namespace CPMS_Accounting {
                         int DocStamp, 
                         string UnitPrice, 
                         string TotalAmount, 
-                        int PONumber) {
+                        int PONumber, 
+                        string ConcatinatedDRA, 
+                        string ConcatinatedDRB) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -673,7 +695,9 @@ namespace CPMS_Accounting {
                         DocStamp,
                         UnitPrice,
                         TotalAmount,
-                        PONumber};
+                        PONumber,
+                        ConcatinatedDRA,
+                        ConcatinatedDRB};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -717,6 +741,8 @@ namespace CPMS_Accounting {
                 this.columnUnitPrice = base.Columns["UnitPrice"];
                 this.columnTotalAmount = base.Columns["TotalAmount"];
                 this.columnPONumber = base.Columns["PONumber"];
+                this.columnConcatinatedDRA = base.Columns["ConcatinatedDRA"];
+                this.columnConcatinatedDRB = base.Columns["ConcatinatedDRB"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -764,6 +790,10 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnTotalAmount);
                 this.columnPONumber = new global::System.Data.DataColumn("PONumber", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPONumber);
+                this.columnConcatinatedDRA = new global::System.Data.DataColumn("ConcatinatedDRA", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConcatinatedDRA);
+                this.columnConcatinatedDRB = new global::System.Data.DataColumn("ConcatinatedDRB", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConcatinatedDRB);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2248,6 +2278,38 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ConcatinatedDRA {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.ConcatinatedDRAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ConcatinatedDRA\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.ConcatinatedDRAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ConcatinatedDRB {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.ConcatinatedDRBColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ConcatinatedDRB\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.ConcatinatedDRBColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -2496,6 +2558,30 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetPONumberNull() {
                 this[this.tableDeliveryReceipt.PONumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsConcatinatedDRANull() {
+                return this.IsNull(this.tableDeliveryReceipt.ConcatinatedDRAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetConcatinatedDRANull() {
+                this[this.tableDeliveryReceipt.ConcatinatedDRAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsConcatinatedDRBNull() {
+                return this.IsNull(this.tableDeliveryReceipt.ConcatinatedDRBColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetConcatinatedDRBNull() {
+                this[this.tableDeliveryReceipt.ConcatinatedDRBColumn] = global::System.Convert.DBNull;
             }
         }
         

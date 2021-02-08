@@ -34,6 +34,7 @@ namespace CPMS_Accounting
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string concatDR = "";
 
             bool flag = true;
             if (txtRecentBatch.Text != "")
@@ -71,7 +72,10 @@ namespace CPMS_Accounting
                 else
                     documentStampToolStripMenuItem.Enabled = false;
                 printDRToolStripMenuItem.Enabled = true;
+                concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
+
                 MessageBox.Show("Batch :" + txtRecentBatch.Text + " has been generated!!!");
+                MessageBox.Show(concatDR);
             }
             else
                 MessageBox.Show("Please enter Batch Number!");

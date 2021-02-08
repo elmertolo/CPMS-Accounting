@@ -68,7 +68,7 @@ namespace CPMS_Accounting
 
                 proc.GetDRDetails(orderList[0].Batch, tempDr);
                 proc.GetStickerDetails(tempSticker, orderList[0].Batch);
-
+                
                 MessageBox.Show("Data has been process!!!");
                 ViewReports vp = new ViewReports();
                 // vp.MdiParent = this;
@@ -223,16 +223,15 @@ namespace CPMS_Accounting
                             order.Name3 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                             proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
-                            order.PONumber = proc.GetPONUmber(order.ChequeName);
+                            order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
                             //proc.GetPONUmber(order.ChequeName, poNumber);
                             //poNumber.ForEach(x => { 
                                                                   
                             //});
-
-//                            order.PONumber = proc.GetPONUmber(order.ChequeName); //getting Purchase Order Number from the database 
                             if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
                             {
                                 MessageBox.Show("Please add Purchase Order Number!!");
+
                                 break;
                             }
                             

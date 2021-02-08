@@ -585,16 +585,19 @@ namespace CPMS_Accounting.Procedures
             comdel.ExecuteNonQuery();
 
             DBClosed();
+           string concatA =  ConcatDRNumbers(list[0].Batch,"A");
+            string concatB = ConcatDRNumbers(list[0].Batch, "B");
             DBConnect();
             for (int i = 0; i < list.Count; i++)
             {
 
                 string sql2 = "Insert into producers_tempdatadr (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
-                              "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber) Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
+                              "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA,ConcatinatedDRB)" +
+                              " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
                               "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
                               ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName + "','" +
                               list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
-                              list[i].Location+ "'," +list[i].PONumber +");";
+                              list[i].Location+ "'," +list[i].PONumber +",'" + concatA + "','" + concatB + "');";
                 MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                 cmd2.ExecuteNonQuery();
             }
@@ -634,7 +637,7 @@ namespace CPMS_Accounting.Procedures
             {
 
 
-                Sql = "Select Max(DrNumber) from " + item + " where Date > '2020-12-01'";
+                Sql = "Select DrNumber from " + item + " where Date > '2020-12-01' order by DrNumber desc Limit 1";
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader read = cmd.ExecuteReader();
 
@@ -698,7 +701,7 @@ namespace CPMS_Accounting.Procedures
             {
 
 
-                Sql = "Select Max(PackNumber) from " + item + " where Date >= '2020-12-01'";
+                Sql = "Select PackNumber from " + item + " where Date >= '2020-12-01' order by PackNumber desc Limit 1";
 
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader read = cmd.ExecuteReader();
@@ -2025,5 +2028,55 @@ namespace CPMS_Accounting.Procedures
 
             return _remainingbalance;
         }
+        public string ConcatDRNumbers(string _batch, string _chkType)
+        {
+            string _dr = "";
+            Sql = "Select Distinct(DRNumber) from " + gClient.DataBaseName + " where Batch = '"+_batch+"' and ChkType = '"+ _chkType + "'";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            List<int> AllDr = new List<int>();
+            int oldDr = 0;
+            
+            int existingDr = 0;
+            int rightDR = 0;
+           // string lastDr = "";
+            string drDisplay = "";
+            while(reader.Read())
+            {
+                rightDR = reader.GetInt32(0);
+                AllDr.Add(rightDR);
+            }
+            reader.Close();
+            for (int i = 0; i < AllDr.Count; i++)
+            {
+                existingDr = AllDr[i];
+                if (oldDr == 0)
+                {
+                  
+                    if (drDisplay == "")
+                    {
+                        drDisplay += existingDr.ToString();
+                    }
+                  
+                       
+                }
+                else
+                {
+                    if ((oldDr + 1) == existingDr)
+                    {
+                        _dr = drDisplay + " - " + existingDr.ToString().Substring(existingDr.ToString().Length - (existingDr.ToString().Length - 2), 3);
+
+                    }
+                    else
+                        _dr = drDisplay + ", " + existingDr.ToString();
+
+                }
+                oldDr = existingDr;
+            }
+            DBClosed();
+            return _dr;
+        }
+
     }
 }
