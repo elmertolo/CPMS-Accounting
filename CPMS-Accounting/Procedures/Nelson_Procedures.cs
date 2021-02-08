@@ -12,6 +12,7 @@ using CrystalDecisions.Shared;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using CPMS_Accounting.Forms;
 //using ProducersBank.Services;
 
 namespace CPMS_Accounting.Procedures
@@ -167,7 +168,26 @@ namespace CPMS_Accounting.Procedures
             return false;
         }
 
+        delegate void SetDataSourceDelegate(ref DataTable dt, DataGridView dgv, ref frmProgress progressBar);
+        public static void setDataSource(ref DataTable dt, DataGridView dgv, ref frmProgress progressBar)
+        {
+            // Invoke method if required:
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (dgv.InvokeRequired)
+            {
+                dgv.Invoke(new SetDataSourceDelegate(setDataSource), dt, dgv, progressBar);
 
+            }
+            else
+            {
+                dgv.DataSource = dt;
+                progressBar.Close();
+            }
+
+
+        }
 
     }
 }

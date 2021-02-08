@@ -12,6 +12,8 @@ using static CPMS_Accounting.GlobalVariables;
 using CPMS_Accounting.Procedures;
 //using FastMember;
 using CrystalDecisions.CrystalReports.Engine;
+using CPMS_Accounting.Forms;
+using System.Threading;
 
 namespace CPMS_Accounting
 {
@@ -21,6 +23,7 @@ namespace CPMS_Accounting
         List<SalesInvoiceModel> salesInvoiceList = new List<SalesInvoiceModel>();
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
         Main frm;
+        frmProgress progressBar;
 
         public frmSalesInvoice(Main frm1)
         {
@@ -38,6 +41,10 @@ namespace CPMS_Accounting
             ConfigureDesignLabels();
             salesInvoiceList.Clear();
             this.frm = frm1;
+
+
+            bgwLoadBatchList.WorkerReportsProgress = true;
+
         }
 
         private void frmSalesInvoice_Load(object sender, EventArgs e)
@@ -228,8 +235,12 @@ namespace CPMS_Accounting
                         line.Location = row.Cells["location"].Value.ToString();
                     }
 
+                    progressBar = new frmProgress();
+                    progressBar.Show();
                     line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
-                    line.unitPrice = double.Parse(proc.GetUnitPrice(line.checkName).ToString("#.##"));
+                    progressBar.Close();
+
+                    line.unitPrice = proc.GetUnitPrice(line.checkName);
                     line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
 
                     //Check if record is already inserted
@@ -635,7 +646,6 @@ namespace CPMS_Accounting
         public void EnableControls()
         {
           
-
             gbSearch.Enabled = true;
             gbBatchList.Enabled = true;
             gbDetails.Enabled = true;
@@ -650,7 +660,15 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = true;
             btnViewSelected.Enabled = true;
 
-            RefreshDrList();
+
+            //bgwLoadBatchList.RunWorkerAsync();
+            progressBar = new frmProgress();
+            progressBar.Show();
+            Thread getBatchListJob = new Thread(new ThreadStart(RefreshDrList));
+            getBatchListJob.Start();
+
+            dgvDRList.ClearSelection();
+
 
             var sortedList = salesInvoiceList
                     .Select
@@ -820,18 +838,50 @@ namespace CPMS_Accounting
 
         }
 
+
+
         private void RefreshDrList()
         {
+            
             DataTable dt = new DataTable();
             proc.LoadUnprocessedSalesInvoiceData(ref dt);
-            dgvDRList.DataSource = dt;
-            dgvDRList.ClearSelection();
+            p.setDataSource(ref dt, dgvDRList, ref progressBar);
+           
+
         }
 
         private void btnCancelClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+
+        
+
+        private void bgwLoadBatchList_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            frmProgress progressbar = new frmProgress();
+            progressbar.Show();
+            RefreshDrList();
+
+           
+        }
+
+        private void bgwLoadBatchList_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            
+        }
+
+
+
+
+
+
+
+
+
+
     }
 
 }
