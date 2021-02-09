@@ -153,23 +153,45 @@ namespace CPMS_Accounting.Procedures
 
         public static bool BatchRecordHasDuplicate(SalesInvoiceModel line, List<SalesInvoiceModel> salesInvoiceList)
         {
-            foreach (var item in salesInvoiceList)
+
+            //PNB Added Location
+            if (gClient.ShortName == "PNB")
             {
-                if (line.Quantity == item.Quantity && 
-                    line.Batch == item.Batch && 
-                    line.checkName == item.checkName && 
-                    line.deliveryDate == item.deliveryDate && 
-                    line.drList == item.drList && 
-                    line.checkType == item.checkType)
+                foreach (var item in salesInvoiceList)
                 {
-                    return true;
+                    if (line.Quantity == item.Quantity &&
+                        line.Batch == item.Batch &&
+                        line.checkName == item.checkName &&
+                        line.deliveryDate == item.deliveryDate &&
+                        line.checkType == item.checkType &&
+                        line.Location == item.Location)
+
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            else
+            {
+                foreach (var item in salesInvoiceList)
+                {
+                    if (line.Quantity == item.Quantity &&
+                        line.Batch == item.Batch &&
+                        line.checkName == item.checkName &&
+                        line.deliveryDate == item.deliveryDate &&
+                        line.checkType == item.checkType)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
         }
 
-        delegate void SetDataSourceDelegate(ref DataTable dt, DataGridView dgv, ref frmProgress progressBar);
-        public static void setDataSource(ref DataTable dt, DataGridView dgv, ref frmProgress progressBar)
+        delegate void SetDataSourceDelegate(ref DataTable dt,  ref frmProgress progressBar, DataGridView dgv);
+        public static void setDataSource(ref DataTable dt, ref frmProgress progressBar, DataGridView dgv)
         {
             // Invoke method if required:
             // InvokeRequired required compares the thread ID of the
@@ -177,17 +199,21 @@ namespace CPMS_Accounting.Procedures
             // If these threads are different, it returns true.
             if (dgv.InvokeRequired)
             {
-                dgv.Invoke(new SetDataSourceDelegate(setDataSource), dt, dgv, progressBar);
+                dgv.Invoke(new SetDataSourceDelegate(setDataSource), dt, progressBar, dgv);
 
             }
             else
             {
                 dgv.DataSource = dt;
+                //progressBar.DialogResult = DialogResult.Cancel;
                 progressBar.Close();
+               
             }
 
 
         }
+
+       
 
     }
 }

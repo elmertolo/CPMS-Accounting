@@ -24,6 +24,7 @@ namespace CPMS_Accounting
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
         Main frm;
         frmProgress progressBar;
+        Thread thread;
 
         public frmSalesInvoice(Main frm1)
         {
@@ -213,14 +214,14 @@ namespace CPMS_Accounting
 
         private void AddSelectedDRRow()
         {
-
+           
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
 
                 foreach (DataGridViewRow row in dgvDRList.SelectedRows)
                 {
                     SalesInvoiceModel line = new SalesInvoiceModel();
-
+                    
                     line.Batch = row.Cells["batch Name"].Value.ToString();
                     line.checkName = row.Cells["check name"].Value.ToString();
                     line.checkType = row.Cells["check type"].Value.ToString();
@@ -228,18 +229,13 @@ namespace CPMS_Accounting
                     line.deliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
                     line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
 
-
                     //Include Location field if PNB
                     if (gClient.ShortName == "PNB")
                     {
                         line.Location = row.Cells["location"].Value.ToString();
                     }
 
-                    progressBar = new frmProgress();
-                    progressBar.Show();
-                    line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
-                    progressBar.Close();
-
+                   
                     line.unitPrice = proc.GetUnitPrice(line.checkName);
                     line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
 
@@ -249,7 +245,6 @@ namespace CPMS_Accounting
                         MessageBox.Show("Selected Batch already added");
                         return;
                     }
-
 
                     //(Validation) Checing of Onhand quantity for PNB
                     if (gClient.ShortName == "PNB")
@@ -261,23 +256,42 @@ namespace CPMS_Accounting
                         {
                             line.PurchaseOrderNumber = int.Parse(xfrm.userInput);
                             double remainingQuantity = 0;
+
+                            //Added this for large data processing
+                            progressBar = new frmProgress();
+                            progressBar.message = "Checking On-Hand Quantity";
+                            thread = new Thread(() => progressBar.ShowDialog());
+                            thread.Start();
+
                             //Check if quantity is sufficient
                             if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.checkName, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
                             {
+                                thread.Abort();
                                 MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
                                 return;
                             }
+                            thread.Abort();
 
                             line.RemainingQuantity = remainingQuantity;
-                            
+
                         }
-                        else if(result == DialogResult.Cancel)
+                        else if (result == DialogResult.Cancel)
                         {
                             return;
                         }
                     }
 
+                    //Added this for large data processing
+                    progressBar = new frmProgress();
+                    progressBar.message = "Getting DR number list.";
+                    thread = new Thread(() => progressBar.ShowDialog());
+                    thread.Start();
+
+                    line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
                     salesInvoiceList.Add(line);
+
+                    //Abort progressbar when job is finished
+                    thread.Abort();
 
                 }
 
@@ -285,12 +299,12 @@ namespace CPMS_Accounting
                 var sortedList = salesInvoiceList
                     .Select
                     (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
-                    
+
                     .ToList();
 
                 dgvListToProcess.DataSource = sortedList;
                 dgvListToProcess.ClearSelection();
-                
+
             }
             else
             {
@@ -660,15 +674,33 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = true;
             btnViewSelected.Enabled = true;
 
-
             //bgwLoadBatchList.RunWorkerAsync();
             progressBar = new frmProgress();
-            progressBar.Show();
-            Thread getBatchListJob = new Thread(new ThreadStart(RefreshDrList));
-            getBatchListJob.Start();
+            progressBar.message = "Loading Data. Please Wait.";
+            thread = new Thread(() => progressBar.ShowDialog());
+            thread.Start();
+
+            DataTable dt = new DataTable();
+            if (!proc.LoadUnprocessedSalesInvoiceData(ref dt))
+            {
+                thread.Abort();
+                MessageBox.Show("Error on (proc.LoadUnprocessedSalesInvoiceData)\r\n \r\n" + proc.errorMessage);
+                return;
+            }
+            thread.Abort();
+
+            dgvDRList.DataSource = dt;
+
+
+            //Thread getBatchListJob = new Thread(new ThreadStart(RefreshDrList));
+            //getBatchListJob.Start();
+            //if (getBatchListJob.IsAlive)
+            //{
+            //    DialogResult result = progressBar.ShowDialog();
+            //}
+            
 
             dgvDRList.ClearSelection();
-
 
             var sortedList = salesInvoiceList
                     .Select
@@ -699,18 +731,24 @@ namespace CPMS_Accounting
            
         }
 
-
         private void DisplayOldSalesInvoiceList(int salesInvoiceNumber, ref DataTable dt)
         {
-            
+
+            progressBar = new frmProgress();
+            progressBar.message = "Fetching Old Data. Please Wait.";
+            thread = new Thread(() => progressBar.ShowDialog());
+            thread.Start();
+
             //Get Sales Invoice List Details to be supplied to Global Report Datatable
             DataTable siListDT = new DataTable();
             if (!proc.GetOldSalesInvoiceList(salesInvoiceNumber, ref siListDT))
             {
+                thread.Abort();
                 MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
                 RefreshView();
                 return;
             }
+            thread.Abort();
 
             //Display values on Front End from Finished Table
             foreach (DataRow row in dt.Rows)
@@ -778,6 +816,7 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = false;
             btnViewSelected.Enabled = false;
 
+
         }
 
         private void AddRecord()
@@ -796,6 +835,8 @@ namespace CPMS_Accounting
                 else if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
                 {
                     DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
+
+                    //DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
                 }
                 else
                 {
@@ -808,7 +849,6 @@ namespace CPMS_Accounting
         {
             CancelSalesInvoiceRecord();
         }
-
 
         private void CancelSalesInvoiceRecord()
         {
@@ -839,15 +879,12 @@ namespace CPMS_Accounting
         }
 
 
-
+        //Huge Data Handling
         private void RefreshDrList()
         {
-            
             DataTable dt = new DataTable();
             proc.LoadUnprocessedSalesInvoiceData(ref dt);
-            p.setDataSource(ref dt, dgvDRList, ref progressBar);
-           
-
+            p.setDataSource(ref dt, ref progressBar, dgvDRList);
         }
 
         private void btnCancelClose_Click(object sender, EventArgs e)
@@ -855,16 +892,12 @@ namespace CPMS_Accounting
             this.Close();
         }
 
-
-        
-
         private void bgwLoadBatchList_DoWork(object sender, DoWorkEventArgs e)
         {
 
             frmProgress progressbar = new frmProgress();
-            progressbar.Show();
+            progressbar.DialogResult = DialogResult.Cancel;
             RefreshDrList();
-
            
         }
 
@@ -873,7 +906,23 @@ namespace CPMS_Accounting
             
         }
 
+        public void SeekDRList(ref string drList, string Batch, string checkType, DateTime deliveryDate, string Location)
+        {
+            DataTable dt = new DataTable();
+            drList = proc.GetDRList(Batch, checkType, deliveryDate, Location);
+            p.setDataSource(ref dt, ref progressBar, dgvDRList);
 
+        }
+
+        private void CallProgressBar()
+        {
+            progressBar.BringToFront();
+            progressBar1.Size = new Size(673, 23);
+            progressBar1.Location = new Point(6, 153);
+             
+            progressBar1.Style = ProgressBarStyle.Marquee;
+            progressBar1.Visible = true;
+        }
 
 
 

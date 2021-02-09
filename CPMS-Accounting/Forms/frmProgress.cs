@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CPMS_Accounting.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,22 +13,24 @@ namespace CPMS_Accounting.Forms
 {
     public partial class frmProgress : Form
     {
-        public delegate void ToDoDelegate();
-
+        public string message = "Processing Data..";
         public frmProgress()
         {
             InitializeComponent();
+
         }
 
         private void frmProgress_Load(object sender, EventArgs e)
         {
+
+            lblMessage.Text = message;
             progressBar1.Style = ProgressBarStyle.Marquee;
-
-
-            //do this when closing
             
+        }
 
-            
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -30,7 +30,7 @@ namespace CPMS_Accounting.Forms
         private void InitializeComponent()
         {
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -40,15 +40,16 @@ namespace CPMS_Accounting.Forms
             this.progressBar1.Size = new System.Drawing.Size(467, 23);
             this.progressBar1.TabIndex = 0;
             // 
-            // label1
+            // lblMessage
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(180, 19);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Loading Data Please Wait.";
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.Location = new System.Drawing.Point(12, 9);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(180, 19);
+            this.lblMessage.TabIndex = 1;
+            this.lblMessage.Text = "Loading Data Please Wait.";
+            this.lblMessage.Click += new System.EventHandler(this.label1_Click);
             // 
             // frmProgress
             // 
@@ -56,7 +57,7 @@ namespace CPMS_Accounting.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 76);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.progressBar1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmProgress";
@@ -70,6 +71,6 @@ namespace CPMS_Accounting.Forms
         #endregion
 
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblMessage;
     }
 }
