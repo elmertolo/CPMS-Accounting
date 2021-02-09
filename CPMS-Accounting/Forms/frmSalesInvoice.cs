@@ -209,12 +209,13 @@ namespace CPMS_Accounting
         {
 
             AddSelectedDRRow();
+            
 
         }
 
         private void AddSelectedDRRow()
         {
-           
+            
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
 
@@ -238,7 +239,7 @@ namespace CPMS_Accounting
                    
                     line.unitPrice = proc.GetUnitPrice(line.checkName);
                     line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
-
+                    
                     //Check if record is already inserted
                     if (p.BatchRecordHasDuplicate(line, salesInvoiceList))
                     {
@@ -249,49 +250,43 @@ namespace CPMS_Accounting
                     //(Validation) Checing of Onhand quantity for PNB
                     if (gClient.ShortName == "PNB")
                     {
+                       
                         frmMessageInput xfrm = new frmMessageInput();
                         xfrm.labelMessage = "Input Purchase Order Number:";
                         DialogResult result = xfrm.ShowDialog();
+                        
                         if (result == DialogResult.OK)
                         {
+                            //Use this when data is large
+                            //Added this for large data processing
+                            //progressBar = new frmProgress();
+                            //progressBar.message = "Validating selected item";
+                            //thread = new Thread(() => progressBar.ShowDialog());
+                            //thread.Start();
+
                             line.PurchaseOrderNumber = int.Parse(xfrm.userInput);
                             double remainingQuantity = 0;
-
-                            //Added this for large data processing
-                            progressBar = new frmProgress();
-                            progressBar.message = "Checking On-Hand Quantity";
-                            thread = new Thread(() => progressBar.ShowDialog());
-                            thread.Start();
-
+                            
                             //Check if quantity is sufficient
                             if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.checkName, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
                             {
-                                thread.Abort();
+                                //thread.Abort();
                                 MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
                                 return;
                             }
-                            thread.Abort();
-
                             line.RemainingQuantity = remainingQuantity;
+
 
                         }
                         else if (result == DialogResult.Cancel)
                         {
+                            //thread.Abort();
                             return;
                         }
                     }
 
-                    //Added this for large data processing
-                    progressBar = new frmProgress();
-                    progressBar.message = "Getting DR number list.";
-                    thread = new Thread(() => progressBar.ShowDialog());
-                    thread.Start();
-
                     line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
                     salesInvoiceList.Add(line);
-
-                    //Abort progressbar when job is finished
-                    thread.Abort();
 
                 }
 
@@ -310,6 +305,13 @@ namespace CPMS_Accounting
             {
                 MessageBox.Show("Please select at least one record");
             }
+
+
+            
+                //thread.Abort();
+
+
+
 
         }
 
@@ -659,7 +661,13 @@ namespace CPMS_Accounting
 
         public void EnableControls()
         {
-          
+
+            //Enable ProgressbarView
+            progressBar = new frmProgress();
+            progressBar.message = "Loading Data. Please Wait.";
+            thread = new Thread(() => progressBar.ShowDialog());
+            thread.Start();
+
             gbSearch.Enabled = true;
             gbBatchList.Enabled = true;
             gbDetails.Enabled = true;
@@ -674,11 +682,7 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = true;
             btnViewSelected.Enabled = true;
 
-            //bgwLoadBatchList.RunWorkerAsync();
-            progressBar = new frmProgress();
-            progressBar.message = "Loading Data. Please Wait.";
-            thread = new Thread(() => progressBar.ShowDialog());
-            thread.Start();
+            
 
             DataTable dt = new DataTable();
             if (!proc.LoadUnprocessedSalesInvoiceData(ref dt))
@@ -687,7 +691,7 @@ namespace CPMS_Accounting
                 MessageBox.Show("Error on (proc.LoadUnprocessedSalesInvoiceData)\r\n \r\n" + proc.errorMessage);
                 return;
             }
-            thread.Abort();
+            
 
             dgvDRList.DataSource = dt;
 
@@ -712,6 +716,9 @@ namespace CPMS_Accounting
 
             txtSalesInvoiceNumber.Focus();
 
+            //Abort progressbar view
+            thread.Abort();
+
         }
 
         private void btnAddRecord_Click(object sender, EventArgs e)
@@ -733,9 +740,9 @@ namespace CPMS_Accounting
 
         private void DisplayOldSalesInvoiceList(int salesInvoiceNumber, ref DataTable dt)
         {
-
+            //Start Progress Bar View
             progressBar = new frmProgress();
-            progressBar.message = "Fetching Old Data. Please Wait.";
+            progressBar.message = "Fetching Existing Record. Please Wait.";
             thread = new Thread(() => progressBar.ShowDialog());
             thread.Start();
 
@@ -748,7 +755,7 @@ namespace CPMS_Accounting
                 RefreshView();
                 return;
             }
-            thread.Abort();
+            
 
             //Display values on Front End from Finished Table
             foreach (DataRow row in dt.Rows)
@@ -815,6 +822,10 @@ namespace CPMS_Accounting
             btnReloadDrList.Enabled = true;
             btnPrintSalesInvoice.Enabled = false;
             btnViewSelected.Enabled = false;
+
+
+            //abort progress bar view
+            thread.Abort();
 
 
         }

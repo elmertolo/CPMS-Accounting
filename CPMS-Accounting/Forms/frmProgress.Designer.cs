@@ -59,7 +59,7 @@ namespace CPMS_Accounting.Forms
             this.ControlBox = false;
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.progressBar1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmProgress";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.frmProgress_Load);

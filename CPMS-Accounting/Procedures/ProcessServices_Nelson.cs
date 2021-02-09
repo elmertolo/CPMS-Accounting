@@ -520,8 +520,6 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-
-
         public bool GetOldSalesInvoiceList(double salesInvoiceNumber, ref DataTable dt)
         {
             try
@@ -632,7 +630,6 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
-
 
         //PNB
         public bool IsQuantityOnHandSufficient(double toProcessQuantity, string chequeName, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)
