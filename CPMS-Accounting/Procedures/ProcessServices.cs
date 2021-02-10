@@ -585,19 +585,22 @@ namespace CPMS_Accounting.Procedures
             comdel.ExecuteNonQuery();
 
             DBClosed();
-           string concatA =  ConcatDRNumbers(list[0].Batch,"A");
-            string concatB = ConcatDRNumbers(list[0].Batch, "B");
+            string concatDA =  ConcatDRNumbers(list[0].Batch,"A","Direct");
+            string concatDB = ConcatDRNumbers(list[0].Batch, "B", "Direct");
+            string concatPA = ConcatDRNumbers(list[0].Batch, "A","Provincial");
+            string concatPB = ConcatDRNumbers(list[0].Batch, "B", "Provincial");
             DBConnect();
             for (int i = 0; i < list.Count; i++)
             {
 
                 string sql2 = "Insert into producers_tempdatadr (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
-                              "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA,ConcatinatedDRB)" +
+                              "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
+                              "ConcatinatedDRB,ConcatinatedDRC,ConcatinatedDRD)" +
                               " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
                               "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
                               ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName + "','" +
                               list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
-                              list[i].Location+ "'," +list[i].PONumber +",'" + concatA + "','" + concatB + "');";
+                              list[i].Location+ "'," +list[i].PONumber +",'" + concatDA + "','" + concatDB + "','" + concatPA + "','" +concatPB + "');";
                 MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                 cmd2.ExecuteNonQuery();
             }
@@ -1956,7 +1959,7 @@ namespace CPMS_Accounting.Procedures
         public int GetPONUmber(string _chkType)
         {
             int _poNumber = 0;
-            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName = '" + _chkType + "'";
+            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName = '" + _chkType.Replace("'","''") + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2028,10 +2031,11 @@ namespace CPMS_Accounting.Procedures
 
             return _remainingbalance;
         }
-        public string ConcatDRNumbers(string _batch, string _chkType)
+        public string ConcatDRNumbers(string _batch, string _chkType, string _location)
         {
             string _dr = "";
-            Sql = "Select Distinct(DRNumber) from " + gClient.DataBaseName + " where Batch = '"+_batch+"' and ChkType = '"+ _chkType + "'";
+            Sql = "Select Distinct(DRNumber) from " + gClient.DataBaseName + " where Batch = '"+_batch +
+                  "' and ChkType = '"+ _chkType + "' and Location = '" + _location + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2048,9 +2052,10 @@ namespace CPMS_Accounting.Procedures
                 AllDr.Add(rightDR);
             }
             reader.Close();
-            for (int i = 0; i < AllDr.Count; i++)
+            var sortedDR = AllDr.OrderBy(x=>x).ToList();
+            for (int i = 0; i < sortedDR.Count; i++)
             {
-                existingDr = AllDr[i];
+                existingDr = sortedDR[i];
                 if (oldDr == 0)
                 {
                   
@@ -2058,25 +2063,111 @@ namespace CPMS_Accounting.Procedures
                     {
                         drDisplay += existingDr.ToString();
                     }
-                  
+                    
                        
                 }
                 else
                 {
                     if ((oldDr + 1) == existingDr)
                     {
-                        _dr = drDisplay + " - " + existingDr.ToString().Substring(existingDr.ToString().Length - (existingDr.ToString().Length - 2), 3);
+                        drDisplay = drDisplay + " - " + existingDr.ToString().Substring(existingDr.ToString().Length - (existingDr.ToString().Length - 4), 3);
 
                     }
                     else
-                        _dr = drDisplay + ", " + existingDr.ToString();
+
+                        drDisplay = drDisplay + ", " + existingDr.ToString();
 
                 }
                 oldDr = existingDr;
             }
+            _dr = drDisplay;
             DBClosed();
             return _dr;
         }
+        public  void DisableControls(ToolStripMenuItem _item)
+        {
+            if (gClient.DataBaseName != "producers_history")
+            {
+                _item.Enabled = true;
 
+            }
+            else
+            {
+                _item.Enabled = false;
+            }
+        }
+        public void GetProducts(List<ProductModel> _products)
+        {
+            Sql = "Select * from " + gClient.PriceListTable;
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while(reader.Read())
+            {
+                ProductModel product = new ProductModel
+                {
+                    ProductCode = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                    BankCode = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                    ChequeName = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                    Description = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                    ChkType = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                    DocStampPrice = !reader.IsDBNull(5) ? reader.GetDouble(5) : 0,
+                    UnitPrice = !reader.IsDBNull(6) ? reader.GetDouble(6) : 0,
+                    DateModified = !reader.IsDBNull(7) ? reader.GetDateTime(7) : DateTime.Now,
+                    Unit = !reader.IsDBNull(8) ? reader.GetString(8) : "",
+                    BalanceQuantity = !reader.IsDBNull(9) ? reader.GetInt32(9) : 0,
+                    DeliveryLocation = !reader.IsDBNull(10) ? reader.GetString(10): ""
+                };
+                _products.Add(product);
+            }
+            reader.Close();
+            DBClosed();
+        }
+        public void AddProducts(ProductModel _product)
+        {
+            Sql = "Insert into " + gClient.PriceListTable + " (ProductCode,BankCode, ChequeName,Description,FinalChkType,Docstamp,UnitPrice,DatetimeModified,Unit,Location)" +
+                    "Values('" +_product.ProductCode + "','" + _product.BankCode + "', '"+ _product.ChequeName.Replace("'","''") +"','"+_product.Description.Replace("'","''")+
+                    "','"+_product.ChkType+"',"+_product.DocStampPrice+"," + _product.UnitPrice+",'" +
+                    _product.DateModified.ToString("yyyy-MM-dd")+"','"+_product.Unit+"','"+_product.DeliveryLocation + "');";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
+        }
+        public void ModifyProducts(ProductModel _product)
+        {
+            Sql = "Update " + gClient.PriceListTable + " set ProductCode ='"+ _product.ProductCode +"',BankCode = '"+_product.BankCode+"'," +
+                " ChequeName = '"+_product.ChequeName.Replace("'","''")+"', Description = '"+_product.Description.Replace("'","''")+ "' ,FinalChkType = '" +_product.ChkType+"'" +
+                ",Docstamp = "+_product.DocStampPrice + ",UnitPrice = " +_product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss")+"'" +
+                ",Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+"'";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
+        }
+        public static void bg_dtg(DataGridView dgv)
+        {
+            try
+            {
+
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    if (IsOdd(i))
+                    {
+
+                        dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightBlue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("" + ex);
+            }
+        }
+        public static bool IsOdd(int value)
+        {
+            return value % 2 != 0;
+        }
     }
 }

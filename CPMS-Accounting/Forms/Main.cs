@@ -115,5 +115,12 @@ namespace CPMS_Accounting
             Form frm = new frmCorrection(this);
             frm.ShowDialog();
         }
+
+        private void chequesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new frmProducts(this);
+            frm.ShowDialog();
+        }
+        
     }
 }

@@ -45,6 +45,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPackNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnGenerate2 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cbProvincial = new System.Windows.Forms.ComboBox();
@@ -121,6 +122,7 @@
             // 
             // deliveryReportToolStripMenuItem
             // 
+            this.deliveryReportToolStripMenuItem.Enabled = false;
             this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
             this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.deliveryReportToolStripMenuItem.Text = "Delivery Report";
@@ -158,7 +160,7 @@
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Location = new System.Drawing.Point(22, 245);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(265, 22);
+            this.dateTimePicker1.Size = new System.Drawing.Size(270, 22);
             this.dateTimePicker1.TabIndex = 4;
             // 
             // label1
@@ -219,6 +221,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnGenerate2);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.btnGenerate);
             this.groupBox1.Controls.Add(this.lblTotalA);
@@ -234,6 +237,17 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input Data";
+            // 
+            // btnGenerate2
+            // 
+            this.btnGenerate2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGenerate2.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerate2.Image")));
+            this.btnGenerate2.Location = new System.Drawing.Point(282, 63);
+            this.btnGenerate2.Name = "btnGenerate2";
+            this.btnGenerate2.Size = new System.Drawing.Size(43, 27);
+            this.btnGenerate2.TabIndex = 15;
+            this.btnGenerate2.UseVisualStyleBackColor = false;
+            this.btnGenerate2.Click += new System.EventHandler(this.btnGenerate2_Click);
             // 
             // groupBox3
             // 
@@ -487,5 +501,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cbDirect;
         private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
+        private System.Windows.Forms.Button btnGenerate2;
     }
 }

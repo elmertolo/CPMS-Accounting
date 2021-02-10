@@ -39,10 +39,10 @@ namespace CPMS_Accounting
             this.packingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salesInvoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvDRList = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.txtRecentBatch = new System.Windows.Forms.TextBox();
-            this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
             this.SuspendLayout();
@@ -113,10 +113,19 @@ namespace CPMS_Accounting
             // 
             // documentStampToolStripMenuItem
             // 
+            this.documentStampToolStripMenuItem.Enabled = false;
             this.documentStampToolStripMenuItem.Name = "documentStampToolStripMenuItem";
             this.documentStampToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
             this.documentStampToolStripMenuItem.Text = "Document Stamp";
             this.documentStampToolStripMenuItem.Click += new System.EventHandler(this.documentStampToolStripMenuItem_Click);
+            // 
+            // deliveryReportToolStripMenuItem
+            // 
+            this.deliveryReportToolStripMenuItem.Enabled = false;
+            this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
+            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.deliveryReportToolStripMenuItem.Text = "Delivery Report";
+            this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
             // 
             // dgvDRList
             // 
@@ -165,13 +174,6 @@ namespace CPMS_Accounting
             this.txtRecentBatch.Size = new System.Drawing.Size(134, 22);
             this.txtRecentBatch.TabIndex = 1;
             this.txtRecentBatch.TextChanged += new System.EventHandler(this.txtRecentBatch_TextChanged);
-            // 
-            // deliveryReportToolStripMenuItem
-            // 
-            this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
-            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
-            this.deliveryReportToolStripMenuItem.Text = "Delivery Report";
-            this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
             // 
             // RecentBatch
             // 

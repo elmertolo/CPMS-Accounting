@@ -38,6 +38,7 @@
             this.maintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.purchaseOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeDRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chequesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -102,7 +103,8 @@
             // 
             this.maintenanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.purchaseOrderToolStripMenuItem,
-            this.changeDRToolStripMenuItem});
+            this.changeDRToolStripMenuItem,
+            this.chequesToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
@@ -121,6 +123,13 @@
             this.changeDRToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.changeDRToolStripMenuItem.Text = "Data Correction";
             this.changeDRToolStripMenuItem.Click += new System.EventHandler(this.changeDRToolStripMenuItem_Click);
+            // 
+            // chequesToolStripMenuItem
+            // 
+            this.chequesToolStripMenuItem.Name = "chequesToolStripMenuItem";
+            this.chequesToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.chequesToolStripMenuItem.Text = "Products";
+            this.chequesToolStripMenuItem.Click += new System.EventHandler(this.chequesToolStripMenuItem_Click);
             // 
             // changeBankToolStripMenuItem
             // 
@@ -161,6 +170,7 @@
         private System.Windows.Forms.ToolStripMenuItem purchaseOrderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeDRToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeBankToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chequesToolStripMenuItem;
 
         //private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         //private System.Windows.Forms.ToolStripMenuItem purchaseOrderToolStripMenuItem;

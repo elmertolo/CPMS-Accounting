@@ -395,6 +395,10 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnConcatinatedDRB;
             
+            private global::System.Data.DataColumn columnConcatinatedDRC;
+            
+            private global::System.Data.DataColumn columnConcatinatedDRD;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DeliveryReceiptDataTable() {
@@ -614,6 +618,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ConcatinatedDRCColumn {
+                get {
+                    return this.columnConcatinatedDRC;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ConcatinatedDRDColumn {
+                get {
+                    return this.columnConcatinatedDRD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -672,7 +692,9 @@ namespace CPMS_Accounting {
                         string TotalAmount, 
                         int PONumber, 
                         string ConcatinatedDRA, 
-                        string ConcatinatedDRB) {
+                        string ConcatinatedDRB, 
+                        string ConcatinatedDRC, 
+                        string ConcatinatedDRD) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -697,7 +719,9 @@ namespace CPMS_Accounting {
                         TotalAmount,
                         PONumber,
                         ConcatinatedDRA,
-                        ConcatinatedDRB};
+                        ConcatinatedDRB,
+                        ConcatinatedDRC,
+                        ConcatinatedDRD};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -743,6 +767,8 @@ namespace CPMS_Accounting {
                 this.columnPONumber = base.Columns["PONumber"];
                 this.columnConcatinatedDRA = base.Columns["ConcatinatedDRA"];
                 this.columnConcatinatedDRB = base.Columns["ConcatinatedDRB"];
+                this.columnConcatinatedDRC = base.Columns["ConcatinatedDRC"];
+                this.columnConcatinatedDRD = base.Columns["ConcatinatedDRD"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -794,6 +820,10 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnConcatinatedDRA);
                 this.columnConcatinatedDRB = new global::System.Data.DataColumn("ConcatinatedDRB", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnConcatinatedDRB);
+                this.columnConcatinatedDRC = new global::System.Data.DataColumn("ConcatinatedDRC", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConcatinatedDRC);
+                this.columnConcatinatedDRD = new global::System.Data.DataColumn("ConcatinatedDRD", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConcatinatedDRD);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2310,6 +2340,38 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ConcatinatedDRC {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.ConcatinatedDRCColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ConcatinatedDRC\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.ConcatinatedDRCColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ConcatinatedDRD {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.ConcatinatedDRDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ConcatinatedDRD\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.ConcatinatedDRDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -2582,6 +2644,30 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetConcatinatedDRBNull() {
                 this[this.tableDeliveryReceipt.ConcatinatedDRBColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsConcatinatedDRCNull() {
+                return this.IsNull(this.tableDeliveryReceipt.ConcatinatedDRCColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetConcatinatedDRCNull() {
+                this[this.tableDeliveryReceipt.ConcatinatedDRCColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsConcatinatedDRDNull() {
+                return this.IsNull(this.tableDeliveryReceipt.ConcatinatedDRDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetConcatinatedDRDNull() {
+                this[this.tableDeliveryReceipt.ConcatinatedDRDColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -67,15 +67,17 @@ namespace CPMS_Accounting
                         });
 
                     }
-                    documentStampToolStripMenuItem.Enabled = true;
+                 
                 }
-                else
-                    documentStampToolStripMenuItem.Enabled = false;
+              
+                 
                 printDRToolStripMenuItem.Enabled = true;
-                concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
+             //   concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
 
                 MessageBox.Show("Batch :" + txtRecentBatch.Text + " has been generated!!!");
-                MessageBox.Show(concatDR);
+                proc.DisableControls(deliveryReportToolStripMenuItem);
+                proc.DisableControls(documentStampToolStripMenuItem);
+                // MessageBox.Show(concatDR);
             }
             else
                 MessageBox.Show("Please enter Batch Number!");

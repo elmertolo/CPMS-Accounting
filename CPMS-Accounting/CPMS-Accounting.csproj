@@ -44,9 +44,11 @@
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +83,12 @@
     </Compile>
     <Compile Include="Forms\DeliveryReport.Designer.cs">
       <DependentUpon>DeliveryReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProducts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProducts.Designer.cs">
+      <DependentUpon>frmProducts.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmCorrection.cs">
       <SubType>Form</SubType>
@@ -154,6 +162,7 @@
     <Compile Include="Models\DocStampModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\PurchaseOrderModel.cs" />
     <Compile Include="Models\ReportRequirement.cs" />
     <Compile Include="Models\SalesInvoiceFinishedModel.cs" />
@@ -219,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DeliveryReport.resx">
       <DependentUpon>DeliveryReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProducts.resx">
+      <DependentUpon>frmProducts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCorrection.resx">
       <DependentUpon>frmCorrection.cs</DependentUpon>
@@ -306,6 +318,7 @@
     <None Include="DataSet1.xss">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

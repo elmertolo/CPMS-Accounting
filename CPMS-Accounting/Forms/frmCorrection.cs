@@ -53,7 +53,7 @@ namespace CPMS_Accounting.Forms
             });
 
             dgvView.DataSource = dt;
-            bg_dtg(dgvView);
+            ProcessServices.bg_dtg(dgvView);
             dgvView.Columns[0].Width = 70;
             dgvView.Columns[3].Width = 60;
         }
@@ -118,7 +118,7 @@ namespace CPMS_Accounting.Forms
                 dgvData.Columns.Add(chk);
             }
             dgvData.DataSource = dt2;
-            bg_dtg(dgvData);
+            ProcessServices.bg_dtg(dgvData);
             //Assign Click event to the DataGridView Cell.
             // dgvData.CellContentClick += new DataGridViewCellEventHandler(dgvData_CellClick);
             dgvData.CurrentCell = dgvData.Rows[0].Cells[1];
@@ -239,29 +239,8 @@ namespace CPMS_Accounting.Forms
             txtBatch.TabIndex = 0;
             cbHeader.Checked = false;
         }
-        public static void bg_dtg(DataGridView dgv)
-        {
-            try
-            {
+        
 
-                for (int i = 0; i < dgv.Rows.Count; i++)
-                {
-                    if (IsOdd(i))
-                    {
-
-                        dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightBlue;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("" + ex);
-            }
-        }
-
-        public static bool IsOdd(int value)
-        {
-            return value % 2 != 0;
-        }
+     
     }
 }

@@ -51,7 +51,7 @@ namespace CPMS_Accounting
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            
             deliveryDate = dateTimePicker1.Value;
             if (deliveryDate == dateTime)
             {
@@ -74,6 +74,8 @@ namespace CPMS_Accounting
                 // vp.MdiParent = this;
                 vp.Show();
                 reportsToolStripMenuItem.Enabled = true;
+                proc.DisableControls(deliveryReportToolStripMenuItem);
+
             }
         }
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -224,24 +226,26 @@ namespace CPMS_Accounting
                             proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
                             order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
-                            //proc.GetPONUmber(order.ChequeName, poNumber);
-                            //poNumber.ForEach(x => { 
-                                                                  
-                            //});
-                            if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
-                            {
-                                MessageBox.Show("Please add Purchase Order Number!!");
+                                                                                //proc.GetPONUmber(order.ChequeName, poNumber);
+                                                                                //poNumber.ForEach(x => { 
 
-                                break;
-                            }
-                            
+                        //});
+                          if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                          {
+
+                            MessageBox.Show("Please add Purchase Order Number!!","Error!");
+                            errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
+                            break;
+                          }
+                        
 
                             if (branch.Flag == 0)
                                 order.Location = "Direct";
                             else
                                 order.Location = "Provincial";
-
+                         
                         }
+                       
                              orderList.Add(order);
                     }
 
@@ -292,9 +296,9 @@ namespace CPMS_Accounting
                             MessageBox.Show("Insufficient Balance for Purchase Order No. :" + po[1] + " for Cheque Name: " + chkType[1]);
 
                         }
+
                     }
-                    else
-                    {
+                  
                         if (errorMessage != "")
                         {
                             ProcessServices.ErrorMessage(errorMessage);
@@ -307,13 +311,13 @@ namespace CPMS_Accounting
 
                             MessageBox.Show("Checking files done! No Errors found");
                             dataGridView1.DataSource = orderList;
-                            frmCorrection.bg_dtg(dataGridView1);
+                            ProcessServices.bg_dtg(dataGridView1);
                             lblTotalA.Text = totalA.Count.ToString();
                             lblTotalB.Text = totalB.Count.ToString();
                             lblTotalChecks.Text = orderList.Count.ToString();
 
                         }
-                    }
+                    
                 }
 
               }
@@ -330,13 +334,13 @@ namespace CPMS_Accounting
             //}
         }
        
+        
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
             
             ChequeName();
             ReporStyle();
-
-
+            
         }
         private void GetPack()
         {
@@ -431,9 +435,9 @@ namespace CPMS_Accounting
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
             GetDR();
-            GetPack();
+        
          
-            MessageBox.Show("Getting DrNumber and PackNumber done!!");
+            MessageBox.Show("Getting DrNumber done!!");
         }
 
         private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -467,6 +471,14 @@ namespace CPMS_Accounting
             report = "DRR";
             ViewReports vp = new ViewReports();
             vp.Show();
+        }
+
+        private void btnGenerate2_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            GetPack();
+            MessageBox.Show("Getting PackNumber done!!");
         }
     }
 }

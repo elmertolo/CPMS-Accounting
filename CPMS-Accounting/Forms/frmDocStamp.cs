@@ -119,7 +119,7 @@ namespace CPMS_Accounting.Forms
                 });
 
                 DgvDSalesInvoice.DataSource = dt;
-                frmCorrection.bg_dtg(DgvDSalesInvoice);
+                ProcessServices.bg_dtg(DgvDSalesInvoice);
                 DgvDSalesInvoice.Columns[0].Width = 150;
                 DgvDSalesInvoice.Columns[1].Width = 150;
                 DgvDSalesInvoice.Columns[2].Width = 70;
@@ -205,7 +205,7 @@ namespace CPMS_Accounting.Forms
                             dt.Rows.Add(new object[] { r.DocStampNumber, r.SalesInvoiceNumber, r.TotalQuantity, r.DocDesc, r.DocStampPrice, r.TotalAmount, r.DocStampDate.ToString("yyyy-MM-dd") });
                         });
                         dgvOutput.DataSource = dt;
-                        frmCorrection.bg_dtg(dgvOutput);
+                        ProcessServices.bg_dtg(dgvOutput);
                         dgvOutput.Columns[0].Width = 100;
                         dgvOutput.Columns[1].Width = 120;
                         dgvOutput.Columns[2].Width = 70;
