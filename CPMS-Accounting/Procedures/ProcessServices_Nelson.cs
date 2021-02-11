@@ -12,6 +12,8 @@ using CrystalDecisions.Shared;
 using static CPMS_Accounting.GlobalVariables;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
+using CPMS_Accounting.Forms;
 
 namespace CPMS_Accounting.Procedures
 {
@@ -77,7 +79,6 @@ namespace CPMS_Accounting.Procedures
                 {
                     sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType";
                 }
-
                 
                 //string sql = "select count(*) as count from producers_history";
                 MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -93,7 +94,6 @@ namespace CPMS_Accounting.Procedures
             }
 
         }
-
 
         public bool LoadPriceListData(ref DataTable dt)
         {
@@ -138,7 +138,7 @@ namespace CPMS_Accounting.Procedures
 
         public string GetDRList(string batch, string checktype, DateTime deliveryDate, string location)
         {
-
+           
             try
             {
 
@@ -164,12 +164,19 @@ namespace CPMS_Accounting.Procedures
                    "and chktype = '" + checktype + "' " +
                    "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
                 }
-               
 
+                
                 MySqlCommand cmd = new MySqlCommand(sql, con);
                 da = new MySqlDataAdapter(cmd);
+
+                
+               
+
                 cmd.ExecuteNonQuery();
+                
+                //cmd.ExecuteNonQuery();
                 da.Fill(dt);
+
                 string drList = dt.Rows[0].Field<string>(0).ToString(); // get concatenated delivery number list 
                 return drList is null ? "" : drList; // return concatenated delivery number list if not null
 
@@ -232,8 +239,28 @@ namespace CPMS_Accounting.Procedures
         public double GetUnitPrice(string checkName)
         {
 
+            MySqlCommand cmd;
+            //validation
+            if (checkName.Contains("'"))
+            {
 
-            MySqlCommand cmd = new MySqlCommand("select unitprice as UnitPrice from " + gClient.PriceListTable + " where chequename = '" + checkName + "'", con);
+                checkName = checkName.Replace("'", "''");
+
+                ////List<string> words = checkName.Split('\'').ToList();
+                ////string concat = "";
+
+                ////foreach (string word in words)
+                ////{
+                ////    concat += "'" + word + "'";
+                ////}
+                ////checkName = concat;
+
+                //cmd = new MySqlCommand("select unitprice as UnitPrice from " + gClient.PriceListTable + " where chequename = '" + newCheckName + "';", con);
+            }
+           
+            cmd = new MySqlCommand("select unitprice as UnitPrice from " + gClient.PriceListTable + " where chequename = '" + checkName + "';", con);
+
+            
 
             var result = cmd.ExecuteScalar() ?? 0;
 
@@ -493,8 +520,6 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-
-
         public bool GetOldSalesInvoiceList(double salesInvoiceNumber, ref DataTable dt)
         {
             try
@@ -524,8 +549,6 @@ namespace CPMS_Accounting.Procedures
                     "group by batch, CheckName, ChkType order by Batch;";
 
                 }
-
-
 
                 //"select batch as BatchName, chequename as CheckName, ChkType, deliverydate, count(ChkType) as Quantity, group_concat(distinct(drnumber) separator ', ') as drList " +
                 //    "from " + gHistoryTable + " " +
@@ -607,7 +630,6 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
-
 
         //PNB
         public bool IsQuantityOnHandSufficient(double toProcessQuantity, string chequeName, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)

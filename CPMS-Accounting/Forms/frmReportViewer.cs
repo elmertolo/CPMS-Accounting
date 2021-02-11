@@ -52,6 +52,10 @@ namespace CPMS_Accounting
 
         }
 
+        private void frmReportViewer_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

@@ -54,7 +54,9 @@ namespace CPMS_Accounting
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "REPORT VIEWER";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.frmReportViewer_Load);
             this.ResumeLayout(false);
+
         }
 
         #endregion
