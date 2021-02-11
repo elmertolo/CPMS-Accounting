@@ -73,11 +73,11 @@ namespace CPMS_Accounting.Procedures
 
                 if (gClient.ShortName == "PNB")
                 {
-                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity, location from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType, location";
+                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity, ProductCode, location from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType, location";
                 }
                 else
                 {
-                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType";
+                    sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity, ProductCode from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType";
                 }
                 
                 //string sql = "select count(*) as count from producers_history";
@@ -271,7 +271,6 @@ namespace CPMS_Accounting.Procedures
 
         public bool UpdateSalesInvoiceHistory(List<SalesInvoiceModel> siListToProcess)
         {
-
             try
             {
                 //database update
@@ -298,14 +297,12 @@ namespace CPMS_Accounting.Procedures
                     }
                     else
                     {
-
                         //Update History Table
                         sql = "update " + gClient.DataBaseName + " set " +
                         "unitprice = " + item.unitPrice + ", " +
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
                         "Salesinvoicedate = '" + item.salesInvoiceDate.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
-
                         " where drnumber in(" + item.drList.ToString() +
                         ") and batch = '" + item.Batch + "'" +
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
@@ -525,13 +522,12 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 string sql;
-
                 
                 if (gClient.ShortName == "PNB")
                 {
                     sql =
-                    "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList, " +
-                    "ChkType, deliverydate, (select unitPrice from " + gClient.PriceListTable + " where ChequeName = CheckName) as Unitprice, " +
+                    "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList , " +
+                    "ChkType, deliverydate, UnitPrice, " +
                     "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate, location " +
                     "from " + gClient.DataBaseName + " " +
                     "where salesinvoice = " + salesInvoiceNumber + " " +
@@ -542,7 +538,7 @@ namespace CPMS_Accounting.Procedures
                 {
                     sql =
                     "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList, " +
-                    "ChkType, deliverydate, (select unitPrice from " + gClient.PriceListTable + " where ChequeName = CheckName) as Unitprice, " +
+                    "ChkType, deliverydate, Unitprice, " +
                     "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate " +
                     "from " + gClient.DataBaseName + " " +
                     "where salesinvoice = " + salesInvoiceNumber + " " +
@@ -552,6 +548,8 @@ namespace CPMS_Accounting.Procedures
 
                 //"select batch as BatchName, chequename as CheckName, ChkType, deliverydate, count(ChkType) as Quantity, group_concat(distinct(drnumber) separator ', ') as drList " +
                 //    "from " + gHistoryTable + " " +
+
+
                 //    "where salesinvoice = " + salesInvoiceNumber + " group by batch, CheckName, ChkType order by BatchName";
 
                 //string sql = "select count(*) as count from producers_history";
@@ -753,7 +751,24 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-
+        public bool GetProductDetails(string productCode, ref DataTable dt)
+        {
+            try
+            {
+                string sql = "select * from "+ gClient.PriceListTable +" where productcode = '" + productCode + "';";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                return true;
+                
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
 
 
 

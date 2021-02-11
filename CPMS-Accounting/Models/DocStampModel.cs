@@ -16,7 +16,7 @@ namespace CPMS_Accounting.Models
         public string DocDesc { get; set; }
         public string ChkType { get; set; }
         public int POorder { get; set; }
-        public int DocStampPrice { get; set; }
+        public double DocStampPrice { get; set; }
         public double TotalAmount { get; set; }
         public double unitprice { get; set; }
         public string BankCode { get; set; }

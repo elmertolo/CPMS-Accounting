@@ -1298,7 +1298,7 @@ namespace CPMS_Accounting.Procedures
                 while (reader.Read())
                 {
 
-                    price.Bank = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+                    price.BankCode = !reader.IsDBNull(0) ? reader.GetString(0) : "";
                     price.ChequeDescription = !reader.IsDBNull(1) ? reader.GetString(1) : "";
                     price.DocStampPrice = !reader.IsDBNull(2) ? reader.GetInt32(2) : 0;
                     // price.unitprice = !reader.IsDBNull(3) ? reader.GetDouble(3) : 0;

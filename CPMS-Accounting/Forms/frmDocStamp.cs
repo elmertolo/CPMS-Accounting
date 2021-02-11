@@ -164,7 +164,7 @@ namespace CPMS_Accounting.Forms
                             proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
                             
 
-                            doc.BankCode = priceA.Bank;
+                            doc.BankCode = priceA.BankCode;
                           
                             doc.DocStampDate = dtpDocDate.Value;
                             doc.batches = row.Cells["Batch"].Value.ToString();
