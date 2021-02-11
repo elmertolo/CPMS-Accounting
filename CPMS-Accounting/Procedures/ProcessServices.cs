@@ -1401,7 +1401,7 @@ namespace CPMS_Accounting.Procedures
             //Orginal Query
             Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
                   "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
-                  "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
+                  "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location from " + gClient.DataBaseName +
                   " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
                   " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
             //_docStampNumber.ForEach(x => { 

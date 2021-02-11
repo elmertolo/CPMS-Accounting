@@ -132,32 +132,39 @@ namespace CPMS_Accounting.Forms
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            product.ProductCode = txtProductCode.Text;
-            product.BankCode = txtBankCode.Text;
-            product.ChequeName = txtChequeName.Text;
-            product.Description = txtDescription.Text;
-            product.ChkType = txtType.Text;
-            product.DocStampPrice = double.Parse(txtDocStampPrice.Text);
-            product.UnitPrice = double.Parse(txtUnitPrice.Text);
-            product.Unit = txtUnit.Text;
-            product.DeliveryLocation = cmbLocation.Text;
-            product.DateModified = DateTime.Now;
+            DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                product.ProductCode = txtProductCode.Text;
+                product.BankCode = txtBankCode.Text;
+                product.ChequeName = txtChequeName.Text;
+                product.Description = txtDescription.Text;
+                product.ChkType = txtType.Text;
+                product.DocStampPrice = double.Parse(txtDocStampPrice.Text);
+                product.UnitPrice = double.Parse(txtUnitPrice.Text);
+                product.Unit = txtUnit.Text;
+                product.DeliveryLocation = cmbLocation.Text;
+                product.DateModified = DateTime.Now;
 
 
-            if(liaddmod == 2)
-            {
-                proc.AddProducts(product);
-                MessageBox.Show("Data has been Added!!!");
+                if (liaddmod == 2)
+                {
+                    proc.AddProducts(product);
+                    MessageBox.Show("Data has been Added!!!","Saving Data",MessageBoxButtons.YesNo,MessageBoxIcon.Information);
+                }
+                else if (liaddmod == 1)
+                {
+                    proc.ModifyProducts(product);
+                    MessageBox.Show("Data has been Updated!!!","Updating Data", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                }
+                ClearTools();
+                liaddmod = 0;
+                EnableControls(false, liaddmod);
+                DisplayAllProducts();
             }
-            else if(liaddmod  == 1)
-            {
-                proc.ModifyProducts(product);
-                MessageBox.Show("Data has been Updated!!!");
-            }
-            ClearTools();
-            liaddmod = 0;
-            EnableControls(false, liaddmod);
-            DisplayAllProducts();
+            else
+                MessageBox.Show("Process has been cancelled!!!","Cancel Process", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void cmbLocation_KeyPress(object sender, KeyPressEventArgs e)

@@ -1740,7 +1740,7 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, string DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, string PONumber, double BalanceOrder, string Batch, string Location) {
+            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, string DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, int PONumber, double BalanceOrder, string Batch, string Location) {
                 DocStampRow rowDocStampRow = ((DocStampRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Bank,
@@ -1822,7 +1822,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnPreparedBy);
                 this.columnCheckedBy = new global::System.Data.DataColumn("CheckedBy", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCheckedBy);
-                this.columnPONumber = new global::System.Data.DataColumn("PONumber", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPONumber = new global::System.Data.DataColumn("PONumber", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPONumber);
                 this.columnBalanceOrder = new global::System.Data.DataColumn("BalanceOrder", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalanceOrder);
@@ -3494,10 +3494,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string PONumber {
+            public int PONumber {
                 get {
                     try {
-                        return ((string)(this[this.tableDocStamp.PONumberColumn]));
+                        return ((int)(this[this.tableDocStamp.PONumberColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PONumber\' in table \'DocStamp\' is DBNull.", e);
