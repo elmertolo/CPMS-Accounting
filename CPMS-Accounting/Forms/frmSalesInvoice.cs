@@ -93,36 +93,43 @@ namespace CPMS_Accounting
             if (gClient.ShortName == "PNB")
             {
                 //Column names and width setup
-                dgvDRList.ColumnCount = 6; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
+                dgvDRList.ColumnCount = 7; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
-                dgvDRList.Columns[0].Name = "QUANTITY";
+                dgvDRList.Columns[0].Name = "PRODUCT CODE";
                 dgvDRList.Columns[0].Width = 70;
-                dgvDRList.Columns[0].DataPropertyName = "Quantity";
+                dgvDRList.Columns[0].DataPropertyName = "ProductCode";
 
-                dgvDRList.Columns[1].Name = "BATCH NAME";
-                dgvDRList.Columns[1].Width = 150;
-                dgvDRList.Columns[1].DataPropertyName = "batch"; //this must be the actual table name in sql
+                dgvDRList.Columns[1].Name = "QUANTITY";
+                dgvDRList.Columns[1].Width = 70;
+                dgvDRList.Columns[1].DataPropertyName = "Quantity";
 
-                dgvDRList.Columns[2].Name = "CHECK NAME";
-                dgvDRList.Columns[2].Width = 200;
-                dgvDRList.Columns[2].DataPropertyName = "chequename";
+                dgvDRList.Columns[2].Name = "BATCH NAME";
+                dgvDRList.Columns[2].Width = 150;
+                dgvDRList.Columns[2].DataPropertyName = "batch"; //this must be the actual table name in sql
 
-                dgvDRList.Columns[3].Name = "CHECK TYPE";
-                dgvDRList.Columns[3].Width = 104;
-                dgvDRList.Columns[3].DataPropertyName = "ChkType";
+                dgvDRList.Columns[3].Name = "CHECK NAME";
+                dgvDRList.Columns[3].Width = 200;
+                dgvDRList.Columns[3].DataPropertyName = "chequename";
 
-                dgvDRList.Columns[4].Name = "DELIVERY DATE";
-                dgvDRList.Columns[4].Width = 100;
-                dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+                dgvDRList.Columns[4].Name = "CHECK TYPE";
+                dgvDRList.Columns[4].Width = 104;
+                dgvDRList.Columns[4].DataPropertyName = "ChkType";
 
-                dgvDRList.Columns[5].Name = "LOCATION";
-                dgvDRList.Columns[5].Width = 500;
-                dgvDRList.Columns[5].DataPropertyName = "location";
+                dgvDRList.Columns[5].Name = "DELIVERY DATE";
+                dgvDRList.Columns[5].Width = 100;
+                dgvDRList.Columns[5].DataPropertyName = "deliverydate";
+
+                dgvDRList.Columns[6].Name = "LOCATION";
+                dgvDRList.Columns[6].Width = 100;
+                dgvDRList.Columns[6].DataPropertyName = "location";
+
+
             }
             else
             {
                 //Column names and width setup
                 dgvDRList.ColumnCount = 5; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
+
 
                 dgvDRList.Columns[0].Name = "QUANTITY";
                 dgvDRList.Columns[0].Width = 70;
@@ -143,8 +150,10 @@ namespace CPMS_Accounting
                 dgvDRList.Columns[4].Name = "DELIVERY DATE";
                 dgvDRList.Columns[4].Width = 500;
                 dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+
+
             }
-           
+
 
             //GRID 2
             //dgvDRList.AutoGenerateColumns = true;
@@ -197,6 +206,8 @@ namespace CPMS_Accounting
             dgvListToProcess.Columns[7].Width = 100;
             dgvListToProcess.Columns[7].DataPropertyName = "LineTotalAmount";
 
+
+
         }
 
         private void dgvDRList_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -215,14 +226,22 @@ namespace CPMS_Accounting
 
         private void AddSelectedDRRow()
         {
-            
+           
+
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
 
                 foreach (DataGridViewRow row in dgvDRList.SelectedRows)
                 {
                     SalesInvoiceModel line = new SalesInvoiceModel();
-                    
+
+
+                    //Fill Global Price List Model
+                    FillPriceListModel(row.Cells["Product Code"].Value.ToString());
+
+
+                    //Supply values on sales invoice model list based on datagrid view values
+                    line.ProductCode = gProduct.ProductCode;
                     line.Batch = row.Cells["batch Name"].Value.ToString();
                     line.checkName = row.Cells["check name"].Value.ToString();
                     line.checkType = row.Cells["check type"].Value.ToString();
@@ -236,8 +255,11 @@ namespace CPMS_Accounting
                         line.Location = row.Cells["location"].Value.ToString();
                     }
 
-                   
-                    line.unitPrice = proc.GetUnitPrice(line.checkName);
+
+                    //line.unitPrice = proc.GetUnitPrice(line.checkName);
+                    //Modified code replace getunitprice (above code)procedure to retrieved product model value. 02112021
+                    line.unitPrice = gProduct.UnitPrice;
+
                     line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
                     
                     //Check if record is already inserted
@@ -304,6 +326,7 @@ namespace CPMS_Accounting
             else
             {
                 MessageBox.Show("Please select at least one record");
+                return;
             }
 
 
@@ -370,7 +393,6 @@ namespace CPMS_Accounting
                     {
                         foreach(var item in sortedList)
                         {
-
                             if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.checkName, item.PurchaseOrderNumber))
                             {
                                 MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
@@ -777,8 +799,6 @@ namespace CPMS_Accounting
 
             }
 
-           
-
             foreach (DataRow row in siListDT.Rows)
             {
 
@@ -802,8 +822,6 @@ namespace CPMS_Accounting
                
                 salesInvoiceList.Add(line);
             }
-           
-
 
             //created 'list' variable column sorting by line for datagrid view 
             var sortedList = salesInvoiceList
@@ -823,11 +841,8 @@ namespace CPMS_Accounting
             btnPrintSalesInvoice.Enabled = false;
             btnViewSelected.Enabled = false;
 
-
             //abort progress bar view
             thread.Abort();
-
-
         }
 
         private void AddRecord()
@@ -840,9 +855,10 @@ namespace CPMS_Accounting
 
                 if (proc.SalesInvoiceExist(salesInvoiceNumber, ref dt) && isSalesInvoiceCancelled == true)
                 {
-                    MessageBox.Show("Entered S.I. Number is already cancelled");
+                    MessageBox.Show("You cannot use Sales Invoice #: " + salesInvoiceNumber + " \r\n \r\n Transaction is already cancelled", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     RefreshView();
                 }
+
                 else if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
                 {
                     DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
@@ -935,7 +951,27 @@ namespace CPMS_Accounting
             progressBar1.Visible = true;
         }
 
+        private void FillPriceListModel(string productCode)
+        {
+            DataTable dt = new DataTable();
+            if (!proc.GetProductDetails(productCode, ref dt))
+            {
+                MessageBox.Show("Erron on (proc.GetProductDetails(productCode) \r\n \r\n" + proc.errorMessage);
+                return;
+            }
 
+            foreach (DataRow row in dt.Rows)
+            {
+                gProduct.ProductCode = row.Field<string>("ProductCode");
+                gProduct.BankCode = row.Field<string>("BankCode");
+                gProduct.ChequeDescription = row.Field<string>("Description");
+                gProduct.ChkType = row.Field<string>("FinalChkType");
+                gProduct.DocStampPrice = row.Field<double>("Docstamp");
+                gProduct.UnitPrice = row.Field<double>("UnitPrice");
+
+            }
+
+        }
 
 
 

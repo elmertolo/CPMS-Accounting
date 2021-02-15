@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace CPMS_Accounting.Models
 {
-    class PriceListModel
+    public class PriceListModel
     {
-        public string Bank { get; set; }
+        public string ProductCode { get; set; }
+        public string BankCode { get; set; }
         public string ChequeDescription { get; set; }
         public string ChkType { get; set; }
-        public  int DocStampPrice { get; set; }
-        public double unitprice{ get; set; }
+        public double DocStampPrice { get; set; }
+        public double UnitPrice{ get; set; }
 
     }
 }
