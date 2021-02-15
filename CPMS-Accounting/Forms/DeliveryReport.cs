@@ -151,6 +151,8 @@ namespace CPMS_Accounting
         }
         private void GetData()
         {
+            orderList.Clear();
+        
             var fileContent = string.Empty;
             var filePath = string.Empty;
 
@@ -248,8 +250,8 @@ namespace CPMS_Accounting
                        
                              orderList.Add(order);
                     }
-
-
+                    myReader.Close();
+                    con.Close();
                 }
                 else
                 {
@@ -310,7 +312,14 @@ namespace CPMS_Accounting
 
 
                             MessageBox.Show("Checking files done! No Errors found");
-                            dataGridView1.DataSource = orderList;
+                            if(dataGridView1.Rows.Count > 0)
+                            {
+                                dataGridView1.DataSource = "";
+                                dataGridView1.DataSource = orderList;
+                            }
+                            else
+                             dataGridView1.DataSource = orderList;
+                           // dataGridView1.Refresh();
                             ProcessServices.bg_dtg(dataGridView1);
                             lblTotalA.Text = totalA.Count.ToString();
                             lblTotalB.Text = totalB.Count.ToString();

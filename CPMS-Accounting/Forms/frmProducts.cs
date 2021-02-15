@@ -71,7 +71,7 @@ namespace CPMS_Accounting.Forms
         private void EnableControls(bool _bool, int _addmod)
         {
             txtProductCode.Enabled = _bool;
-            txtBankCode.Enabled = _bool;
+            txtbankcode.Enabled = _bool;
             txtChequeName.Enabled = _bool;
             txtDescription.Enabled = _bool;
             txtDocStampPrice.Enabled = _bool;
@@ -108,7 +108,7 @@ namespace CPMS_Accounting.Forms
         }
         private void ClearTools()
         {
-            txtBankCode.Text = "";
+            txtbankcode.Text = "";
             txtProductCode.Text = "";
             txtDocStampPrice.Text = "";
             txtDescription.Text = "";
@@ -136,7 +136,7 @@ namespace CPMS_Accounting.Forms
             if (dialogResult == DialogResult.Yes)
             {
                 product.ProductCode = txtProductCode.Text;
-                product.BankCode = txtBankCode.Text;
+                product.BankCode = txtbankcode.Text;
                 product.ChequeName = txtChequeName.Text;
                 product.Description = txtDescription.Text;
                 product.ChkType = txtType.Text;
@@ -150,12 +150,12 @@ namespace CPMS_Accounting.Forms
                 if (liaddmod == 2)
                 {
                     proc.AddProducts(product);
-                    MessageBox.Show("Data has been Added!!!","Saving Data",MessageBoxButtons.YesNo,MessageBoxIcon.Information);
+                    MessageBox.Show("Data has been Added!!!","Saving Data",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 }
                 else if (liaddmod == 1)
                 {
                     proc.ModifyProducts(product);
-                    MessageBox.Show("Data has been Updated!!!","Updating Data", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    MessageBox.Show("Data has been Updated!!!","Updating Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 ClearTools();
                 liaddmod = 0;
@@ -182,7 +182,7 @@ namespace CPMS_Accounting.Forms
 
         private void txtBankCode_TextChanged(object sender, EventArgs e)
         {
-            txtBankCode.CharacterCasing = CharacterCasing.Upper;
+            txtbankcode.CharacterCasing = CharacterCasing.Upper;
         }
 
         private void txtType_TextChanged(object sender, EventArgs e)

@@ -167,21 +167,21 @@ namespace CPMS_Accounting.Forms
 
             if (selectedData.Count > 0)
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you wnat to delete this data?", "Delivery Receipt Number delete", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     //do something
 
                     proc.DeleteItems(selectedData);
-                    MessageBox.Show("Data has succesfully deleted!!");
+                    MessageBox.Show("Data has succesfully deleted!!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearTools();
                 }
                 else
-                    MessageBox.Show("Deletion has been cancelled!!!");
+                    MessageBox.Show("Deletion has been cancelled!!!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                MessageBox.Show("Please select item to delete!");
+                MessageBox.Show("Please select item to delete!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
@@ -206,24 +206,24 @@ namespace CPMS_Accounting.Forms
             // 
             if (txtNewDr.Text != "")
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to update this data?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     //do something
                
                  proc.UpdateItem(tempModel, val);
                 
-                MessageBox.Show("Data has been Updated!!");
+                MessageBox.Show("Data has been Updated!!","Done",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 ClearTools();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
                     //do something else
-                    MessageBox.Show("Updating has been cancelled!!!");
+                    MessageBox.Show("Updating has been cancelled!!!","Cancelled",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                 }
             }
             else
-                MessageBox.Show("Please Input new Series");
+                MessageBox.Show("Please Input new Series", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
         private void ClearTools()
