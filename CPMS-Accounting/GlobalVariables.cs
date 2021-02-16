@@ -23,6 +23,10 @@ namespace CPMS_Accounting
         public static PurchaseOrderModel gPurchaseOrderFinished = new PurchaseOrderModel();
         public static PriceListModel gProduct = new PriceListModel();
 
+        
+
+        
+
         //Crystal Report Global Variable (Crystal Report Prerequisites)
         public static ReportDocument gCrystalDocument;
 
@@ -41,7 +45,6 @@ namespace CPMS_Accounting
         public static string gSIHeaderReportAddress3 = ConfigurationManager.AppSettings["SIHeaderReportAddress3"]; //"Makati City";
         //resettable variables
      
-      
         //=============================================================================
 
     }

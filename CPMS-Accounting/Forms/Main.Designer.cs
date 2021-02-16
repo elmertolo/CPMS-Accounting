@@ -70,6 +70,7 @@
             this.transactionsToolStripMenuItem.ShortcutKeyDisplayString = "T";
             this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(105, 24);
             this.transactionsToolStripMenuItem.Text = "Transactions";
+            this.transactionsToolStripMenuItem.Click += new System.EventHandler(this.transactionsToolStripMenuItem_Click);
             // 
             // deliveryReceiptToolStripMenuItem
             // 

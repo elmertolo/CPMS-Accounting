@@ -20,6 +20,10 @@ namespace CPMS_Accounting
     public partial class frmSalesInvoice : Form
     {
 
+        //02152021 Log4Net
+        private log4net.ILog log;
+
+
         List<SalesInvoiceModel> salesInvoiceList = new List<SalesInvoiceModel>();
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
         Main frm;
@@ -28,6 +32,8 @@ namespace CPMS_Accounting
 
         public frmSalesInvoice(Main frm1)
         {
+            //02152021 Log4Net
+            log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
@@ -50,7 +56,7 @@ namespace CPMS_Accounting
 
         private void frmSalesInvoice_Load(object sender, EventArgs e)
         {
-
+            log.Info("Sales Invoice Form Load");
             //DataTable dt = new DataTable();
             //if (!proc.LoadUnprocessedSalesInvoiceData(ref dt))
             //{
@@ -218,6 +224,7 @@ namespace CPMS_Accounting
         
         private void btnViewSelected_Click(object sender, EventArgs e)
         {
+            log.Info("Insert Selected button click");
 
             AddSelectedDRRow();
             
@@ -340,104 +347,9 @@ namespace CPMS_Accounting
 
         private void btnPrintSalesInvoice_Click(object sender, EventArgs e)
         {
+            log.Info("(Generate /  Print) Button Click");
 
-
-            if (dgvListToProcess.Rows.Count == 0)
-            {
-                MessageBox.Show("Please select record from Batch List.");
-            }
-            else if (!p.ValidateInputFieldsSI(txtSalesInvoiceNumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
-            {
-                MessageBox.Show("Please supply values in blank field(s)");
-            }
-            else
-            {
-
-                DialogResult result = MessageBox.Show("This will process Sales Invoice on selected DR's. \r\n Select 'YES' to proceed.", "Confirmation", MessageBoxButtons.YesNo);
-                
-                if (result == DialogResult.Yes)
-                {
-
-                    ProcessServices_Nelson proc = new ProcessServices_Nelson();
-
-                    if (!proc.UpdateTempTableSI(salesInvoiceList))
-                    {
-                        MessageBox.Show("Sales Invoice Temp Table Update Error (UpdateTempTable). \r\n" + proc.errorMessage);
-                        return;
-                    }
-
-                    //Fill gSalesInvoiceFinished Model Class
-                    //gSalesInvoiceList = salesInvoiceList;
-                    gSalesInvoiceFinished.ClientCode = gClient.ClientCode.ToString();
-                    gSalesInvoiceFinished.SalesInvoiceDateTime = dtpInvoiceDate.Value;
-                    gSalesInvoiceFinished.GeneratedBy = gUser.UserName.ToString();
-                    gSalesInvoiceFinished.CheckedBy = cbCheckedBy.Text.ToString();
-                    gSalesInvoiceFinished.ApprovedBy = cbApprovedBy.Text.ToString();
-                    gSalesInvoiceFinished.SalesInvoiceNumber = double.Parse(txtSalesInvoiceNumber.Text.ToString());
-                    gSalesInvoiceFinished.TotalAmount = double.Parse(salesInvoiceList.Sum(x => x.lineTotalAmount).ToString());
-                    gSalesInvoiceFinished.VatAmount = p.GetVatAmount(gSalesInvoiceFinished.TotalAmount);
-                    gSalesInvoiceFinished.NetOfVatAmount = p.GetNetOfVatAmount(gSalesInvoiceFinished.TotalAmount);
-                   
-                    ///Sort Sales Invoice By Batch before saving and Printing
-                    var sortedList = salesInvoiceList.OrderBy(x => x.Batch).ToList();
-
-                    ///Update Database
-                    if (!proc.UpdateSalesInvoiceHistory(sortedList))
-                    {
-                        MessageBox.Show("Error updating sales invoice record to server. (proc.UpdateSalesInvoiceHistory) \r\n" + proc.errorMessage);
-                        return;
-                    }
-
-                    //Update Quantity On hand for PNB
-                    if (gClient.ShortName == "PNB")
-                    {
-                        foreach(var item in sortedList)
-                        {
-                            if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.checkName, item.PurchaseOrderNumber))
-                            {
-                                MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
-                                return;
-                            }
-                        }
-                    }
-
-                    //Create new instance of the document/ Prepare report using Crystal Reports
-                    ReportDocument crystalDocument = new ReportDocument();
-                    
-                    //Check RPT File
-                    if (!p.LoadReportPath("SalesInvoice", ref crystalDocument))
-                    {
-                        MessageBox.Show("SalesInvoice.rpt File not found");
-                        return;
-                    }
-
-                    //Supply Data source to document
-                    crystalDocument.SetDataSource(sortedList);
-
-                    //Install Fastmember from nuGet for Fast (List to Datatable) Conversion
-                    //DataTable dt = new DataTable();
-                    //using (var reader = ObjectReader.Create(sortedList))
-                    //{
-                    //    dt.Load(reader);
-                    //}
-                    /////Supply datatable from the list converted
-                    //gReportDT = dt;
-
-
-                    //Supply details on report parameters
-                    p.FillCRReportParameters("SalesInvoice", ref crystalDocument);
-
-
-                    //Supply these details into Global ReportDocument to be able for the report viewer to initialize the rerport
-                    gCrystalDocument = crystalDocument;
-
-                    frmReportViewer crForm = new frmReportViewer();
-                    crForm.Show();
-                    RefreshView();
-
-                }
-
-            }
+            GeneratePrintSalesInvoice();
 
         }
 
@@ -458,19 +370,21 @@ namespace CPMS_Accounting
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-
+            log.Info("Pressed Search Button");
             SearchText();
            
         }
 
         private void btnReloadDrList_Click(object sender, EventArgs e)
         {
+            log.Info("Refresh button click.");
 
             RefreshView();
         }
 
         private void RefreshView()
         {
+            log.Info("Refreshing Display");
 
             salesInvoiceList.Clear();
             txtSearch.Text = "";
@@ -481,32 +395,35 @@ namespace CPMS_Accounting
 
             salesInvoiceList.Clear();
             
-
             DisableControls();
-
-           
-
 
         }
 
         private void SearchText()
         {
+            
+            
+
             DataTable dt = new DataTable();
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
-                MessageBox.Show("Please input batch number to search");
+                //MessageBox.Show("Please input batch number to search");
+                //log.Info("No text on txtSearch button");
+                p.MessageAndLog("Nothing to search. Please input batch number to search", ref log, "info");
                 RefreshDrList();
 
             }
             else
             {
+                log.Info(gUser.UserName + " Search Started for Entered Text: " + txtSearch.Text.ToString() + "");
+
                 if (!proc.BatchSearch(txtSearch.Text, ref dt))
                 {
-                    MessageBox.Show("Unable to connect to server. (proc.BatchSearch)\r\n" + proc.errorMessage);
+                    //MessageBox.Show("Unable to connect to server. (proc.BatchSearch)\r\n" + proc.errorMessage);
+                    //log.Fatal("Unable to connect to server. (proc.BatchSearch) " + proc.errorMessage);
+                    p.MessageAndLog("Unable to connect to server. (proc.BatchSearch)\r\n \r\n" + proc.errorMessage, ref log, "fatal");
                     return;
                 }
-
-
 
                 //_ = dt.Rows.Count != 0 ? dgvDRList.DataSource = dt : MessageBox.Show("No results found");
                 ///02032021 Updated statement above. Made Dr List refreshed if  no records found
@@ -516,7 +433,10 @@ namespace CPMS_Accounting
                 }
                 else
                 {
-                    MessageBox.Show("No results found");
+                    //MessageBox.Show("No results found");
+                    //log.Info("No results found");
+                    p.MessageAndLog("No results found", ref log, "info");
+
                     RefreshDrList();
                 }
                 
@@ -568,6 +488,8 @@ namespace CPMS_Accounting
 
         private void btnReprint_Click(object sender, EventArgs e)
         {
+            log.Info("(Reprint) Button Click");
+
             int salesInvoiceNumber = int.Parse(txtSalesInvoiceNumber.Text);
             DialogResult result = MessageBox.Show("Reprint Invoice Number " + salesInvoiceNumber.ToString() + "?","Confirmation", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
@@ -578,6 +500,7 @@ namespace CPMS_Accounting
 
         public void ReprintSalesInvoice(int salesInvoiceNumber)
         {
+
 
             //get Finished Sales Inbvoice details if exist
             DataTable siFinishedDT = new DataTable();
@@ -745,7 +668,7 @@ namespace CPMS_Accounting
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
-
+            log.Info("Pressed Enter Button with text on txtSalesInvoiceNumber: " + txtSalesInvoiceNumber.Text.ToString());
             AddRecord();
 
         }
@@ -754,6 +677,7 @@ namespace CPMS_Accounting
         {
             if (e.KeyCode == Keys.Enter)
             {
+                log.Info("Pressed Enter on Keyboard with text on txtSalesInvoiceNumber: " + txtSalesInvoiceNumber.Text.ToString());
                 AddRecord();
 
             }
@@ -762,6 +686,7 @@ namespace CPMS_Accounting
 
         private void DisplayOldSalesInvoiceList(int salesInvoiceNumber, ref DataTable dt)
         {
+            log.Info("Fetching Old Record");
             //Start Progress Bar View
             progressBar = new frmProgress();
             progressBar.message = "Fetching Existing Record. Please Wait.";
@@ -847,6 +772,8 @@ namespace CPMS_Accounting
 
         private void AddRecord()
         {
+            
+
             if (!string.IsNullOrWhiteSpace(txtSalesInvoiceNumber.Text.ToString()))
             {
                 DataTable dt = new DataTable();
@@ -856,17 +783,20 @@ namespace CPMS_Accounting
                 if (proc.SalesInvoiceExist(salesInvoiceNumber, ref dt) && isSalesInvoiceCancelled == true)
                 {
                     MessageBox.Show("You cannot use Sales Invoice #: " + salesInvoiceNumber + " \r\n \r\n Transaction is already cancelled", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    log.Info("Unable Sales Invoice #: " + salesInvoiceNumber + " Transaction is already cancelled");
                     RefreshView();
                 }
 
                 else if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
                 {
+                    log.Info("Existing Sales Invoice Record");
                     DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
 
                     //DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
                 }
                 else
                 {
+                    log.Info("New Sales Invoice Record");
                     EnableControls();
                 }
             }
@@ -874,6 +804,8 @@ namespace CPMS_Accounting
 
         private void btnCancelSiRecord_Click(object sender, EventArgs e)
         {
+            log.Info("(Tag as Cancelled) Button click.");
+
             CancelSalesInvoiceRecord();
         }
 
@@ -909,6 +841,8 @@ namespace CPMS_Accounting
         //Huge Data Handling
         private void RefreshDrList()
         {
+            log.Info("Refreshing DR List");
+
             DataTable dt = new DataTable();
             proc.LoadUnprocessedSalesInvoiceData(ref dt);
             p.setDataSource(ref dt, ref progressBar, dgvDRList);
@@ -916,6 +850,8 @@ namespace CPMS_Accounting
 
         private void btnCancelClose_Click(object sender, EventArgs e)
         {
+            log.Info("CANCEL / CLOSE button click");
+
             this.Close();
         }
 
@@ -968,6 +904,109 @@ namespace CPMS_Accounting
                 gProduct.ChkType = row.Field<string>("FinalChkType");
                 gProduct.DocStampPrice = row.Field<double>("Docstamp");
                 gProduct.UnitPrice = row.Field<double>("UnitPrice");
+
+            }
+
+        }
+
+
+        private void GeneratePrintSalesInvoice()
+        {
+
+            if (dgvListToProcess.Rows.Count == 0)
+            {
+                MessageBox.Show("Please select record from Batch List.");
+            }
+            else if (!p.ValidateInputFieldsSI(txtSalesInvoiceNumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
+            {
+                MessageBox.Show("Please supply values in blank field(s)");
+            }
+            else
+            {
+
+                DialogResult result = MessageBox.Show("This will process Sales Invoice on selected DR's. \r\n Select 'YES' to proceed.", "Confirmation", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+
+                    ProcessServices_Nelson proc = new ProcessServices_Nelson();
+
+                    if (!proc.UpdateTempTableSI(salesInvoiceList))
+                    {
+                        MessageBox.Show("Sales Invoice Temp Table Update Error (UpdateTempTable). \r\n" + proc.errorMessage);
+                        return;
+                    }
+
+                    //Fill gSalesInvoiceFinished Model Class
+                    //gSalesInvoiceList = salesInvoiceList;
+                    gSalesInvoiceFinished.ClientCode = gClient.ClientCode.ToString();
+                    gSalesInvoiceFinished.SalesInvoiceDateTime = dtpInvoiceDate.Value;
+                    gSalesInvoiceFinished.GeneratedBy = gUser.UserName.ToString();
+                    gSalesInvoiceFinished.CheckedBy = cbCheckedBy.Text.ToString();
+                    gSalesInvoiceFinished.ApprovedBy = cbApprovedBy.Text.ToString();
+                    gSalesInvoiceFinished.SalesInvoiceNumber = double.Parse(txtSalesInvoiceNumber.Text.ToString());
+                    gSalesInvoiceFinished.TotalAmount = double.Parse(salesInvoiceList.Sum(x => x.lineTotalAmount).ToString());
+                    gSalesInvoiceFinished.VatAmount = p.GetVatAmount(gSalesInvoiceFinished.TotalAmount);
+                    gSalesInvoiceFinished.NetOfVatAmount = p.GetNetOfVatAmount(gSalesInvoiceFinished.TotalAmount);
+
+                    ///Sort Sales Invoice By Batch before saving and Printing
+                    var sortedList = salesInvoiceList.OrderBy(x => x.Batch).ToList();
+
+                    ///Update Database
+                    if (!proc.UpdateSalesInvoiceHistory(sortedList))
+                    {
+                        MessageBox.Show("Error updating sales invoice record to server. (proc.UpdateSalesInvoiceHistory) \r\n" + proc.errorMessage);
+                        return;
+                    }
+
+                    //Update Quantity On hand for PNB
+                    if (gClient.ShortName == "PNB")
+                    {
+                        foreach (var item in sortedList)
+                        {
+                            if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.checkName, item.PurchaseOrderNumber))
+                            {
+                                MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
+                                return;
+                            }
+                        }
+                    }
+
+                    //Create new instance of the document/ Prepare report using Crystal Reports
+                    ReportDocument crystalDocument = new ReportDocument();
+
+                    //Check RPT File
+                    if (!p.LoadReportPath("SalesInvoice", ref crystalDocument))
+                    {
+                        MessageBox.Show("SalesInvoice.rpt File not found");
+                        return;
+                    }
+
+                    //Supply Data source to document
+                    crystalDocument.SetDataSource(sortedList);
+
+                    //Install Fastmember from nuGet for Fast (List to Datatable) Conversion
+                    //DataTable dt = new DataTable();
+                    //using (var reader = ObjectReader.Create(sortedList))
+                    //{
+                    //    dt.Load(reader);
+                    //}
+                    /////Supply datatable from the list converted
+                    //gReportDT = dt;
+
+
+                    //Supply details on report parameters
+                    p.FillCRReportParameters("SalesInvoice", ref crystalDocument);
+
+
+                    //Supply these details into Global ReportDocument to be able for the report viewer to initialize the rerport
+                    gCrystalDocument = crystalDocument;
+
+                    frmReportViewer crForm = new frmReportViewer();
+                    crForm.Show();
+                    RefreshView();
+
+                }
 
             }
 

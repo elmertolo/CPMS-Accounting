@@ -10,11 +10,22 @@ using System.Windows.Forms;
 using CPMS_Accounting.Reports;
 using CPMS_Accounting.Procedures;
 using static CPMS_Accounting.GlobalVariables;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace CPMS_Accounting
 {
+
+   
+
     public partial class frmLogIn : Form
     {
+
+        //02152021 Log4Net
+        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         DataTable BankListDT = new DataTable();
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
         public static string tableName = "";
@@ -31,6 +42,8 @@ namespace CPMS_Accounting
             Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
 
+            
+            
         }
 
         private void FillBankList()
@@ -53,20 +66,29 @@ namespace CPMS_Accounting
             if (!proc.UserLogin(userName, password, ref dt))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
+                log.Fatal("Unable to connect to server" + proc.errorMessage);
             }
 
             if (dt.Rows.Count == 0)
             {
                 MessageBox.Show("User Name or Password is incorrect. Please try again");
+                log.Info("User Name or Password is incorrect.");
                 return;
             }
 
-
+           
+            log.Info("User LogIn Sucessful");
+            
 
 
             SupplyGlobalUserVariables(ref dt);
 
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
+
+            //02152021 Log4Net
+            //Supply Additional Parameters on log4net
+            SupplyParameterValuesOnLog4net();
+
 
             Main mainFrm = new Main();
             mainFrm.Show();
@@ -136,7 +158,7 @@ namespace CPMS_Accounting
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
-           
+            log.Info("Login Form Loaded");
         }
 
         private void cbBankList_SelectedIndexChanged(object sender, EventArgs e)
@@ -176,6 +198,13 @@ namespace CPMS_Accounting
         {
 
         }
+
+        private void SupplyParameterValuesOnLog4net()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            log4net.ThreadContext.Properties["CurrentUser"] = gUser.UserName;
+        }
+
     }
 
 }

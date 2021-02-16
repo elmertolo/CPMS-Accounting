@@ -213,6 +213,34 @@ namespace CPMS_Accounting.Procedures
 
         }
 
+        public static void MessageAndLog(string message, ref log4net.ILog log, string level)
+        {
+            string newMessage = message.Replace("\r\n", string.Empty);
+
+            if (level.ToLower() == "info")
+            {
+                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                log.Info(newMessage);
+            }
+            if(level.ToLower() == "warn")
+            {
+                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                log.Warn(newMessage);
+            }
+            if (level.ToLower() == "error")
+            {
+                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.Error(newMessage);
+            }
+            if (level.ToLower() == "fatal")
+            {
+                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                log.Fatal(newMessage);
+            }
+
+
+        }
+
        
 
     }

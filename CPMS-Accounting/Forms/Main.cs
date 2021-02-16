@@ -15,6 +15,10 @@ namespace CPMS_Accounting
 {
     public partial class Main : Form
     {
+
+        //02152021 Log4Net
+        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public Main()
         {
             InitializeComponent();
@@ -70,6 +74,9 @@ namespace CPMS_Accounting
                 documentStampToolStripMenuItem.Enabled = false;
 
             this.Text = gClient.Description;
+
+            log.Info("Main Form Loaded");
+            
         }
 
         private void recentBatchToolStripMenuItem_Click(object sender, EventArgs e)
@@ -80,8 +87,10 @@ namespace CPMS_Accounting
 
         private void salesInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Sales Invoice)");
             Form frm = new frmSalesInvoice(this);
             frm.ShowDialog();
+
         }
 
         private void documentStampToolStripMenuItem_Click(object sender, EventArgs e)

@@ -34,7 +34,6 @@ namespace CPMS_Accounting
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string concatDR = "";
 
             bool flag = true;
             if (txtRecentBatch.Text != "")
