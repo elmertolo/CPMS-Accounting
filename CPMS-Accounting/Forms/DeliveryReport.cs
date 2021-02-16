@@ -342,8 +342,7 @@ namespace CPMS_Accounting
             //    MessageBox.Show(error.Message, error.StackTrace);
             //}
         }
-       
-        
+
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
             

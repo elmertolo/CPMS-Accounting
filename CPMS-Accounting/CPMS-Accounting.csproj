@@ -84,11 +84,23 @@
     <Compile Include="Forms\DeliveryReport.Designer.cs">
       <DependentUpon>DeliveryReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmProducts.cs">
+    <Compile Include="Forms\frmChequeProducts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmProducts.Designer.cs">
-      <DependentUpon>frmProducts.cs</DependentUpon>
+    <Compile Include="Forms\frmChequeProducts.Designer.cs">
+      <DependentUpon>frmChequeProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmChequeTypes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmChequeTypes.Designer.cs">
+      <DependentUpon>frmChequeTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProductPriceList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProductPriceList.Designer.cs">
+      <DependentUpon>frmProductPriceList.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmCorrection.cs">
       <SubType>Form</SubType>
@@ -158,6 +170,8 @@
     </Compile>
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="Models\BranchesModel.cs" />
+    <Compile Include="Models\ChequeProductModel.cs" />
+    <Compile Include="Models\ChequeTypesModel.cs" />
     <Compile Include="Models\ClientList.cs" />
     <Compile Include="Models\DocStampModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
@@ -229,8 +243,14 @@
     <EmbeddedResource Include="Forms\DeliveryReport.resx">
       <DependentUpon>DeliveryReport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmProducts.resx">
-      <DependentUpon>frmProducts.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmChequeProducts.resx">
+      <DependentUpon>frmChequeProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmChequeTypes.resx">
+      <DependentUpon>frmChequeTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProductPriceList.resx">
+      <DependentUpon>frmProductPriceList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCorrection.resx">
       <DependentUpon>frmCorrection.cs</DependentUpon>

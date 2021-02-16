@@ -2393,7 +2393,7 @@ namespace CPMS_Accounting.Procedures
             reader.Close();
             DBClosed();
         }
-        public void AddProducts(ProductModel _product)
+        public void AddProductPrice(ProductModel _product)
         {
             Sql = "Insert into " + gClient.PriceListTable + " (ProductCode,BankCode, ChequeName,Description,FinalChkType,Docstamp,UnitPrice,DatetimeModified,Unit,Location)" +
                     "Values('" +_product.ProductCode + "','" + _product.BankCode + "', '"+ _product.ChequeName.Replace("'","''") +"','"+_product.Description.Replace("'","''")+
@@ -2404,7 +2404,7 @@ namespace CPMS_Accounting.Procedures
             cmd.ExecuteNonQuery();
             DBClosed();
         }
-        public void ModifyProducts(ProductModel _product)
+        public void ModifyProductsPrice(ProductModel _product)
         {
             Sql = "Update " + gClient.PriceListTable + " set ProductCode ='"+ _product.ProductCode +"',BankCode = '"+_product.BankCode+"'," +
                 " ChequeName = '"+_product.ChequeName.Replace("'","''")+"', Description = '"+_product.Description.Replace("'","''")+ "' ,FinalChkType = '" +_product.ChkType+"'" +
@@ -2437,6 +2437,85 @@ namespace CPMS_Accounting.Procedures
         public static bool IsOdd(int value)
         {
             return value % 2 != 0;
+        }
+        public List<ChequeTypesModel> GetChequeTypes(List<ChequeTypesModel> _cheques)
+        {
+            Sql = "Select Type, ChequeName, Description, DateTimeModified from " + gClient.ChequeTypeTable ;
+            DBConnect();
+            cmd = new MySqlCommand(Sql,myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                ChequeTypesModel c = new ChequeTypesModel
+                {
+                    Type = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                    ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                    Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now
+                };
+                _cheques.Add(c);
+            }
+            reader.Close();
+            DBClosed();
+            return _cheques;
+        }
+        public void AddChequeType(ChequeTypesModel _cheque)
+        {
+            Sql = "Insert into " + gClient.ChequeTypeTable + " (Type,ChequeName,Description,DatetimeModified)" +
+                    "Values('" + _cheque.Type + "', '" + _cheque.ChequeName.Replace("'", "''") + "','" + _cheque.Description.Replace("'", "''") +
+                     "','"+ _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "');";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
+        }
+        public void ModifyChequeTypes(ChequeTypesModel _cheque)
+        {
+            Sql = "Update " + gClient.ChequeTypeTable + " set  ChequeName = '" + _cheque.ChequeName.Replace("'", "''") + "', Description = '" +
+                _cheque.Description.Replace("'", "''") + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "' where Type = '"+_cheque.Type +"'" ;
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
+        }
+        public List<ChequeProductModel> GetProducts(List<ChequeProductModel> _cheques)
+        {
+            Sql = "Select CProductCode, ProductName, DateTimeModified from " + gClient.ProductTable;
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ChequeProductModel c = new ChequeProductModel
+                {
+                    ProductCode = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
+                    ProductName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                    DateModified = !reader.IsDBNull(2) ? reader.GetDateTime(2) : DateTime.Now
+                };
+                _cheques.Add(c);
+            }
+            reader.Close();
+            DBClosed();
+            return _cheques;
+        }
+        public void AddProducts(ChequeProductModel _cheque)
+        {
+            Sql = "Insert into " + gClient.ProductTable + " (CProductCode,ProductName,DatetimeModified)" +
+                    "Values('" + _cheque.ProductCode + "', '" + _cheque.ProductName.Replace("'", "''")  +
+                     "','" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "');";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
+        }
+        public void ModifyProduct(ChequeProductModel _cheque)
+        {
+            Sql = "Update " + gClient.ProductTable + " set  ProductName = '" + _cheque.ProductName.Replace("'", "''") 
+                 + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "' where CProductCode = '"+_cheque.ProductCode+"'";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            cmd.ExecuteNonQuery();
+            DBClosed();
         }
     }
 }

@@ -12,10 +12,10 @@ using CPMS_Accounting.Procedures;
 
 namespace CPMS_Accounting.Forms
 {
-    public partial class frmProducts : Form
+    public partial class frmProductPriceList : Form
     {
         Main frm;
-        public frmProducts(Main frm1)
+        public frmProductPriceList(Main frm1)
         {
             InitializeComponent();
             this.frm = frm1;
@@ -24,7 +24,9 @@ namespace CPMS_Accounting.Forms
         DataTable dt = new DataTable();
         ProcessServices proc = new ProcessServices();
         ProductModel product = new ProductModel();
-
+        List<ChequeTypesModel> chequeList = new List<ChequeTypesModel>();
+        List<int> index = new List<int>();
+        int a = 0;
         int liaddmod = 0;
         private void frmCheques_Load(object sender, EventArgs e)
         {
@@ -32,9 +34,23 @@ namespace CPMS_Accounting.Forms
             DeliveryLocation();
             addToolStripMenuItem.Enabled = true;
             modifyToolStripMenuItem.Enabled = true;
-
+            LoadChequeNames();
+            DynamicCheques();
             EnableControls(false, liaddmod);
 
+           
+        }
+        private void LoadChequeNames()
+        {
+            proc.GetChequeTypes(chequeList);
+            chequeList.ForEach(x =>
+            {
+                cmbChequeName.Items.Add(x.ChequeName);
+                cmbDesc.Items.Add(x.Description);
+                index.Add(a);
+                a++;
+            });
+            cmbChequeName.SelectedIndex = 0;
            
         }
         private void DisplayAllProducts()
@@ -72,12 +88,12 @@ namespace CPMS_Accounting.Forms
         {
             txtProductCode.Enabled = _bool;
             txtbankcode.Enabled = _bool;
-            txtChequeName.Enabled = _bool;
-            txtDescription.Enabled = _bool;
+            cmbChequeName.Enabled = _bool;
+           // cmbDesc.Enabled = _bool;
             txtDocStampPrice.Enabled = _bool;
             txtUnit.Enabled = _bool;
             txtUnitPrice.Enabled = _bool;
-            txtType.Enabled = _bool;
+            //txtType.Enabled = _bool;
             cmbLocation.Enabled = _bool;
             //_item.Enabled = _bool;
             if (_addmod == 1)
@@ -111,8 +127,8 @@ namespace CPMS_Accounting.Forms
             txtbankcode.Text = "";
             txtProductCode.Text = "";
             txtDocStampPrice.Text = "";
-            txtDescription.Text = "";
-            txtChequeName.Text = "";
+            //txtDescription.Text = "";
+            //txtChequeName.Text = "";
             txtType.Text = "";
             txtUnitPrice.Text = "";
         }
@@ -132,13 +148,13 @@ namespace CPMS_Accounting.Forms
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to save this data?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
                 product.ProductCode = txtProductCode.Text;
                 product.BankCode = txtbankcode.Text;
-                product.ChequeName = txtChequeName.Text;
-                product.Description = txtDescription.Text;
+                product.ChequeName = cmbChequeName.Text;
+                product.Description = cmbDesc.Text;
                 product.ChkType = txtType.Text;
                 product.DocStampPrice = double.Parse(txtDocStampPrice.Text);
                 product.UnitPrice = double.Parse(txtUnitPrice.Text);
@@ -149,12 +165,12 @@ namespace CPMS_Accounting.Forms
 
                 if (liaddmod == 2)
                 {
-                    proc.AddProducts(product);
+                    proc.AddProductPrice(product);
                     MessageBox.Show("Data has been Added!!!","Saving Data",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 }
                 else if (liaddmod == 1)
                 {
-                    proc.ModifyProducts(product);
+                    proc.ModifyProductsPrice(product);
                     MessageBox.Show("Data has been Updated!!!","Updating Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 ClearTools();
@@ -194,6 +210,54 @@ namespace CPMS_Accounting.Forms
         {
             txtUnit.CharacterCasing = CharacterCasing.Upper;
 
+        }
+
+        private void cmbChequeName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            DynamicCheques();
+        }
+        private void DynamicCheques()
+        {
+            for (int i = 0; i < index.Count; i++)
+            {
+                if (cmbChequeName.SelectedIndex == i)
+                {
+                    cmbDesc.SelectedIndex = i;
+                    txtType.Text = chequeList[i].Type;
+                }
+
+            }
+        }
+
+        private void dgvProducts_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowindex = dgvProducts.CurrentCell.RowIndex;
+            int columnindex = dgvProducts.CurrentCell.ColumnIndex;
+
+    
+            var list = productList.Where(x => x.ProductCode == dgvProducts.Rows[rowindex].Cells[0].Value.ToString()).ToList();
+            foreach (var item in list)
+            {
+                txtProductCode.Text = item.ProductCode;
+                txtbankcode.Text = item.BankCode;
+                txtType.Text = item.ChkType;
+                cmbLocation.Text = item.DeliveryLocation;
+                cmbChequeName.Text = item.ChequeName;
+                cmbDesc.Text = item.Description;
+                txtUnit.Text = item.Unit;
+                txtUnitPrice.Text = item.UnitPrice.ToString();
+                txtDocStampPrice.Text = item.DocStampPrice.ToString();
+            }
+
+        }
+
+        private void cmbChequeName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

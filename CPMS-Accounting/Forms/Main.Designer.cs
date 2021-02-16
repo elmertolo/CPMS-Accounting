@@ -39,7 +39,9 @@
             this.purchaseOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeDRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chequesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddchequesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chequeProductsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,7 +106,9 @@
             this.maintenanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.purchaseOrderToolStripMenuItem,
             this.changeDRToolStripMenuItem,
-            this.chequesToolStripMenuItem});
+            this.chequesToolStripMenuItem,
+            this.AddchequesToolStripMenuItem1,
+            this.chequeProductsToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
@@ -113,23 +117,30 @@
             // purchaseOrderToolStripMenuItem
             // 
             this.purchaseOrderToolStripMenuItem.Name = "purchaseOrderToolStripMenuItem";
-            this.purchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.purchaseOrderToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
             this.purchaseOrderToolStripMenuItem.Text = "Purchase Order";
             this.purchaseOrderToolStripMenuItem.Click += new System.EventHandler(this.purchaseOrderToolStripMenuItem_Click);
             // 
             // changeDRToolStripMenuItem
             // 
             this.changeDRToolStripMenuItem.Name = "changeDRToolStripMenuItem";
-            this.changeDRToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.changeDRToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
             this.changeDRToolStripMenuItem.Text = "Data Correction";
             this.changeDRToolStripMenuItem.Click += new System.EventHandler(this.changeDRToolStripMenuItem_Click);
             // 
             // chequesToolStripMenuItem
             // 
             this.chequesToolStripMenuItem.Name = "chequesToolStripMenuItem";
-            this.chequesToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
-            this.chequesToolStripMenuItem.Text = "Products";
+            this.chequesToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
+            this.chequesToolStripMenuItem.Text = "Products Price";
             this.chequesToolStripMenuItem.Click += new System.EventHandler(this.chequesToolStripMenuItem_Click);
+            // 
+            // AddchequesToolStripMenuItem1
+            // 
+            this.AddchequesToolStripMenuItem1.Name = "AddchequesToolStripMenuItem1";
+            this.AddchequesToolStripMenuItem1.Size = new System.Drawing.Size(194, 24);
+            this.AddchequesToolStripMenuItem1.Text = "Cheque Types";
+            this.AddchequesToolStripMenuItem1.Click += new System.EventHandler(this.AddchequesToolStripMenuItem1_Click);
             // 
             // changeBankToolStripMenuItem
             // 
@@ -138,6 +149,13 @@
             this.changeBankToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
             this.changeBankToolStripMenuItem.Text = "Change Bank";
             this.changeBankToolStripMenuItem.Click += new System.EventHandler(this.changeBankToolStripMenuItem_Click);
+            // 
+            // chequeProductsToolStripMenuItem
+            // 
+            this.chequeProductsToolStripMenuItem.Name = "chequeProductsToolStripMenuItem";
+            this.chequeProductsToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
+            this.chequeProductsToolStripMenuItem.Text = "Cheque Products";
+            this.chequeProductsToolStripMenuItem.Click += new System.EventHandler(this.chequeProductsToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -171,6 +189,8 @@
         private System.Windows.Forms.ToolStripMenuItem changeDRToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeBankToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chequesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddchequesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem chequeProductsToolStripMenuItem;
 
         //private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         //private System.Windows.Forms.ToolStripMenuItem purchaseOrderToolStripMenuItem;

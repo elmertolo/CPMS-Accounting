@@ -1,7 +1,7 @@
 ﻿
 namespace CPMS_Accounting.Forms
 {
-    partial class frmProducts
+    partial class frmProductPriceList
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProducts));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProductPriceList));
             this.dgvProducts = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,23 +38,23 @@ namespace CPMS_Accounting.Forms
             this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtProductCode = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtChequeName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtDocStampPrice = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtType = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.txtUnit = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtUnitPrice = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbDesc = new System.Windows.Forms.ComboBox();
+            this.cmbChequeName = new System.Windows.Forms.ComboBox();
             this.txtbankcode = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.cmbLocation = new System.Windows.Forms.ComboBox();
+            this.txtType = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -71,6 +71,7 @@ namespace CPMS_Accounting.Forms
             this.dgvProducts.Size = new System.Drawing.Size(608, 208);
             this.dgvProducts.TabIndex = 0;
             this.dgvProducts.TabStop = false;
+            this.dgvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProducts_CellClick);
             // 
             // menuStrip1
             // 
@@ -142,14 +143,6 @@ namespace CPMS_Accounting.Forms
             this.label3.TabIndex = 11;
             this.label3.Text = "Product Code :";
             // 
-            // txtDescription
-            // 
-            this.txtDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDescription.Location = new System.Drawing.Point(143, 164);
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(437, 22);
-            this.txtDescription.TabIndex = 6;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -159,14 +152,6 @@ namespace CPMS_Accounting.Forms
             this.label1.Size = new System.Drawing.Size(88, 15);
             this.label1.TabIndex = 17;
             this.label1.Text = "Description :";
-            // 
-            // txtChequeName
-            // 
-            this.txtChequeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtChequeName.Location = new System.Drawing.Point(143, 138);
-            this.txtChequeName.Name = "txtChequeName";
-            this.txtChequeName.Size = new System.Drawing.Size(437, 22);
-            this.txtChequeName.TabIndex = 5;
             // 
             // label2
             // 
@@ -195,25 +180,6 @@ namespace CPMS_Accounting.Forms
             this.label5.Size = new System.Drawing.Size(78, 15);
             this.label5.TabIndex = 21;
             this.label5.Text = "Unit Price :";
-            // 
-            // txtType
-            // 
-            this.txtType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtType.Location = new System.Drawing.Point(145, 83);
-            this.txtType.Name = "txtType";
-            this.txtType.Size = new System.Drawing.Size(62, 22);
-            this.txtType.TabIndex = 3;
-            this.txtType.TextChanged += new System.EventHandler(this.txtType_TextChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(85, 87);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 16);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Type :";
             // 
             // txtUnit
             // 
@@ -254,14 +220,14 @@ namespace CPMS_Accounting.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbDesc);
+            this.groupBox1.Controls.Add(this.cmbChequeName);
             this.groupBox1.Controls.Add(this.txtbankcode);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.txtDescription);
             this.groupBox1.Controls.Add(this.txtUnit);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cmbLocation);
-            this.groupBox1.Controls.Add(this.txtChequeName);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.txtType);
@@ -277,6 +243,29 @@ namespace CPMS_Accounting.Forms
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Product Informations";
+            // 
+            // cmbDesc
+            // 
+            this.cmbDesc.Enabled = false;
+            this.cmbDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbDesc.FormattingEnabled = true;
+            this.cmbDesc.ItemHeight = 15;
+            this.cmbDesc.Location = new System.Drawing.Point(145, 163);
+            this.cmbDesc.Name = "cmbDesc";
+            this.cmbDesc.Size = new System.Drawing.Size(325, 23);
+            this.cmbDesc.TabIndex = 29;
+            // 
+            // cmbChequeName
+            // 
+            this.cmbChequeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbChequeName.FormattingEnabled = true;
+            this.cmbChequeName.ItemHeight = 15;
+            this.cmbChequeName.Location = new System.Drawing.Point(145, 135);
+            this.cmbChequeName.Name = "cmbChequeName";
+            this.cmbChequeName.Size = new System.Drawing.Size(325, 23);
+            this.cmbChequeName.TabIndex = 28;
+            this.cmbChequeName.SelectedIndexChanged += new System.EventHandler(this.cmbChequeName_SelectedIndexChanged);
+            this.cmbChequeName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbChequeName_KeyPress);
             // 
             // txtbankcode
             // 
@@ -317,6 +306,26 @@ namespace CPMS_Accounting.Forms
             this.cmbLocation.TabIndex = 4;
             this.cmbLocation.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbLocation_KeyPress);
             // 
+            // txtType
+            // 
+            this.txtType.Enabled = false;
+            this.txtType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtType.Location = new System.Drawing.Point(145, 83);
+            this.txtType.Name = "txtType";
+            this.txtType.Size = new System.Drawing.Size(62, 22);
+            this.txtType.TabIndex = 3;
+            this.txtType.TextChanged += new System.EventHandler(this.txtType_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(85, 87);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 16);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Type :";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
@@ -327,7 +336,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
             // 
-            // frmProducts
+            // frmProductPriceList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -338,7 +347,7 @@ namespace CPMS_Accounting.Forms
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dgvProducts);
             this.Controls.Add(this.groupBox1);
-            this.Name = "frmProducts";
+            this.Name = "frmProductPriceList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmCheques";
             this.Load += new System.EventHandler(this.frmCheques_Load);
@@ -361,14 +370,10 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.ToolStripMenuItem modifyToolStripMenuItem;
         private System.Windows.Forms.TextBox txtProductCode;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtChequeName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtDocStampPrice;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtType;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtUnit;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtUnitPrice;
@@ -381,5 +386,9 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.TextBox txtbankcode;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ComboBox cmbChequeName;
+        private System.Windows.Forms.TextBox txtType;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cmbDesc;
     }
 }
