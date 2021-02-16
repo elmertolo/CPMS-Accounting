@@ -142,5 +142,10 @@ namespace CPMS_Accounting
             Form frm = new frmChequeProducts(this);
             frm.ShowDialog();
         }
+
+        private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

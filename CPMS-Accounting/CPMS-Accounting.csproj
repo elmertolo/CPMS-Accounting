@@ -99,12 +99,6 @@
     <Compile Include="Forms\frmChequeTypes.Designer.cs">
       <DependentUpon>frmChequeTypes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmProductPriceList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmProductPriceList.Designer.cs">
-      <DependentUpon>frmProductPriceList.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmCorrection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +122,12 @@
     </Compile>
     <Compile Include="Forms\frmMessageInput.Designer.cs">
       <DependentUpon>frmMessageInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProductPriceList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProductPriceList.Designer.cs">
+      <DependentUpon>frmProductPriceList.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmProgress.cs">
       <SubType>Form</SubType>
@@ -253,9 +253,6 @@
     <EmbeddedResource Include="Forms\frmChequeTypes.resx">
       <DependentUpon>frmChequeTypes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmProductPriceList.resx">
-      <DependentUpon>frmProductPriceList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCorrection.resx">
       <DependentUpon>frmCorrection.cs</DependentUpon>
     </EmbeddedResource>
@@ -267,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMessageInput.resx">
       <DependentUpon>frmMessageInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProductPriceList.resx">
+      <DependentUpon>frmProductPriceList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmProgress.resx">
       <DependentUpon>frmProgress.cs</DependentUpon>

@@ -124,7 +124,7 @@ namespace CPMS_Accounting.Forms
         }
         private void ClearTools()
         {
-            txtBankCode.Text = "";
+            txtbankcode.Text = "";
             txtProductCode.Text = "";
             txtDocStampPrice.Text = "";
             //txtDescription.Text = "";
@@ -153,8 +153,8 @@ namespace CPMS_Accounting.Forms
             {
                 product.ProductCode = txtProductCode.Text;
                 product.BankCode = txtbankcode.Text;
-                product.ChequeName = txtChequeName.Text;
-                product.Description = txtDescription.Text;
+                product.ChequeName = cmbChequeName.Text;
+                product.Description = cmbDesc.Text;
                 product.ChkType = txtType.Text;
                 product.DocStampPrice = double.Parse(txtDocStampPrice.Text);
                 product.UnitPrice = double.Parse(txtUnitPrice.Text);
@@ -165,12 +165,12 @@ namespace CPMS_Accounting.Forms
 
                 if (liaddmod == 2)
                 {
-                    proc.AddProducts(product);
+                    proc.AddProductPrice(product);
                     MessageBox.Show("Data has been Added!!!","Saving Data",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 }
                 else if (liaddmod == 1)
                 {
-                    proc.ModifyProducts(product);
+                    proc.ModifyProductsPrice(product);
                     MessageBox.Show("Data has been Updated!!!","Updating Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 ClearTools();
@@ -198,7 +198,7 @@ namespace CPMS_Accounting.Forms
 
         private void txtBankCode_TextChanged(object sender, EventArgs e)
         {
-            txtBankCode.CharacterCasing = CharacterCasing.Upper;
+            txtbankcode.CharacterCasing = CharacterCasing.Upper;
         }
 
         private void txtType_TextChanged(object sender, EventArgs e)

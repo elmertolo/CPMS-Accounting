@@ -40,8 +40,8 @@
             this.changeDRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chequesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddchequesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chequeProductsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,6 +143,13 @@
             this.AddchequesToolStripMenuItem1.Text = "Cheque Types";
             this.AddchequesToolStripMenuItem1.Click += new System.EventHandler(this.AddchequesToolStripMenuItem1_Click);
             // 
+            // chequeProductsToolStripMenuItem
+            // 
+            this.chequeProductsToolStripMenuItem.Name = "chequeProductsToolStripMenuItem";
+            this.chequeProductsToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
+            this.chequeProductsToolStripMenuItem.Text = "Cheque Products";
+            this.chequeProductsToolStripMenuItem.Click += new System.EventHandler(this.chequeProductsToolStripMenuItem_Click);
+            // 
             // changeBankToolStripMenuItem
             // 
             this.changeBankToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -150,13 +157,6 @@
             this.changeBankToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
             this.changeBankToolStripMenuItem.Text = "Change Bank";
             this.changeBankToolStripMenuItem.Click += new System.EventHandler(this.changeBankToolStripMenuItem_Click);
-            // 
-            // chequeProductsToolStripMenuItem
-            // 
-            this.chequeProductsToolStripMenuItem.Name = "chequeProductsToolStripMenuItem";
-            this.chequeProductsToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
-            this.chequeProductsToolStripMenuItem.Text = "Cheque Products";
-            this.chequeProductsToolStripMenuItem.Click += new System.EventHandler(this.chequeProductsToolStripMenuItem_Click);
             // 
             // Main
             // 
