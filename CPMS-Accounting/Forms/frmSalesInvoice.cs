@@ -33,12 +33,6 @@ namespace CPMS_Accounting
 
         public frmSalesInvoice(Main frm1)
         {
-<<<<<<< HEAD
-            //02152021 Log4Net
-            
-=======
-           
->>>>>>> c033a61469f5b88b99d7044915ce80b2cc919543
 
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
