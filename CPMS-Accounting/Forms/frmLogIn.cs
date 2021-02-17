@@ -38,7 +38,7 @@ namespace CPMS_Accounting
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-
+            log.Info("Login Button Click");
             Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
 
@@ -77,7 +77,7 @@ namespace CPMS_Accounting
             }
 
            
-            log.Info("User LogIn Sucessful");
+            
             
 
 
@@ -88,7 +88,7 @@ namespace CPMS_Accounting
             //02152021 Log4Net
             //Supply Additional Parameters on log4net
             SupplyParameterValuesOnLog4net();
-
+            log.Info("User LogIn Sucessful for User: " + gUser.UserName + "");
 
             Main mainFrm = new Main();
             mainFrm.Show();
@@ -158,6 +158,8 @@ namespace CPMS_Accounting
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
+            //string line = new string('=', 100);
+            log.Info(new string('=', 100));
             log.Info("Login Form Loaded");
         }
 
@@ -203,6 +205,7 @@ namespace CPMS_Accounting
         {
             log4net.Config.XmlConfigurator.Configure();
             log4net.ThreadContext.Properties["CurrentUser"] = gUser.UserName;
+            log4net.ThreadContext.Properties["CurrentClient"] = gClient.ShortName;
         }
 
     }

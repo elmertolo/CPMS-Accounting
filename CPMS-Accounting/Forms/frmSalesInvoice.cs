@@ -14,6 +14,7 @@ using CPMS_Accounting.Procedures;
 using CrystalDecisions.CrystalReports.Engine;
 using CPMS_Accounting.Forms;
 using System.Threading;
+using System.Diagnostics;
 
 namespace CPMS_Accounting
 {
@@ -21,7 +22,7 @@ namespace CPMS_Accounting
     {
 
         //02152021 Log4Net
-        private log4net.ILog log;
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         List<SalesInvoiceModel> salesInvoiceList = new List<SalesInvoiceModel>();
@@ -32,8 +33,7 @@ namespace CPMS_Accounting
 
         public frmSalesInvoice(Main frm1)
         {
-            //02152021 Log4Net
-            log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+           
 
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
@@ -74,6 +74,14 @@ namespace CPMS_Accounting
 
         private void frmSalesInvoice_FormClosing(object sender, FormClosingEventArgs e)
         {
+
+            if (!new StackTrace().GetFrames().Any(x => x.GetMethod().Name == "Close"))
+            {
+                log.Info("Form Closed by Pressing X or Alt-F4");
+            }
+              
+               
+            
             //this.Hide();
             //Main main = new Main();
             //main.Show();
@@ -134,28 +142,31 @@ namespace CPMS_Accounting
             else
             {
                 //Column names and width setup
-                dgvDRList.ColumnCount = 5; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
+                dgvDRList.ColumnCount = 6; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
-
-                dgvDRList.Columns[0].Name = "QUANTITY";
+                dgvDRList.Columns[0].Name = "PRODUCT CODE";
                 dgvDRList.Columns[0].Width = 70;
-                dgvDRList.Columns[0].DataPropertyName = "Quantity";
+                dgvDRList.Columns[0].DataPropertyName = "ProductCode";
 
-                dgvDRList.Columns[1].Name = "BATCH NAME";
-                dgvDRList.Columns[1].Width = 150;
-                dgvDRList.Columns[1].DataPropertyName = "batch"; //this must be the actual table name in sql
+                dgvDRList.Columns[1].Name = "QUANTITY";
+                dgvDRList.Columns[1].Width = 70;
+                dgvDRList.Columns[1].DataPropertyName = "Quantity";
 
-                dgvDRList.Columns[2].Name = "CHECK NAME";
-                dgvDRList.Columns[2].Width = 200;
-                dgvDRList.Columns[2].DataPropertyName = "chequename";
+                dgvDRList.Columns[2].Name = "BATCH NAME";
+                dgvDRList.Columns[2].Width = 150;
+                dgvDRList.Columns[2].DataPropertyName = "batch"; //this must be the actual table name in sql
 
-                dgvDRList.Columns[3].Name = "CHECK TYPE";
-                dgvDRList.Columns[3].Width = 104;
-                dgvDRList.Columns[3].DataPropertyName = "ChkType";
+                dgvDRList.Columns[3].Name = "CHECK NAME";
+                dgvDRList.Columns[3].Width = 200;
+                dgvDRList.Columns[3].DataPropertyName = "chequename";
 
-                dgvDRList.Columns[4].Name = "DELIVERY DATE";
-                dgvDRList.Columns[4].Width = 500;
-                dgvDRList.Columns[4].DataPropertyName = "deliverydate";
+                dgvDRList.Columns[4].Name = "CHECK TYPE";
+                dgvDRList.Columns[4].Width = 104;
+                dgvDRList.Columns[4].DataPropertyName = "ChkType";
+
+                dgvDRList.Columns[5].Name = "DELIVERY DATE";
+                dgvDRList.Columns[5].Width = 500;
+                dgvDRList.Columns[5].DataPropertyName = "deliverydate";
 
 
             }
@@ -238,13 +249,27 @@ namespace CPMS_Accounting
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
 
+                
+
                 foreach (DataGridViewRow row in dgvDRList.SelectedRows)
                 {
+                    
+                    //02152021 log4net
+                    LogBatchInfo(row);
+
+
                     SalesInvoiceModel line = new SalesInvoiceModel();
 
 
+
                     //Fill Global Price List Model
+                    if(row.Cells["Product Code"].Value.ToString() == "")
+                    {
+                        p.MessageAndLog("Unable to process. Item product Code is blank.", ref log, "Error");
+                        return;
+                    }
                     FillPriceListModel(row.Cells["Product Code"].Value.ToString());
+                   
 
 
                     //Supply values on sales invoice model list based on datagrid view values
@@ -316,6 +341,8 @@ namespace CPMS_Accounting
 
                     line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
                     salesInvoiceList.Add(line);
+
+                    log.Info("Item Successfully Added to Sales Invoice List");
 
                 }
 
@@ -577,6 +604,7 @@ namespace CPMS_Accounting
 
         private void dgvDRList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            log.Info("Double Click on Batch List (dgvDRList)");
             AddSelectedDRRow();
         }
 
@@ -892,7 +920,7 @@ namespace CPMS_Accounting
             DataTable dt = new DataTable();
             if (!proc.GetProductDetails(productCode, ref dt))
             {
-                MessageBox.Show("Erron on (proc.GetProductDetails(productCode) \r\n \r\n" + proc.errorMessage);
+                MessageBox.Show("Error on (proc.GetProductDetails(productCode) \r\n \r\n" + proc.errorMessage);
                 return;
             }
 
@@ -915,19 +943,23 @@ namespace CPMS_Accounting
 
             if (dgvListToProcess.Rows.Count == 0)
             {
-                MessageBox.Show("Please select record from Batch List.");
+                //MessageBox.Show("Please select record from Batch List.");
+                p.MessageAndLog("No Row(s) Selected. Please select at least one record from Batch List.", ref log, "warn");
             }
             else if (!p.ValidateInputFieldsSI(txtSalesInvoiceNumber.Text.ToString(), cbCheckedBy.Text.ToString(), cbApprovedBy.Text.ToString()))
             {
-                MessageBox.Show("Please supply values in blank field(s)");
+                p.MessageAndLog("Please supply values in blank field(s)", ref log, "warn");
+                //MessageBox.Show("Please supply values in blank field(s)");
             }
             else
             {
 
+                log.Info("This will process Sales Invoice on selected DR's. Select 'YES' to proceed.");
                 DialogResult result = MessageBox.Show("This will process Sales Invoice on selected DR's. \r\n Select 'YES' to proceed.", "Confirmation", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
+                    log.Info("Selected 'Yes' on MessageBox Confirmation");
 
                     ProcessServices_Nelson proc = new ProcessServices_Nelson();
 
@@ -1013,10 +1045,27 @@ namespace CPMS_Accounting
         }
 
 
+        private void LogBatchInfo(DataGridViewRow row)
+        {
+            log.Info("Attempting to Insert Record :\tProduct Code: " +
+                row.Cells["Product Code"].Value.ToString() + "\t|\tBatch: " +
+                row.Cells["Batch Name"].Value.ToString() + "\t|\tQuantity: " +
+                row.Cells["Quantity"].Value.ToString() + "\t|\tCheck Name: " +
+                row.Cells["check name"].Value.ToString() + "\t|\tCheck Type: " +
+                row.Cells["check type"].Value.ToString() + "\t|\tDelivery Date: " +
+                row.Cells["Delivery Date"].Value.ToString());
 
+        }
 
+        private void cbCheckedBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            log.Info("Checked By Combobox Changed to: " + cbCheckedBy.Text.ToString());
+        }
 
-
+        private void cbApprovedBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            log.Info("Approved By Combobox Changed to: " + cbApprovedBy.Text.ToString());
+        }
     }
 
 }

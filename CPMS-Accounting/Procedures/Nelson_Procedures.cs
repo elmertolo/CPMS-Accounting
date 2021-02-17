@@ -22,6 +22,10 @@ namespace CPMS_Accounting.Procedures
     public static class p
     {
 
+        //02152021 Log4Net
+        private static log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         public static string message;
 
         public static bool IsKeyPressedNumeric(ref object sender , ref KeyPressEventArgs e)
@@ -73,6 +77,8 @@ namespace CPMS_Accounting.Procedures
 
         public static void setCrystalReportsDBInfo(ref ReportDocument rpt)
         {
+            log.Info("Fetching Crystal Reports Database Information");
+
             TableLogOnInfo logoninfo = new TableLogOnInfo();
             foreach (CrystalDecisions.CrystalReports.Engine.Table crystalTtables in rpt.Database.Tables)
             {
@@ -91,6 +97,7 @@ namespace CPMS_Accounting.Procedures
 
         public static void FillCRReportParameters(string reportType, ref ReportDocument crystalDoucument)
         {
+            log.Info("Adding Values on Crystal Report Parameters");
 
             switch (reportType) 
             {
