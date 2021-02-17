@@ -14,6 +14,7 @@ namespace CPMS_Accounting.Forms
 {
     public partial class frmChequeTypes : Form
     {
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         Main frm;
         public frmChequeTypes(Main frm1)
         {
@@ -26,6 +27,9 @@ namespace CPMS_Accounting.Forms
         List<ChequeProductModel> productList = new List<ChequeProductModel>();
         DataTable dt = new DataTable();
         int liaddmod = 0;
+        //  List<int> pCode = new List<int>();
+        int pCode = 0;
+
         private void LoadProducts()
         {
             proc.GetProducts(productList);
@@ -33,9 +37,25 @@ namespace CPMS_Accounting.Forms
             productList.ForEach(x =>
             {
                 cmbProducts.Items.Add(x.ProductName);
+               // pCode.Add(x.ProductCode);
             });
             cmbProducts.SelectedIndex = 0;
         }
+        private void DynamicCheques()
+        {
+            for (int i = 0; i < productList.Count; i++)
+            {
+                if (cmbProducts.SelectedIndex == i)
+                {
+                    txtCheckName.Text = productList[i].ProductName.Substring(0, productList[i].ProductName.Length - 6);
+                    txtDescription.Text = productList[i].ProductName.Substring(0, productList[i].ProductName.Length - 6);
+                    pCode = productList[i].ProductCode;
+                }
+                
+
+            }
+        }
+
         private void DisplayAllCheques()
         {
             listofCheques.Clear();
@@ -125,8 +145,9 @@ namespace CPMS_Accounting.Forms
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to save this data?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
+               // var prodCode = pCode.Where(x => x == );
+                cheque.ProductCode = pCode;
                 cheque.Type = txtType.Text;
-
                 cheque.ChequeName = txtCheckName.Text;
                 cheque.Description = txtDescription.Text;
                 cheque.DateModified = DateTime.Now;
@@ -163,16 +184,7 @@ namespace CPMS_Accounting.Forms
 
         private void cmbProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbProducts.SelectedIndex == 0)
-            {
-                txtCheckName.Text = "Regular";
-                txtDescription.Text = "Regular";
-            }
-            else if (cmbProducts.SelectedIndex == 1)
-            {
-                txtCheckName.Text = "Manager's Check";
-                txtDescription.Text = "Manager's Check";
-            }
+            DynamicCheques();
         }
 
         private void cancelToolStripMenuItem_Click(object sender, EventArgs e)

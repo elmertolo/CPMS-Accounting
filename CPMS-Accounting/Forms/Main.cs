@@ -81,6 +81,7 @@ namespace CPMS_Accounting
 
         private void recentBatchToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Recent Batch)");
             Form frm = new RecentBatch(this);
             frm.ShowDialog();
         }
@@ -95,6 +96,7 @@ namespace CPMS_Accounting
 
         private void documentStampToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Document Stamp)");
             Form frm = new frmDocStamp(this);
             frm.ShowDialog();
         }
@@ -102,6 +104,7 @@ namespace CPMS_Accounting
 
         private void purchaseOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Purchase Order)");
             if (gClient.ShortName != "PNB")
             {
                 MessageBox.Show("Purchase Order Feature is applicable on PNB transctions only for the meantime", "Ooooops..");
@@ -113,7 +116,7 @@ namespace CPMS_Accounting
 
         private void changeBankToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+            log.Info("Clicked ToolStripMenuItem (Change Bank)");
             Form frm = new frmLogIn();
             frm.Show();
             this.Hide();
@@ -121,12 +124,14 @@ namespace CPMS_Accounting
 
         private void changeDRToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Data Correction)");
             Form frm = new frmCorrection(this);
             frm.ShowDialog();
         }
 
         private void chequesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Clicked ToolStripMenuItem (Product Price List)");
             Form frm = new frmProductPriceList(this);
             frm.ShowDialog();
         }

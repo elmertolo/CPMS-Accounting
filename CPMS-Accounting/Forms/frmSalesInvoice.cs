@@ -21,7 +21,7 @@ namespace CPMS_Accounting
     {
 
         //02152021 Log4Net
-        private log4net.ILog log;
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         List<SalesInvoiceModel> salesInvoiceList = new List<SalesInvoiceModel>();
@@ -33,7 +33,7 @@ namespace CPMS_Accounting
         public frmSalesInvoice(Main frm1)
         {
             //02152021 Log4Net
-            log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            
 
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
