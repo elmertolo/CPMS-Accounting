@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static CPMS_Accounting.GlobalVariables;
 using CPMS_Accounting.Forms;
 using CPMS_Accounting.Models;
+using System.Diagnostics;
 
 namespace CPMS_Accounting
 {
@@ -50,8 +51,12 @@ namespace CPMS_Accounting
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!new StackTrace().GetFrames().Any(x => x.GetMethod().Name == "Close"))
+            {
+                log.Info("Form Closed by Pressing X or Alt-F4");
+            } 
+
             Environment.Exit(0);
-            
 
         }
 
@@ -88,7 +93,7 @@ namespace CPMS_Accounting
 
         private void salesInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            log.Info("Clicked ToolStripMenuItem (Sales Invoice)");
+            log.Info("Mouse Click ToolStripMenuItem (Sales Invoice)");
             Form frm = new frmSalesInvoice(this);
             frm.ShowDialog();
 
@@ -150,7 +155,7 @@ namespace CPMS_Accounting
 
         private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            log.Info("Mouse Click ToolStripMenuItem (TRANSACTIONS)");
         }
     }
 }
