@@ -152,5 +152,17 @@ namespace CPMS_Accounting
         {
             log.Info("Mouse Click ToolStripMenuItem (TRANSACTIONS)");
         }
+
+        private void userMaintenanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new frmUserMaintenance(this);
+            frm.ShowDialog();
+        }
+
+        private void userLevelAndSecurityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new frmUserLevelManagement(this);
+            frm.ShowDialog();
+        }
     }
 }

@@ -13,6 +13,9 @@ namespace CPMS_Accounting
 {
     public partial class frmMessageInput : Form
     {
+        //02152021 Log4Net
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string labelMessage;
         public string userInput;
         
@@ -56,6 +59,9 @@ namespace CPMS_Accounting
             lblMessage.Text = labelMessage;
             txtInput.SelectAll();
             txtInput.Focus();
+
+            log.Info("frmMessage Loaded. " + lblMessage.Text.Replace(':', ' '));
+            
             
         }
 

@@ -229,7 +229,7 @@ namespace CPMS_Accounting
 
         private void dgvDRList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            log.Info("Single Click on Batch List (dgvDRList)");
         }
 
         
@@ -311,6 +311,7 @@ namespace CPMS_Accounting
                         
                         if (result == DialogResult.OK)
                         {
+                            log.Info("Pressed 'OK' with purchase order number: " + xfrm.userInput.ToString());
                             //Use this when data is large
                             //Added this for large data processing
                             //progressBar = new frmProgress();
@@ -322,14 +323,14 @@ namespace CPMS_Accounting
                             double remainingQuantity = 0;
                             
                             //Check if quantity is sufficient
-                            if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.checkName, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
+                            if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.ProductCode, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
                             {
                                 //thread.Abort();
-                                MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
+                                //MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
+                                p.MessageAndLog("Insufficient quantity for " + line.checkName + "", ref log, "warn");
                                 return;
                             }
                             line.RemainingQuantity = remainingQuantity;
-
 
                         }
                         else if (result == DialogResult.Cancel)
@@ -359,7 +360,8 @@ namespace CPMS_Accounting
             }
             else
             {
-                MessageBox.Show("Please select at least one record");
+                //MessageBox.Show("Please select at least one record");
+                p.MessageAndLog("No Record Selected on batch list. Please select at least one record", ref log, "warn");
                 return;
             }
 
@@ -865,7 +867,6 @@ namespace CPMS_Accounting
 
         }
 
-
         //Huge Data Handling
         private void RefreshDrList()
         {
@@ -936,7 +937,6 @@ namespace CPMS_Accounting
             }
 
         }
-
 
         private void GeneratePrintSalesInvoice()
         {
@@ -1043,7 +1043,6 @@ namespace CPMS_Accounting
             }
 
         }
-
 
         private void LogBatchInfo(DataGridViewRow row)
         {

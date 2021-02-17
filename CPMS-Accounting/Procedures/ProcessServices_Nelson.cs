@@ -19,7 +19,8 @@ namespace CPMS_Accounting.Procedures
 {
     public class ProcessServices_Nelson
     {
-        
+        //02152021 Log4Net
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //For Number of Affected Rows upon CRUD
         private int rowNumbersAffected;
@@ -631,24 +632,24 @@ namespace CPMS_Accounting.Procedures
         }
 
         //PNB
-        public bool IsQuantityOnHandSufficient(double toProcessQuantity, string chequeName, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)
+        public bool IsQuantityOnHandSufficient(double toProcessQuantity, string productCode, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)
         {
             
             try
             {
-
+                
                 //Check Onhand quantity first. cancel update if onhand quantity is insufficient
                 //double onhandQuantity = double.Parse(SeekReturn("select (quantityonhand) from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
-                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
-                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where productcode = '" + productCode + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where productcode = '" + productCode + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 int totalPunchedItemQuantity = 0;
 
                 //Check and add Punched Item on grid
 
                 foreach (var item in salesInvoiceList)
                 {
-                    if (item.checkName == chequeName)
+                    if (item.ProductCode == productCode)
                     {
                         totalPunchedItemQuantity += item.Quantity;
                     }
@@ -658,7 +659,7 @@ namespace CPMS_Accounting.Procedures
 
                 if (remainingQuantity < 0)
                 {
-                    _errorMessage = "Insufficient " + chequeName + " Quantity.";
+                   
                     return false;
                 }
 
