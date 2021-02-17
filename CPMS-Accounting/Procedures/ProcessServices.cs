@@ -1445,6 +1445,7 @@ namespace CPMS_Accounting.Procedures
                 DBConnect();
                 _temp.ForEach(d =>
                 {
+                 
                 string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
                             "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location)Values('" + d.BankCode + "'," + d.DocStampNumber +
                             ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'","''") +
@@ -2006,7 +2007,7 @@ namespace CPMS_Accounting.Procedures
             int _remainingbalance = 0;
             int IniatailBalance = 0;
             int ProcessedQuantity = 0;
-            Sql = "Select Quantity  from "+gClient.PurchaseOrderFinishedTable +" where PurchaseOrderNo = " + _PO + " and ChequeName = '" + _chkType + "';";
+            Sql = "Select Quantity  from "+gClient.PurchaseOrderFinishedTable +" where PurchaseOrderNo = " + _PO + " and ChequeName = '" + _chkType.Replace("'","''") + "';";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2016,7 +2017,7 @@ namespace CPMS_Accounting.Procedures
             }
             reader.Close();
             DBClosed();
-            string Sql2 = "Select Count(PurchaseOrderNumber) from " + gClient.DataBaseName + " where PurchaseOrderNumber = " + _PO + " and ChequeName = '" + _chkType + "' ";
+            string Sql2 = "Select Count(PurchaseOrderNumber) from " + gClient.DataBaseName + " where PurchaseOrderNumber = " + _PO + " and ChequeName = '" + _chkType.Replace("'", "''") + "' ";
             DBConnect();
             cmd = new MySqlCommand(Sql2, myConnect);
             MySqlDataReader reader2 = cmd.ExecuteReader();
@@ -2192,9 +2193,9 @@ namespace CPMS_Accounting.Procedures
         }
         public void AddChequeType(ChequeTypesModel _cheque)
         {
-            Sql = "Insert into " + gClient.ChequeTypeTable + " (Type,ChequeName,Description,DatetimeModified)" +
+            Sql = "Insert into " + gClient.ChequeTypeTable + " (Type,ChequeName,Description,DatetimeModified,CProductCode)" +
                     "Values('" + _cheque.Type + "', '" + _cheque.ChequeName.Replace("'", "''") + "','" + _cheque.Description.Replace("'", "''") +
-                     "','"+ _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "');";
+                     "','"+ _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "'," + _cheque.ProductCode + ");";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -2203,7 +2204,8 @@ namespace CPMS_Accounting.Procedures
         public void ModifyChequeTypes(ChequeTypesModel _cheque)
         {
             Sql = "Update " + gClient.ChequeTypeTable + " set  ChequeName = '" + _cheque.ChequeName.Replace("'", "''") + "', Description = '" +
-                _cheque.Description.Replace("'", "''") + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "' where Type = '"+_cheque.Type +"'" ;
+                _cheque.Description.Replace("'", "''") + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "'" +
+                " where CProductCode = " + _cheque.ProductCode + " and Type = '" + _cheque.Type + "'" ;
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -2248,5 +2250,28 @@ namespace CPMS_Accounting.Procedures
             cmd.ExecuteNonQuery();
             DBClosed();
         }
+        public List<ChequeTypesModel> fChequeTypes(List<ChequeTypesModel> _cheques)
+        {
+            Sql = "SELECT C.Type, C.ChequeName, C.Description, P.CProductCode, P.ProductName FROM "+gClient.ChequeTypeTable+ " C" +
+                    " inner join "+ gClient.ProductTable+ " P on C.CProductCode = P.CProductCode; ";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ChequeTypesModel c = new ChequeTypesModel
+                {
+                    Type = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                    ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                    Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                    ProductCode = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
+                    ProductName = !reader.IsDBNull(4) ? reader.GetString(4) :""
+
+                };
+                _cheques.Add(c);
+            }
+            return _cheques;
+        }
+     
     }
 }

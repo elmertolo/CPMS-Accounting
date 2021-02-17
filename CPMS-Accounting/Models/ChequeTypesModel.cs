@@ -12,5 +12,7 @@ namespace CPMS_Accounting.Models
         public string ChequeName { get; set; }
         public string Description { get; set; }
         public DateTime DateModified { get; set; }
+        public int ProductCode { get; set; }
+        public string ProductName { get; set; }
     }
 }

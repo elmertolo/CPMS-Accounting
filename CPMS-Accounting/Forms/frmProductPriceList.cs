@@ -14,6 +14,7 @@ namespace CPMS_Accounting.Forms
 {
     public partial class frmProductPriceList : Form
     {
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         Main frm;
         public frmProductPriceList(Main frm1)
         {

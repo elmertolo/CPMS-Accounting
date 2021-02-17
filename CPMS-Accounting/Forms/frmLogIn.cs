@@ -148,8 +148,8 @@ namespace CPMS_Accounting
                     gClient.DocStampTempTable =  "docstamp_temp" ?? "";
                     gClient.BranchesTable = row.Field<string>("ShortName").ToLower() + "_branches" ?? "";
                     gClient.CancelledTable = "cancelled_transaction" ?? "";
-                    gClient.ChequeTypeTable = "tCheques" ?? "";
-                    gClient.ProductTable = "tChequeproducts" ?? "";
+                    gClient.ChequeTypeTable = row.Field<string>("ShortName").ToLower() + "_tCheques" ?? "";
+                    gClient.ProductTable = row.Field<string>("ShortName").ToLower() + "_tChequeproducts" ?? "";
                 }
             }
            

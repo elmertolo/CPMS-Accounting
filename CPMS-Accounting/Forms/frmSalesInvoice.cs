@@ -33,7 +33,6 @@ namespace CPMS_Accounting
 
         public frmSalesInvoice(Main frm1)
         {
-           
 
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
