@@ -23,13 +23,11 @@ namespace CPMS_Accounting
         public static PurchaseOrderModel gPurchaseOrderFinished = new PurchaseOrderModel();
         public static PriceListModel gProduct = new PriceListModel();
 
-        
-
-        
-
         //Crystal Report Global Variable (Crystal Report Prerequisites)
         public static ReportDocument gCrystalDocument;
 
+        //02182021 User Level Management
+        public static UserLevelModel gUserLevel = new UserLevelModel();
 
         /// <summary>
         /// This variables is used for SalesInvoice Processes only.

@@ -773,6 +773,111 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
+        public bool UpdateIsAllowedOnForm(string formIntial, int value)
+        {
+            try
+            {
+                string sql = "update userlevel set isallowedon" + formIntial + " =" + value + "";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool InsertUserLevelRecord(string userLevelCode, string userLevelName)
+        {
+            try
+            {
+                string sql = "insert into userlevels (UserLevelCode, UserLevelName) values ('"+ userLevelCode +"', '"+ userLevelName +"')";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+       
+        }
+
+        public bool UpdateUserLevelRecord(string userLevelCode, string formInitial, int radioButtonValue, int isCreateAllowedValue, int isEditAllowedValue, int isDeleteAllowedValue)
+        {
+            try
+            {
+                string sql = "update userlevels set isallowedon" + formInitial + " =" + radioButtonValue + ", " +
+                    "is" + formInitial + "CreateAllowed =" + isCreateAllowedValue + ", " +
+                    "is" + formInitial + "EditAllowed =" + isEditAllowedValue + ", " +
+                    "is" + formInitial + "DeleteAllowed =" + isDeleteAllowedValue + " " +
+                    "Where userlevelcode ='" + userLevelCode + "'";
+
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool UserLevelExist(string userLevelCode)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select * from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool GetUserLevelDetails(string userLevelCode, ref DataTable dt)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select * from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+
+        }
+
+
+
+
+
 
 
     }
