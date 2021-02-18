@@ -31,6 +31,7 @@ namespace CPMS_Accounting.Forms
         int liaddmod = 0;
         private void frmCheques_Load(object sender, EventArgs e)
         {
+            
             DisplayAllProducts();
             DeliveryLocation();
             addToolStripMenuItem.Enabled = true;
@@ -41,6 +42,7 @@ namespace CPMS_Accounting.Forms
 
            
         }
+
         private void LoadChequeNames()
         {
             proc.GetChequeTypes(chequeList);
@@ -87,6 +89,12 @@ namespace CPMS_Accounting.Forms
         }
         private void EnableControls(bool _bool, int _addmod)
         {
+            txtType.MaxLength = 3;
+            txtbankcode.MaxLength = 20;
+            txtProductCode.MaxLength = 20;
+            txtDocStampPrice.MaxLength = 5;
+            txtUnitPrice.MaxLength = 5;
+           
             txtProductCode.Enabled = _bool;
             txtbankcode.Enabled = _bool;
             cmbChequeName.Enabled = _bool;
@@ -259,6 +267,27 @@ namespace CPMS_Accounting.Forms
             {
                 e.Handled = true;
             }
+        }
+
+        private void txtDocStampPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtUnitPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtbankcode_TextChanged_1(object sender, EventArgs e)
+        {
+            txtbankcode.CharacterCasing = CharacterCasing.Upper;
         }
     }
 }

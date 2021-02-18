@@ -172,7 +172,7 @@ namespace CPMS_Accounting
 
             // student.Stud_ID = int.Parse(dtgList.Rows[rowindex].Cells[columnindex].Value.ToString());
             
-            txtRecentBatch.Text = dgvDRList.Rows[rowindex].Cells[columnindex].Value.ToString();
+            txtRecentBatch.Text = dgvDRList.Rows[rowindex].Cells[0].Value.ToString();
             //if(columnindex == 0)
             //{
             //    lblNote.Text = "This is Batch Number!";

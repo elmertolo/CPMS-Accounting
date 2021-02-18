@@ -31,6 +31,7 @@ namespace CPMS_Accounting
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecentBatch));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printDRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,8 +44,10 @@ namespace CPMS_Accounting
             this.dgvDRList = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.txtRecentBatch = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -149,7 +152,7 @@ namespace CPMS_Accounting
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDRList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDRList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvDRList.Location = new System.Drawing.Point(13, 73);
+            this.dgvDRList.Location = new System.Drawing.Point(13, 145);
             this.dgvDRList.Name = "dgvDRList";
             this.dgvDRList.ReadOnly = true;
             this.dgvDRList.Size = new System.Drawing.Size(860, 364);
@@ -160,7 +163,7 @@ namespace CPMS_Accounting
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(18, 40);
+            this.label1.Location = new System.Drawing.Point(18, 115);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 16);
             this.label1.TabIndex = 2;
@@ -169,17 +172,28 @@ namespace CPMS_Accounting
             // txtRecentBatch
             // 
             this.txtRecentBatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRecentBatch.Location = new System.Drawing.Point(83, 36);
+            this.txtRecentBatch.Location = new System.Drawing.Point(83, 111);
             this.txtRecentBatch.Name = "txtRecentBatch";
             this.txtRecentBatch.Size = new System.Drawing.Size(134, 22);
             this.txtRecentBatch.TabIndex = 1;
             this.txtRecentBatch.TextChanged += new System.EventHandler(this.txtRecentBatch_TextChanged);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 29);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(912, 76);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // RecentBatch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 449);
+            this.ClientSize = new System.Drawing.Size(885, 523);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtRecentBatch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvDRList);
@@ -193,6 +207,7 @@ namespace CPMS_Accounting
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +227,6 @@ namespace CPMS_Accounting
         private System.Windows.Forms.ToolStripMenuItem salesInvoiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem documentStampToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

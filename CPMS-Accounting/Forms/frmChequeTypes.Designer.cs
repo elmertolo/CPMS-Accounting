@@ -114,6 +114,7 @@ namespace CPMS_Accounting.Forms
             this.txtType.Name = "txtType";
             this.txtType.Size = new System.Drawing.Size(100, 22);
             this.txtType.TabIndex = 38;
+            this.txtType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtType_KeyPress);
             // 
             // label1
             // 
@@ -204,9 +205,12 @@ namespace CPMS_Accounting.Forms
             // 
             // DgvCheques
             // 
+            this.DgvCheques.AllowUserToAddRows = false;
+            this.DgvCheques.AllowUserToDeleteRows = false;
             this.DgvCheques.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvCheques.Location = new System.Drawing.Point(12, 256);
             this.DgvCheques.Name = "DgvCheques";
+            this.DgvCheques.ReadOnly = true;
             this.DgvCheques.Size = new System.Drawing.Size(538, 211);
             this.DgvCheques.TabIndex = 3;
             this.DgvCheques.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCheques_CellClick);
@@ -216,7 +220,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 27);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(590, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(590, 63);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;

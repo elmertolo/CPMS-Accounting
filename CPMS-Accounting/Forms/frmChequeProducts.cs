@@ -25,11 +25,13 @@ namespace CPMS_Accounting.Forms
         ProcessServices proc = new ProcessServices();
         DataTable dt = new DataTable();
         int liaddmod = 0;
+        int pcode = 0;
         private void DisplayAllProducts()
         {
             productList.Clear();
             proc.GetProducts(productList);
-
+            pcode = int.Parse(proc.GetLastProductCode()) +1;
+            txtPcode.Text = pcode.ToString();
             dt.Clear();
             dt.Columns.Clear();
             dt.Columns.Add("Product Code");
@@ -98,6 +100,7 @@ namespace CPMS_Accounting.Forms
         {
             liaddmod = 1;
             EnableControls(true, liaddmod);
+            txtPcode.Enabled = false;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -151,8 +154,8 @@ namespace CPMS_Accounting.Forms
 
             // student.Stud_ID = int.Parse(dtgList.Rows[rowindex].Cells[columnindex].Value.ToString());
 
-            txtPcode.Text = DgvCheques.Rows[rowindex].Cells[columnindex].Value.ToString();
-            txtProductName.Text = DgvCheques.Rows[rowindex].Cells[columnindex+1].Value.ToString();
+            txtPcode.Text = DgvCheques.Rows[rowindex].Cells[0].Value.ToString();
+            txtProductName.Text = DgvCheques.Rows[rowindex].Cells[1].Value.ToString();
         }
     }
 }

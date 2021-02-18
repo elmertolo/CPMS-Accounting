@@ -85,6 +85,8 @@ namespace CPMS_Accounting.Forms
         }
         private void EnableControls(bool _bool, int _addmod)
         {
+            txtType.MaxLength = 3;
+            
             txtType.Enabled = _bool;
             cmbProducts.Enabled = _bool;
             txtDescription.Enabled = _bool;
@@ -138,6 +140,8 @@ namespace CPMS_Accounting.Forms
         {
             liaddmod = 1;
             EnableControls(true, liaddmod);
+            txtType.Enabled = false;
+            cmbProducts.Enabled = false;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -202,9 +206,17 @@ namespace CPMS_Accounting.Forms
 
             // student.Stud_ID = int.Parse(dtgList.Rows[rowindex].Cells[columnindex].Value.ToString());
 
-            txtType.Text = DgvCheques.Rows[rowindex].Cells[columnindex].Value.ToString();
-            txtCheckName.Text = DgvCheques.Rows[rowindex].Cells[columnindex + 1].Value.ToString();
-            txtDescription.Text = DgvCheques.Rows[rowindex].Cells[columnindex + 2].Value.ToString();
+            txtType.Text = DgvCheques.Rows[rowindex].Cells[0].Value.ToString();
+            txtCheckName.Text = DgvCheques.Rows[rowindex].Cells[1].Value.ToString();
+            txtDescription.Text = DgvCheques.Rows[rowindex].Cells[2].Value.ToString();
+        }
+
+        private void txtType_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
