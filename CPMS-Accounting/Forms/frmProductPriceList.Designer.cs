@@ -64,10 +64,13 @@ namespace CPMS_Accounting.Forms
             // 
             // dgvProducts
             // 
+            this.dgvProducts.AllowUserToAddRows = false;
+            this.dgvProducts.AllowUserToDeleteRows = false;
             this.dgvProducts.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             this.dgvProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProducts.Location = new System.Drawing.Point(14, 320);
             this.dgvProducts.Name = "dgvProducts";
+            this.dgvProducts.ReadOnly = true;
             this.dgvProducts.Size = new System.Drawing.Size(608, 208);
             this.dgvProducts.TabIndex = 0;
             this.dgvProducts.TabStop = false;
@@ -170,6 +173,7 @@ namespace CPMS_Accounting.Forms
             this.txtDocStampPrice.Name = "txtDocStampPrice";
             this.txtDocStampPrice.Size = new System.Drawing.Size(73, 22);
             this.txtDocStampPrice.TabIndex = 7;
+            this.txtDocStampPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDocStampPrice_KeyPress);
             // 
             // label5
             // 
@@ -207,6 +211,7 @@ namespace CPMS_Accounting.Forms
             this.txtUnitPrice.Name = "txtUnitPrice";
             this.txtUnitPrice.Size = new System.Drawing.Size(73, 22);
             this.txtUnitPrice.TabIndex = 8;
+            this.txtUnitPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitPrice_KeyPress);
             // 
             // label8
             // 
@@ -272,8 +277,9 @@ namespace CPMS_Accounting.Forms
             this.txtbankcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbankcode.Location = new System.Drawing.Point(145, 58);
             this.txtbankcode.Name = "txtbankcode";
-            this.txtbankcode.Size = new System.Drawing.Size(62, 22);
-            this.txtbankcode.TabIndex = 26;
+            this.txtbankcode.Size = new System.Drawing.Size(76, 22);
+            this.txtbankcode.TabIndex = 2;
+            this.txtbankcode.TextChanged += new System.EventHandler(this.txtbankcode_TextChanged_1);
             // 
             // label4
             // 
@@ -331,7 +337,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 28);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(641, 66);
+            this.pictureBox1.Size = new System.Drawing.Size(671, 66);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
@@ -349,7 +355,7 @@ namespace CPMS_Accounting.Forms
             this.Controls.Add(this.groupBox1);
             this.Name = "frmProductPriceList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmCheques";
+            this.Text = "Product Price Maintenance";
             this.Load += new System.EventHandler(this.frmCheques_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).EndInit();
             this.menuStrip1.ResumeLayout(false);

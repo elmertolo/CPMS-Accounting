@@ -51,9 +51,12 @@ namespace CPMS_Accounting.Forms
             // 
             // DgvCheques
             // 
+            this.DgvCheques.AllowUserToAddRows = false;
+            this.DgvCheques.AllowUserToDeleteRows = false;
             this.DgvCheques.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvCheques.Location = new System.Drawing.Point(13, 236);
             this.DgvCheques.Name = "DgvCheques";
+            this.DgvCheques.ReadOnly = true;
             this.DgvCheques.Size = new System.Drawing.Size(421, 211);
             this.DgvCheques.TabIndex = 5;
             this.DgvCheques.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCheques_CellClick);

@@ -2099,7 +2099,8 @@ namespace CPMS_Accounting.Procedures
         }
         public void GetProducts(List<ProductModel> _products)
         {
-            Sql = "Select * from " + gClient.PriceListTable;
+            Sql = "Select ProductCode, BankCode,ChequeName,Description,FinalChkType," +
+                "DocStamp,UnitPrice, DatetimeModified, Unit,QuantityOnHand,Location from " + gClient.PriceListTable;
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2138,10 +2139,10 @@ namespace CPMS_Accounting.Procedures
         }
         public void ModifyProductsPrice(ProductModel _product)
         {
-            Sql = "Update " + gClient.PriceListTable + " set ProductCode ='"+ _product.ProductCode +"',BankCode = '"+_product.BankCode+"'," +
+            Sql = "Update " + gClient.PriceListTable + " set BankCode = '"+_product.BankCode+"'," +
                 " ChequeName = '"+_product.ChequeName.Replace("'","''")+"', Description = '"+_product.Description.Replace("'","''")+ "' ,FinalChkType = '" +_product.ChkType+"'" +
                 ",Docstamp = "+_product.DocStampPrice + ",UnitPrice = " +_product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss")+"'" +
-                ",Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+"'";
+                ",Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+ "' where ProductCode ='" + _product.ProductCode + "',";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -2271,6 +2272,22 @@ namespace CPMS_Accounting.Procedures
                 _cheques.Add(c);
             }
             return _cheques;
+        }
+        public string GetLastProductCode()
+         {
+            string _pCode = "";
+            Sql = "Select CProductCode from " + gClient.ProductTable + " order by CProductCode desc Limit 1";
+
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                _pCode = !reader.IsDBNull(0) ? reader.GetInt32(0).ToString() : "";
+            }
+            reader.Close();
+            DBClosed();
+            return _pCode;
         }
      
     }
