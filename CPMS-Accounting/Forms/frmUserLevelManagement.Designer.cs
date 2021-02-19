@@ -844,6 +844,7 @@ namespace CPMS_Accounting.Forms
             this.txtUserLevelName.Name = "txtUserLevelName";
             this.txtUserLevelName.Size = new System.Drawing.Size(186, 20);
             this.txtUserLevelName.TabIndex = 9;
+            this.txtUserLevelName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserLevelName_KeyPress);
             // 
             // lblUserLevelName
             // 
@@ -879,11 +880,11 @@ namespace CPMS_Accounting.Forms
             this.btnDeleteRecord.TabIndex = 24;
             this.btnDeleteRecord.Text = "DELETE RECORD";
             this.btnDeleteRecord.UseVisualStyleBackColor = false;
+            this.btnDeleteRecord.Click += new System.EventHandler(this.btnDeleteRecord_Click);
             // 
             // pnlActionButtons
             // 
-            this.pnlActionButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlActionButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlActionButtons.BackColor = System.Drawing.Color.Transparent;
             this.pnlActionButtons.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlActionButtons.Controls.Add(this.btnDeleteRecord);
@@ -989,6 +990,7 @@ namespace CPMS_Accounting.Forms
             this.txtUserLeveCode.TabIndex = 3;
             this.txtUserLeveCode.TextChanged += new System.EventHandler(this.txtUserLeveCode_TextChanged);
             this.txtUserLeveCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserLeveCode_KeyDown);
+            this.txtUserLeveCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserLeveCode_KeyPress);
             // 
             // progressBar1
             // 
@@ -1060,6 +1062,7 @@ namespace CPMS_Accounting.Forms
             this.btnCancelClose.TabIndex = 53;
             this.btnCancelClose.Text = "CANCEL / CLOSE";
             this.btnCancelClose.UseVisualStyleBackColor = true;
+            this.btnCancelClose.Click += new System.EventHandler(this.btnCancelClose_Click);
             // 
             // panel1
             // 

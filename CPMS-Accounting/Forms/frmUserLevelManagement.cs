@@ -62,6 +62,13 @@ namespace CPMS_Accounting.Forms
             CheckAllRadioButtons();
             DisableControls();
             ActionPanelInitialLoadView();
+
+            txtSearch.Text = "";
+            txtUserLeveCode.Text = "";
+            txtUserLevelName.Text = "";
+
+            btnSaveRecord.Text = "SAVE";
+
             txtUserLeveCode.Focus();
         }
 
@@ -86,9 +93,9 @@ namespace CPMS_Accounting.Forms
                         }
 
                     }
-                }    
+                }
             }
-    
+
         }
 
         private void DisableControls()
@@ -118,6 +125,8 @@ namespace CPMS_Accounting.Forms
             btnEditRecord.Enabled = false;
             btnDeleteRecord.Enabled = false;
             btnSaveRecord.Enabled = true;
+
+            btnSaveRecord.Text = "SAVE";
         }
 
         private void ActionPanelEditRecordView()
@@ -126,17 +135,19 @@ namespace CPMS_Accounting.Forms
             btnEditRecord.Enabled = false;
             btnDeleteRecord.Enabled = true;
             btnSaveRecord.Enabled = true;
+
+            btnSaveRecord.Text = "UPDATE";
         }
 
         private void btnCreateNewRecord_Click(object sender, EventArgs e)
-            {
-                EnableControls();
-                ActionPanelNewRecordView();
-                CheckAllRadioButtons();
-                
+        {
+            EnableControls();
+            ActionPanelNewRecordView();
+            CheckAllRadioButtons();
 
 
-            }
+
+        }
 
         private void btnRefreshView_Click(object sender, EventArgs e)
         {
@@ -244,14 +255,14 @@ namespace CPMS_Accounting.Forms
         {
             if (rdDrNo.Checked)
             {
-               
+
                 chkDrCreate.Checked = false;
                 chkDrEdit.Checked = false;
                 chkDrDelete.Checked = false;
                 pnlDr.Enabled = false;
 
             }
-           
+
         }
 
         private void rdUmNo_CheckedChanged(object sender, EventArgs e)
@@ -422,116 +433,34 @@ namespace CPMS_Accounting.Forms
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
-            
-            if (!string.IsNullOrEmpty(txtUserLeveCode.Text))
-            {
 
-                string UserLevelCode = txtUserLeveCode.Text.ToString();
+            AddRecord();
 
-                if (proc.UserLevelExist(UserLevelCode))
-                {
-                    log.Info("Existing User Level Record");
-                    DisplayOldUserLevelDetails(UserLevelCode);
-                }
-                else
-                {
-                    log.Info("New Sales Invoice Record");
-                    EnableControls();
-                    ActionPanelNewRecordView();
-                    CheckAllRadioButtons();
-                }
-            }
-           
-
-            
         }
 
         private void SaveRecord()
         {
-            string userLevelCode = txtUserLeveCode.Text.ToString();
-            string userLevelName = txtUserLevelName.Text.ToString();
-            string formInitial;
-            int radioButtonValue = 0;
-            int isCreateAllowed = 0;
-            int isEditAllowed = 0;
-            int isDeleteAllowed = 0;
-
-
-            proc.InsertUserLevelRecord(userLevelCode, userLevelName);
-
-           
-            //Kung Nahihiwagaan ka kung bakit ganito ginawa ko? let me explain...
-            //Ang Outer Control Kasi ay Groupbox
-            foreach (GroupBox mainGroupBox in this.Controls.OfType<GroupBox>())
+            if (!string.IsNullOrEmpty(txtUserLevelName.Text))
             {
-                //Nasa loob kasi ng groupbox ang Tab Control
-                foreach (TabControl tabControl in mainGroupBox.Controls.OfType<TabControl>())
-                {   //Nasa loob kasi ng tab control ang tab page
-                    foreach (TabPage tabPage in tabControl.Controls.OfType<TabPage>())
-                    {   //Saka ko pa lang makukuha ng Group Boxes ng mga authrozation. Now you know.....
-                        foreach (GroupBox groupBox in tabPage.Controls.OfType<GroupBox>())
-                        {
+                string userLevelCode = txtUserLeveCode.Text.ToString();
+                string userLevelName = txtUserLevelName.Text.ToString();
 
-                            //get groupbox initials
-                            formInitial = groupBox.Name.Substring(groupBox.Name.Length - 2, 2);
 
-                            //Check which radiobutton is selected
-                            foreach (RadioButton radioButton in groupBox.Controls.OfType<RadioButton>())
-                            {
-                                if (radioButton.Checked)
-                                {
-                                    string selectedRd = radioButton.Text;
-                                    
-
-                                    switch (selectedRd)
-                                    {
-                                        case "YES":
-                                            radioButtonValue = 1;
-                                            break;
-                                        case "NO":
-                                            radioButtonValue = 2;
-                                            break;
-                                        case "READ ONLY":
-                                            radioButtonValue = 3;
-                                            break;
-                                    }
-
-                                    //get ReadWriteValues
-                                    foreach (Panel panel in groupBox.Controls.OfType<Panel>())
-                                    {
-                                        foreach (CheckBox checkBox in panel.Controls.OfType<CheckBox>())
-                                        {
-                                            if (checkBox.Text == "Create Record")
-                                            {
-                                                isCreateAllowed = Convert.ToInt32(checkBox.CheckState);
-                                            }
-                                            if (checkBox.Text == "Edit Record")
-                                            {
-                                                isEditAllowed = Convert.ToInt32(checkBox.CheckState);
-                                            }
-                                            if (checkBox.Text == "Delete Record")
-                                            {
-                                                isDeleteAllowed = Convert.ToInt32(checkBox.CheckState);
-                                            }
-                                        }
-                                    }
-
-                                    //Update UserLevels Record
-                                    if (!proc.UpdateUserLevelRecord(userLevelCode, formInitial, radioButtonValue, isCreateAllowed, isEditAllowed, isDeleteAllowed))
-                                    {
-                                        p.MessageAndLog("Error Updating User Level Record (UpdateUserLevelRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
-                                    }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
+                if (proc.UserLevelExist(userLevelCode))
+                {
+                    UpdateUserLevelRecord(userLevelCode);
+                    RefreshView();
                 }
-
+                else
+                {
+                    proc.InsertInitialUserLevelRecord(userLevelCode, userLevelName);
+                    UpdateUserLevelRecord(userLevelCode);
+                    RefreshView();
+                }
+            }
+            else
+            {
+                p.MessageAndLog("Invalid User Level Name.", ref log, "warn");
             }
 
         }
@@ -546,7 +475,7 @@ namespace CPMS_Accounting.Forms
             if (e.KeyCode == Keys.Enter)
             {
                 log.Info("Pressed Enter on Keyboard with text on txtUserLeveCode: " + txtUserLeveCode.Text.ToString());
-               
+                AddRecord();
 
             }
         }
@@ -581,34 +510,22 @@ namespace CPMS_Accounting.Forms
 
                 FillUserLevelGroupBoxes(row);
 
-                //gSalesInvoiceFinished.ClientCode = row.Field<string>("ClientCode");
-                //gSalesInvoiceFinished.SalesInvoiceDateTime = row.Field<DateTime>("SalesInvoiceDateTime");
-                //gSalesInvoiceFinished.GeneratedBy = row.Field<string>("GeneratedBy");
-                //gSalesInvoiceFinished.CheckedBy = row.Field<string>("CheckedBy");
-                //gSalesInvoiceFinished.ApprovedBy = row.Field<string>("ApprovedBy");
-                //gSalesInvoiceFinished.SalesInvoiceNumber = row.Field<double>("SalesInvoiceNumber");
-                //gSalesInvoiceFinished.TotalAmount = row.Field<double>("TotalAmount");
-                //gSalesInvoiceFinished.VatAmount = row.Field<double>("VatAmount");
-                //gSalesInvoiceFinished.NetOfVatAmount = row.Field<double>("NetOfVatAmount");
-
-                //dtpInvoiceDate.Value = gSalesInvoiceFinished.SalesInvoiceDateTime;
-                //cbCheckedBy.Text = gSalesInvoiceFinished.CheckedBy;
-                //cbApprovedBy.Text = gSalesInvoiceFinished.ApprovedBy;
 
             }
+            EnableControls();
+            ActionPanelEditRecordView();
+
             thread.Abort();
 
         }
 
         private void FillUserLevelGroupBoxes(DataRow row)
         {
-            string fieldNameToFetch;
             string formInitial;
-            int radioButtonValue;
-            int isCreateAllowed;
-            int isEditAllowed;
-            int isDeleteAllowed;
-
+            string fieldNameToFetch;
+            sbyte isCreateAllowed;
+            sbyte isEditAllowed;
+            sbyte isDeleteAllowed;
 
 
             foreach (GroupBox mainGroupBox in this.Controls.OfType<GroupBox>())
@@ -624,60 +541,153 @@ namespace CPMS_Accounting.Forms
                             //get groupbox initials
                             formInitial = groupBox.Name.Substring(groupBox.Name.Length - 2, 2);
                             fieldNameToFetch = "isAllowedOn" + formInitial;
-                            int fieldNameToFetchValue = row.Field<int>(fieldNameToFetch);
+                            sbyte fieldNameToFetchValue = row.Field<sbyte>(fieldNameToFetch);
 
                             switch (fieldNameToFetchValue)
                             {
                                 case 1:
                                     foreach (RadioButton radiobutton in groupBox.Controls.OfType<RadioButton>())
                                     {
-                                        if (radiobutton.Name == "YES") { radiobutton.Checked = true; }
+                                        if (radiobutton.Text == "YES") { radiobutton.Checked = true; }
                                     }
                                     break;
                                 case 2:
                                     foreach (RadioButton radiobutton in groupBox.Controls.OfType<RadioButton>())
                                     {
-                                        if (radiobutton.Name == "NO") { radiobutton.Checked = true; }
+                                        if (radiobutton.Text == "NO") { radiobutton.Checked = true; }
                                     }
                                     break;
                                 case 3:
                                     foreach (RadioButton radiobutton in groupBox.Controls.OfType<RadioButton>())
                                     {
-                                        if (radiobutton.Name == "READ\r\nONLY") { radiobutton.Checked = true; }
+                                        if (radiobutton.Text == "READ\r\nONLY") { radiobutton.Checked = true; }
                                     }
                                     break;
                             }
 
+                            //Get Read/Write values from datatable 
+                            isCreateAllowed = row.Field<sbyte>("is" + formInitial + "CreateAllowed");
+                            isEditAllowed = row.Field<sbyte>("is" + formInitial + "EditAllowed");
+                            isDeleteAllowed = row.Field<sbyte>("is" + formInitial + "DeleteAllowed");
 
-                            
-                                
-                           
 
-                            ////get ReadWriteValues
-                            //foreach (Panel panel in groupBox.Controls.OfType<Panel>())
-                            //{
-                            //    foreach (CheckBox checkBox in panel.Controls.OfType<CheckBox>())
-                            //    {
-                            //        if (checkBox.Text == "Create Record")
-                            //        {
-                            //            isCreateAllowed = Convert.ToInt32(checkBox.CheckState);
-                            //        }
-                            //        if (checkBox.Text == "Edit Record")
-                            //        {
-                            //            isEditAllowed = Convert.ToInt32(checkBox.CheckState);
-                            //        }
-                            //        if (checkBox.Text == "Delete Record")
-                            //        {
-                            //            isDeleteAllowed = Convert.ToInt32(checkBox.CheckState);
-                            //        }
-                            //    }
-                            //}
 
-                                   
+                            //Supply Read/Write Values
+                            foreach (Panel panel in groupBox.Controls.OfType<Panel>())
+                            {
+                                foreach (CheckBox checkBox in panel.Controls.OfType<CheckBox>())
+                                {
+                                    if (checkBox.Text == "Create Record")
+                                    {
+                                        checkBox.Checked = Convert.ToBoolean(isCreateAllowed);
+                                    }
+                                    if (checkBox.Text == "Edit Record")
+                                    {
+                                        checkBox.Checked = Convert.ToBoolean(isEditAllowed);
+                                    }
+                                    if (checkBox.Text == "Delete Record")
+                                    {
+                                        checkBox.Checked = Convert.ToBoolean(isDeleteAllowed);
+                                    }
+                                }
+                            }
 
-                                
 
-                            
+
+
+
+
+
+                        }
+                    }
+                }
+            }
+        }
+
+        private void txtUserLeveCode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UpdateUserLevelRecord(string userLevelCode)
+        {
+            string formInitial;
+            int radioButtonValue = 0;
+            int isCreateAllowed = 0;
+            int isEditAllowed = 0;
+            int isDeleteAllowed = 0;
+
+            //Kung Nahihiwagaan ka kung bakit ganito ginawa ko? let me explain...
+            //Ang Outer Control Kasi ay Groupbox
+            foreach (GroupBox mainGroupBox in this.Controls.OfType<GroupBox>())
+            {
+                //Nasa loob kasi ng groupbox ang Tab Control
+                foreach (TabControl tabControl in mainGroupBox.Controls.OfType<TabControl>())
+                {   //Nasa loob kasi ng tab control ang tab page
+                    foreach (TabPage tabPage in tabControl.Controls.OfType<TabPage>())
+                    {   //Saka ko pa lang makukuha ng Group Boxes ng mga authrozation. Now you know.....
+                        foreach (GroupBox groupBox in tabPage.Controls.OfType<GroupBox>())
+                        {
+
+                            //get groupbox initials
+                            formInitial = groupBox.Name.Substring(groupBox.Name.Length - 2, 2);
+
+                            //Check which radiobutton is selected
+                            foreach (RadioButton radioButton in groupBox.Controls.OfType<RadioButton>())
+                            {
+                                if (radioButton.Checked)
+                                {
+                                    string selectedRd = radioButton.Text;
+
+                                    ///<summary>
+                                    ///1 = YES
+                                    ///2 = NO
+                                    ///3 = READ ONLY
+                                    /// </summary>
+                                    switch (selectedRd)
+                                    {
+                                        case "YES":
+                                            radioButtonValue = 1;
+                                            break;
+                                        case "NO":
+                                            radioButtonValue = 2;
+                                            break;
+                                        case "READ\r\nONLY":
+                                            radioButtonValue = 3;
+                                            break;
+                                    }
+
+                                    //get ReadWriteValues
+                                    foreach (Panel panel in groupBox.Controls.OfType<Panel>())
+                                    {
+                                        foreach (CheckBox checkBox in panel.Controls.OfType<CheckBox>())
+                                        {
+                                            if (checkBox.Text == "Create Record")
+                                            {
+                                                isCreateAllowed = Convert.ToInt32(checkBox.CheckState);
+                                            }
+                                            if (checkBox.Text == "Edit Record")
+                                            {
+                                                isEditAllowed = Convert.ToInt32(checkBox.CheckState);
+                                            }
+                                            if (checkBox.Text == "Delete Record")
+                                            {
+                                                isDeleteAllowed = Convert.ToInt32(checkBox.CheckState);
+                                            }
+                                        }
+                                    }
+
+                                    //Update UserLevels Record
+                                    if (!proc.UpdateUserLevelRecord(userLevelCode, formInitial, radioButtonValue, isCreateAllowed, isEditAllowed, isDeleteAllowed))
+                                    {
+                                        p.MessageAndLog("Error Updating User Level Record (UpdateUserLevelRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
+                                        return;
+                                    }
+
+
+                                }
+
+                            }
 
                         }
 
@@ -686,13 +696,75 @@ namespace CPMS_Accounting.Forms
                 }
 
             }
+            p.MessageAndLog("Record Updated.", ref log, "info");
+
+
+
         }
 
+        private void btnCancelClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-
-        private void txtUserLeveCode_TextChanged(object sender, EventArgs e)
+        private void txtUserLeveCode_KeyPress(object sender, KeyPressEventArgs e)
         {
 
+            p.MakeEnteredCharacterCapital(e);
+
+        }
+        private void AddRecord()
+        {
+            if (!string.IsNullOrEmpty(txtUserLeveCode.Text))
+            {
+
+                string UserLevelCode = txtUserLeveCode.Text.ToString();
+
+                if (proc.UserLevelExist(UserLevelCode))
+                {
+                    log.Info("Existing User Level Record");
+                    DisplayOldUserLevelDetails(UserLevelCode);
+                }
+                else
+                {
+                    log.Info("New Sales Invoice Record");
+                    EnableControls();
+                    ActionPanelNewRecordView();
+                    CheckAllRadioButtons();
+                }
+            }
+            else
+            {
+                p.MessageAndLog("Please provide User Level Code to continue.", ref log, "warn");
+                txtUserLeveCode.Focus();
+                return;
+            }
+        }
+
+        private void btnDeleteRecord_Click(object sender, EventArgs e)
+        {
+            DeleteRecord();
+        }
+
+        private void DeleteRecord()
+        {
+            DialogResult result = MessageBox.Show("Proceed Deleting Record?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.OK)
+            {
+                if (!proc.DeleteUserLevelRecord(txtUserLeveCode.Text))
+                {
+                    p.MessageAndLog("Error Deleting User Level Record. (DeleteUserLevelRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
+                    return;
+                }
+                p.MessageAndLog("Record Delete successful." + proc.errorMessage, ref log, "info");
+                RefreshView();
+
+            }
+        }
+
+        private void txtUserLevelName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            p.MakeEnteredCharacterCapital(e);
         }
     }
 }
