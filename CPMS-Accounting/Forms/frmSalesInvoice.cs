@@ -489,7 +489,7 @@ namespace CPMS_Accounting
         private void FillComboBoxes()
         {
             DataTable dt = new DataTable();
-            if (!proc.GetUserNames(ref dt))
+            if (!proc.GetUserDetails(ref dt))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
             }

@@ -413,15 +413,27 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public bool GetUserNames(ref DataTable dt)
+        public bool GetUserDetails(ref DataTable dt, string UserId = "*")
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand("select username, password, firstname, middlename, lastname, suffix, lockout from userlist;", con);
+                string sql;
+
+                if (UserId == "*")
+                {
+                    sql = "select * from userlist;";
+                }
+                else
+                {
+                    sql = "select * from userlist where userId ='"+ UserId +"'";
+                }
+
+                MySqlCommand cmd = new MySqlCommand(sql, con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
                 da.Fill(dt);
                 return true;
+
             }
             catch (Exception ex)
             {
@@ -789,7 +801,7 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-        public bool InsertUserLevelRecord(string userLevelCode, string userLevelName)
+        public bool InsertInitialUserLevelRecord(string userLevelCode, string userLevelName)
         {
             try
             {
@@ -832,7 +844,7 @@ namespace CPMS_Accounting.Procedures
             DataTable dt = new DataTable();
             try
             {
-                MySqlCommand cmd = new MySqlCommand("select * from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                MySqlCommand cmd = new MySqlCommand("select userlevelcode from userlevels where userlevelcode = '" + userLevelCode + "';", con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
                 da.Fill(dt);
@@ -874,8 +886,22 @@ namespace CPMS_Accounting.Procedures
 
         }
 
+        public bool DeleteUserLevelRecord(string userLevelCode)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("delete from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                rowNumbersAffected =  cmd.ExecuteNonQuery();
+                return true;
 
-
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+        
 
 
 
