@@ -248,6 +248,11 @@ namespace CPMS_Accounting.Procedures
 
         }
 
+        //This should be pasted on Form Keypress event.
+        public static void MakeEnteredCharacterCapital(KeyPressEventArgs e)
+        {
+            e.KeyChar = Char.ToUpper(e.KeyChar);
+        }
        
 
     }

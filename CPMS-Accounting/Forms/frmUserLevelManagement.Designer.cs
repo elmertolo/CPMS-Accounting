@@ -34,75 +34,74 @@ namespace CPMS_Accounting.Forms
             this.gbDetails = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.gbDR = new System.Windows.Forms.GroupBox();
+            this.gbDr = new System.Windows.Forms.GroupBox();
+            this.rdDrRead = new System.Windows.Forms.RadioButton();
             this.pnlDr = new System.Windows.Forms.Panel();
-            this.chkDrRead = new System.Windows.Forms.CheckBox();
             this.chkDrDelete = new System.Windows.Forms.CheckBox();
             this.chkDrEdit = new System.Windows.Forms.CheckBox();
             this.chkDrCreate = new System.Windows.Forms.CheckBox();
             this.rdDrNo = new System.Windows.Forms.RadioButton();
             this.rdDrYes = new System.Windows.Forms.RadioButton();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.gbUl = new System.Windows.Forms.GroupBox();
+            this.rdUlRead = new System.Windows.Forms.RadioButton();
             this.pnlUl = new System.Windows.Forms.Panel();
-            this.chkUlRead = new System.Windows.Forms.CheckBox();
             this.chkUlDelete = new System.Windows.Forms.CheckBox();
             this.chkUlEdit = new System.Windows.Forms.CheckBox();
             this.chkUlCreate = new System.Windows.Forms.CheckBox();
             this.rdUlNo = new System.Windows.Forms.RadioButton();
             this.rdUlYes = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pnlSI = new System.Windows.Forms.Panel();
-            this.chkSiRead = new System.Windows.Forms.CheckBox();
+            this.gbSi = new System.Windows.Forms.GroupBox();
+            this.rdSiRead = new System.Windows.Forms.RadioButton();
+            this.pnlSi = new System.Windows.Forms.Panel();
             this.chkSiDelete = new System.Windows.Forms.CheckBox();
             this.chkSiEdit = new System.Windows.Forms.CheckBox();
             this.chkSiCreate = new System.Windows.Forms.CheckBox();
             this.rdSiNo = new System.Windows.Forms.RadioButton();
             this.rdSiYes = new System.Windows.Forms.RadioButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.gbUm = new System.Windows.Forms.GroupBox();
+            this.rdUmRead = new System.Windows.Forms.RadioButton();
             this.pnlUm = new System.Windows.Forms.Panel();
-            this.chkUmRead = new System.Windows.Forms.CheckBox();
             this.chkUmDelete = new System.Windows.Forms.CheckBox();
             this.chkUmEdit = new System.Windows.Forms.CheckBox();
             this.chkUmCreate = new System.Windows.Forms.CheckBox();
             this.rdUmNo = new System.Windows.Forms.RadioButton();
             this.rdUmYes = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbPm = new System.Windows.Forms.GroupBox();
+            this.rdPmRead = new System.Windows.Forms.RadioButton();
             this.pnlPm = new System.Windows.Forms.Panel();
-            this.chkPmRead = new System.Windows.Forms.CheckBox();
             this.chkPmDelete = new System.Windows.Forms.CheckBox();
             this.chkPmEdit = new System.Windows.Forms.CheckBox();
             this.chkPmCreate = new System.Windows.Forms.CheckBox();
             this.rdPmNo = new System.Windows.Forms.RadioButton();
             this.rdPmYes = new System.Windows.Forms.RadioButton();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.gbPo = new System.Windows.Forms.GroupBox();
+            this.rdPoRead = new System.Windows.Forms.RadioButton();
             this.pnlPo = new System.Windows.Forms.Panel();
-            this.chkPoRead = new System.Windows.Forms.CheckBox();
             this.chkPoDelete = new System.Windows.Forms.CheckBox();
             this.chkPoEdit = new System.Windows.Forms.CheckBox();
             this.chkPoCreate = new System.Windows.Forms.CheckBox();
             this.rdPoNo = new System.Windows.Forms.RadioButton();
             this.rdPoYes = new System.Windows.Forms.RadioButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gbDc = new System.Windows.Forms.GroupBox();
+            this.rdDcRead = new System.Windows.Forms.RadioButton();
             this.pnlDc = new System.Windows.Forms.Panel();
-            this.chkDcRead = new System.Windows.Forms.CheckBox();
             this.chkDcDelete = new System.Windows.Forms.CheckBox();
             this.chkDcEdit = new System.Windows.Forms.CheckBox();
             this.chkDcCreate = new System.Windows.Forms.CheckBox();
             this.rdDcNo = new System.Windows.Forms.RadioButton();
             this.rdDcYes = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtUserLevel = new System.Windows.Forms.TextBox();
+            this.txtUserLevelName = new System.Windows.Forms.TextBox();
             this.lblUserLevelName = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnDeleteRecord = new System.Windows.Forms.Button();
             this.pnlActionButtons = new System.Windows.Forms.GroupBox();
-            this.btnCreateNewRecord = new System.Windows.Forms.Button();
             this.btnRefreshView = new System.Windows.Forms.Button();
             this.btnEditRecord = new System.Windows.Forms.Button();
             this.btnSaveRecord = new System.Windows.Forms.Button();
             this.btnAddRecord = new System.Windows.Forms.Button();
-            this.gbUserLevelNo = new System.Windows.Forms.GroupBox();
-            this.txtUserLeveNo = new System.Windows.Forms.TextBox();
+            this.gbUserLevelCode = new System.Windows.Forms.GroupBox();
+            this.txtUserLeveCode = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lblRowsAffected = new System.Windows.Forms.Label();
             this.lblBankName = new System.Windows.Forms.Label();
@@ -116,22 +115,22 @@ namespace CPMS_Accounting.Forms
             this.gbDetails.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.gbDR.SuspendLayout();
+            this.gbDr.SuspendLayout();
             this.pnlDr.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.gbUl.SuspendLayout();
             this.pnlUl.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.pnlSI.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.gbSi.SuspendLayout();
+            this.pnlSi.SuspendLayout();
+            this.gbUm.SuspendLayout();
             this.pnlUm.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gbPm.SuspendLayout();
             this.pnlPm.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.gbPo.SuspendLayout();
             this.pnlPo.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.gbDc.SuspendLayout();
             this.pnlDc.SuspendLayout();
             this.pnlActionButtons.SuspendLayout();
-            this.gbUserLevelNo.SuspendLayout();
+            this.gbUserLevelCode.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -159,7 +158,7 @@ namespace CPMS_Accounting.Forms
             this.gbDetails.BackColor = System.Drawing.Color.Transparent;
             this.gbDetails.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.gbDetails.Controls.Add(this.tabControl1);
-            this.gbDetails.Controls.Add(this.txtUserLevel);
+            this.gbDetails.Controls.Add(this.txtUserLevelName);
             this.gbDetails.Controls.Add(this.lblUserLevelName);
             this.gbDetails.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gbDetails.Location = new System.Drawing.Point(6, 168);
@@ -175,68 +174,70 @@ namespace CPMS_Accounting.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(6, 62);
+            this.tabControl1.Location = new System.Drawing.Point(6, 46);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(802, 457);
+            this.tabControl1.Size = new System.Drawing.Size(802, 467);
             this.tabControl1.TabIndex = 33;
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabPage1.Controls.Add(this.gbDR);
-            this.tabPage1.Controls.Add(this.groupBox6);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.groupBox5);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox4);
-            this.tabPage1.Controls.Add(this.groupBox3);
+            this.tabPage1.Controls.Add(this.gbDr);
+            this.tabPage1.Controls.Add(this.gbUl);
+            this.tabPage1.Controls.Add(this.gbSi);
+            this.tabPage1.Controls.Add(this.gbUm);
+            this.tabPage1.Controls.Add(this.gbPm);
+            this.tabPage1.Controls.Add(this.gbPo);
+            this.tabPage1.Controls.Add(this.gbDc);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(794, 431);
+            this.tabPage1.Size = new System.Drawing.Size(794, 441);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "FORMS";
             // 
-            // gbDR
+            // gbDr
             // 
-            this.gbDR.Controls.Add(this.pnlDr);
-            this.gbDR.Controls.Add(this.rdDrNo);
-            this.gbDR.Controls.Add(this.rdDrYes);
-            this.gbDR.Location = new System.Drawing.Point(11, 6);
-            this.gbDR.Name = "gbDR";
-            this.gbDR.Size = new System.Drawing.Size(227, 137);
-            this.gbDR.TabIndex = 26;
-            this.gbDR.TabStop = false;
-            this.gbDR.Text = "ALLOW ON DELIVERY REPORT";
+            this.gbDr.Controls.Add(this.rdDrRead);
+            this.gbDr.Controls.Add(this.pnlDr);
+            this.gbDr.Controls.Add(this.rdDrNo);
+            this.gbDr.Controls.Add(this.rdDrYes);
+            this.gbDr.Location = new System.Drawing.Point(11, 6);
+            this.gbDr.Name = "gbDr";
+            this.gbDr.Size = new System.Drawing.Size(227, 137);
+            this.gbDr.TabIndex = 26;
+            this.gbDr.TabStop = false;
+            this.gbDr.Text = "ALLOW ON DELIVERY REPORT";
+            // 
+            // rdDrRead
+            // 
+            this.rdDrRead.AutoSize = true;
+            this.rdDrRead.Location = new System.Drawing.Point(14, 74);
+            this.rdDrRead.Name = "rdDrRead";
+            this.rdDrRead.Size = new System.Drawing.Size(55, 30);
+            this.rdDrRead.TabIndex = 3;
+            this.rdDrRead.TabStop = true;
+            this.rdDrRead.Text = "READ\r\nONLY";
+            this.rdDrRead.UseVisualStyleBackColor = true;
+            this.rdDrRead.CheckedChanged += new System.EventHandler(this.rdDrRead_CheckedChanged);
             // 
             // pnlDr
             // 
             this.pnlDr.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlDr.Controls.Add(this.chkDrRead);
             this.pnlDr.Controls.Add(this.chkDrDelete);
             this.pnlDr.Controls.Add(this.chkDrEdit);
             this.pnlDr.Controls.Add(this.chkDrCreate);
-            this.pnlDr.Location = new System.Drawing.Point(69, 19);
+            this.pnlDr.Location = new System.Drawing.Point(75, 31);
             this.pnlDr.Name = "pnlDr";
-            this.pnlDr.Size = new System.Drawing.Size(152, 112);
+            this.pnlDr.Size = new System.Drawing.Size(146, 100);
             this.pnlDr.TabIndex = 2;
-            // 
-            // chkDrRead
-            // 
-            this.chkDrRead.AutoSize = true;
-            this.chkDrRead.Location = new System.Drawing.Point(19, 81);
-            this.chkDrRead.Name = "chkDrRead";
-            this.chkDrRead.Size = new System.Drawing.Size(76, 17);
-            this.chkDrRead.TabIndex = 3;
-            this.chkDrRead.Text = "Read Only";
-            this.chkDrRead.UseVisualStyleBackColor = true;
             // 
             // chkDrDelete
             // 
             this.chkDrDelete.AutoSize = true;
-            this.chkDrDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkDrDelete.Location = new System.Drawing.Point(19, 61);
             this.chkDrDelete.Name = "chkDrDelete";
             this.chkDrDelete.Size = new System.Drawing.Size(95, 17);
             this.chkDrDelete.TabIndex = 2;
@@ -246,7 +247,7 @@ namespace CPMS_Accounting.Forms
             // chkDrEdit
             // 
             this.chkDrEdit.AutoSize = true;
-            this.chkDrEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkDrEdit.Location = new System.Drawing.Point(19, 38);
             this.chkDrEdit.Name = "chkDrEdit";
             this.chkDrEdit.Size = new System.Drawing.Size(82, 17);
             this.chkDrEdit.TabIndex = 1;
@@ -256,7 +257,7 @@ namespace CPMS_Accounting.Forms
             // chkDrCreate
             // 
             this.chkDrCreate.AutoSize = true;
-            this.chkDrCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkDrCreate.Location = new System.Drawing.Point(19, 15);
             this.chkDrCreate.Name = "chkDrCreate";
             this.chkDrCreate.Size = new System.Drawing.Size(95, 17);
             this.chkDrCreate.TabIndex = 0;
@@ -273,6 +274,7 @@ namespace CPMS_Accounting.Forms
             this.rdDrNo.TabStop = true;
             this.rdDrNo.Text = "NO";
             this.rdDrNo.UseVisualStyleBackColor = true;
+            this.rdDrNo.CheckedChanged += new System.EventHandler(this.rdDrNo_CheckedChanged);
             // 
             // rdDrYes
             // 
@@ -286,44 +288,46 @@ namespace CPMS_Accounting.Forms
             this.rdDrYes.UseVisualStyleBackColor = true;
             this.rdDrYes.CheckedChanged += new System.EventHandler(this.rdDrYes_CheckedChanged);
             // 
-            // groupBox6
+            // gbUl
             // 
-            this.groupBox6.Controls.Add(this.pnlUl);
-            this.groupBox6.Controls.Add(this.rdUlNo);
-            this.groupBox6.Controls.Add(this.rdUlYes);
-            this.groupBox6.Location = new System.Drawing.Point(477, 6);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(239, 137);
-            this.groupBox6.TabIndex = 32;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "ALLOW ON USER LEVEL MAINTENANCE";
+            this.gbUl.Controls.Add(this.rdUlRead);
+            this.gbUl.Controls.Add(this.pnlUl);
+            this.gbUl.Controls.Add(this.rdUlNo);
+            this.gbUl.Controls.Add(this.rdUlYes);
+            this.gbUl.Location = new System.Drawing.Point(477, 6);
+            this.gbUl.Name = "gbUl";
+            this.gbUl.Size = new System.Drawing.Size(227, 137);
+            this.gbUl.TabIndex = 32;
+            this.gbUl.TabStop = false;
+            this.gbUl.Text = "ALLOW ON USER LEVEL MAINTENANCE";
+            // 
+            // rdUlRead
+            // 
+            this.rdUlRead.AutoSize = true;
+            this.rdUlRead.Location = new System.Drawing.Point(14, 74);
+            this.rdUlRead.Name = "rdUlRead";
+            this.rdUlRead.Size = new System.Drawing.Size(55, 30);
+            this.rdUlRead.TabIndex = 4;
+            this.rdUlRead.TabStop = true;
+            this.rdUlRead.Text = "READ\r\nONLY";
+            this.rdUlRead.UseVisualStyleBackColor = true;
+            this.rdUlRead.CheckedChanged += new System.EventHandler(this.rdUlRead_CheckedChanged);
             // 
             // pnlUl
             // 
             this.pnlUl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlUl.Controls.Add(this.chkUlRead);
             this.pnlUl.Controls.Add(this.chkUlDelete);
             this.pnlUl.Controls.Add(this.chkUlEdit);
             this.pnlUl.Controls.Add(this.chkUlCreate);
-            this.pnlUl.Location = new System.Drawing.Point(69, 19);
+            this.pnlUl.Location = new System.Drawing.Point(75, 33);
             this.pnlUl.Name = "pnlUl";
-            this.pnlUl.Size = new System.Drawing.Size(164, 112);
+            this.pnlUl.Size = new System.Drawing.Size(146, 98);
             this.pnlUl.TabIndex = 2;
-            // 
-            // chkUlRead
-            // 
-            this.chkUlRead.AutoSize = true;
-            this.chkUlRead.Location = new System.Drawing.Point(19, 81);
-            this.chkUlRead.Name = "chkUlRead";
-            this.chkUlRead.Size = new System.Drawing.Size(76, 17);
-            this.chkUlRead.TabIndex = 3;
-            this.chkUlRead.Text = "Read Only";
-            this.chkUlRead.UseVisualStyleBackColor = true;
             // 
             // chkUlDelete
             // 
             this.chkUlDelete.AutoSize = true;
-            this.chkUlDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkUlDelete.Location = new System.Drawing.Point(19, 59);
             this.chkUlDelete.Name = "chkUlDelete";
             this.chkUlDelete.Size = new System.Drawing.Size(95, 17);
             this.chkUlDelete.TabIndex = 2;
@@ -333,7 +337,7 @@ namespace CPMS_Accounting.Forms
             // chkUlEdit
             // 
             this.chkUlEdit.AutoSize = true;
-            this.chkUlEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkUlEdit.Location = new System.Drawing.Point(19, 36);
             this.chkUlEdit.Name = "chkUlEdit";
             this.chkUlEdit.Size = new System.Drawing.Size(82, 17);
             this.chkUlEdit.TabIndex = 1;
@@ -343,7 +347,7 @@ namespace CPMS_Accounting.Forms
             // chkUlCreate
             // 
             this.chkUlCreate.AutoSize = true;
-            this.chkUlCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkUlCreate.Location = new System.Drawing.Point(19, 13);
             this.chkUlCreate.Name = "chkUlCreate";
             this.chkUlCreate.Size = new System.Drawing.Size(95, 17);
             this.chkUlCreate.TabIndex = 0;
@@ -360,6 +364,7 @@ namespace CPMS_Accounting.Forms
             this.rdUlNo.TabStop = true;
             this.rdUlNo.Text = "NO";
             this.rdUlNo.UseVisualStyleBackColor = true;
+            this.rdUlNo.CheckedChanged += new System.EventHandler(this.rdUlNo_CheckedChanged);
             // 
             // rdUlYes
             // 
@@ -371,45 +376,48 @@ namespace CPMS_Accounting.Forms
             this.rdUlYes.TabStop = true;
             this.rdUlYes.Text = "YES";
             this.rdUlYes.UseVisualStyleBackColor = true;
+            this.rdUlYes.CheckedChanged += new System.EventHandler(this.rdUlYes_CheckedChanged);
             // 
-            // groupBox1
+            // gbSi
             // 
-            this.groupBox1.Controls.Add(this.pnlSI);
-            this.groupBox1.Controls.Add(this.rdSiNo);
-            this.groupBox1.Controls.Add(this.rdSiYes);
-            this.groupBox1.Location = new System.Drawing.Point(11, 149);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 137);
-            this.groupBox1.TabIndex = 27;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "ALLOW ON SALES INVOICE";
+            this.gbSi.Controls.Add(this.rdSiRead);
+            this.gbSi.Controls.Add(this.pnlSi);
+            this.gbSi.Controls.Add(this.rdSiNo);
+            this.gbSi.Controls.Add(this.rdSiYes);
+            this.gbSi.Location = new System.Drawing.Point(11, 149);
+            this.gbSi.Name = "gbSi";
+            this.gbSi.Size = new System.Drawing.Size(227, 137);
+            this.gbSi.TabIndex = 27;
+            this.gbSi.TabStop = false;
+            this.gbSi.Text = "ALLOW ON SALES INVOICE";
             // 
-            // pnlSI
+            // rdSiRead
             // 
-            this.pnlSI.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlSI.Controls.Add(this.chkSiRead);
-            this.pnlSI.Controls.Add(this.chkSiDelete);
-            this.pnlSI.Controls.Add(this.chkSiEdit);
-            this.pnlSI.Controls.Add(this.chkSiCreate);
-            this.pnlSI.Location = new System.Drawing.Point(69, 19);
-            this.pnlSI.Name = "pnlSI";
-            this.pnlSI.Size = new System.Drawing.Size(152, 112);
-            this.pnlSI.TabIndex = 2;
+            this.rdSiRead.AutoSize = true;
+            this.rdSiRead.Location = new System.Drawing.Point(14, 74);
+            this.rdSiRead.Name = "rdSiRead";
+            this.rdSiRead.Size = new System.Drawing.Size(55, 30);
+            this.rdSiRead.TabIndex = 4;
+            this.rdSiRead.TabStop = true;
+            this.rdSiRead.Text = "READ\r\nONLY";
+            this.rdSiRead.UseVisualStyleBackColor = true;
+            this.rdSiRead.CheckedChanged += new System.EventHandler(this.rdSiRead_CheckedChanged);
             // 
-            // chkSiRead
+            // pnlSi
             // 
-            this.chkSiRead.AutoSize = true;
-            this.chkSiRead.Location = new System.Drawing.Point(19, 81);
-            this.chkSiRead.Name = "chkSiRead";
-            this.chkSiRead.Size = new System.Drawing.Size(76, 17);
-            this.chkSiRead.TabIndex = 3;
-            this.chkSiRead.Text = "Read Only";
-            this.chkSiRead.UseVisualStyleBackColor = true;
+            this.pnlSi.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlSi.Controls.Add(this.chkSiDelete);
+            this.pnlSi.Controls.Add(this.chkSiEdit);
+            this.pnlSi.Controls.Add(this.chkSiCreate);
+            this.pnlSi.Location = new System.Drawing.Point(75, 31);
+            this.pnlSi.Name = "pnlSi";
+            this.pnlSi.Size = new System.Drawing.Size(146, 100);
+            this.pnlSi.TabIndex = 2;
             // 
             // chkSiDelete
             // 
             this.chkSiDelete.AutoSize = true;
-            this.chkSiDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkSiDelete.Location = new System.Drawing.Point(19, 61);
             this.chkSiDelete.Name = "chkSiDelete";
             this.chkSiDelete.Size = new System.Drawing.Size(95, 17);
             this.chkSiDelete.TabIndex = 2;
@@ -419,7 +427,7 @@ namespace CPMS_Accounting.Forms
             // chkSiEdit
             // 
             this.chkSiEdit.AutoSize = true;
-            this.chkSiEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkSiEdit.Location = new System.Drawing.Point(19, 38);
             this.chkSiEdit.Name = "chkSiEdit";
             this.chkSiEdit.Size = new System.Drawing.Size(82, 17);
             this.chkSiEdit.TabIndex = 1;
@@ -429,7 +437,7 @@ namespace CPMS_Accounting.Forms
             // chkSiCreate
             // 
             this.chkSiCreate.AutoSize = true;
-            this.chkSiCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkSiCreate.Location = new System.Drawing.Point(19, 15);
             this.chkSiCreate.Name = "chkSiCreate";
             this.chkSiCreate.Size = new System.Drawing.Size(95, 17);
             this.chkSiCreate.TabIndex = 0;
@@ -446,6 +454,7 @@ namespace CPMS_Accounting.Forms
             this.rdSiNo.TabStop = true;
             this.rdSiNo.Text = "NO";
             this.rdSiNo.UseVisualStyleBackColor = true;
+            this.rdSiNo.CheckedChanged += new System.EventHandler(this.rdSiNo_CheckedChanged);
             // 
             // rdSiYes
             // 
@@ -457,45 +466,48 @@ namespace CPMS_Accounting.Forms
             this.rdSiYes.TabStop = true;
             this.rdSiYes.Text = "YES";
             this.rdSiYes.UseVisualStyleBackColor = true;
+            this.rdSiYes.CheckedChanged += new System.EventHandler(this.rdSiYes_CheckedChanged);
             // 
-            // groupBox5
+            // gbUm
             // 
-            this.groupBox5.Controls.Add(this.pnlUm);
-            this.groupBox5.Controls.Add(this.rdUmNo);
-            this.groupBox5.Controls.Add(this.rdUmYes);
-            this.groupBox5.Location = new System.Drawing.Point(244, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(227, 137);
-            this.groupBox5.TabIndex = 31;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "ALLOW ON USER MAINTENANCE";
+            this.gbUm.Controls.Add(this.rdUmRead);
+            this.gbUm.Controls.Add(this.pnlUm);
+            this.gbUm.Controls.Add(this.rdUmNo);
+            this.gbUm.Controls.Add(this.rdUmYes);
+            this.gbUm.Location = new System.Drawing.Point(244, 6);
+            this.gbUm.Name = "gbUm";
+            this.gbUm.Size = new System.Drawing.Size(227, 137);
+            this.gbUm.TabIndex = 31;
+            this.gbUm.TabStop = false;
+            this.gbUm.Text = "ALLOW ON USER MAINTENANCE";
+            // 
+            // rdUmRead
+            // 
+            this.rdUmRead.AutoSize = true;
+            this.rdUmRead.Location = new System.Drawing.Point(14, 74);
+            this.rdUmRead.Name = "rdUmRead";
+            this.rdUmRead.Size = new System.Drawing.Size(55, 30);
+            this.rdUmRead.TabIndex = 4;
+            this.rdUmRead.TabStop = true;
+            this.rdUmRead.Text = "READ\r\nONLY";
+            this.rdUmRead.UseVisualStyleBackColor = true;
+            this.rdUmRead.CheckedChanged += new System.EventHandler(this.rdUmRead_CheckedChanged);
             // 
             // pnlUm
             // 
             this.pnlUm.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlUm.Controls.Add(this.chkUmRead);
             this.pnlUm.Controls.Add(this.chkUmDelete);
             this.pnlUm.Controls.Add(this.chkUmEdit);
             this.pnlUm.Controls.Add(this.chkUmCreate);
-            this.pnlUm.Location = new System.Drawing.Point(69, 19);
+            this.pnlUm.Location = new System.Drawing.Point(75, 31);
             this.pnlUm.Name = "pnlUm";
-            this.pnlUm.Size = new System.Drawing.Size(152, 112);
+            this.pnlUm.Size = new System.Drawing.Size(146, 100);
             this.pnlUm.TabIndex = 2;
-            // 
-            // chkUmRead
-            // 
-            this.chkUmRead.AutoSize = true;
-            this.chkUmRead.Location = new System.Drawing.Point(19, 81);
-            this.chkUmRead.Name = "chkUmRead";
-            this.chkUmRead.Size = new System.Drawing.Size(76, 17);
-            this.chkUmRead.TabIndex = 3;
-            this.chkUmRead.Text = "Read Only";
-            this.chkUmRead.UseVisualStyleBackColor = true;
             // 
             // chkUmDelete
             // 
             this.chkUmDelete.AutoSize = true;
-            this.chkUmDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkUmDelete.Location = new System.Drawing.Point(19, 61);
             this.chkUmDelete.Name = "chkUmDelete";
             this.chkUmDelete.Size = new System.Drawing.Size(95, 17);
             this.chkUmDelete.TabIndex = 2;
@@ -505,7 +517,7 @@ namespace CPMS_Accounting.Forms
             // chkUmEdit
             // 
             this.chkUmEdit.AutoSize = true;
-            this.chkUmEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkUmEdit.Location = new System.Drawing.Point(19, 38);
             this.chkUmEdit.Name = "chkUmEdit";
             this.chkUmEdit.Size = new System.Drawing.Size(82, 17);
             this.chkUmEdit.TabIndex = 1;
@@ -515,7 +527,7 @@ namespace CPMS_Accounting.Forms
             // chkUmCreate
             // 
             this.chkUmCreate.AutoSize = true;
-            this.chkUmCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkUmCreate.Location = new System.Drawing.Point(19, 15);
             this.chkUmCreate.Name = "chkUmCreate";
             this.chkUmCreate.Size = new System.Drawing.Size(95, 17);
             this.chkUmCreate.TabIndex = 0;
@@ -532,6 +544,7 @@ namespace CPMS_Accounting.Forms
             this.rdUmNo.TabStop = true;
             this.rdUmNo.Text = "NO";
             this.rdUmNo.UseVisualStyleBackColor = true;
+            this.rdUmNo.CheckedChanged += new System.EventHandler(this.rdUmNo_CheckedChanged);
             // 
             // rdUmYes
             // 
@@ -543,45 +556,48 @@ namespace CPMS_Accounting.Forms
             this.rdUmYes.TabStop = true;
             this.rdUmYes.Text = "YES";
             this.rdUmYes.UseVisualStyleBackColor = true;
+            this.rdUmYes.CheckedChanged += new System.EventHandler(this.rdUmYes_CheckedChanged);
             // 
-            // groupBox2
+            // gbPm
             // 
-            this.groupBox2.Controls.Add(this.pnlPm);
-            this.groupBox2.Controls.Add(this.rdPmNo);
-            this.groupBox2.Controls.Add(this.rdPmYes);
-            this.groupBox2.Location = new System.Drawing.Point(11, 292);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(227, 137);
-            this.groupBox2.TabIndex = 28;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "ALLOW ON PRODUCT MAINTENANCE";
+            this.gbPm.Controls.Add(this.rdPmRead);
+            this.gbPm.Controls.Add(this.pnlPm);
+            this.gbPm.Controls.Add(this.rdPmNo);
+            this.gbPm.Controls.Add(this.rdPmYes);
+            this.gbPm.Location = new System.Drawing.Point(11, 292);
+            this.gbPm.Name = "gbPm";
+            this.gbPm.Size = new System.Drawing.Size(227, 137);
+            this.gbPm.TabIndex = 28;
+            this.gbPm.TabStop = false;
+            this.gbPm.Text = "ALLOW ON PRODUCT MAINTENANCE";
+            // 
+            // rdPmRead
+            // 
+            this.rdPmRead.AutoSize = true;
+            this.rdPmRead.Location = new System.Drawing.Point(14, 74);
+            this.rdPmRead.Name = "rdPmRead";
+            this.rdPmRead.Size = new System.Drawing.Size(55, 30);
+            this.rdPmRead.TabIndex = 4;
+            this.rdPmRead.TabStop = true;
+            this.rdPmRead.Text = "READ\r\nONLY";
+            this.rdPmRead.UseVisualStyleBackColor = true;
+            this.rdPmRead.CheckedChanged += new System.EventHandler(this.rdPmRead_CheckedChanged);
             // 
             // pnlPm
             // 
             this.pnlPm.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlPm.Controls.Add(this.chkPmRead);
             this.pnlPm.Controls.Add(this.chkPmDelete);
             this.pnlPm.Controls.Add(this.chkPmEdit);
             this.pnlPm.Controls.Add(this.chkPmCreate);
-            this.pnlPm.Location = new System.Drawing.Point(69, 19);
+            this.pnlPm.Location = new System.Drawing.Point(74, 31);
             this.pnlPm.Name = "pnlPm";
-            this.pnlPm.Size = new System.Drawing.Size(152, 112);
+            this.pnlPm.Size = new System.Drawing.Size(146, 100);
             this.pnlPm.TabIndex = 2;
-            // 
-            // chkPmRead
-            // 
-            this.chkPmRead.AutoSize = true;
-            this.chkPmRead.Location = new System.Drawing.Point(19, 81);
-            this.chkPmRead.Name = "chkPmRead";
-            this.chkPmRead.Size = new System.Drawing.Size(76, 17);
-            this.chkPmRead.TabIndex = 3;
-            this.chkPmRead.Text = "Read Only";
-            this.chkPmRead.UseVisualStyleBackColor = true;
             // 
             // chkPmDelete
             // 
             this.chkPmDelete.AutoSize = true;
-            this.chkPmDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkPmDelete.Location = new System.Drawing.Point(20, 62);
             this.chkPmDelete.Name = "chkPmDelete";
             this.chkPmDelete.Size = new System.Drawing.Size(95, 17);
             this.chkPmDelete.TabIndex = 2;
@@ -591,7 +607,7 @@ namespace CPMS_Accounting.Forms
             // chkPmEdit
             // 
             this.chkPmEdit.AutoSize = true;
-            this.chkPmEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkPmEdit.Location = new System.Drawing.Point(20, 39);
             this.chkPmEdit.Name = "chkPmEdit";
             this.chkPmEdit.Size = new System.Drawing.Size(82, 17);
             this.chkPmEdit.TabIndex = 1;
@@ -601,7 +617,7 @@ namespace CPMS_Accounting.Forms
             // chkPmCreate
             // 
             this.chkPmCreate.AutoSize = true;
-            this.chkPmCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkPmCreate.Location = new System.Drawing.Point(20, 16);
             this.chkPmCreate.Name = "chkPmCreate";
             this.chkPmCreate.Size = new System.Drawing.Size(95, 17);
             this.chkPmCreate.TabIndex = 0;
@@ -618,6 +634,7 @@ namespace CPMS_Accounting.Forms
             this.rdPmNo.TabStop = true;
             this.rdPmNo.Text = "NO";
             this.rdPmNo.UseVisualStyleBackColor = true;
+            this.rdPmNo.CheckedChanged += new System.EventHandler(this.rdPmNo_CheckedChanged);
             // 
             // rdPmYes
             // 
@@ -629,45 +646,48 @@ namespace CPMS_Accounting.Forms
             this.rdPmYes.TabStop = true;
             this.rdPmYes.Text = "YES";
             this.rdPmYes.UseVisualStyleBackColor = true;
+            this.rdPmYes.CheckedChanged += new System.EventHandler(this.rdPmYes_CheckedChanged);
             // 
-            // groupBox4
+            // gbPo
             // 
-            this.groupBox4.Controls.Add(this.pnlPo);
-            this.groupBox4.Controls.Add(this.rdPoNo);
-            this.groupBox4.Controls.Add(this.rdPoYes);
-            this.groupBox4.Location = new System.Drawing.Point(244, 149);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(227, 137);
-            this.groupBox4.TabIndex = 30;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "ALLOW ON PURCHASE ORDER";
+            this.gbPo.Controls.Add(this.rdPoRead);
+            this.gbPo.Controls.Add(this.pnlPo);
+            this.gbPo.Controls.Add(this.rdPoNo);
+            this.gbPo.Controls.Add(this.rdPoYes);
+            this.gbPo.Location = new System.Drawing.Point(244, 149);
+            this.gbPo.Name = "gbPo";
+            this.gbPo.Size = new System.Drawing.Size(227, 137);
+            this.gbPo.TabIndex = 30;
+            this.gbPo.TabStop = false;
+            this.gbPo.Text = "ALLOW ON PURCHASE ORDER";
+            // 
+            // rdPoRead
+            // 
+            this.rdPoRead.AutoSize = true;
+            this.rdPoRead.Location = new System.Drawing.Point(14, 74);
+            this.rdPoRead.Name = "rdPoRead";
+            this.rdPoRead.Size = new System.Drawing.Size(55, 30);
+            this.rdPoRead.TabIndex = 4;
+            this.rdPoRead.TabStop = true;
+            this.rdPoRead.Text = "READ\r\nONLY";
+            this.rdPoRead.UseVisualStyleBackColor = true;
+            this.rdPoRead.CheckedChanged += new System.EventHandler(this.rdPoRead_CheckedChanged);
             // 
             // pnlPo
             // 
             this.pnlPo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlPo.Controls.Add(this.chkPoRead);
             this.pnlPo.Controls.Add(this.chkPoDelete);
             this.pnlPo.Controls.Add(this.chkPoEdit);
             this.pnlPo.Controls.Add(this.chkPoCreate);
-            this.pnlPo.Location = new System.Drawing.Point(69, 19);
+            this.pnlPo.Location = new System.Drawing.Point(75, 33);
             this.pnlPo.Name = "pnlPo";
-            this.pnlPo.Size = new System.Drawing.Size(152, 112);
+            this.pnlPo.Size = new System.Drawing.Size(146, 98);
             this.pnlPo.TabIndex = 2;
-            // 
-            // chkPoRead
-            // 
-            this.chkPoRead.AutoSize = true;
-            this.chkPoRead.Location = new System.Drawing.Point(19, 81);
-            this.chkPoRead.Name = "chkPoRead";
-            this.chkPoRead.Size = new System.Drawing.Size(76, 17);
-            this.chkPoRead.TabIndex = 3;
-            this.chkPoRead.Text = "Read Only";
-            this.chkPoRead.UseVisualStyleBackColor = true;
             // 
             // chkPoDelete
             // 
             this.chkPoDelete.AutoSize = true;
-            this.chkPoDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkPoDelete.Location = new System.Drawing.Point(19, 59);
             this.chkPoDelete.Name = "chkPoDelete";
             this.chkPoDelete.Size = new System.Drawing.Size(95, 17);
             this.chkPoDelete.TabIndex = 2;
@@ -677,7 +697,7 @@ namespace CPMS_Accounting.Forms
             // chkPoEdit
             // 
             this.chkPoEdit.AutoSize = true;
-            this.chkPoEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkPoEdit.Location = new System.Drawing.Point(19, 36);
             this.chkPoEdit.Name = "chkPoEdit";
             this.chkPoEdit.Size = new System.Drawing.Size(82, 17);
             this.chkPoEdit.TabIndex = 1;
@@ -687,7 +707,7 @@ namespace CPMS_Accounting.Forms
             // chkPoCreate
             // 
             this.chkPoCreate.AutoSize = true;
-            this.chkPoCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkPoCreate.Location = new System.Drawing.Point(19, 13);
             this.chkPoCreate.Name = "chkPoCreate";
             this.chkPoCreate.Size = new System.Drawing.Size(95, 17);
             this.chkPoCreate.TabIndex = 0;
@@ -704,6 +724,7 @@ namespace CPMS_Accounting.Forms
             this.rdPoNo.TabStop = true;
             this.rdPoNo.Text = "NO";
             this.rdPoNo.UseVisualStyleBackColor = true;
+            this.rdPoNo.CheckedChanged += new System.EventHandler(this.rdPoNo_CheckedChanged);
             // 
             // rdPoYes
             // 
@@ -715,45 +736,48 @@ namespace CPMS_Accounting.Forms
             this.rdPoYes.TabStop = true;
             this.rdPoYes.Text = "YES";
             this.rdPoYes.UseVisualStyleBackColor = true;
+            this.rdPoYes.CheckedChanged += new System.EventHandler(this.rdPoYes_CheckedChanged);
             // 
-            // groupBox3
+            // gbDc
             // 
-            this.groupBox3.Controls.Add(this.pnlDc);
-            this.groupBox3.Controls.Add(this.rdDcNo);
-            this.groupBox3.Controls.Add(this.rdDcYes);
-            this.groupBox3.Location = new System.Drawing.Point(244, 292);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(227, 137);
-            this.groupBox3.TabIndex = 29;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "ALLOW ON DATA CORRECTION";
+            this.gbDc.Controls.Add(this.rdDcRead);
+            this.gbDc.Controls.Add(this.pnlDc);
+            this.gbDc.Controls.Add(this.rdDcNo);
+            this.gbDc.Controls.Add(this.rdDcYes);
+            this.gbDc.Location = new System.Drawing.Point(244, 292);
+            this.gbDc.Name = "gbDc";
+            this.gbDc.Size = new System.Drawing.Size(227, 137);
+            this.gbDc.TabIndex = 29;
+            this.gbDc.TabStop = false;
+            this.gbDc.Text = "ALLOW ON DATA CORRECTION";
+            // 
+            // rdDcRead
+            // 
+            this.rdDcRead.AutoSize = true;
+            this.rdDcRead.Location = new System.Drawing.Point(14, 74);
+            this.rdDcRead.Name = "rdDcRead";
+            this.rdDcRead.Size = new System.Drawing.Size(55, 30);
+            this.rdDcRead.TabIndex = 4;
+            this.rdDcRead.TabStop = true;
+            this.rdDcRead.Text = "READ\r\nONLY";
+            this.rdDcRead.UseVisualStyleBackColor = true;
+            this.rdDcRead.CheckedChanged += new System.EventHandler(this.rdDcRead_CheckedChanged);
             // 
             // pnlDc
             // 
             this.pnlDc.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlDc.Controls.Add(this.chkDcRead);
             this.pnlDc.Controls.Add(this.chkDcDelete);
             this.pnlDc.Controls.Add(this.chkDcEdit);
             this.pnlDc.Controls.Add(this.chkDcCreate);
-            this.pnlDc.Location = new System.Drawing.Point(69, 19);
+            this.pnlDc.Location = new System.Drawing.Point(75, 31);
             this.pnlDc.Name = "pnlDc";
-            this.pnlDc.Size = new System.Drawing.Size(152, 112);
+            this.pnlDc.Size = new System.Drawing.Size(146, 100);
             this.pnlDc.TabIndex = 2;
-            // 
-            // chkDcRead
-            // 
-            this.chkDcRead.AutoSize = true;
-            this.chkDcRead.Location = new System.Drawing.Point(19, 81);
-            this.chkDcRead.Name = "chkDcRead";
-            this.chkDcRead.Size = new System.Drawing.Size(76, 17);
-            this.chkDcRead.TabIndex = 3;
-            this.chkDcRead.Text = "Read Only";
-            this.chkDcRead.UseVisualStyleBackColor = true;
             // 
             // chkDcDelete
             // 
             this.chkDcDelete.AutoSize = true;
-            this.chkDcDelete.Location = new System.Drawing.Point(19, 58);
+            this.chkDcDelete.Location = new System.Drawing.Point(19, 62);
             this.chkDcDelete.Name = "chkDcDelete";
             this.chkDcDelete.Size = new System.Drawing.Size(95, 17);
             this.chkDcDelete.TabIndex = 2;
@@ -763,7 +787,7 @@ namespace CPMS_Accounting.Forms
             // chkDcEdit
             // 
             this.chkDcEdit.AutoSize = true;
-            this.chkDcEdit.Location = new System.Drawing.Point(19, 35);
+            this.chkDcEdit.Location = new System.Drawing.Point(19, 39);
             this.chkDcEdit.Name = "chkDcEdit";
             this.chkDcEdit.Size = new System.Drawing.Size(82, 17);
             this.chkDcEdit.TabIndex = 1;
@@ -773,7 +797,7 @@ namespace CPMS_Accounting.Forms
             // chkDcCreate
             // 
             this.chkDcCreate.AutoSize = true;
-            this.chkDcCreate.Location = new System.Drawing.Point(19, 12);
+            this.chkDcCreate.Location = new System.Drawing.Point(19, 16);
             this.chkDcCreate.Name = "chkDcCreate";
             this.chkDcCreate.Size = new System.Drawing.Size(95, 17);
             this.chkDcCreate.TabIndex = 0;
@@ -790,6 +814,7 @@ namespace CPMS_Accounting.Forms
             this.rdDcNo.TabStop = true;
             this.rdDcNo.Text = "NO";
             this.rdDcNo.UseVisualStyleBackColor = true;
+            this.rdDcNo.CheckedChanged += new System.EventHandler(this.rdDcNo_CheckedChanged);
             // 
             // rdDcYes
             // 
@@ -801,6 +826,7 @@ namespace CPMS_Accounting.Forms
             this.rdDcYes.TabStop = true;
             this.rdDcYes.Text = "YES";
             this.rdDcYes.UseVisualStyleBackColor = true;
+            this.rdDcYes.CheckedChanged += new System.EventHandler(this.rdDcYes_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -811,18 +837,20 @@ namespace CPMS_Accounting.Forms
             this.tabPage2.TabIndex = 1;
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // txtUserLevel
+            // txtUserLevelName
             // 
-            this.txtUserLevel.Location = new System.Drawing.Point(136, 20);
-            this.txtUserLevel.Name = "txtUserLevel";
-            this.txtUserLevel.Size = new System.Drawing.Size(186, 20);
-            this.txtUserLevel.TabIndex = 9;
+            this.txtUserLevelName.Location = new System.Drawing.Point(130, 20);
+            this.txtUserLevelName.MaxLength = 20;
+            this.txtUserLevelName.Name = "txtUserLevelName";
+            this.txtUserLevelName.Size = new System.Drawing.Size(186, 20);
+            this.txtUserLevelName.TabIndex = 9;
+            this.txtUserLevelName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserLevelName_KeyPress);
             // 
             // lblUserLevelName
             // 
             this.lblUserLevelName.AutoSize = true;
             this.lblUserLevelName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblUserLevelName.Location = new System.Drawing.Point(12, 23);
+            this.lblUserLevelName.Location = new System.Drawing.Point(6, 23);
             this.lblUserLevelName.Name = "lblUserLevelName";
             this.lblUserLevelName.Size = new System.Drawing.Size(118, 15);
             this.lblUserLevelName.TabIndex = 8;
@@ -852,15 +880,14 @@ namespace CPMS_Accounting.Forms
             this.btnDeleteRecord.TabIndex = 24;
             this.btnDeleteRecord.Text = "DELETE RECORD";
             this.btnDeleteRecord.UseVisualStyleBackColor = false;
+            this.btnDeleteRecord.Click += new System.EventHandler(this.btnDeleteRecord_Click);
             // 
             // pnlActionButtons
             // 
-            this.pnlActionButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlActionButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlActionButtons.BackColor = System.Drawing.Color.Transparent;
             this.pnlActionButtons.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlActionButtons.Controls.Add(this.btnDeleteRecord);
-            this.pnlActionButtons.Controls.Add(this.btnCreateNewRecord);
             this.pnlActionButtons.Controls.Add(this.btnRefreshView);
             this.pnlActionButtons.Controls.Add(this.btnEditRecord);
             this.pnlActionButtons.Controls.Add(this.btnSaveRecord);
@@ -870,24 +897,6 @@ namespace CPMS_Accounting.Forms
             this.pnlActionButtons.Size = new System.Drawing.Size(170, 519);
             this.pnlActionButtons.TabIndex = 52;
             this.pnlActionButtons.TabStop = false;
-            // 
-            // btnCreateNewRecord
-            // 
-            this.btnCreateNewRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreateNewRecord.BackColor = System.Drawing.SystemColors.Control;
-            this.btnCreateNewRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCreateNewRecord.BackgroundImage")));
-            this.btnCreateNewRecord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCreateNewRecord.FlatAppearance.BorderSize = 0;
-            this.btnCreateNewRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateNewRecord.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCreateNewRecord.ForeColor = System.Drawing.Color.White;
-            this.btnCreateNewRecord.Location = new System.Drawing.Point(6, 247);
-            this.btnCreateNewRecord.Name = "btnCreateNewRecord";
-            this.btnCreateNewRecord.Size = new System.Drawing.Size(158, 62);
-            this.btnCreateNewRecord.TabIndex = 9;
-            this.btnCreateNewRecord.Text = "CREATE NEW RECORD";
-            this.btnCreateNewRecord.UseVisualStyleBackColor = false;
-            this.btnCreateNewRecord.Click += new System.EventHandler(this.btnCreateNewRecord_Click);
             // 
             // btnRefreshView
             // 
@@ -905,6 +914,7 @@ namespace CPMS_Accounting.Forms
             this.btnRefreshView.TabIndex = 22;
             this.btnRefreshView.Text = "REFRESH";
             this.btnRefreshView.UseVisualStyleBackColor = false;
+            this.btnRefreshView.Click += new System.EventHandler(this.btnRefreshView_Click);
             // 
             // btnEditRecord
             // 
@@ -939,6 +949,7 @@ namespace CPMS_Accounting.Forms
             this.btnSaveRecord.TabIndex = 10;
             this.btnSaveRecord.Text = "SAVE";
             this.btnSaveRecord.UseVisualStyleBackColor = false;
+            this.btnSaveRecord.Click += new System.EventHandler(this.btnSaveRecord_Click);
             // 
             // btnAddRecord
             // 
@@ -952,29 +963,34 @@ namespace CPMS_Accounting.Forms
             this.btnAddRecord.Name = "btnAddRecord";
             this.btnAddRecord.Size = new System.Drawing.Size(77, 23);
             this.btnAddRecord.TabIndex = 19;
-            this.btnAddRecord.Text = "Enter";
+            this.btnAddRecord.Text = "Create";
             this.btnAddRecord.UseVisualStyleBackColor = true;
+            this.btnAddRecord.Click += new System.EventHandler(this.btnAddRecord_Click);
             // 
-            // gbUserLevelNo
+            // gbUserLevelCode
             // 
-            this.gbUserLevelNo.BackColor = System.Drawing.Color.Transparent;
-            this.gbUserLevelNo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.gbUserLevelNo.Controls.Add(this.btnAddRecord);
-            this.gbUserLevelNo.Controls.Add(this.txtUserLeveNo);
-            this.gbUserLevelNo.Location = new System.Drawing.Point(6, 94);
-            this.gbUserLevelNo.Name = "gbUserLevelNo";
-            this.gbUserLevelNo.Size = new System.Drawing.Size(248, 68);
-            this.gbUserLevelNo.TabIndex = 51;
-            this.gbUserLevelNo.TabStop = false;
-            this.gbUserLevelNo.Text = "USER LEVEL RECORD NUMBER";
+            this.gbUserLevelCode.BackColor = System.Drawing.Color.Transparent;
+            this.gbUserLevelCode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.gbUserLevelCode.Controls.Add(this.btnAddRecord);
+            this.gbUserLevelCode.Controls.Add(this.txtUserLeveCode);
+            this.gbUserLevelCode.Location = new System.Drawing.Point(6, 94);
+            this.gbUserLevelCode.Name = "gbUserLevelCode";
+            this.gbUserLevelCode.Size = new System.Drawing.Size(248, 68);
+            this.gbUserLevelCode.TabIndex = 51;
+            this.gbUserLevelCode.TabStop = false;
+            this.gbUserLevelCode.Text = "USER LEVEL CODE";
             // 
-            // txtUserLeveNo
+            // txtUserLeveCode
             // 
-            this.txtUserLeveNo.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUserLeveNo.Location = new System.Drawing.Point(12, 27);
-            this.txtUserLeveNo.Name = "txtUserLeveNo";
-            this.txtUserLeveNo.Size = new System.Drawing.Size(147, 23);
-            this.txtUserLeveNo.TabIndex = 3;
+            this.txtUserLeveCode.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUserLeveCode.Location = new System.Drawing.Point(12, 27);
+            this.txtUserLeveCode.MaxLength = 10;
+            this.txtUserLeveCode.Name = "txtUserLeveCode";
+            this.txtUserLeveCode.Size = new System.Drawing.Size(147, 23);
+            this.txtUserLeveCode.TabIndex = 3;
+            this.txtUserLeveCode.TextChanged += new System.EventHandler(this.txtUserLeveCode_TextChanged);
+            this.txtUserLeveCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserLeveCode_KeyDown);
+            this.txtUserLeveCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUserLeveCode_KeyPress);
             // 
             // progressBar1
             // 
@@ -1046,6 +1062,7 @@ namespace CPMS_Accounting.Forms
             this.btnCancelClose.TabIndex = 53;
             this.btnCancelClose.Text = "CANCEL / CLOSE";
             this.btnCancelClose.UseVisualStyleBackColor = true;
+            this.btnCancelClose.Click += new System.EventHandler(this.btnCancelClose_Click);
             // 
             // panel1
             // 
@@ -1094,7 +1111,7 @@ namespace CPMS_Accounting.Forms
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.gbDetails);
             this.Controls.Add(this.pnlActionButtons);
-            this.Controls.Add(this.gbUserLevelNo);
+            this.Controls.Add(this.gbUserLevelCode);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancelClose);
             this.Controls.Add(this.panel1);
@@ -1110,37 +1127,37 @@ namespace CPMS_Accounting.Forms
             this.gbDetails.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.gbDR.ResumeLayout(false);
-            this.gbDR.PerformLayout();
+            this.gbDr.ResumeLayout(false);
+            this.gbDr.PerformLayout();
             this.pnlDr.ResumeLayout(false);
             this.pnlDr.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.gbUl.ResumeLayout(false);
+            this.gbUl.PerformLayout();
             this.pnlUl.ResumeLayout(false);
             this.pnlUl.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.pnlSI.ResumeLayout(false);
-            this.pnlSI.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.gbSi.ResumeLayout(false);
+            this.gbSi.PerformLayout();
+            this.pnlSi.ResumeLayout(false);
+            this.pnlSi.PerformLayout();
+            this.gbUm.ResumeLayout(false);
+            this.gbUm.PerformLayout();
             this.pnlUm.ResumeLayout(false);
             this.pnlUm.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gbPm.ResumeLayout(false);
+            this.gbPm.PerformLayout();
             this.pnlPm.ResumeLayout(false);
             this.pnlPm.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gbPo.ResumeLayout(false);
+            this.gbPo.PerformLayout();
             this.pnlPo.ResumeLayout(false);
             this.pnlPo.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.gbDc.ResumeLayout(false);
+            this.gbDc.PerformLayout();
             this.pnlDc.ResumeLayout(false);
             this.pnlDc.PerformLayout();
             this.pnlActionButtons.ResumeLayout(false);
-            this.gbUserLevelNo.ResumeLayout(false);
-            this.gbUserLevelNo.PerformLayout();
+            this.gbUserLevelCode.ResumeLayout(false);
+            this.gbUserLevelCode.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.gbSearch.ResumeLayout(false);
@@ -1154,18 +1171,17 @@ namespace CPMS_Accounting.Forms
 
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.GroupBox gbDetails;
-        private System.Windows.Forms.TextBox txtUserLevel;
+        private System.Windows.Forms.TextBox txtUserLevelName;
         private System.Windows.Forms.Label lblUserLevelName;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnDeleteRecord;
         private System.Windows.Forms.GroupBox pnlActionButtons;
-        private System.Windows.Forms.Button btnCreateNewRecord;
         private System.Windows.Forms.Button btnRefreshView;
         private System.Windows.Forms.Button btnEditRecord;
         private System.Windows.Forms.Button btnSaveRecord;
         private System.Windows.Forms.Button btnAddRecord;
-        private System.Windows.Forms.GroupBox gbUserLevelNo;
-        private System.Windows.Forms.TextBox txtUserLeveNo;
+        private System.Windows.Forms.GroupBox gbUserLevelCode;
+        private System.Windows.Forms.TextBox txtUserLeveCode;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label lblRowsAffected;
         private System.Windows.Forms.Label lblBankName;
@@ -1176,64 +1192,64 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox gbSearch;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.GroupBox gbDR;
+        private System.Windows.Forms.GroupBox gbDr;
         private System.Windows.Forms.Panel pnlDr;
-        private System.Windows.Forms.CheckBox chkDrRead;
         private System.Windows.Forms.CheckBox chkDrDelete;
         private System.Windows.Forms.CheckBox chkDrEdit;
         private System.Windows.Forms.CheckBox chkDrCreate;
         private System.Windows.Forms.RadioButton rdDrNo;
         private System.Windows.Forms.RadioButton rdDrYes;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Panel pnlSI;
-        private System.Windows.Forms.CheckBox chkSiRead;
+        private System.Windows.Forms.GroupBox gbSi;
+        private System.Windows.Forms.Panel pnlSi;
         private System.Windows.Forms.CheckBox chkSiDelete;
         private System.Windows.Forms.CheckBox chkSiEdit;
         private System.Windows.Forms.CheckBox chkSiCreate;
         private System.Windows.Forms.RadioButton rdSiNo;
         private System.Windows.Forms.RadioButton rdSiYes;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbPm;
         private System.Windows.Forms.Panel pnlPm;
-        private System.Windows.Forms.CheckBox chkPmRead;
         private System.Windows.Forms.CheckBox chkPmDelete;
         private System.Windows.Forms.CheckBox chkPmEdit;
         private System.Windows.Forms.CheckBox chkPmCreate;
         private System.Windows.Forms.RadioButton rdPmNo;
+        private System.Windows.Forms.RadioButton rdDcYes;
         private System.Windows.Forms.RadioButton rdPmYes;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox gbUl;
         private System.Windows.Forms.Panel pnlUl;
-        private System.Windows.Forms.CheckBox chkUlRead;
-        private System.Windows.Forms.CheckBox chkUlDelete;
         private System.Windows.Forms.CheckBox chkUlEdit;
         private System.Windows.Forms.CheckBox chkUlCreate;
         private System.Windows.Forms.RadioButton rdUlNo;
         private System.Windows.Forms.RadioButton rdUlYes;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox gbUm;
         private System.Windows.Forms.Panel pnlUm;
-        private System.Windows.Forms.CheckBox chkUmRead;
         private System.Windows.Forms.CheckBox chkUmDelete;
         private System.Windows.Forms.CheckBox chkUmEdit;
         private System.Windows.Forms.CheckBox chkUmCreate;
         private System.Windows.Forms.RadioButton rdUmNo;
         private System.Windows.Forms.RadioButton rdUmYes;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbPo;
         private System.Windows.Forms.Panel pnlPo;
-        private System.Windows.Forms.CheckBox chkPoRead;
         private System.Windows.Forms.CheckBox chkPoDelete;
         private System.Windows.Forms.CheckBox chkPoEdit;
         private System.Windows.Forms.CheckBox chkPoCreate;
         private System.Windows.Forms.RadioButton rdPoNo;
         private System.Windows.Forms.RadioButton rdPoYes;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbDc;
         private System.Windows.Forms.Panel pnlDc;
-        private System.Windows.Forms.CheckBox chkDcRead;
         private System.Windows.Forms.CheckBox chkDcDelete;
         private System.Windows.Forms.CheckBox chkDcEdit;
         private System.Windows.Forms.CheckBox chkDcCreate;
         private System.Windows.Forms.RadioButton rdDcNo;
-        private System.Windows.Forms.RadioButton rdDcYes;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.RadioButton rdDrRead;
+        private System.Windows.Forms.RadioButton rdUlRead;
+        private System.Windows.Forms.CheckBox chkUlDelete;
+        private System.Windows.Forms.RadioButton rdSiRead;
+        private System.Windows.Forms.RadioButton rdUmRead;
+        private System.Windows.Forms.RadioButton rdPmRead;
+        private System.Windows.Forms.RadioButton rdPoRead;
+        private System.Windows.Forms.RadioButton rdDcRead;
     }
 }

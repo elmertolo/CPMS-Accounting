@@ -413,15 +413,27 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public bool GetUserNames(ref DataTable dt)
+        public bool GetUserDetails(ref DataTable dt, string UserId = "*")
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand("select username, password, firstname, middlename, lastname, suffix, lockout from userlist;", con);
+                string sql;
+
+                if (UserId == "*")
+                {
+                    sql = "select * from userlist;";
+                }
+                else
+                {
+                    sql = "select * from userlist where userId ='"+ UserId +"'";
+                }
+
+                MySqlCommand cmd = new MySqlCommand(sql, con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
                 da.Fill(dt);
                 return true;
+
             }
             catch (Exception ex)
             {
@@ -772,6 +784,125 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
+
+        public bool UpdateIsAllowedOnForm(string formIntial, int value)
+        {
+            try
+            {
+                string sql = "update userlevel set isallowedon" + formIntial + " =" + value + "";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool InsertInitialUserLevelRecord(string userLevelCode, string userLevelName)
+        {
+            try
+            {
+                string sql = "insert into userlevels (UserLevelCode, UserLevelName) values ('"+ userLevelCode +"', '"+ userLevelName +"')";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+       
+        }
+
+        public bool UpdateUserLevelRecord(string userLevelCode, string formInitial, int radioButtonValue, int isCreateAllowedValue, int isEditAllowedValue, int isDeleteAllowedValue)
+        {
+            try
+            {
+                string sql = "update userlevels set isallowedon" + formInitial + " =" + radioButtonValue + ", " +
+                    "is" + formInitial + "CreateAllowed =" + isCreateAllowedValue + ", " +
+                    "is" + formInitial + "EditAllowed =" + isEditAllowedValue + ", " +
+                    "is" + formInitial + "DeleteAllowed =" + isDeleteAllowedValue + " " +
+                    "Where userlevelcode ='" + userLevelCode + "'";
+
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool UserLevelExist(string userLevelCode)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select userlevelcode from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        public bool GetUserLevelDetails(string userLevelCode, ref DataTable dt)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select * from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+
+        }
+
+        public bool DeleteUserLevelRecord(string userLevelCode)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("delete from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                rowNumbersAffected =  cmd.ExecuteNonQuery();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+        
+
 
 
 
