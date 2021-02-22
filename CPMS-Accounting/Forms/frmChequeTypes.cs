@@ -67,11 +67,11 @@ namespace CPMS_Accounting.Forms
             dt.Columns.Add("Cheque Name");
             dt.Columns.Add("Description");
             dt.Columns.Add("Date Modified");
-            
+            dt.Columns.Add("Product Name");
 
             listofCheques.ForEach(x =>
             {
-                dt.Rows.Add(new object[] { x.Type, x.ChequeName, x.Description, x.DateModified.ToString("yyyy-MM-dd") });
+                dt.Rows.Add(new object[] { x.Type, x.ChequeName, x.Description, x.DateModified.ToString("yyyy-MM-dd"), x.ProductName });
             });
 
             DgvCheques.DataSource = dt;
@@ -80,6 +80,7 @@ namespace CPMS_Accounting.Forms
             DgvCheques.Columns[1].Width = 150;
             DgvCheques.Columns[2].Width = 200;
             DgvCheques.Columns[3].Width = 100;
+            DgvCheques.Columns[4].Width = 120;
 
 
         }
@@ -209,6 +210,7 @@ namespace CPMS_Accounting.Forms
             txtType.Text = DgvCheques.Rows[rowindex].Cells[0].Value.ToString();
             txtCheckName.Text = DgvCheques.Rows[rowindex].Cells[1].Value.ToString();
             txtDescription.Text = DgvCheques.Rows[rowindex].Cells[2].Value.ToString();
+            cmbProducts.Text = DgvCheques.Rows[rowindex].Cells[4].Value.ToString();
         }
 
         private void txtType_KeyPress(object sender, KeyPressEventArgs e)
@@ -217,6 +219,19 @@ namespace CPMS_Accounting.Forms
             {
                 e.Handled = true;
             }
+        }
+
+        private void cmbProducts_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtType_TextChanged(object sender, EventArgs e)
+        {
+            txtType.CharacterCasing = CharacterCasing.Upper;
         }
     }
 }

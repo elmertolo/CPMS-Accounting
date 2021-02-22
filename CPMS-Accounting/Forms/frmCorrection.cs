@@ -239,8 +239,13 @@ namespace CPMS_Accounting.Forms
             txtBatch.TabIndex = 0;
             cbHeader.Checked = false;
         }
-        
 
-     
+        private void txtNewDr_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

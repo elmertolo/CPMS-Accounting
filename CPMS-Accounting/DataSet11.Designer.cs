@@ -399,6 +399,8 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnConcatinatedDRD;
             
+            private global::System.Data.DataColumn columnBank;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DeliveryReceiptDataTable() {
@@ -634,6 +636,14 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn BankColumn {
+                get {
+                    return this.columnBank;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -694,7 +704,8 @@ namespace CPMS_Accounting {
                         string ConcatinatedDRA, 
                         string ConcatinatedDRB, 
                         string ConcatinatedDRC, 
-                        string ConcatinatedDRD) {
+                        string ConcatinatedDRD, 
+                        string Bank) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -721,7 +732,8 @@ namespace CPMS_Accounting {
                         ConcatinatedDRA,
                         ConcatinatedDRB,
                         ConcatinatedDRC,
-                        ConcatinatedDRD};
+                        ConcatinatedDRD,
+                        Bank};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -769,6 +781,7 @@ namespace CPMS_Accounting {
                 this.columnConcatinatedDRB = base.Columns["ConcatinatedDRB"];
                 this.columnConcatinatedDRC = base.Columns["ConcatinatedDRC"];
                 this.columnConcatinatedDRD = base.Columns["ConcatinatedDRD"];
+                this.columnBank = base.Columns["Bank"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -824,6 +837,8 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnConcatinatedDRC);
                 this.columnConcatinatedDRD = new global::System.Data.DataColumn("ConcatinatedDRD", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnConcatinatedDRD);
+                this.columnBank = new global::System.Data.DataColumn("Bank", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBank);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1000,6 +1015,8 @@ namespace CPMS_Accounting {
             private global::System.Data.DataColumn columnStartingSerial3;
             
             private global::System.Data.DataColumn columnEndingSerial3;
+            
+            private global::System.Data.DataColumn columnBank;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1212,6 +1229,14 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn BankColumn {
+                get {
+                    return this.columnBank;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1269,7 +1294,8 @@ namespace CPMS_Accounting {
                         string ChkType3, 
                         string ChequeName3, 
                         string StartingSerial3, 
-                        string EndingSerial3) {
+                        string EndingSerial3, 
+                        string Bank) {
                 StickerRow rowStickerRow = ((StickerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -1293,7 +1319,8 @@ namespace CPMS_Accounting {
                         ChkType3,
                         ChequeName3,
                         StartingSerial3,
-                        EndingSerial3};
+                        EndingSerial3,
+                        Bank};
                 rowStickerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStickerRow);
                 return rowStickerRow;
@@ -1338,6 +1365,7 @@ namespace CPMS_Accounting {
                 this.columnChequeName3 = base.Columns["ChequeName3"];
                 this.columnStartingSerial3 = base.Columns["StartingSerial3"];
                 this.columnEndingSerial3 = base.Columns["EndingSerial3"];
+                this.columnBank = base.Columns["Bank"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1387,6 +1415,8 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnStartingSerial3);
                 this.columnEndingSerial3 = new global::System.Data.DataColumn("EndingSerial3", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEndingSerial3);
+                this.columnBank = new global::System.Data.DataColumn("Bank", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBank);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2372,6 +2402,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Bank {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.BankColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Bank\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.BankColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -2668,6 +2714,18 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetConcatinatedDRDNull() {
                 this[this.tableDeliveryReceipt.ConcatinatedDRDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBankNull() {
+                return this.IsNull(this.tableDeliveryReceipt.BankColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBankNull() {
+                this[this.tableDeliveryReceipt.BankColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -3039,6 +3097,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Bank {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.BankColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Bank\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.BankColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableSticker.BatchColumn);
             }
@@ -3299,6 +3373,18 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetEndingSerial3Null() {
                 this[this.tableSticker.EndingSerial3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBankNull() {
+                return this.IsNull(this.tableSticker.BankColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBankNull() {
+                this[this.tableSticker.BankColumn] = global::System.Convert.DBNull;
             }
         }
         
