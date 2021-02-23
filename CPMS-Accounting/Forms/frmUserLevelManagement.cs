@@ -9,7 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CPMS_Accounting.Procedures;
-
+using CPMS_Accounting.Models;
+using static CPMS_Accounting.GlobalVariables;
 
 namespace CPMS_Accounting.Forms
 {
@@ -27,8 +28,18 @@ namespace CPMS_Accounting.Forms
         public frmUserLevelManagement(Main frm1)
         {
             InitializeComponent();
+            ConfigureDesignLabels();
 
             this.frm = frm1;
+        }
+
+        public void ConfigureDesignLabels()
+        {
+            string fullname = gUser.FirstName + " " + gUser.LastName;
+
+            lblUserName.Text = fullname.ToUpper();
+            lblBankName.Text = gClient.Description.ToUpper();
+
         }
 
         private void rdDrYes_CheckedChanged(object sender, EventArgs e)
@@ -51,6 +62,8 @@ namespace CPMS_Accounting.Forms
         {
             RefreshView();
         }
+
+       
 
         private void RefreshView()
         {
@@ -86,6 +99,7 @@ namespace CPMS_Accounting.Forms
                             {
                                 if (rdBtn.Name.Contains("Yes"))
                                 {
+                                    rdBtn.Checked = false; //for Initialization only. to be able to make checkboxes checked
                                     rdBtn.Checked = true;
                                 }
                             }
@@ -440,12 +454,13 @@ namespace CPMS_Accounting.Forms
 
         private void SaveRecord()
         {
-            if (!string.IsNullOrEmpty(txtUserLevelName.Text))
+
+            string userLevelCode = txtUserLeveCode.Text.ToString();
+            string userLevelName = txtUserLevelName.Text.ToString();
+
+            if (!string.IsNullOrEmpty(userLevelName))
             {
-                string userLevelCode = txtUserLeveCode.Text.ToString();
-                string userLevelName = txtUserLevelName.Text.ToString();
-
-
+                
                 if (proc.UserLevelExist(userLevelCode))
                 {
                     UpdateUserLevelRecord(userLevelCode);
@@ -461,6 +476,7 @@ namespace CPMS_Accounting.Forms
             else
             {
                 p.MessageAndLog("Invalid User Level Name.", ref log, "warn");
+                return;
             }
 
         }
@@ -611,7 +627,13 @@ namespace CPMS_Accounting.Forms
 
         private void UpdateUserLevelRecord(string userLevelCode)
         {
+
+            UserLevelModel userLevel = new UserLevelModel();
+            userLevel.Code = userLevelCode;
+            userLevel.Name = txtUserLevelName.Text;
+            
             string formInitial;
+            
             int radioButtonValue = 0;
             int isCreateAllowed = 0;
             int isEditAllowed = 0;
@@ -677,8 +699,10 @@ namespace CPMS_Accounting.Forms
                                         }
                                     }
 
+
+
                                     //Update UserLevels Record
-                                    if (!proc.UpdateUserLevelRecord(userLevelCode, formInitial, radioButtonValue, isCreateAllowed, isEditAllowed, isDeleteAllowed))
+                                    if (!proc.UpdateUserLevelRecord(userLevel, formInitial, radioButtonValue, isCreateAllowed, isEditAllowed, isDeleteAllowed))
                                     {
                                         p.MessageAndLog("Error Updating User Level Record (UpdateUserLevelRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
                                         return;

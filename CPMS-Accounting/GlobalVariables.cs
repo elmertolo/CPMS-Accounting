@@ -29,6 +29,12 @@ namespace CPMS_Accounting
         //02182021 User Level Management
         public static UserLevelModel gUserLevel = new UserLevelModel();
 
+        //02222021 Encryption
+        public static bool gEncryptionOn = Convert.ToBoolean(ConfigurationManager.AppSettings["EncryptionOn"]);
+        public static string gEncryptionType = ConfigurationManager.AppSettings["EncryptionType"];
+
+        //
+
         /// <summary>
         /// This variables is used for SalesInvoice Processes only.
         /// </summary

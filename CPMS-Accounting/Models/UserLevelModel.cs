@@ -8,8 +8,9 @@ namespace CPMS_Accounting.Models
 {
     public class UserLevelModel
     {
-        public int UserLevelNumber { get; set; }
-        public string  UserLevelName { get; set; }
+        public int Number { get; set; }
+        public string Code { get; set; }
+        public string  Name { get; set; }
 
 
         public int IsAllowedOnDr { get; set; }

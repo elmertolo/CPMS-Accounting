@@ -103,7 +103,7 @@ namespace CPMS_Accounting.Forms
             this.gbUserLevelCode = new System.Windows.Forms.GroupBox();
             this.txtUserLeveCode = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblRowsAffected = new System.Windows.Forms.Label();
+            this.lblDispRowsAffected = new System.Windows.Forms.Label();
             this.lblBankName = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.Label6 = new System.Windows.Forms.Label();
@@ -112,6 +112,7 @@ namespace CPMS_Accounting.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.gbSearch = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblRowsAffected = new System.Windows.Forms.Label();
             this.gbDetails.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -1002,30 +1003,32 @@ namespace CPMS_Accounting.Forms
             this.progressBar1.TabIndex = 38;
             this.progressBar1.Visible = false;
             // 
-            // lblRowsAffected
+            // lblDispRowsAffected
             // 
-            this.lblRowsAffected.AutoSize = true;
-            this.lblRowsAffected.Location = new System.Drawing.Point(578, 9);
-            this.lblRowsAffected.Name = "lblRowsAffected";
-            this.lblRowsAffected.Size = new System.Drawing.Size(80, 13);
-            this.lblRowsAffected.TabIndex = 4;
-            this.lblRowsAffected.Text = "Rows Affected:";
+            this.lblDispRowsAffected.AutoSize = true;
+            this.lblDispRowsAffected.Location = new System.Drawing.Point(578, 9);
+            this.lblDispRowsAffected.Name = "lblDispRowsAffected";
+            this.lblDispRowsAffected.Size = new System.Drawing.Size(100, 13);
+            this.lblDispRowsAffected.TabIndex = 4;
+            this.lblDispRowsAffected.Text = "Updated Record(s):";
             // 
             // lblBankName
             // 
             this.lblBankName.AutoSize = true;
-            this.lblBankName.Location = new System.Drawing.Point(331, 9);
+            this.lblBankName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBankName.Location = new System.Drawing.Point(335, 7);
             this.lblBankName.Name = "lblBankName";
-            this.lblBankName.Size = new System.Drawing.Size(83, 13);
+            this.lblBankName.Size = new System.Drawing.Size(91, 15);
             this.lblBankName.TabIndex = 3;
             this.lblBankName.Text = "Producers Bank";
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(81, 9);
+            this.lblUserName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserName.Location = new System.Drawing.Point(92, 7);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(40, 13);
+            this.lblUserName.Size = new System.Drawing.Size(45, 15);
             this.lblUserName.TabIndex = 2;
             this.lblUserName.Text = "Nelson";
             // 
@@ -1034,18 +1037,18 @@ namespace CPMS_Accounting.Forms
             this.Label6.AutoSize = true;
             this.Label6.Location = new System.Drawing.Point(290, 9);
             this.Label6.Name = "Label6";
-            this.Label6.Size = new System.Drawing.Size(35, 13);
+            this.Label6.Size = new System.Drawing.Size(39, 13);
             this.Label6.TabIndex = 1;
-            this.Label6.Text = "Bank:";
+            this.Label6.Text = "BANK:";
             // 
             // Label5
             // 
             this.Label5.AutoSize = true;
             this.Label5.Location = new System.Drawing.Point(12, 9);
             this.Label5.Name = "Label5";
-            this.Label5.Size = new System.Drawing.Size(63, 13);
+            this.Label5.Size = new System.Drawing.Size(74, 13);
             this.Label5.TabIndex = 0;
-            this.Label5.Text = "User Name:";
+            this.Label5.Text = "USER NAME:";
             // 
             // btnCancelClose
             // 
@@ -1068,8 +1071,9 @@ namespace CPMS_Accounting.Forms
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.lblRowsAffected);
+            this.panel1.Controls.Add(this.progressBar1);
+            this.panel1.Controls.Add(this.lblDispRowsAffected);
             this.panel1.Controls.Add(this.lblBankName);
             this.panel1.Controls.Add(this.lblUserName);
             this.panel1.Controls.Add(this.Label6);
@@ -1103,6 +1107,16 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Size = new System.Drawing.Size(1008, 84);
             this.pictureBox1.TabIndex = 50;
             this.pictureBox1.TabStop = false;
+            // 
+            // lblRowsAffected
+            // 
+            this.lblRowsAffected.AutoSize = true;
+            this.lblRowsAffected.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRowsAffected.Location = new System.Drawing.Point(684, 7);
+            this.lblRowsAffected.Name = "lblRowsAffected";
+            this.lblRowsAffected.Size = new System.Drawing.Size(14, 15);
+            this.lblRowsAffected.TabIndex = 39;
+            this.lblRowsAffected.Text = "0";
             // 
             // frmUserLevelManagement
             // 
@@ -1183,7 +1197,7 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.GroupBox gbUserLevelCode;
         private System.Windows.Forms.TextBox txtUserLeveCode;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lblRowsAffected;
+        private System.Windows.Forms.Label lblDispRowsAffected;
         private System.Windows.Forms.Label lblBankName;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label Label6;
@@ -1251,5 +1265,6 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.RadioButton rdPmRead;
         private System.Windows.Forms.RadioButton rdPoRead;
         private System.Windows.Forms.RadioButton rdDcRead;
+        private System.Windows.Forms.Label lblRowsAffected;
     }
 }

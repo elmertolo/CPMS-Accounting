@@ -13,6 +13,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using CPMS_Accounting.Forms;
+using System.Security.Cryptography;
 //using ProducersBank.Services;
 
 namespace CPMS_Accounting.Procedures
@@ -28,15 +29,15 @@ namespace CPMS_Accounting.Procedures
 
         public static string message;
 
-        public static bool IsKeyPressedNumeric(ref object sender , ref KeyPressEventArgs e)
+        public static bool IsKeyPressedNumeric(ref object sender, ref KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-                (e.KeyChar != '.') || ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -2))) 
+                (e.KeyChar != '.') || ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -2)))
             {
                 return true;
             }
             return false;
-            
+
         }
 
         public static bool ValidateInputFieldsSI(string salesInvoiceNumber, string checkedBy, string approvedBy)
@@ -82,7 +83,7 @@ namespace CPMS_Accounting.Procedures
             TableLogOnInfo logoninfo = new TableLogOnInfo();
             foreach (CrystalDecisions.CrystalReports.Engine.Table crystalTtables in rpt.Database.Tables)
             {
-                
+
                 logoninfo = crystalTtables.LogOnInfo;
                 logoninfo.ReportName = rpt.Name;
                 logoninfo.ConnectionInfo.ServerName = ConfigurationManager.AppSettings["ServerName"].ToString();
@@ -99,7 +100,7 @@ namespace CPMS_Accounting.Procedures
         {
             log.Info("Adding Values on Crystal Report Parameters");
 
-            switch (reportType) 
+            switch (reportType)
             {
                 case "SalesInvoice":
 
@@ -124,14 +125,14 @@ namespace CPMS_Accounting.Procedures
 
                 default:
                     message = "Report type not recognized.";
-                    
+
                     break;
-            
+
             }
 
         }
 
-        public static bool LoadReportPath(string reportType, ref ReportDocument crystalDocument) 
+        public static bool LoadReportPath(string reportType, ref ReportDocument crystalDocument)
         {
 
             string reportPath;
@@ -194,10 +195,10 @@ namespace CPMS_Accounting.Procedures
                 }
                 return false;
             }
-            
+
         }
 
-        delegate void SetDataSourceDelegate(ref DataTable dt,  ref frmProgress progressBar, DataGridView dgv);
+        delegate void SetDataSourceDelegate(ref DataTable dt, ref frmProgress progressBar, DataGridView dgv);
         public static void setDataSource(ref DataTable dt, ref frmProgress progressBar, DataGridView dgv)
         {
             // Invoke method if required:
@@ -214,7 +215,7 @@ namespace CPMS_Accounting.Procedures
                 dgv.DataSource = dt;
                 //progressBar.DialogResult = DialogResult.Cancel;
                 progressBar.Close();
-               
+
             }
 
 
@@ -229,7 +230,7 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 log.Info(newMessage);
             }
-            if(level.ToLower() == "warn")
+            if (level.ToLower() == "warn")
             {
                 MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 log.Warn(newMessage);
@@ -244,7 +245,11 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 log.Fatal(newMessage);
             }
-
+            if (level.ToLower() == "debug")
+            {
+                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                log.Fatal(newMessage);
+            }
 
         }
 
@@ -253,7 +258,62 @@ namespace CPMS_Accounting.Procedures
         {
             e.KeyChar = Char.ToUpper(e.KeyChar);
         }
-       
+
+        /// <summary>
+        /// If the two SHA1 hashes are the same, returns true.
+        /// Otherwise returns false.
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        private static bool MatchSHA1(byte[] p1, byte[] p2)
+        {
+            bool result = false;
+            if (p1 != null && p2 != null)
+            {
+                if (p1.Length == p2.Length)
+                {
+                    result = true;
+                    for (int i = 0; i < p1.Length; i++)
+                    {
+                        if (p1[i] != p2[i])
+                        {
+                            result = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static byte[] GetSHA1(string userID, string password)
+        {
+            SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
+            return sha.ComputeHash(System.Text.Encoding.ASCII.GetBytes(userID + password));
+        }
+
+        /// <summary>
+        /// The SHA1 hash string is impossible to transform back to its original string.
+        /// </summary>
+        public static string HashSHA1Decryption(string value)
+        {
+            var shaSHA1 = System.Security.Cryptography.SHA1.Create();
+            var inputEncodingBytes = Encoding.ASCII.GetBytes(value);
+            var hashString = shaSHA1.ComputeHash(inputEncodingBytes);
+
+            var stringBuilder = new StringBuilder();
+            for (var x = 0; x < hashString.Length; x++)
+            {
+                stringBuilder.Append(hashString[x].ToString("X2"));
+            }
+            return stringBuilder.ToString();
+
+        }
+
+
+
+
 
     }
 }

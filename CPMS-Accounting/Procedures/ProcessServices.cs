@@ -170,7 +170,7 @@ namespace CPMS_Accounting.Procedures
             checkType.Regular_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
           //  if (gClient.DataBaseName != "producers_history")
-                GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber, _dReportStyle,_pReportStyle);
+                GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.Id, packNumber, _dReportStyle,_pReportStyle);
           //  else
           //      Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
             // Generate(checkType, DrNumber, _main.deliveryDate, "ELMER", packNumber);
@@ -1468,7 +1468,7 @@ namespace CPMS_Accounting.Procedures
             {
                 UserListModel user = new UserListModel
                 {
-                    UserName = !reader.IsDBNull(0) ? reader.GetString(0) : ""
+                    Id = !reader.IsDBNull(0) ? reader.GetString(0) : ""
                 };
                 _users.Add(user);
             }
