@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using CrystalDecisions.CrystalReports.Engine;
 using CPMS_Accounting.Procedures;
 using MySql.Data.MySqlClient;
+using static CPMS_Accounting.GlobalVariables;
 
 namespace CPMS_Accounting
 {
@@ -35,7 +36,7 @@ namespace CPMS_Accounting
             {
                 DataSet ds = new DataSet();
                 process.DBConnect();
-                string sql = "Select * from producers_tempdatadr ORDER BY BranchName";
+                string sql = "Select * from " + gClient.DRTempTable + " ORDER BY BranchName";
                 MySqlDataAdapter adp = new MySqlDataAdapter(sql, process.myConnect);
 
                 adp.Fill(ds);
@@ -54,7 +55,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from producers_sticker ", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.StickerTable , process.myConnect);
 
                 adp.Fill(ds);
 
@@ -71,7 +72,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from docstamp_temp ", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from "  +gClient.DocStampTempTable, process.myConnect);
 
                 adp.Fill(ds);
 
@@ -87,7 +88,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from producers_tempdatadr", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable , process.myConnect);
 
                 adp.Fill(ds);
 
@@ -110,7 +111,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from producers_tempdatadr", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable , process.myConnect);
 
                 adp.Fill(ds);
 
@@ -127,7 +128,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from producers_tempdatadr", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable , process.myConnect);
 
                 adp.Fill(ds);
 

@@ -158,13 +158,14 @@ namespace CPMS_Accounting
                     gClient.SalesInvoiceTempTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_temp" ?? "";
                     gClient.SalesInvoiceFinishedTable = row.Field<string>("ShortName").ToLower() + "_salesinvoice_finished" ?? "";
                     gClient.PriceListTable = row.Field<string>("ShortName").ToLower() + "_pricelist" ?? "";
-                    gClient.DRTempTable = row.Field<string>("ShortName").ToLower() + "_dr_temp" ?? "";
+                    gClient.DRTempTable =  "ttempdatadr" ?? "";
                     gClient.PurchaseOrderFinishedTable = row.Field<string>("ShortName").ToLower() + "_purchaseorder_finished" ?? "";
                     gClient.DocStampTempTable =  "docstamp_temp" ?? "";
                     gClient.BranchesTable = row.Field<string>("ShortName").ToLower() + "_branches" ?? "";
                     gClient.CancelledTable = "cancelled_transaction" ?? "";
                     gClient.ChequeTypeTable = row.Field<string>("ShortName").ToLower() + "_tCheques" ?? "";
                     gClient.ProductTable = row.Field<string>("ShortName").ToLower() + "_tChequeproducts" ?? "";
+                    gClient.StickerTable = "tsticker" ?? "";
                 }
             }
            

@@ -218,10 +218,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\PackingReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>PackingReport.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\PNBDeliveryReport.cs">
       <DependentUpon>PNBDeliveryReport.rpt</DependentUpon>
@@ -248,10 +248,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\Stickers.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>Stickers.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
