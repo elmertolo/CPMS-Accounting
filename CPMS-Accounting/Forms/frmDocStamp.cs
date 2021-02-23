@@ -168,7 +168,8 @@ namespace CPMS_Accounting.Forms
                           
                             doc.DocStampDate = dtpDocDate.Value;
                             doc.batches = row.Cells["Batch"].Value.ToString();
-                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(), dtpDocDate.Value);
+                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(), 
+                                row.Cells["Branch Location"].Value.ToString(),dtpDocDate.Value);
                             doc.DocStampPrice = priceA.DocStampPrice;
                             doc.ChkType = row.Cells["ChkType"].Value.ToString();
                             doc.DocDesc = priceA.ChequeDescription;
@@ -184,12 +185,10 @@ namespace CPMS_Accounting.Forms
                             TotalQty += doc.TotalQuantity;
                             
                         }
-                       
-                        //created 'list' variable column sorting by line for datagrid view 
-                        //var sortedList = docstamp
-                        //    .Select
-                        //    (i => new { i.batches, i.SalesInvoiceNumber, i.TotalQuantity, i.DocStampPrice, i.TotalAmount }).ToList();
 
+
+                      
+                        //created 'list' variable column sorting by line for datagrid view 
                         DataTable dt = new DataTable();
 
                         dt.Columns.Add("Docstamp No.");

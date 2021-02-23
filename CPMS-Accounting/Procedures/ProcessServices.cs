@@ -1263,7 +1263,7 @@ namespace CPMS_Accounting.Procedures
             return _SI;
         }
 
-        public string ContcatSalesInvoice(string batch, string checktype, DateTime salesinvoicedate)
+        public string ContcatSalesInvoice(string batch, string checktype, string _location,DateTime salesinvoicedate)
         {
 
             DataTable dt = new DataTable();
@@ -1271,7 +1271,8 @@ namespace CPMS_Accounting.Procedures
             Sql = "select group_concat(distinct(SalesInvoice) separator ', ') from " + gClient.DataBaseName + " " +
            "WHERE salesinvoice is not null " +
            "and batch = '" + batch + "' " +
-           "and chktype = '" + checktype + "'; ";
+           "and chktype = '" + checktype + "'" +
+           "and Location = '" + _location +"'; ";
             //"and salesinvoicedate = '" + salesinvoicedate.ToString("yyyy-MM-dd") + "';";
             DBConnect();
             MySqlCommand cmd = new MySqlCommand(Sql, myConnect);
@@ -2332,8 +2333,8 @@ namespace CPMS_Accounting.Procedures
         {
             Sql = "Update " + gClient.PriceListTable + " set BankCode = '"+_product.BankCode+"'," +
                 " ChequeName = '"+_product.ChequeName.Replace("'","''")+"', Description = '"+_product.Description.Replace("'","''")+ "' ,FinalChkType = '" +_product.ChkType+"'" +
-                ",Docstamp = "+_product.DocStampPrice + ",UnitPrice = " +_product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss")+"'" +
-                ",Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+ "' where ProductCode ='" + _product.ProductCode + "',";
+                ",Docstamp = "+_product.DocStampPrice + ",UnitPrice = " +_product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss")+
+                "',Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+ "' where ProductCode ='" + _product.ProductCode + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
