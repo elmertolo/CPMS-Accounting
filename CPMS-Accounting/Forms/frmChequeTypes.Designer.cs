@@ -80,6 +80,7 @@ namespace CPMS_Accounting.Forms
             this.cmbProducts.Size = new System.Drawing.Size(252, 24);
             this.cmbProducts.TabIndex = 44;
             this.cmbProducts.SelectedIndexChanged += new System.EventHandler(this.cmbProducts_SelectedIndexChanged);
+            this.cmbProducts.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbProducts_KeyPress);
             // 
             // txtCheckName
             // 
@@ -114,6 +115,7 @@ namespace CPMS_Accounting.Forms
             this.txtType.Name = "txtType";
             this.txtType.Size = new System.Drawing.Size(100, 22);
             this.txtType.TabIndex = 38;
+            this.txtType.TextChanged += new System.EventHandler(this.txtType_TextChanged);
             this.txtType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtType_KeyPress);
             // 
             // label1

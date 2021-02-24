@@ -33,6 +33,7 @@ namespace CPMS_Accounting.Models
         public DateTime DateProcessed { get; set; }
         public int PONumber { get; set; }
         public int PrimaryKey { get; set; }
+        public string  BankCode { get; set; }
     }
 
 }

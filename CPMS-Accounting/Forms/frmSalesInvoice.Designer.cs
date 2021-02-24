@@ -71,6 +71,7 @@ namespace CPMS_Accounting
             this.btnCancelSiRecord = new System.Windows.Forms.Button();
             this.btnCancelClose = new System.Windows.Forms.Button();
             this.bgwLoadBatchList = new System.ComponentModel.BackgroundWorker();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListToProcess)).BeginInit();
             this.gbSearch.SuspendLayout();
@@ -335,7 +336,8 @@ namespace CPMS_Accounting
             // 
             // gbBatchToProcess
             // 
-            this.gbBatchToProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbBatchToProcess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbBatchToProcess.BackColor = System.Drawing.Color.Transparent;
             this.gbBatchToProcess.Controls.Add(this.dgvListToProcess);
             this.gbBatchToProcess.Location = new System.Drawing.Point(12, 460);
@@ -362,7 +364,7 @@ namespace CPMS_Accounting
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.lblRowsAffected);
             this.panel1.Controls.Add(this.lblBankName);
@@ -377,7 +379,7 @@ namespace CPMS_Accounting
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(812, 3);
+            this.progressBar1.Location = new System.Drawing.Point(814, 5);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(161, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
@@ -389,25 +391,27 @@ namespace CPMS_Accounting
             this.lblRowsAffected.AutoSize = true;
             this.lblRowsAffected.Location = new System.Drawing.Point(578, 9);
             this.lblRowsAffected.Name = "lblRowsAffected";
-            this.lblRowsAffected.Size = new System.Drawing.Size(80, 13);
+            this.lblRowsAffected.Size = new System.Drawing.Size(100, 13);
             this.lblRowsAffected.TabIndex = 4;
-            this.lblRowsAffected.Text = "Rows Affected:";
+            this.lblRowsAffected.Text = "Updated Record(s):";
             // 
             // lblBankName
             // 
             this.lblBankName.AutoSize = true;
-            this.lblBankName.Location = new System.Drawing.Point(331, 9);
+            this.lblBankName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblBankName.Location = new System.Drawing.Point(331, 8);
             this.lblBankName.Name = "lblBankName";
-            this.lblBankName.Size = new System.Drawing.Size(83, 13);
+            this.lblBankName.Size = new System.Drawing.Size(91, 15);
             this.lblBankName.TabIndex = 3;
             this.lblBankName.Text = "Producers Bank";
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(81, 9);
+            this.lblUserName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblUserName.Location = new System.Drawing.Point(81, 8);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(40, 13);
+            this.lblUserName.Size = new System.Drawing.Size(45, 15);
             this.lblUserName.TabIndex = 2;
             this.lblUserName.Text = "Nelson";
             // 
@@ -416,18 +420,18 @@ namespace CPMS_Accounting
             this.Label6.AutoSize = true;
             this.Label6.Location = new System.Drawing.Point(290, 9);
             this.Label6.Name = "Label6";
-            this.Label6.Size = new System.Drawing.Size(35, 13);
+            this.Label6.Size = new System.Drawing.Size(39, 13);
             this.Label6.TabIndex = 1;
-            this.Label6.Text = "Bank:";
+            this.Label6.Text = "BANK:";
             // 
             // Label5
             // 
             this.Label5.AutoSize = true;
             this.Label5.Location = new System.Drawing.Point(12, 9);
             this.Label5.Name = "Label5";
-            this.Label5.Size = new System.Drawing.Size(63, 13);
+            this.Label5.Size = new System.Drawing.Size(74, 13);
             this.Label5.TabIndex = 0;
-            this.Label5.Text = "User Name:";
+            this.Label5.Text = "USER NAME:";
             // 
             // btnReloadDrList
             // 
@@ -564,6 +568,16 @@ namespace CPMS_Accounting
             this.bgwLoadBatchList.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwLoadBatchList_DoWork);
             this.bgwLoadBatchList.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwLoadBatchList_RunWorkerCompleted);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(684, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(14, 15);
+            this.label1.TabIndex = 39;
+            this.label1.Text = "0";
+            // 
             // frmSalesInvoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -643,5 +657,6 @@ namespace CPMS_Accounting
         private System.Windows.Forms.Button btnCancelClose;
         private System.ComponentModel.BackgroundWorker bgwLoadBatchList;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label1;
     }
 }

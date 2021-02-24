@@ -207,6 +207,7 @@ namespace CPMS_Accounting.Forms
             this.txtNewDr.Name = "txtNewDr";
             this.txtNewDr.Size = new System.Drawing.Size(134, 22);
             this.txtNewDr.TabIndex = 10;
+            this.txtNewDr.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNewDr_KeyPress);
             // 
             // label2
             // 

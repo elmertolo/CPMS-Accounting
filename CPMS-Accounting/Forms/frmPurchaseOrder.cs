@@ -131,12 +131,20 @@ namespace CPMS_Accounting
 
             _ = dt.Rows.Count != 0 ? cbCheckedBy.DataSource = dt : cbCheckedBy.DataSource = null;
             cbCheckedBy.BindingContext = new BindingContext();
+<<<<<<< HEAD
             cbCheckedBy.DisplayMember = "firstname";
+=======
+            cbCheckedBy.DisplayMember = "UserId";
+>>>>>>> master
             cbCheckedBy.SelectedIndex = -1;
 
             _ = dt.Rows.Count != 0 ? cbApprovedBy.DataSource = dt : cbApprovedBy.DataSource = null;
             cbApprovedBy.BindingContext = new BindingContext();
+<<<<<<< HEAD
             cbApprovedBy.DisplayMember = "firstname";
+=======
+            cbApprovedBy.DisplayMember = "UserId";
+>>>>>>> master
             cbApprovedBy.SelectedIndex = -1;
 
         }
@@ -145,8 +153,8 @@ namespace CPMS_Accounting
         {
             string fullname = gUser.FirstName + " " + gUser.LastName;
 
-            lblUserName.Text = fullname;
-            lblBankName.Text = gClient.Description;
+            lblUserName.Text = fullname.ToUpper();
+            lblBankName.Text = gClient.Description.ToUpper();
 
         }
 

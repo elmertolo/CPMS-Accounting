@@ -446,11 +446,13 @@ namespace CPMS_Accounting.Procedures
 
         public bool UserLogin(string userId, string password, ref DataTable dt)
         {
+
             try
             {
+
                 MySqlDataAdapter da;
-                MySqlCommand cmd = new MySqlCommand("select * from userlist where userid = ? and password = ?", con);
-                cmd.Parameters.Add(new MySqlParameter("userid", userId));
+                MySqlCommand cmd = new MySqlCommand("select * from userlist where userId = ? and password = ?", con);
+                cmd.Parameters.Add(new MySqlParameter("userId", userId));
                 cmd.Parameters.Add(new MySqlParameter("password", password));
                 da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
@@ -816,15 +818,15 @@ namespace CPMS_Accounting.Procedures
        
         }
 
-        public bool UpdateUserLevelRecord(string userLevelCode, string formInitial, int radioButtonValue, int isCreateAllowedValue, int isEditAllowedValue, int isDeleteAllowedValue)
+        public bool UpdateUserLevelRecord(UserLevelModel userLevel, string formInitial, int radioButtonValue, int isCreateAllowedValue, int isEditAllowedValue, int isDeleteAllowedValue)
         {
             try
             {
-                string sql = "update userlevels set isallowedon" + formInitial + " =" + radioButtonValue + ", " +
+                string sql = "update userlevels set userlevelname = '" + userLevel.Name + "', isallowedon" + formInitial + " =" + radioButtonValue + ", " +
                     "is" + formInitial + "CreateAllowed =" + isCreateAllowedValue + ", " +
                     "is" + formInitial + "EditAllowed =" + isEditAllowedValue + ", " +
                     "is" + formInitial + "DeleteAllowed =" + isDeleteAllowedValue + " " +
-                    "Where userlevelcode ='" + userLevelCode + "'";
+                    "Where userlevelcode ='" + userLevel.Code + "'";
 
                 MySqlCommand cmd = new MySqlCommand(sql, con);
                 rowNumbersAffected = cmd.ExecuteNonQuery();
@@ -909,8 +911,101 @@ namespace CPMS_Accounting.Procedures
             }
         }
         
+        public bool UserExist(string userId)
+        {
+
+            DataTable dt = new DataTable();
+            MySqlCommand cmd = new MySqlCommand("select userId from userlist where userId = '" + userId + "';", con);
+            MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+            rowNumbersAffected = cmd.ExecuteNonQuery();
+            da.Fill(dt);
+            
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        public bool InsertNewUserRecord(UserListModel user)
+        {
+            try
+            {
+                string sql = "insert into userlist (UserId, Password, FirstName, MiddleName, LastName, Suffix, UserLevel, Department, Position) values (" +
+                    "@UserId, @Password, @FirstName, @MiddleName, @LastName, @Suffix, @UserLevel, @Department, @Position)";
+
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@UserId", user.Id);
+                cmd.Parameters.AddWithValue("@Password", user.Password);
+                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
+                cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
+                cmd.Parameters.AddWithValue("@UserLevel", user.UserLevel);
+                cmd.Parameters.AddWithValue("@Department", user.Department);
+                cmd.Parameters.AddWithValue("@Position", user.Position);
+
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+
+        }
+
+        public bool UpdateExistingUserRecord(UserListModel user)
+        {
+            try
+            {
+                string sql = "Update Userlist set password = @Password, firstname = @FirstName, middlename = @MiddleName, lastname = @LastName, suffix = @Suffix, userlevel = @UserLevel, department = @Department, position = @Position " +
+                    "Where UserId = @UserId;";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+
+                cmd.Parameters.AddWithValue("@UserId", user.Id);
+                cmd.Parameters.AddWithValue("@Password", user.Password);
+                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
+                cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
+                cmd.Parameters.AddWithValue("@UserLevel", user.UserLevel);
+                cmd.Parameters.AddWithValue("@Department", user.Department);
+                cmd.Parameters.AddWithValue("@Position", user.Position);
+    
+
+                rowNumbersAffected = cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
 
 
+        public bool GetUserLevels(ref DataTable dt)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("select * from userlevels;", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
 
 
     }

@@ -32,7 +32,6 @@ namespace CPMS_Accounting.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUserMaintenance));
             this.btnDeleteRecord = new System.Windows.Forms.Button();
             this.pnlActionButtons = new System.Windows.Forms.GroupBox();
-            this.btnCreateNewRecord = new System.Windows.Forms.Button();
             this.btnRefreshView = new System.Windows.Forms.Button();
             this.btnEditRecord = new System.Windows.Forms.Button();
             this.btnSaveRecord = new System.Windows.Forms.Button();
@@ -41,13 +40,14 @@ namespace CPMS_Accounting.Forms
             this.txtUserId = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblRowsAffected = new System.Windows.Forms.Label();
+            this.lblDispRowsAffected = new System.Windows.Forms.Label();
             this.lblBankName = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.Label6 = new System.Windows.Forms.Label();
             this.Label5 = new System.Windows.Forms.Label();
             this.btnCancelClose = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.gbSearch = new System.Windows.Forms.GroupBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -102,7 +102,6 @@ namespace CPMS_Accounting.Forms
             this.pnlActionButtons.BackColor = System.Drawing.Color.Transparent;
             this.pnlActionButtons.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlActionButtons.Controls.Add(this.btnDeleteRecord);
-            this.pnlActionButtons.Controls.Add(this.btnCreateNewRecord);
             this.pnlActionButtons.Controls.Add(this.btnRefreshView);
             this.pnlActionButtons.Controls.Add(this.btnEditRecord);
             this.pnlActionButtons.Controls.Add(this.btnSaveRecord);
@@ -112,23 +111,6 @@ namespace CPMS_Accounting.Forms
             this.pnlActionButtons.Size = new System.Drawing.Size(170, 519);
             this.pnlActionButtons.TabIndex = 45;
             this.pnlActionButtons.TabStop = false;
-            // 
-            // btnCreateNewRecord
-            // 
-            this.btnCreateNewRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreateNewRecord.BackColor = System.Drawing.SystemColors.Control;
-            this.btnCreateNewRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCreateNewRecord.BackgroundImage")));
-            this.btnCreateNewRecord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCreateNewRecord.FlatAppearance.BorderSize = 0;
-            this.btnCreateNewRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateNewRecord.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCreateNewRecord.ForeColor = System.Drawing.Color.White;
-            this.btnCreateNewRecord.Location = new System.Drawing.Point(6, 247);
-            this.btnCreateNewRecord.Name = "btnCreateNewRecord";
-            this.btnCreateNewRecord.Size = new System.Drawing.Size(158, 62);
-            this.btnCreateNewRecord.TabIndex = 9;
-            this.btnCreateNewRecord.Text = "CREATE NEW RECORD";
-            this.btnCreateNewRecord.UseVisualStyleBackColor = false;
             // 
             // btnRefreshView
             // 
@@ -243,30 +225,32 @@ namespace CPMS_Accounting.Forms
             this.progressBar1.TabIndex = 38;
             this.progressBar1.Visible = false;
             // 
-            // lblRowsAffected
+            // lblDispRowsAffected
             // 
-            this.lblRowsAffected.AutoSize = true;
-            this.lblRowsAffected.Location = new System.Drawing.Point(578, 9);
-            this.lblRowsAffected.Name = "lblRowsAffected";
-            this.lblRowsAffected.Size = new System.Drawing.Size(80, 13);
-            this.lblRowsAffected.TabIndex = 4;
-            this.lblRowsAffected.Text = "Rows Affected:";
+            this.lblDispRowsAffected.AutoSize = true;
+            this.lblDispRowsAffected.Location = new System.Drawing.Point(578, 9);
+            this.lblDispRowsAffected.Name = "lblDispRowsAffected";
+            this.lblDispRowsAffected.Size = new System.Drawing.Size(100, 13);
+            this.lblDispRowsAffected.TabIndex = 4;
+            this.lblDispRowsAffected.Text = "Updated Record(s):";
             // 
             // lblBankName
             // 
             this.lblBankName.AutoSize = true;
-            this.lblBankName.Location = new System.Drawing.Point(331, 9);
+            this.lblBankName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblBankName.Location = new System.Drawing.Point(335, 7);
             this.lblBankName.Name = "lblBankName";
-            this.lblBankName.Size = new System.Drawing.Size(83, 13);
+            this.lblBankName.Size = new System.Drawing.Size(91, 15);
             this.lblBankName.TabIndex = 3;
             this.lblBankName.Text = "Producers Bank";
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(81, 9);
+            this.lblUserName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblUserName.Location = new System.Drawing.Point(92, 7);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(40, 13);
+            this.lblUserName.Size = new System.Drawing.Size(45, 15);
             this.lblUserName.TabIndex = 2;
             this.lblUserName.Text = "Nelson";
             // 
@@ -275,18 +259,18 @@ namespace CPMS_Accounting.Forms
             this.Label6.AutoSize = true;
             this.Label6.Location = new System.Drawing.Point(290, 9);
             this.Label6.Name = "Label6";
-            this.Label6.Size = new System.Drawing.Size(35, 13);
+            this.Label6.Size = new System.Drawing.Size(39, 13);
             this.Label6.TabIndex = 1;
-            this.Label6.Text = "Bank:";
+            this.Label6.Text = "BANK:";
             // 
             // Label5
             // 
             this.Label5.AutoSize = true;
             this.Label5.Location = new System.Drawing.Point(12, 9);
             this.Label5.Name = "Label5";
-            this.Label5.Size = new System.Drawing.Size(63, 13);
+            this.Label5.Size = new System.Drawing.Size(74, 13);
             this.Label5.TabIndex = 0;
-            this.Label5.Text = "User Name:";
+            this.Label5.Text = "USER NAME:";
             // 
             // btnCancelClose
             // 
@@ -303,13 +287,15 @@ namespace CPMS_Accounting.Forms
             this.btnCancelClose.TabIndex = 46;
             this.btnCancelClose.Text = "CANCEL / CLOSE";
             this.btnCancelClose.UseVisualStyleBackColor = true;
+            this.btnCancelClose.Click += new System.EventHandler(this.btnCancelClose_Click);
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Controls.Add(this.lblRowsAffected);
+            this.panel1.Controls.Add(this.lblDispRowsAffected);
             this.panel1.Controls.Add(this.lblBankName);
             this.panel1.Controls.Add(this.lblUserName);
             this.panel1.Controls.Add(this.Label6);
@@ -318,6 +304,16 @@ namespace CPMS_Accounting.Forms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(984, 32);
             this.panel1.TabIndex = 42;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(684, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 15);
+            this.label4.TabIndex = 39;
+            this.label4.Text = "0";
             // 
             // btnSearch
             // 
@@ -396,7 +392,7 @@ namespace CPMS_Accounting.Forms
             "SUPERVISOR",
             "MANAGER",
             "ADMINISTRATOR"});
-            this.cbUserLevel.Location = new System.Drawing.Point(114, 81);
+            this.cbUserLevel.Location = new System.Drawing.Point(114, 93);
             this.cbUserLevel.Name = "cbUserLevel";
             this.cbUserLevel.Size = new System.Drawing.Size(146, 21);
             this.cbUserLevel.TabIndex = 25;
@@ -405,7 +401,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label12.AutoSize = true;
             this.label12.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label12.Location = new System.Drawing.Point(21, 84);
+            this.label12.Location = new System.Drawing.Point(21, 96);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(87, 15);
             this.label12.TabIndex = 24;
@@ -423,7 +419,7 @@ namespace CPMS_Accounting.Forms
             "SECUR",
             "CHECKERS",
             "PACKERS"});
-            this.cbDeparment.Location = new System.Drawing.Point(114, 108);
+            this.cbDeparment.Location = new System.Drawing.Point(114, 120);
             this.cbDeparment.Name = "cbDeparment";
             this.cbDeparment.Size = new System.Drawing.Size(146, 21);
             this.cbDeparment.TabIndex = 21;
@@ -432,7 +428,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label11.AutoSize = true;
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label11.Location = new System.Drawing.Point(21, 111);
+            this.label11.Location = new System.Drawing.Point(21, 123);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(87, 15);
             this.label11.TabIndex = 20;
@@ -440,7 +436,9 @@ namespace CPMS_Accounting.Forms
             // 
             // txtConfirmPassword
             // 
-            this.txtConfirmPassword.Location = new System.Drawing.Point(114, 55);
+            this.txtConfirmPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConfirmPassword.Location = new System.Drawing.Point(114, 64);
+            this.txtConfirmPassword.MaxLength = 25;
             this.txtConfirmPassword.Name = "txtConfirmPassword";
             this.txtConfirmPassword.PasswordChar = '*';
             this.txtConfirmPassword.Size = new System.Drawing.Size(146, 20);
@@ -450,7 +448,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label10.AutoSize = true;
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label10.Location = new System.Drawing.Point(21, 51);
+            this.label10.Location = new System.Drawing.Point(21, 61);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(87, 28);
             this.label10.TabIndex = 18;
@@ -458,7 +456,9 @@ namespace CPMS_Accounting.Forms
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(114, 22);
+            this.txtPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPassword.Location = new System.Drawing.Point(114, 36);
+            this.txtPassword.MaxLength = 25;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(146, 20);
@@ -468,7 +468,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label9.AutoSize = true;
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label9.Location = new System.Drawing.Point(21, 25);
+            this.label9.Location = new System.Drawing.Point(21, 39);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(87, 15);
             this.label9.TabIndex = 16;
@@ -476,7 +476,8 @@ namespace CPMS_Accounting.Forms
             // 
             // txtPosition
             // 
-            this.txtPosition.Location = new System.Drawing.Point(114, 135);
+            this.txtPosition.Location = new System.Drawing.Point(114, 147);
+            this.txtPosition.MaxLength = 45;
             this.txtPosition.Name = "txtPosition";
             this.txtPosition.Size = new System.Drawing.Size(146, 20);
             this.txtPosition.TabIndex = 11;
@@ -485,7 +486,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label8.AutoSize = true;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label8.Location = new System.Drawing.Point(21, 138);
+            this.label8.Location = new System.Drawing.Point(21, 150);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(87, 15);
             this.label8.TabIndex = 10;
@@ -493,7 +494,8 @@ namespace CPMS_Accounting.Forms
             // 
             // txtSuffix
             // 
-            this.txtSuffix.Location = new System.Drawing.Point(393, 97);
+            this.txtSuffix.Location = new System.Drawing.Point(393, 111);
+            this.txtSuffix.MaxLength = 3;
             this.txtSuffix.Name = "txtSuffix";
             this.txtSuffix.Size = new System.Drawing.Size(47, 20);
             this.txtSuffix.TabIndex = 7;
@@ -502,7 +504,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label3.AutoSize = true;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label3.Location = new System.Drawing.Point(302, 100);
+            this.label3.Location = new System.Drawing.Point(302, 114);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 15);
             this.label3.TabIndex = 6;
@@ -510,7 +512,7 @@ namespace CPMS_Accounting.Forms
             // 
             // txtLastName
             // 
-            this.txtLastName.Location = new System.Drawing.Point(393, 71);
+            this.txtLastName.Location = new System.Drawing.Point(393, 85);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(146, 20);
             this.txtLastName.TabIndex = 5;
@@ -519,7 +521,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label2.AutoSize = true;
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(302, 74);
+            this.label2.Location = new System.Drawing.Point(302, 88);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(88, 15);
             this.label2.TabIndex = 4;
@@ -527,7 +529,7 @@ namespace CPMS_Accounting.Forms
             // 
             // txtMiddleName
             // 
-            this.txtMiddleName.Location = new System.Drawing.Point(393, 45);
+            this.txtMiddleName.Location = new System.Drawing.Point(393, 59);
             this.txtMiddleName.Name = "txtMiddleName";
             this.txtMiddleName.Size = new System.Drawing.Size(146, 20);
             this.txtMiddleName.TabIndex = 3;
@@ -536,7 +538,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(302, 48);
+            this.label1.Location = new System.Drawing.Point(302, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(87, 15);
             this.label1.TabIndex = 2;
@@ -544,7 +546,7 @@ namespace CPMS_Accounting.Forms
             // 
             // txtFirstName
             // 
-            this.txtFirstName.Location = new System.Drawing.Point(393, 19);
+            this.txtFirstName.Location = new System.Drawing.Point(393, 33);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(146, 20);
             this.txtFirstName.TabIndex = 1;
@@ -553,7 +555,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.lblFirstName.AutoSize = true;
             this.lblFirstName.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblFirstName.Location = new System.Drawing.Point(302, 22);
+            this.lblFirstName.Location = new System.Drawing.Point(302, 36);
             this.lblFirstName.Name = "lblFirstName";
             this.lblFirstName.Size = new System.Drawing.Size(86, 15);
             this.lblFirstName.TabIndex = 0;
@@ -594,7 +596,6 @@ namespace CPMS_Accounting.Forms
         #endregion
         private System.Windows.Forms.Button btnDeleteRecord;
         private System.Windows.Forms.GroupBox pnlActionButtons;
-        private System.Windows.Forms.Button btnCreateNewRecord;
         private System.Windows.Forms.Button btnRefreshView;
         private System.Windows.Forms.Button btnEditRecord;
         private System.Windows.Forms.Button btnSaveRecord;
@@ -603,7 +604,7 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.TextBox txtUserId;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lblRowsAffected;
+        private System.Windows.Forms.Label lblDispRowsAffected;
         private System.Windows.Forms.Label lblBankName;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label Label6;
@@ -632,5 +633,6 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.ComboBox cbDeparment;
         private System.Windows.Forms.ComboBox cbUserLevel;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label4;
     }
 }
