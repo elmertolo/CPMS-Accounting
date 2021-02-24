@@ -181,16 +181,11 @@ namespace CPMS_Accounting.Procedures
             checkType.Regular_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
-<<<<<<< HEAD
-          //  if (gClient.DataBaseName != "producers_history")
-                GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.FirstName, packNumber, _dReportStyle,_pReportStyle);
-=======
             checkType.ManagersCheck.OrderBy(r => r.BranchName).ToList();
             checkType.ManagersCheck_Direct.OrderBy(r => r.BranchName).ToList();
             checkType.ManagersCheck_Provincial.OrderBy(r => r.BranchName).ToList();
             //  if (gClient.DataBaseName != "producers_history")
             GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.Id, packNumber, _dReportStyle,_pReportStyle);
->>>>>>> master
           //  else
           //      Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
             // Generate(checkType, DrNumber, _main.deliveryDate, "ELMER", packNumber);

@@ -49,13 +49,9 @@ namespace CPMS_Accounting
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
             log.Info("Login Button Click");
             Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
-=======
-            log.Info("Login Button Click with with Hash&"+ txtUserName.Text.ToString() + "&"+ txtPassword.Text +"");
-            Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
->>>>>>> master
+
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
             
         }
@@ -74,11 +70,7 @@ namespace CPMS_Accounting
 
         }
 
-<<<<<<< HEAD
-        private void Login(string userId, string password)
-=======
         private void Login(string UserId, string enteredPassword)
->>>>>>> master
         {
             
             //02222021 Encryption
@@ -91,11 +83,7 @@ namespace CPMS_Accounting
 
 
             DataTable dt = new DataTable();
-<<<<<<< HEAD
-            if (!proc.UserLogin(userId, password, ref dt))
-=======
             if (!proc.UserLogin(UserId, password, ref dt))
->>>>>>> master
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
                 log.Error("Unable to connect to server" + proc.errorMessage);
@@ -108,11 +96,7 @@ namespace CPMS_Accounting
                 log.Info("User Name or Password is incorrect.");
                 return;
             }
-
-<<<<<<< HEAD
-=======
             log.Info("User Login successful.");
->>>>>>> master
             SupplyGlobalUserVariables(ref dt);
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
 
@@ -212,20 +196,16 @@ namespace CPMS_Accounting
            
             foreach (DataRow row in dt.Rows)
             {
-<<<<<<< HEAD
                 gUser.Number = row.Field<int>("UserNo");
-=======
->>>>>>> master
                 gUser.Id = row.Field<string>("UserId");
                 gUser.Password = row.Field<string>("Password");
                 gUser.FirstName = row.Field<string>("FirstName");
                 gUser.MiddleName = row.Field<string>("MiddleName");
                 gUser.LastName = row.Field<string>("LastName");
-                gUser.UserLevel = row.Field<string>("UserLevel");
+                gUser.Level = row.Field<string>("UserLevel");
                 gUser.Department = row.Field<string>("Department");
                 gUser.Position = row.Field<string>("Position");
                 gUser.Suffix = row.Field<string>("Suffix");
-                gUser.UserLevel = row.Field<string>("UserLevel");
                 gUser.Department = row.Field<string>("Department");
                 gUser.Position = row.Field<string>("Position");
                 gUser.Lockout = row.Field<string>("Lockout");
@@ -245,11 +225,7 @@ namespace CPMS_Accounting
         private void SupplyParameterValuesOnLog4net()
         {
             log4net.Config.XmlConfigurator.Configure();
-<<<<<<< HEAD
-            log4net.ThreadContext.Properties["CurrentUser"] = gUser.FirstName;
-=======
             log4net.ThreadContext.Properties["CurrentUser"] = gUser.Id;
->>>>>>> master
             log4net.ThreadContext.Properties["CurrentClient"] = gClient.ShortName;
         }
 

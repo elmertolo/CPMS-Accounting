@@ -97,8 +97,8 @@ namespace CPMS_Accounting.Forms
             {
 
                 string userId = txtUserId.Text.ToString();
-
-                if (proc.UserLevelExist(userId))
+                DataTable dt = new DataTable();
+                if (proc.GetUserDetails(ref dt, userId))
                 {
                     log.Info("Existing User Record.");
                     DisplayExistingUserDetails(ref dt);
@@ -126,16 +126,6 @@ namespace CPMS_Accounting.Forms
             progressBar.message = "Fetching Existing Record. Please Wait.";
             thread = new Thread(() => progressBar.ShowDialog());
             thread.Start();
-
-            //Get User List Details to be supplied to Global Report Datatable
-            if (!proc.GetUserDetails(ref dt, userId))
-            {
-                thread.Abort();
-                MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
-                RefreshView();
-                return;
-            }
-
 
             //Display values on Front End from Finished Table
             foreach (DataRow row in dt.Rows)
@@ -211,5 +201,24 @@ namespace CPMS_Accounting.Forms
         {
             RefreshView();
         }
+
+        private void FillUserLevelCombox()
+        {
+            DataTable dt = new DataTable();
+            if (!proc.GetUserLevels(ref dt))
+            {
+                p.MessageAndLog("Error fetching User Levels (GetUserLevels)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+            }
+            cbUserLevel.DataSource = dt;
+            cbUserLevel.DisplayMember = "UserLevelName";
+
+        }
+
+
+
+
+
+
+
     }
 }

@@ -465,8 +465,6 @@ namespace CPMS_Accounting
                     RefreshDrList();
                 }
                 
-
-                
                 txtSearch.Focus();
                 txtSearch.SelectAll();
                 dgvDRList.ClearSelection();

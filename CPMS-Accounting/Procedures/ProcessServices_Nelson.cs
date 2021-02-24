@@ -944,7 +944,7 @@ namespace CPMS_Accounting.Procedures
                 cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
-                cmd.Parameters.AddWithValue("@UserLevel", user.UserLevel);
+                cmd.Parameters.AddWithValue("@UserLevel", user.Level);
                 cmd.Parameters.AddWithValue("@Department", user.Department);
                 cmd.Parameters.AddWithValue("@Position", user.Position);
 
@@ -973,7 +973,7 @@ namespace CPMS_Accounting.Procedures
                 cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
-                cmd.Parameters.AddWithValue("@UserLevel", user.UserLevel);
+                cmd.Parameters.AddWithValue("@UserLevel", user.Level);
                 cmd.Parameters.AddWithValue("@Department", user.Department);
                 cmd.Parameters.AddWithValue("@Position", user.Position);
     

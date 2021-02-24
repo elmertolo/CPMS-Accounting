@@ -163,7 +163,6 @@ namespace CPMS_Accounting.Forms
             this.btnSaveRecord.TabIndex = 10;
             this.btnSaveRecord.Text = "SAVE";
             this.btnSaveRecord.UseVisualStyleBackColor = false;
-            this.btnSaveRecord.Click += new System.EventHandler(this.btnSaveRecord_Click);
             // 
             // btnAddRecord
             // 
@@ -201,7 +200,6 @@ namespace CPMS_Accounting.Forms
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Size = new System.Drawing.Size(147, 23);
             this.txtUserId.TabIndex = 3;
-            this.txtUserId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserId_KeyDown);
             // 
             // pictureBox1
             // 
@@ -287,7 +285,6 @@ namespace CPMS_Accounting.Forms
             this.btnCancelClose.TabIndex = 46;
             this.btnCancelClose.Text = "CANCEL / CLOSE";
             this.btnCancelClose.UseVisualStyleBackColor = true;
-            this.btnCancelClose.Click += new System.EventHandler(this.btnCancelClose_Click);
             // 
             // panel1
             // 
