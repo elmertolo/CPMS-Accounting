@@ -163,6 +163,7 @@ namespace CPMS_Accounting.Forms
             this.btnSaveRecord.TabIndex = 10;
             this.btnSaveRecord.Text = "SAVE";
             this.btnSaveRecord.UseVisualStyleBackColor = false;
+            this.btnSaveRecord.Click += new System.EventHandler(this.btnSaveRecord_Click);
             // 
             // btnAddRecord
             // 

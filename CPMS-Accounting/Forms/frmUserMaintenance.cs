@@ -214,11 +214,9 @@ namespace CPMS_Accounting.Forms
 
         }
 
-
-
-
-
-
-
+        private void btnSaveRecord_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
