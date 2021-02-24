@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace CPMS_Accounting
 {
@@ -23,8 +24,18 @@ namespace CPMS_Accounting
     public partial class frmLogIn : Form
     {
 
-        //02152021 Log4Net
+
+
+        //02152021-NA Log4Net
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
+        //02222021-NA Password Encyption
+        private static byte[] GetSHA1(string userID, string password)
+        {
+            SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
+            return sha.ComputeHash(System.Text.Encoding.ASCII.GetBytes(userID + password));
+        }
 
         DataTable BankListDT = new DataTable();
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
@@ -38,11 +49,9 @@ namespace CPMS_Accounting
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            log.Info("Login Button Click");
+            log.Info("Login Button Click with with Hash&"+ txtUserName.Text.ToString() + "&"+ txtPassword.Text +"");
             Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
-
-            
             
         }
 
@@ -60,15 +69,26 @@ namespace CPMS_Accounting
 
         }
 
-        private void Login(string userName, string password)
+        private void Login(string UserId, string enteredPassword)
         {
-            DataTable dt = new DataTable();
-            if (!proc.UserLogin(userName, password, ref dt))
+            
+            //02222021 Encryption
+            string password = enteredPassword;
+            if (gEncryptionOn)
             {
-                MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
-                log.Fatal("Unable to connect to server" + proc.errorMessage);
+                byte[] hashedPassword = GetSHA1(UserId, enteredPassword);
+                password = Convert.ToBase64String(hashedPassword);
             }
 
+
+            DataTable dt = new DataTable();
+            if (!proc.UserLogin(UserId, password, ref dt))
+            {
+                MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
+                log.Error("Unable to connect to server" + proc.errorMessage);
+
+                return;
+            }
             if (dt.Rows.Count == 0)
             {
                 MessageBox.Show("User Name or Password is incorrect. Please try again");
@@ -76,11 +96,7 @@ namespace CPMS_Accounting
                 return;
             }
 
-           
-            
-            
-
-
+            log.Info("User Login successful.");
             SupplyGlobalUserVariables(ref dt);
 
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
@@ -88,7 +104,7 @@ namespace CPMS_Accounting
             //02152021 Log4Net
             //Supply Additional Parameters on log4net
             SupplyParameterValuesOnLog4net();
-            log.Info("User LogIn Sucessful for User: " + gUser.UserName + "");
+            log.Info("User LogIn Sucessful for User: " + gUser.Id + "");
 
             Main mainFrm = new Main();
             mainFrm.Show();
@@ -120,7 +136,6 @@ namespace CPMS_Accounting
             {
                 MessageBox.Show("Server Connection Error (GetClientDetails)\r\n" + proc.errorMessage);
             }
-
 
             if (dt.Rows.Count > 0)
             {
@@ -162,6 +177,20 @@ namespace CPMS_Accounting
             //string line = new string('=', 100);
             log.Info(new string('=', 100));
             log.Info("Login Form Loaded");
+
+            if (DateTime.Now.Hour <= 11)
+            {
+                this.Text = "GOOD MORNING!";
+            }
+            else if (DateTime.Now.Hour  <= 17)
+            {
+                this.Text = "GOOD AFTERNOON!";
+            }
+            else if (DateTime.Now.Hour <= 23)
+            {
+                this.Text = "GOOD NIGHT!";
+            }
+
         }
 
         private void cbBankList_SelectedIndexChanged(object sender, EventArgs e)
@@ -170,20 +199,21 @@ namespace CPMS_Accounting
 
 
         }
-
         public void SupplyGlobalUserVariables(ref DataTable dt) 
         {
            
             foreach (DataRow row in dt.Rows)
             {
-                gUser.UserName = row.Field<string>("UserName");
+                gUser.Id = row.Field<string>("UserId");
                 gUser.Password = row.Field<string>("Password");
                 gUser.FirstName = row.Field<string>("FirstName");
                 gUser.MiddleName = row.Field<string>("MiddleName");
                 gUser.LastName = row.Field<string>("LastName");
                 gUser.Suffix = row.Field<string>("Suffix");
+                gUser.UserLevel = row.Field<string>("UserLevel");
+                gUser.Department = row.Field<string>("Department");
+                gUser.Position = row.Field<string>("Position");
                 gUser.Lockout = row.Field<string>("Lockout");
-
             }
         }
 
@@ -205,7 +235,7 @@ namespace CPMS_Accounting
         private void SupplyParameterValuesOnLog4net()
         {
             log4net.Config.XmlConfigurator.Configure();
-            log4net.ThreadContext.Properties["CurrentUser"] = gUser.UserName;
+            log4net.ThreadContext.Properties["CurrentUser"] = gUser.Id;
             log4net.ThreadContext.Properties["CurrentClient"] = gClient.ShortName;
         }
 

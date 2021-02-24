@@ -443,7 +443,7 @@ namespace CPMS_Accounting
             }
             else
             {
-                log.Info(gUser.UserName + " Search Started for Entered Text: " + txtSearch.Text.ToString() + "");
+                log.Info(gUser.Id + " Search Started for Entered Text: " + txtSearch.Text.ToString() + "");
 
                 if (!proc.BatchSearch(txtSearch.Text, ref dt))
                 {
@@ -496,12 +496,12 @@ namespace CPMS_Accounting
 
             _ = dt.Rows.Count != 0 ? cbCheckedBy.DataSource = dt : cbCheckedBy.DataSource = null;
             cbCheckedBy.BindingContext = new BindingContext();
-            cbCheckedBy.DisplayMember = "UserName";
+            cbCheckedBy.DisplayMember = "UserId";
             cbCheckedBy.SelectedIndex = -1;
 
             _ = dt.Rows.Count != 0 ? cbApprovedBy.DataSource = dt : cbApprovedBy.DataSource = null;
             cbApprovedBy.BindingContext = new BindingContext();
-            cbApprovedBy.DisplayMember = "UserName";
+            cbApprovedBy.DisplayMember = "UserId";
             cbApprovedBy.SelectedIndex = -1;
 
         }
@@ -528,7 +528,6 @@ namespace CPMS_Accounting
 
         public void ReprintSalesInvoice(int salesInvoiceNumber)
         {
-
 
             //get Finished Sales Inbvoice details if exist
             DataTable siFinishedDT = new DataTable();
@@ -596,10 +595,10 @@ namespace CPMS_Accounting
 
         public void ConfigureDesignLabels()
         {
-            string fullname = gUser.UserName + " " + gUser.LastName ;
+            string fullname = gUser.FirstName + " " + gUser.LastName;
 
-            lblUserName.Text = fullname;
-            lblBankName.Text = gClient.Description;
+            lblUserName.Text = fullname.ToUpper();
+            lblBankName.Text = gClient.Description.ToUpper();
 
         }
 
@@ -917,6 +916,7 @@ namespace CPMS_Accounting
 
         private void FillPriceListModel(string productCode)
         {
+           
             DataTable dt = new DataTable();
             if (!proc.GetProductDetails(productCode, ref dt))
             {
@@ -972,7 +972,7 @@ namespace CPMS_Accounting
                     //gSalesInvoiceList = salesInvoiceList;
                     gSalesInvoiceFinished.ClientCode = gClient.ClientCode.ToString();
                     gSalesInvoiceFinished.SalesInvoiceDateTime = dtpInvoiceDate.Value;
-                    gSalesInvoiceFinished.GeneratedBy = gUser.UserName.ToString();
+                    gSalesInvoiceFinished.GeneratedBy = gUser.Id.ToString();
                     gSalesInvoiceFinished.CheckedBy = cbCheckedBy.Text.ToString();
                     gSalesInvoiceFinished.ApprovedBy = cbApprovedBy.Text.ToString();
                     gSalesInvoiceFinished.SalesInvoiceNumber = double.Parse(txtSalesInvoiceNumber.Text.ToString());
