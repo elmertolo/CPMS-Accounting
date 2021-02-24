@@ -23,7 +23,7 @@ namespace CPMS_Accounting.Forms
         public frmUserMaintenance(Main frm1)
         {
             InitializeComponent();
-
+            FillUserLevelComboBox();
             this.frm = frm1;
             
         }
@@ -52,6 +52,7 @@ namespace CPMS_Accounting.Forms
 
             txtSearch.Text = "";
             txtUserId.Text = "";
+            txtPassword.Text = "";
             txtConfirmPassword.Text = "";
             cbUserLevel.Text = "";
             cbDeparment.Text = "";
@@ -78,10 +79,11 @@ namespace CPMS_Accounting.Forms
 
                 string userId = txtUserId.Text.ToString();
 
-                if (proc.UserLevelExist(userId))
+                DataTable dt = new DataTable();
+                if (proc.GetUserDetails(ref dt, userId))
                 {
                     log.Info("Existing User Record.");
-                    DisplayExistingUserDetails(userId);
+                    DisplayExistingUserDetails(ref dt);
                 }
                 else
                 {
@@ -98,26 +100,14 @@ namespace CPMS_Accounting.Forms
             }
         }
 
-        private void DisplayExistingUserDetails(string userId)
+        private void DisplayExistingUserDetails(ref DataTable dt)
         {
-            DataTable dt = new DataTable();
-
             log.Info("Fetching Existing User Record");
             //Start Progress Bar View
             progressBar = new frmProgress();
             progressBar.message = "Fetching Existing Record. Please Wait.";
             thread = new Thread(() => progressBar.ShowDialog());
             thread.Start();
-
-            //Get User List Details to be supplied to Global Report Datatable
-            if (!proc.GetUserDetails(ref dt, userId))
-            {
-                thread.Abort();
-                MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
-                RefreshView();
-                return;
-            }
-
 
             //Display values on Front End from Finished Table
             foreach (DataRow row in dt.Rows)
@@ -184,6 +174,36 @@ namespace CPMS_Accounting.Forms
         private void btnRefreshView_Click(object sender, EventArgs e)
         {
             RefreshView();
+        }
+
+        private void txtUserId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddRecord();
+            }
+        }
+
+        private void FillUserLevelComboBox()
+        {
+            DataTable dt = new DataTable();
+            if (!proc.GetUserLevelDetails(ref dt))
+            {
+                MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
+            }
+
+            _ = dt.Rows.Count != 0 ? cbUserLevel.DataSource = dt : cbUserLevel.DataSource = null;
+            cbUserLevel.BindingContext = new BindingContext();
+            cbUserLevel.DisplayMember = "UserLevelName";
+            cbUserLevel.SelectedIndex = -1;
+
+
+
+        }
+
+        private void btnSaveRecord_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

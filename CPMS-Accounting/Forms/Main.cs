@@ -68,7 +68,8 @@ namespace CPMS_Accounting
 
         private void Main_Load(object sender, EventArgs e)
         {
-            
+           
+
                 WindowState = FormWindowState.Maximized;
             if (gClient.DataBaseName != "producers_history")
             {

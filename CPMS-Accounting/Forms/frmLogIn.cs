@@ -39,7 +39,7 @@ namespace CPMS_Accounting
         private void btnLogin_Click(object sender, EventArgs e)
         {
             log.Info("Login Button Click");
-            Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
+            Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
 
             
@@ -60,10 +60,10 @@ namespace CPMS_Accounting
 
         }
 
-        private void Login(string userName, string password)
+        private void Login(string userId, string password)
         {
             DataTable dt = new DataTable();
-            if (!proc.UserLogin(userName, password, ref dt))
+            if (!proc.UserLogin(userId, password, ref dt))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
                 log.Fatal("Unable to connect to server" + proc.errorMessage);
@@ -76,19 +76,13 @@ namespace CPMS_Accounting
                 return;
             }
 
-           
-            
-            
-
-
             SupplyGlobalUserVariables(ref dt);
-
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
 
             //02152021 Log4Net
             //Supply Additional Parameters on log4net
             SupplyParameterValuesOnLog4net();
-            log.Info("User LogIn Sucessful for User: " + gUser.UserName + "");
+            log.Info("User LogIn Sucessful for User: " + gUser.Id + "");
 
             Main mainFrm = new Main();
             mainFrm.Show();
@@ -96,19 +90,12 @@ namespace CPMS_Accounting
            
         }
 
-        private void txtUserName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
-            }
-        }
 
         private void txtPassword_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
+                Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
             }
             
         }
@@ -175,11 +162,15 @@ namespace CPMS_Accounting
            
             foreach (DataRow row in dt.Rows)
             {
-                gUser.UserName = row.Field<string>("UserName");
+                gUser.Number = row.Field<int>("UserNo");
+                gUser.Id = row.Field<string>("UserId");
                 gUser.Password = row.Field<string>("Password");
                 gUser.FirstName = row.Field<string>("FirstName");
                 gUser.MiddleName = row.Field<string>("MiddleName");
                 gUser.LastName = row.Field<string>("LastName");
+                gUser.UserLevel = row.Field<string>("UserLevel");
+                gUser.Department = row.Field<string>("Department");
+                gUser.Position = row.Field<string>("Position");
                 gUser.Suffix = row.Field<string>("Suffix");
                 gUser.Lockout = row.Field<string>("Lockout");
 
@@ -191,23 +182,25 @@ namespace CPMS_Accounting
             Application.Exit();
         }
 
-        private void txtUserName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void label1_Click(object sender, EventArgs e)
         {
 
         }
-
         private void SupplyParameterValuesOnLog4net()
         {
             log4net.Config.XmlConfigurator.Configure();
-            log4net.ThreadContext.Properties["CurrentUser"] = gUser.UserName;
+            log4net.ThreadContext.Properties["CurrentUser"] = gUser.FirstName;
             log4net.ThreadContext.Properties["CurrentClient"] = gClient.ShortName;
         }
 
+        private void txtUserId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
+            }
+        }
     }
 
 }

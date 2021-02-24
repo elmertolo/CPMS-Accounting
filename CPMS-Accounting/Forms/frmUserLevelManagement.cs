@@ -492,7 +492,7 @@ namespace CPMS_Accounting.Forms
             thread.Start();
 
             //Get Sales Invoice List Details to be supplied to Global Report Datatable
-            if (!proc.GetUserLevelDetails(userLevelCode, ref dt))
+            if (!proc.GetUserLevelDetails(ref dt, userLevelCode))
             {
                 thread.Abort();
                 MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);

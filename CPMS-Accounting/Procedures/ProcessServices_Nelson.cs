@@ -442,17 +442,15 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
 
-
-
         }
 
-        public bool UserLogin(string userName, string password, ref DataTable dt)
+        public bool UserLogin(string userId, string password, ref DataTable dt)
         {
             try
             {
                 MySqlDataAdapter da;
-                MySqlCommand cmd = new MySqlCommand("select * from userlist where username = ? and password = ?", con);
-                cmd.Parameters.Add(new MySqlParameter("username", userName));
+                MySqlCommand cmd = new MySqlCommand("select * from userlist where userid = ? and password = ?", con);
+                cmd.Parameters.Add(new MySqlParameter("userid", userId));
                 cmd.Parameters.Add(new MySqlParameter("password", password));
                 da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
@@ -862,11 +860,20 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-        public bool GetUserLevelDetails(string userLevelCode, ref DataTable dt)
+        public bool GetUserLevelDetails(ref DataTable dt, string userLevelCode = "*")
         {
             try
             {
-                MySqlCommand cmd = new MySqlCommand("select * from userlevels where userlevelcode = '" + userLevelCode + "';", con);
+                string sql;
+                if (userLevelCode == "*")
+                {
+                    sql = "select * from userlevels";
+                }
+                else
+                {
+                    sql = "select * from userlevels where userlevelcode = '" + userLevelCode + "';";
+                }
+                MySqlCommand cmd = new MySqlCommand(sql, con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
                 da.Fill(dt);

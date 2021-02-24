@@ -131,19 +131,19 @@ namespace CPMS_Accounting
 
             _ = dt.Rows.Count != 0 ? cbCheckedBy.DataSource = dt : cbCheckedBy.DataSource = null;
             cbCheckedBy.BindingContext = new BindingContext();
-            cbCheckedBy.DisplayMember = "UserName";
+            cbCheckedBy.DisplayMember = "firstname";
             cbCheckedBy.SelectedIndex = -1;
 
             _ = dt.Rows.Count != 0 ? cbApprovedBy.DataSource = dt : cbApprovedBy.DataSource = null;
             cbApprovedBy.BindingContext = new BindingContext();
-            cbApprovedBy.DisplayMember = "UserName";
+            cbApprovedBy.DisplayMember = "firstname";
             cbApprovedBy.SelectedIndex = -1;
 
         }
 
         public void ConfigureDesignLabels()
         {
-            string fullname = gUser.UserName + " " + gUser.LastName;
+            string fullname = gUser.FirstName + " " + gUser.LastName;
 
             lblUserName.Text = fullname;
             lblBankName.Text = gClient.Description;

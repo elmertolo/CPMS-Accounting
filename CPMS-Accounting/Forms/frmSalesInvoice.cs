@@ -37,7 +37,7 @@ namespace CPMS_Accounting
             //Added Validation when unable to connect to server upon Opening salesinvoice form
             if (proc.errorMessage != null)
             {
-                MessageBox.Show("Unable connecting to Server (pOpenDB) \r\n" + proc.errorMessage);
+                MessageBox.Show("Unable connecting to Server (OpenDB) \r\n" + proc.errorMessage);
                 Application.Exit();
             }
 
@@ -47,7 +47,6 @@ namespace CPMS_Accounting
             ConfigureDesignLabels();
             salesInvoiceList.Clear();
             this.frm = frm1;
-
 
             bgwLoadBatchList.WorkerReportsProgress = true;
 
@@ -376,9 +375,7 @@ namespace CPMS_Accounting
         private void btnPrintSalesInvoice_Click(object sender, EventArgs e)
         {
             log.Info("(Generate /  Print) Button Click");
-
             GeneratePrintSalesInvoice();
-
         }
 
         private void txtSalesInvoiceNumber_TextChanged(object sender, EventArgs e)
@@ -443,7 +440,7 @@ namespace CPMS_Accounting
             }
             else
             {
-                log.Info(gUser.UserName + " Search Started for Entered Text: " + txtSearch.Text.ToString() + "");
+                log.Info(" Search Started for Entered Text: " + txtSearch.Text.ToString() + "");
 
                 if (!proc.BatchSearch(txtSearch.Text, ref dt))
                 {
@@ -596,7 +593,7 @@ namespace CPMS_Accounting
 
         public void ConfigureDesignLabels()
         {
-            string fullname = gUser.UserName + " " + gUser.LastName ;
+            string fullname = gUser.FirstName + " " + gUser.LastName ;
 
             lblUserName.Text = fullname;
             lblBankName.Text = gClient.Description;
@@ -972,7 +969,7 @@ namespace CPMS_Accounting
                     //gSalesInvoiceList = salesInvoiceList;
                     gSalesInvoiceFinished.ClientCode = gClient.ClientCode.ToString();
                     gSalesInvoiceFinished.SalesInvoiceDateTime = dtpInvoiceDate.Value;
-                    gSalesInvoiceFinished.GeneratedBy = gUser.UserName.ToString();
+                    gSalesInvoiceFinished.GeneratedBy = gUser.FirstName.ToString();
                     gSalesInvoiceFinished.CheckedBy = cbCheckedBy.Text.ToString();
                     gSalesInvoiceFinished.ApprovedBy = cbApprovedBy.Text.ToString();
                     gSalesInvoiceFinished.SalesInvoiceNumber = double.Parse(txtSalesInvoiceNumber.Text.ToString());

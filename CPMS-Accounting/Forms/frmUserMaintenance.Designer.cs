@@ -181,6 +181,7 @@ namespace CPMS_Accounting.Forms
             this.btnSaveRecord.TabIndex = 10;
             this.btnSaveRecord.Text = "SAVE";
             this.btnSaveRecord.UseVisualStyleBackColor = false;
+            this.btnSaveRecord.Click += new System.EventHandler(this.btnSaveRecord_Click);
             // 
             // btnAddRecord
             // 
@@ -218,6 +219,7 @@ namespace CPMS_Accounting.Forms
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Size = new System.Drawing.Size(147, 23);
             this.txtUserId.TabIndex = 3;
+            this.txtUserId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserId_KeyDown);
             // 
             // pictureBox1
             // 
@@ -440,6 +442,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.txtConfirmPassword.Location = new System.Drawing.Point(114, 55);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
+            this.txtConfirmPassword.PasswordChar = '*';
             this.txtConfirmPassword.Size = new System.Drawing.Size(146, 20);
             this.txtConfirmPassword.TabIndex = 19;
             // 
@@ -457,6 +460,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.txtPassword.Location = new System.Drawing.Point(114, 22);
             this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(146, 20);
             this.txtPassword.TabIndex = 17;
             // 

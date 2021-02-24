@@ -29,7 +29,7 @@ namespace CPMS_Accounting
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtUserId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -41,16 +41,15 @@ namespace CPMS_Accounting
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtUserName
+            // txtUserId
             // 
-            this.txtUserName.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUserName.Location = new System.Drawing.Point(98, 74);
-            this.txtUserName.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(177, 27);
-            this.txtUserName.TabIndex = 0;
-            this.txtUserName.TextChanged += new System.EventHandler(this.txtUserName_TextChanged);
-            this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
+            this.txtUserId.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUserId.Location = new System.Drawing.Point(98, 74);
+            this.txtUserId.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.txtUserId.Name = "txtUserId";
+            this.txtUserId.Size = new System.Drawing.Size(177, 27);
+            this.txtUserId.TabIndex = 0;
+            this.txtUserId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserId_KeyDown);
             // 
             // label1
             // 
@@ -58,12 +57,12 @@ namespace CPMS_Accounting
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label1.Location = new System.Drawing.Point(17, 81);
+            this.label1.Location = new System.Drawing.Point(37, 81);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 14);
+            this.label1.Size = new System.Drawing.Size(57, 14);
             this.label1.TabIndex = 1;
-            this.label1.Text = "User Name:";
+            this.label1.Text = "User ID:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
@@ -171,7 +170,7 @@ namespace CPMS_Accounting
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtUserName);
+            this.Controls.Add(this.txtUserId);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
@@ -187,7 +186,7 @@ namespace CPMS_Accounting
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.TextBox txtUserId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassword;
