@@ -98,7 +98,12 @@ namespace CPMS_Accounting.Forms
 
                 string userId = txtUserId.Text.ToString();
                 DataTable dt = new DataTable();
-                if (proc.GetUserDetails(ref dt, userId))
+                if (!proc.GetUserDetails(ref dt, userId))
+                {
+                    p.MessageAndLog("Server connection Error. (proc.GetUserDetails)\r\n \r\n " + proc.errorMessage, ref log, "Fatal");
+                    return;
+                }
+                if (dt.Rows.Count > 0)
                 {
                     log.Info("Existing User Record.");
                     DisplayExistingUserDetails(ref dt);
@@ -132,7 +137,7 @@ namespace CPMS_Accounting.Forms
             {
                 txtUserId.Text = row.Field<string>("UserId");
                 txtPassword.Text = row.Field<string>("Password");
-                cbUserLevel.Text = row.Field<string>("UserLevel");
+                cbUserLevel.Text = Convert.ToString(proc.SeekReturn("Select UserLevelName from userlevels where userlevelcode ='" + row.Field<string>("UserLevelCode") + "'", ""));
                 cbDeparment.Text = row.Field<string>("Department");
                 txtPosition.Text = row.Field<string>("Position");
                 txtFirstName.Text = row.Field<string>("FirstName");
@@ -216,7 +221,94 @@ namespace CPMS_Accounting.Forms
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
-            
+            SaveRecord();
+        }
+
+        private void SaveRecord()
+        {
+            string userId = txtUserId.Text.ToString();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                DataTable dt = new DataTable();
+                if (!proc.GetUserDetails(ref dt, userId))
+                {
+                    p.MessageAndLog("Server connection Error. (proc.GetUserDetails)\r\n \r\n " + proc.errorMessage, ref log, "Fatal");
+                    return;
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    UpdateUserRecord();
+                    RefreshView();
+                }
+                else
+                {
+                    InsertNewUserRecord();
+                    RefreshView();
+                }
+            }
+            else
+            {
+                p.MessageAndLog("Invalid User Id.", ref log, "warn");
+                return;
+            }
+        }
+
+        private void UpdateUserRecord()
+        {
+            UserListModel user = new UserListModel();
+            user.Id = txtUserId.Text;
+            user.Password = txtPassword.Text;
+            user.FirstName = txtFirstName.Text;
+            user.MiddleName = txtMiddleName.Text;
+            user.LastName = txtLastName.Text;
+            user.Suffix = txtSuffix.Text;
+            user.UserLevelCode = Convert.ToString(proc.SeekReturn("select userlevelcode from userlevels where UserLevelName ='" + cbUserLevel.Text + "'", ""));
+            user.Department = cbDeparment.Text;
+            user.Position = txtPosition.Text;
+
+            if (!proc.UpdateExistingUserRecord(user))
+            {
+                p.MessageAndLog("Server Connection Error (UpdateExistingUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                return;
+            }
+            p.MessageAndLog("User Update Successful.", ref log, "info");
+        }
+
+        private void InsertNewUserRecord()
+        {
+            UserListModel user = new UserListModel();
+
+            user.Id = txtUserId.Text;
+            user.Password = txtPassword.Text;
+            user.FirstName = txtFirstName.Text;
+            user.MiddleName = txtMiddleName.Text;
+            user.LastName = txtLastName.Text;
+            user.Suffix = txtSuffix.Text;
+            user.UserLevelCode = Convert.ToString(proc.SeekReturn("select userlevelcode from userLevels where UserLevelName ='" + cbUserLevel.Text + "'", ""));
+            user.Department = cbDeparment.Text;
+            user.Position = txtPosition.Text;
+
+            if (!proc.InsertNewUserRecord(user))
+            {
+                p.MessageAndLog("Server Connection Error (UpdateExistingUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                return;
+            }
+            p.MessageAndLog("User Update Successful.", ref log, "info");
+
+        }
+
+        private void txtUserId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddRecord();
+            }
+        }
+
+        private void btnCancelClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

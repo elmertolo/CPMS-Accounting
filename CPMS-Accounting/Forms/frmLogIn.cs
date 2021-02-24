@@ -202,7 +202,7 @@ namespace CPMS_Accounting
                 gUser.FirstName = row.Field<string>("FirstName");
                 gUser.MiddleName = row.Field<string>("MiddleName");
                 gUser.LastName = row.Field<string>("LastName");
-                gUser.Level = row.Field<string>("UserLevel");
+                gUser.UserLevelCode = row.Field<string>("UserlevelCode");
                 gUser.Department = row.Field<string>("Department");
                 gUser.Position = row.Field<string>("Position");
                 gUser.Suffix = row.Field<string>("Suffix");

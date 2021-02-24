@@ -15,7 +15,7 @@ namespace CPMS_Accounting.Models
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string Suffix { get; set; }
-        public string Level { get; set; }
+        public string UserLevelCode { get; set; }
         public string Department { get; set; }
         public string Position { get; set; }
         public string Lockout { get; set; }
