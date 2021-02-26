@@ -88,6 +88,7 @@ namespace CPMS_Accounting.Forms
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
+            log.Info("Create Button Click.");
             AddRecord();
         }
 
@@ -110,6 +111,14 @@ namespace CPMS_Accounting.Forms
                 }
                 else
                 {
+
+                    //Check if user is permitted to create
+                    if (!gUser.IsUmCreateAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
+
                     log.Info("New User Record");
                     EnableControls();
                     ActionPanelNewRecordView();
@@ -230,6 +239,7 @@ namespace CPMS_Accounting.Forms
 
             if (!string.IsNullOrEmpty(userId))
             {
+                //Check if user exist
                 DataTable dt = new DataTable();
                 if (!proc.GetUserDetails(ref dt, userId))
                 {
@@ -238,11 +248,26 @@ namespace CPMS_Accounting.Forms
                 }
                 if (dt.Rows.Count > 0)
                 {
+
+                    //Check if user is permitted to update
+                    if (!gUser.IsUmEditAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
                     UpdateUserRecord();
                     RefreshView();
+
                 }
                 else
                 {
+
+                    //Check if user is permitted to Create
+                    if (!gUser.IsUmCreateAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
                     InsertNewUserRecord();
                     RefreshView();
                 }
@@ -310,5 +335,35 @@ namespace CPMS_Accounting.Forms
         {
             this.Close();
         }
+
+        private void btnDeleteRecord_Click(object sender, EventArgs e)
+        {
+            DeleteRecord();
+        }
+
+        private void DeleteRecord()
+        {
+            //Check user if permitted
+            if (!gUser.IsUmDeleteAllowed)
+            {
+                p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                return;
+            }
+
+            if (!proc.DeleteUserRecord(txtUserId.Text))
+            {
+                p.MessageAndLog("Server connection error. (proc.DeleteUserRecord) \r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                return;
+            }
+
+            p.MessageAndLog("UserId " + txtUserId + " Deleted." , ref log, "info");
+
+
+        }
+
+
+
+
+
     }
 }

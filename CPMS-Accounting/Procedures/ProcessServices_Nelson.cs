@@ -432,6 +432,8 @@ namespace CPMS_Accounting.Procedures
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 cmd.ExecuteNonQuery();
                 da.Fill(dt);
+
+
                 return true;
 
             }
@@ -934,8 +936,8 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                string sql = "insert into userlist (UserId, Password, FirstName, MiddleName, LastName, Suffix, UserLevel, Department, Position) values (" +
-                    "@UserId, @Password, @FirstName, @MiddleName, @LastName, @Suffix, @UserLevel, @Department, @Position)";
+                string sql = "insert into userlist (UserId, Password, FirstName, MiddleName, LastName, Suffix, UserLevelCode, Department, Position) values (" +
+                    "@UserId, @Password, @FirstName, @MiddleName, @LastName, @Suffix, @UserLevelCode, @Department, @Position)";
 
                 MySqlCommand cmd = new MySqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@UserId", user.Id);
@@ -944,7 +946,7 @@ namespace CPMS_Accounting.Procedures
                 cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
-                cmd.Parameters.AddWithValue("@UserLevel", user.Level);
+                cmd.Parameters.AddWithValue("@UserLevelCode", user.UserLevelCode);
                 cmd.Parameters.AddWithValue("@Department", user.Department);
                 cmd.Parameters.AddWithValue("@Position", user.Position);
 
@@ -963,7 +965,7 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                string sql = "Update Userlist set password = @Password, firstname = @FirstName, middlename = @MiddleName, lastname = @LastName, suffix = @Suffix, userlevel = @UserLevel, department = @Department, position = @Position " +
+                string sql = "Update Userlist set password = @Password, firstname = @FirstName, middlename = @MiddleName, lastname = @LastName, suffix = @Suffix, userlevelCode = @UserLevelCode, department = @Department, position = @Position " +
                     "Where UserId = @UserId;";
                 MySqlCommand cmd = new MySqlCommand(sql, con);
 
@@ -973,7 +975,7 @@ namespace CPMS_Accounting.Procedures
                 cmd.Parameters.AddWithValue("@MiddleName", user.MiddleName);
                 cmd.Parameters.AddWithValue("@LastName", user.LastName);
                 cmd.Parameters.AddWithValue("@Suffix", user.Suffix);
-                cmd.Parameters.AddWithValue("@UserLevel", user.Level);
+                cmd.Parameters.AddWithValue("@UserLevelCode", user.UserLevelCode);
                 cmd.Parameters.AddWithValue("@Department", user.Department);
                 cmd.Parameters.AddWithValue("@Position", user.Position);
     
@@ -1006,6 +1008,65 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
+
+        public bool DeleteUserRecord(string userId)
+        {
+            
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("delete from userlist where userId = '" + userId + "';", con);
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+               
+            }
+        }
+
+        //public bool Authorize(string formName, string authorization)
+        //{
+        //    string formAlias = "";
+
+        //    switch (formName)
+        //    {
+        //        case "frmDEliveryReport":
+        //            formAlias = "Dr";
+        //            break;
+        //        case "frmSalesInvoice":
+        //            formAlias = "Si";
+        //            break;
+        //        case "frmPurchaseOrder":
+        //            formAlias = "Si";
+        //            break;
+        //        case "frmUserLevelManagement":
+        //            formAlias = "Si";
+        //            break;
+        //        case "frmUserMaintenance":
+        //            formAlias = "Si";
+        //            break;
+        //        case "frmProductPriceList":
+        //            formAlias = "Si";
+        //            break;
+        //    }
+
+        //    try
+        //    {
+        //        MySqlCommand cmd = new MySqlCommand("select * from userlevels;", con);
+        //        MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+        //        cmd.ExecuteNonQuery();
+        //        da.Fill(dt);
+        //        return true;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _errorMessage = ex.Message;
+        //        return false;
+        //    }
+        //}
 
 
     }

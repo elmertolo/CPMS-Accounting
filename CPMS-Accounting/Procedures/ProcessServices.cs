@@ -1478,7 +1478,7 @@ namespace CPMS_Accounting.Procedures
         }
         public void GetUsers(List<UserListModel> _users)
         {
-            Sql = "Select Username from userlist";
+            Sql = "Select FirstName from userlist";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
