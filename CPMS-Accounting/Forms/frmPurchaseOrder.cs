@@ -131,12 +131,12 @@ namespace CPMS_Accounting
 
             _ = dt.Rows.Count != 0 ? cbCheckedBy.DataSource = dt : cbCheckedBy.DataSource = null;
             cbCheckedBy.BindingContext = new BindingContext();
-            cbCheckedBy.DisplayMember = "UserId";
+            cbCheckedBy.DisplayMember = "firstname";
             cbCheckedBy.SelectedIndex = -1;
 
             _ = dt.Rows.Count != 0 ? cbApprovedBy.DataSource = dt : cbApprovedBy.DataSource = null;
             cbApprovedBy.BindingContext = new BindingContext();
-            cbApprovedBy.DisplayMember = "UserId";
+            cbApprovedBy.DisplayMember = "firstname";
             cbApprovedBy.SelectedIndex = -1;
 
         }

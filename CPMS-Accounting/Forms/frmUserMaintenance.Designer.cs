@@ -94,6 +94,7 @@ namespace CPMS_Accounting.Forms
             this.btnDeleteRecord.TabIndex = 24;
             this.btnDeleteRecord.Text = "DELETE RECORD";
             this.btnDeleteRecord.UseVisualStyleBackColor = false;
+            this.btnDeleteRecord.Click += new System.EventHandler(this.btnDeleteRecord_Click);
             // 
             // pnlActionButtons
             // 

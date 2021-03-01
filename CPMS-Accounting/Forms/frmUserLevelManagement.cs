@@ -476,6 +476,7 @@ namespace CPMS_Accounting.Forms
             else
             {
                 p.MessageAndLog("Invalid User Level Name.", ref log, "warn");
+                txtUserLevelName.Focus();
                 return;
             }
 
@@ -508,7 +509,7 @@ namespace CPMS_Accounting.Forms
             thread.Start();
 
             //Get Sales Invoice List Details to be supplied to Global Report Datatable
-            if (!proc.GetUserLevelDetails(userLevelCode, ref dt))
+            if (!proc.GetUserLevelDetails(ref dt, userLevelCode))
             {
                 thread.Abort();
                 MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
@@ -772,6 +773,13 @@ namespace CPMS_Accounting.Forms
 
         private void DeleteRecord()
         {
+            //Check if user is Allowed to delete record.
+            if (!gUser.IsUmDeleteAllowed)
+            {
+                p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Proceed Deleting Record?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             if (result == DialogResult.OK)
             {

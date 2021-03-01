@@ -235,7 +235,7 @@ namespace CPMS_Accounting
             this.btnPrintSalesInvoice.Name = "btnPrintSalesInvoice";
             this.btnPrintSalesInvoice.Size = new System.Drawing.Size(158, 62);
             this.btnPrintSalesInvoice.TabIndex = 10;
-            this.btnPrintSalesInvoice.Text = "GENERATE / PRINT";
+            this.btnPrintSalesInvoice.Text = "SAVE / PRINT";
             this.btnPrintSalesInvoice.UseVisualStyleBackColor = false;
             this.btnPrintSalesInvoice.Click += new System.EventHandler(this.btnPrintSalesInvoice_Click);
             // 

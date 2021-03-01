@@ -227,27 +227,27 @@ namespace CPMS_Accounting.Procedures
 
             if (level.ToLower() == "info")
             {
-                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(message, "INFORMATION" , MessageBoxButtons.OK, MessageBoxIcon.Information);
                 log.Info(newMessage);
             }
             if (level.ToLower() == "warn")
             {
-                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(message, "WARNING" , MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 log.Warn(newMessage);
             }
             if (level.ToLower() == "error")
             {
-                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 log.Error(newMessage);
             }
             if (level.ToLower() == "fatal")
             {
-                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(message, "FATAL ERROR", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 log.Fatal(newMessage);
             }
             if (level.ToLower() == "debug")
             {
-                MessageBox.Show(message, level, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(message, "DEBUG", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 log.Fatal(newMessage);
             }
 

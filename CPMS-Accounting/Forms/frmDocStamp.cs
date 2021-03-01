@@ -66,6 +66,7 @@ namespace CPMS_Accounting.Forms
             proc.GetUsers(users);
             users.ForEach(u => {
                 combo.Items.Add(u.Id);
+
             });
             combo.SelectedIndex = 0;
         }

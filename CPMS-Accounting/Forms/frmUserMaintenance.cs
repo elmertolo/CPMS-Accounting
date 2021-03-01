@@ -88,6 +88,7 @@ namespace CPMS_Accounting.Forms
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
+            log.Info("Create Button Click.");
             AddRecord();
         }
 
@@ -97,14 +98,27 @@ namespace CPMS_Accounting.Forms
             {
 
                 string userId = txtUserId.Text.ToString();
-
-                if (proc.UserExist(userId))
+                DataTable dt = new DataTable();
+                if (!proc.GetUserDetails(ref dt, userId))
+                {
+                    p.MessageAndLog("Server connection Error. (proc.GetUserDetails)\r\n \r\n " + proc.errorMessage, ref log, "Fatal");
+                    return;
+                }
+                if (dt.Rows.Count > 0)
                 {
                     log.Info("Existing User Record.");
-                    DisplayExistingUserDetails(userId);
+                    DisplayExistingUserDetails(ref dt);
                 }
                 else
                 {
+
+                    //Check if user is permitted to create
+                    if (!gUser.IsUmCreateAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
+
                     log.Info("New User Record");
                     EnableControls();
                     ActionPanelNewRecordView();
@@ -118,10 +132,8 @@ namespace CPMS_Accounting.Forms
             }
         }
 
-        private void DisplayExistingUserDetails(string userId)
+        private void DisplayExistingUserDetails(ref DataTable dt)
         {
-            DataTable dt = new DataTable();
-
             log.Info("Fetching Existing User Record");
             //Start Progress Bar View
             progressBar = new frmProgress();
@@ -129,24 +141,12 @@ namespace CPMS_Accounting.Forms
             thread = new Thread(() => progressBar.ShowDialog());
             thread.Start();
 
-            //Get User List Details to be supplied to Global Report Datatable
-            if (!proc.GetUserDetails(ref dt, userId))
-            {
-                thread.Abort();
-                MessageBox.Show("Unable to connect to server. (proc.SalesInvoiceExist)\r\n" + proc.errorMessage);
-                RefreshView();
-                return;
-            }
-
-           
-
-
             //Display values on Front End from Finished Table
             foreach (DataRow row in dt.Rows)
             {
                 txtUserId.Text = row.Field<string>("UserId");
                 txtPassword.Text = row.Field<string>("Password");
-                cbUserLevel.Text = row.Field<string>("UserLevel");
+                cbUserLevel.Text = Convert.ToString(proc.SeekReturn("Select UserLevelName from userlevels where userlevelcode ='" + row.Field<string>("UserLevelCode") + "'", ""));
                 cbDeparment.Text = row.Field<string>("Department");
                 txtPosition.Text = row.Field<string>("Position");
                 txtFirstName.Text = row.Field<string>("FirstName");
@@ -216,6 +216,18 @@ namespace CPMS_Accounting.Forms
             RefreshView();
         }
 
+        private void FillUserLevelCombox()
+        {
+            DataTable dt = new DataTable();
+            if (!proc.GetUserLevels(ref dt))
+            {
+                p.MessageAndLog("Error fetching User Levels (GetUserLevels)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+            }
+            cbUserLevel.DataSource = dt;
+            cbUserLevel.DisplayMember = "UserLevelName";
+
+        }
+
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             SaveRecord();
@@ -223,63 +235,74 @@ namespace CPMS_Accounting.Forms
 
         private void SaveRecord()
         {
-            if (!string.IsNullOrEmpty(txtUserId.Text))
-            {
-                string userId = txtUserId.Text.ToString();
+            string userId = txtUserId.Text.ToString();
 
-                if (!proc.UserExist(userId))
+            if (!string.IsNullOrEmpty(userId))
+            {
+                //Check if user exist
+                DataTable dt = new DataTable();
+                if (!proc.GetUserDetails(ref dt, userId))
                 {
-                    InsertNewUserRecord();
+                    p.MessageAndLog("Server connection Error. (proc.GetUserDetails)\r\n \r\n " + proc.errorMessage, ref log, "Fatal");
+                    return;
+                }
+                if (dt.Rows.Count > 0)
+                {
+
+                    //Check if user is permitted to update
+                    if (!gUser.IsUmEditAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
+                    UpdateUserRecord();
                     RefreshView();
+
                 }
                 else
                 {
-                    UpdateUserRecord(userId);
+
+                    //Check if user is permitted to Create
+                    if (!gUser.IsUmCreateAllowed)
+                    {
+                        p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                        return;
+                    }
+                    InsertNewUserRecord();
                     RefreshView();
                 }
             }
             else
             {
-                p.MessageAndLog("Invalid User Level Name.", ref log, "warn");
+                p.MessageAndLog("Invalid User Id.", ref log, "warn");
+                return;
             }
         }
-        private void InsertNewUserRecord()
+
+        private void UpdateUserRecord()
         {
-
             UserListModel user = new UserListModel();
-
-            byte[] hashedPassword = p.GetSHA1(txtUserId.Text, txtPassword.Text);
-            string convertedPassword = Convert.ToBase64String(hashedPassword);
-
             user.Id = txtUserId.Text;
-            user.Password = Convert.ToString(convertedPassword);
+            user.Password = txtPassword.Text;
             user.FirstName = txtFirstName.Text;
             user.MiddleName = txtMiddleName.Text;
             user.LastName = txtLastName.Text;
             user.Suffix = txtSuffix.Text;
-            user.UserLevel = cbUserLevel.Text;
+            user.UserLevelCode = Convert.ToString(proc.SeekReturn("select userlevelcode from userlevels where UserLevelName ='" + cbUserLevel.Text + "'", ""));
             user.Department = cbDeparment.Text;
             user.Position = txtPosition.Text;
 
-            if (!proc.InsertNewUserRecord(user))
+            if (!proc.UpdateExistingUserRecord(user))
             {
-                p.MessageAndLog("Error Inserting New User Record (proc.InsertNewUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
+                p.MessageAndLog("Server Connection Error (UpdateExistingUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
                 return;
             }
-            p.MessageAndLog("New User Record Saving Successful.", ref log, "error");
+            p.MessageAndLog("User Update Successful.", ref log, "info");
         }
 
-
-        private void UpdateUserRecord(string userId)
+        private void InsertNewUserRecord()
         {
             UserListModel user = new UserListModel();
-
-            //if (gEncryptionOn)
-            //{
-            //    byte[] hashedPassword = p.GetSHA1(txtUserId.Text, txtPassword.Text);
-            //    string convertedPassword = Convert.ToBase64String(hashedPassword);
-            //}
-            
 
             user.Id = txtUserId.Text;
             user.Password = txtPassword.Text;
@@ -287,16 +310,17 @@ namespace CPMS_Accounting.Forms
             user.MiddleName = txtMiddleName.Text;
             user.LastName = txtLastName.Text;
             user.Suffix = txtSuffix.Text;
-            user.UserLevel = cbUserLevel.Text;
+            user.UserLevelCode = Convert.ToString(proc.SeekReturn("select userlevelcode from userLevels where UserLevelName ='" + cbUserLevel.Text + "'", ""));
             user.Department = cbDeparment.Text;
             user.Position = txtPosition.Text;
 
-            if (!proc.UpdateExistingUserRecord(user))
+            if (!proc.InsertNewUserRecord(user))
             {
-                p.MessageAndLog("Error Inserting New User Record (proc.InsertNewUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "error");
+                p.MessageAndLog("Server Connection Error (UpdateExistingUserRecord)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
                 return;
             }
-            p.MessageAndLog("Existing Record Updated.", ref log, "info");
+            p.MessageAndLog("User Update Successful.", ref log, "info");
+
         }
 
         private void txtUserId_KeyDown(object sender, KeyEventArgs e)
@@ -312,18 +336,30 @@ namespace CPMS_Accounting.Forms
             this.Close();
         }
 
-        private void FillUserLevelCombox()
+        private void btnDeleteRecord_Click(object sender, EventArgs e)
         {
-            DataTable dt = new DataTable();
-            if (!proc.GetUserLevels(ref dt))
-            {
-                p.MessageAndLog("Error fetching User Levels (GetUserLevels)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
-            }
-            cbUserLevel.DataSource = dt;
-            cbUserLevel.DisplayMember = "UserLevelName";
-
+            DeleteRecord();
         }
 
+        private void DeleteRecord()
+        {
+            //Check user if permitted
+            if (!gUser.IsUmDeleteAllowed)
+            {
+                p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                return;
+            }
+
+            if (!proc.DeleteUserRecord(txtUserId.Text))
+            {
+                p.MessageAndLog("Server connection error. (proc.DeleteUserRecord) \r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                return;
+            }
+
+            p.MessageAndLog("UserId " + txtUserId + " Deleted." , ref log, "info");
+
+
+        }
 
 
 

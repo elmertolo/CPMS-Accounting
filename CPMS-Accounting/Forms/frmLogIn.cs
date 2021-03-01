@@ -27,7 +27,7 @@ namespace CPMS_Accounting
 
 
         //02152021-NA Log4Net
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         //02222021-NA Password Encyption
@@ -49,8 +49,9 @@ namespace CPMS_Accounting
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            log.Info("Login Button Click with with Hash&"+ txtUserName.Text.ToString() + "&"+ txtPassword.Text +"");
-            Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
+            log.Info("Login Button Click");
+            Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
+
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
             
         }
@@ -95,10 +96,9 @@ namespace CPMS_Accounting
                 log.Info("User Name or Password is incorrect.");
                 return;
             }
-
             log.Info("User Login successful.");
             SupplyGlobalUserVariables(ref dt);
-
+            SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode);
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
 
             //02152021 Log4Net
@@ -112,19 +112,12 @@ namespace CPMS_Accounting
            
         }
 
-        private void txtUserName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
-            }
-        }
 
         private void txtPassword_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Login(txtUserName.Text.ToString(), txtPassword.Text.ToString());
+                Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
             }
             
         }
@@ -201,20 +194,26 @@ namespace CPMS_Accounting
         }
         public void SupplyGlobalUserVariables(ref DataTable dt) 
         {
-           
+            
+
             foreach (DataRow row in dt.Rows)
             {
+                gUser.Number = row.Field<int>("UserNo");
                 gUser.Id = row.Field<string>("UserId");
                 gUser.Password = row.Field<string>("Password");
                 gUser.FirstName = row.Field<string>("FirstName");
                 gUser.MiddleName = row.Field<string>("MiddleName");
                 gUser.LastName = row.Field<string>("LastName");
+                gUser.UserLevelCode = row.Field<string>("UserlevelCode");
+                gUser.Department = row.Field<string>("Department");
+                gUser.Position = row.Field<string>("Position");
                 gUser.Suffix = row.Field<string>("Suffix");
-                gUser.UserLevel = row.Field<string>("UserLevelCode");
                 gUser.Department = row.Field<string>("Department");
                 gUser.Position = row.Field<string>("Position");
                 gUser.Lockout = row.Field<string>("Lockout");
             }
+
+           
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -222,22 +221,93 @@ namespace CPMS_Accounting
             Application.Exit();
         }
 
-        private void txtUserName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void label1_Click(object sender, EventArgs e)
         {
 
         }
-
         private void SupplyParameterValuesOnLog4net()
         {
             log4net.Config.XmlConfigurator.Configure();
             log4net.ThreadContext.Properties["CurrentUser"] = gUser.Id;
             log4net.ThreadContext.Properties["CurrentClient"] = gClient.ShortName;
         }
+
+        private void txtUserId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
+            }
+        }
+
+        private void SupplyGlobalUserPermissionsVariables(string userLevelCode)
+        {
+            DataTable dt = new DataTable();
+            if (!proc.GetUserLevelDetails(ref dt, userLevelCode))
+            {
+                p.MessageAndLog("Server Connection Error (GetUserLevelDetails)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                return;
+
+            }
+
+            //Supply dt values sbyteo UserLevelModel
+            foreach (DataRow row in dt.Rows)
+            {
+                //gUser.UserLevelCode = row.Field<string>("UserLevelCode");
+                //Commented above statement. prevoiusly declared and supplied on gSupplyGlobalUserVariables
+                gUser.UserLevelName = row.Field<string>("UserLevelName");
+
+                //Delivery Report
+                gUser.IsAllowedOnDr =  row.Field<sbyte>("IsAllowedOnDr");
+                gUser.IsDrCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
+                gUser.IsDrEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrEditAllowed"));
+                gUser.IsDrDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrDeleteAllowed"));
+
+                //User Masbyteenance
+                gUser.IsAllowedOnUm = row.Field<sbyte>("IsAllowedOnUm");
+                gUser.IsUmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
+                gUser.IsUmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmEditAllowed"));
+                gUser.IsUmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmDeleteAllowed"));
+
+                //User Level Management
+                gUser.IsAllowedOnUl = row.Field<sbyte>("IsAllowedOnUl");
+                gUser.IsUlCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlCreateAllowed"));
+                gUser.IsUlEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlEditAllowed"));
+                gUser.IsUlDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlDeleteAllowed"));
+
+                //SalesInvoice
+                gUser.IsAllowedOnSi = row.Field<sbyte>("IsAllowedOnSi");
+                gUser.IsSiCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiCreateAllowed"));
+                gUser.IsSiEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiEditAllowed"));
+                gUser.IsSiDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiDeleteAllowed"));
+
+                //Purchase Order
+                gUser.IsAllowedOnPo = row.Field<sbyte>("IsAllowedOnPo");
+                gUser.IsPoCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoCreateAllowed"));
+                gUser.IsPoEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoEditAllowed"));
+                gUser.IsPoDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoDeleteAllowed"));
+
+                //Product Masbyteenance
+                gUser.IsAllowedOnPm = row.Field<sbyte>("IsAllowedOnPm");
+                gUser.IsPmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmCreateAllowed"));
+                gUser.IsPmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmEditAllowed"));
+                gUser.IsPmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmDeleteAllowed"));
+
+                //Product Masbyteenance
+                gUser.IsAllowedOnDc = row.Field<sbyte>("IsAllowedOnDc");
+                gUser.IsDcCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcCreateAllowed"));
+                gUser.IsDcEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcEditAllowed"));
+                gUser.IsDcDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcDeleteAllowed"));
+
+            }
+        }
+
+
+
+
+
+
 
     }
 
