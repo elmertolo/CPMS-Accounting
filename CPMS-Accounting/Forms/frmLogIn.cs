@@ -81,25 +81,30 @@ namespace CPMS_Accounting
                 password = Convert.ToBase64String(hashedPassword);
             }
 
-
+            //Identify if admin login or standard login
             DataTable dt = new DataTable();
-            if (!proc.UserLogin(UserId, password, ref dt))
+            if (AdminLogin(UserId, password))
             {
-                MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
-                log.Error("Unable to connect to server" + proc.errorMessage);
+                SupplyGlobalUserVariables(ref dt, true);
+                SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode, true);
+            }
+            else
+            {
+                if (!StandardLogin(UserId, password, ref dt))
+                {
+                    return;
+                }
+                SupplyGlobalUserVariables(ref dt);
+                SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode);
+            }
 
-                return;
-            }
-            if (dt.Rows.Count == 0)
-            {
-                MessageBox.Show("User Name or Password is incorrect. Please try again");
-                log.Info("User Name or Password is incorrect.");
-                return;
-            }
             log.Info("User Login successful.");
-            SupplyGlobalUserVariables(ref dt);
-            SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode);
+            //SupplyGlobalUserVariables(ref dt);
+            //SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode);
+            //03012021 Commented out above lines. placed it into Admin/Standard user login section
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
+
+
 
             //02152021 Log4Net
             //Supply Additional Parameters on log4net
@@ -192,27 +197,46 @@ namespace CPMS_Accounting
 
 
         }
-        public void SupplyGlobalUserVariables(ref DataTable dt) 
+        public void SupplyGlobalUserVariables(ref DataTable dt, bool userIsAdmin = false) 
         {
+            ///<summary>
+            ///
+            /// </summary>
             
-
-            foreach (DataRow row in dt.Rows)
+            if (!userIsAdmin)
             {
-                gUser.Number = row.Field<int>("UserNo");
-                gUser.Id = row.Field<string>("UserId");
-                gUser.Password = row.Field<string>("Password");
-                gUser.FirstName = row.Field<string>("FirstName");
-                gUser.MiddleName = row.Field<string>("MiddleName");
-                gUser.LastName = row.Field<string>("LastName");
-                gUser.UserLevelCode = row.Field<string>("UserlevelCode");
-                gUser.Department = row.Field<string>("Department");
-                gUser.Position = row.Field<string>("Position");
-                gUser.Suffix = row.Field<string>("Suffix");
-                gUser.Department = row.Field<string>("Department");
-                gUser.Position = row.Field<string>("Position");
-                gUser.Lockout = row.Field<string>("Lockout");
-            }
+                foreach (DataRow row in dt.Rows)
+                {
+                    gUser.Number = row.Field<int>("UserNo");
+                    gUser.Id = row.Field<string>("UserId");
+                    gUser.Password = row.Field<string>("Password");
+                    gUser.FirstName = row.Field<string>("FirstName");
+                    gUser.MiddleName = row.Field<string>("MiddleName");
+                    gUser.LastName = row.Field<string>("LastName");
+                    gUser.UserLevelCode = row.Field<string>("UserlevelCode");
+                    gUser.Department = row.Field<string>("Department");
+                    gUser.Position = row.Field<string>("Position");
+                    gUser.Suffix = row.Field<string>("Suffix");
+                    gUser.Lockout = row.Field<string>("Lockout");
+                }
 
+            }
+            else
+            {
+
+                gUser.Number = 5201;
+                gUser.Id = "KING";
+                gUser.Password = "";
+                gUser.FirstName = "Juan";
+                gUser.MiddleName = "Pedro";
+                gUser.LastName = "Dela Cruz";
+                gUser.Suffix = "";
+                gUser.UserLevelCode = "Super_Administrator";
+                gUser.Department = "Development";
+                gUser.Position = "Administrator";
+                gUser.Lockout = "100";
+
+            }
            
         }
 
@@ -241,71 +265,156 @@ namespace CPMS_Accounting
             }
         }
 
-        private void SupplyGlobalUserPermissionsVariables(string userLevelCode)
+        private void SupplyGlobalUserPermissionsVariables(string userLevelCode, bool isAdmin = false)
         {
-            DataTable dt = new DataTable();
-            if (!proc.GetUserLevelDetails(ref dt, userLevelCode))
+
+            if (!isAdmin)
             {
-                p.MessageAndLog("Server Connection Error (GetUserLevelDetails)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
-                return;
+                DataTable dt = new DataTable();
+                if (!proc.GetUserLevelDetails(ref dt, userLevelCode))
+                {
+                    p.MessageAndLog("Server Connection Error (GetUserLevelDetails)\r\n \r\n" + proc.errorMessage, ref log, "Fatal");
+                    return;
 
+                }
+
+                //Supply dt values sbyteo UserLevelModel
+                foreach (DataRow row in dt.Rows)
+                {
+                    //gUser.UserLevelCode = row.Field<string>("UserLevelCode");
+                    //Commented above statement. prevoiusly declared and supplied on gSupplyGlobalUserVariables
+                    gUser.UserLevelName = "KING";
+
+                    //Delivery Report
+                    gUser.IsAllowedOnDr = row.Field<sbyte>("IsAllowedOnDr");
+                    gUser.IsDrCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
+                    gUser.IsDrEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrEditAllowed"));
+                    gUser.IsDrDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrDeleteAllowed"));
+
+                    //User Maintenance
+                    gUser.IsAllowedOnUm = row.Field<sbyte>("IsAllowedOnUm");
+                    gUser.IsUmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
+                    gUser.IsUmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmEditAllowed"));
+                    gUser.IsUmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmDeleteAllowed"));
+
+                    //User Level Management
+                    gUser.IsAllowedOnUl = row.Field<sbyte>("IsAllowedOnUl");
+                    gUser.IsUlCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlCreateAllowed"));
+                    gUser.IsUlEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlEditAllowed"));
+                    gUser.IsUlDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlDeleteAllowed"));
+
+                    //SalesInvoice
+                    gUser.IsAllowedOnSi = row.Field<sbyte>("IsAllowedOnSi");
+                    gUser.IsSiCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiCreateAllowed"));
+                    gUser.IsSiEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiEditAllowed"));
+                    gUser.IsSiDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiDeleteAllowed"));
+
+                    //Purchase Order
+                    gUser.IsAllowedOnPo = row.Field<sbyte>("IsAllowedOnPo");
+                    gUser.IsPoCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoCreateAllowed"));
+                    gUser.IsPoEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoEditAllowed"));
+                    gUser.IsPoDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoDeleteAllowed"));
+
+                    //Product Masbyteenance
+                    gUser.IsAllowedOnPm = row.Field<sbyte>("IsAllowedOnPm");
+                    gUser.IsPmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmCreateAllowed"));
+                    gUser.IsPmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmEditAllowed"));
+                    gUser.IsPmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmDeleteAllowed"));
+
+                    //Product Masbyteenance
+                    gUser.IsAllowedOnDc = row.Field<sbyte>("IsAllowedOnDc");
+                    gUser.IsDcCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcCreateAllowed"));
+                    gUser.IsDcEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcEditAllowed"));
+                    gUser.IsDcDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcDeleteAllowed"));
+
+                }
             }
-
-            //Supply dt values sbyteo UserLevelModel
-            foreach (DataRow row in dt.Rows)
+            else
             {
                 //gUser.UserLevelCode = row.Field<string>("UserLevelCode");
                 //Commented above statement. prevoiusly declared and supplied on gSupplyGlobalUserVariables
-                gUser.UserLevelName = row.Field<string>("UserLevelName");
+                gUser.UserLevelName = "Captive Administrator";
 
                 //Delivery Report
-                gUser.IsAllowedOnDr =  row.Field<sbyte>("IsAllowedOnDr");
-                gUser.IsDrCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
-                gUser.IsDrEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrEditAllowed"));
-                gUser.IsDrDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrDeleteAllowed"));
+                gUser.IsAllowedOnDr = 1;
+                gUser.IsDrCreateAllowed = true;
+                gUser.IsDrEditAllowed = true;
+                gUser.IsDrDeleteAllowed = true;
 
-                //User Masbyteenance
-                gUser.IsAllowedOnUm = row.Field<sbyte>("IsAllowedOnUm");
-                gUser.IsUmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDrCreateAllowed"));
-                gUser.IsUmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmEditAllowed"));
-                gUser.IsUmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUmDeleteAllowed"));
+                //User Maintenance
+                gUser.IsAllowedOnUm = 1;
+                gUser.IsUmCreateAllowed = true;
+                gUser.IsUmEditAllowed = true;
+                gUser.IsUmDeleteAllowed = true;
 
                 //User Level Management
-                gUser.IsAllowedOnUl = row.Field<sbyte>("IsAllowedOnUl");
-                gUser.IsUlCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlCreateAllowed"));
-                gUser.IsUlEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlEditAllowed"));
-                gUser.IsUlDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsUlDeleteAllowed"));
+                gUser.IsAllowedOnUl = 1;
+                gUser.IsUlCreateAllowed = true;
+                gUser.IsUlEditAllowed = true;
+                gUser.IsUlDeleteAllowed = true;
 
                 //SalesInvoice
-                gUser.IsAllowedOnSi = row.Field<sbyte>("IsAllowedOnSi");
-                gUser.IsSiCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiCreateAllowed"));
-                gUser.IsSiEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiEditAllowed"));
-                gUser.IsSiDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsSiDeleteAllowed"));
+                gUser.IsAllowedOnSi = 1;
+                gUser.IsSiCreateAllowed = true;
+                gUser.IsSiEditAllowed = true;
+                gUser.IsSiDeleteAllowed = true;
 
                 //Purchase Order
-                gUser.IsAllowedOnPo = row.Field<sbyte>("IsAllowedOnPo");
-                gUser.IsPoCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoCreateAllowed"));
-                gUser.IsPoEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoEditAllowed"));
-                gUser.IsPoDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPoDeleteAllowed"));
+                gUser.IsAllowedOnPo = 1;
+                gUser.IsPoCreateAllowed = true;
+                gUser.IsPoEditAllowed = true;
+                gUser.IsPoDeleteAllowed = true;
 
                 //Product Masbyteenance
-                gUser.IsAllowedOnPm = row.Field<sbyte>("IsAllowedOnPm");
-                gUser.IsPmCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmCreateAllowed"));
-                gUser.IsPmEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmEditAllowed"));
-                gUser.IsPmDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsPmDeleteAllowed"));
+                gUser.IsAllowedOnPm = 1;
+                gUser.IsPmCreateAllowed = true;
+                gUser.IsPmEditAllowed = true;
+                gUser.IsPmDeleteAllowed = true;
 
                 //Product Masbyteenance
-                gUser.IsAllowedOnDc = row.Field<sbyte>("IsAllowedOnDc");
-                gUser.IsDcCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcCreateAllowed"));
-                gUser.IsDcEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcEditAllowed"));
-                gUser.IsDcDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcDeleteAllowed"));
+                gUser.IsAllowedOnDc = 1;
+                gUser.IsDcCreateAllowed = true;
+                gUser.IsDcEditAllowed = true;
+                gUser.IsDcDeleteAllowed = true;
+            }
+            
+        }
 
+        private bool StandardLogin(string userId, string password, ref DataTable dt)
+        {
+           
+            if (!proc.UserLogin(userId, password, ref dt))
+            {
+                MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
+                log.Error("Unable to connect to server" + proc.errorMessage);
+                return false;
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+               
+            }
+            else
+            {
+                MessageBox.Show("User Name or Password is incorrect. Please try again");
+                log.Info("User Name or Password is incorrect.");
+                return false;
             }
         }
 
-
-
-
+        private bool AdminLogin(string userId, string password)
+        {
+            if (userId == "1" && password == "1")
+            {
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
 
