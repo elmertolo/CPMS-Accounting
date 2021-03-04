@@ -43,7 +43,10 @@ namespace CPMS_Accounting
               //  batchTemp.Clear();
                 proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
                 tempRecent.Clear();
-                proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
+                if(gClient.ShortName == "PNB")
+                   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
+                else
+                    proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
 
                 var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
 
@@ -235,6 +238,13 @@ namespace CPMS_Accounting
         private void deliveryReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             report = "DRR";
+            ViewReports vp = new ViewReports();
+            vp.Show();
+        }
+
+        private void packingListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report = "PackingList";
             ViewReports vp = new ViewReports();
             vp.Show();
         }

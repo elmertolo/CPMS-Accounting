@@ -745,8 +745,8 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                Sql = "SELECT BranchName, BRSTN, ChkType,MIN(StartingSerial), MAX(EndingSerial), Count(ChkType), Bank " +
-                      "FROM " + gClient.DataBaseName + " WHERE Batch = '" + _batch + "'" +
+                Sql = "SELECT BranchName, BRSTN, ChkType,MIN(StartingSerial), MAX(EndingSerial), Count(ChkType), Bank,Address2,Address3,Address4 " +
+                      "FROM " + gClient.DataBaseName + "  WHERE Batch = '" + _batch + "'" +
                        " GROUP BY ChkType,BranchName ORDER BY ChkType,BranchName";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
@@ -762,7 +762,10 @@ namespace CPMS_Accounting.Procedures
                         StartingSerial = !myReader.IsDBNull(3) ? myReader.GetString(3) : "",
                         EndingSerial = !myReader.IsDBNull(4) ? myReader.GetString(4) : "",
                         Qty = !myReader.IsDBNull(5) ? myReader.GetInt32(5) : 0,
-                        BankCode = !myReader.IsDBNull(6) ? myReader.GetString(6) : ""
+                        BankCode = !myReader.IsDBNull(6) ? myReader.GetString(6) : "",
+                        Address2 =!myReader.IsDBNull(7) ? myReader.GetString(7) : "",
+                        Address3 = !myReader.IsDBNull(8) ? myReader.GetString(8) : "",
+                        Address4 = !myReader.IsDBNull(9) ? myReader.GetString(9) : ""
                         //ChequeName = !myReader.IsDBNull(6) ? myReader.GetString(6): ""
 
 
@@ -792,12 +795,14 @@ namespace CPMS_Accounting.Procedures
                         Type = "Personal";
                     else if (_temp[r].ChkType == "B")
                         Type = "Commercial";
-
+                    else if (_temp[r].ChkType == "C")
+                        Type = "MC";
                     if (licnt == 1)
                     {
-                        string sql2 = "Insert into " + gClient.StickerTable +" (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,Bank)" +
+                        string sql2 = "Insert into " + gClient.StickerTable +" (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,Bank,Address2,Address3,Address4)" +
                                       "values('" + _batch + "','" + _temp[r].BRSTN + "','" + _temp[r].BranchName + "'," + _temp[r].Qty + ",'" + _temp[r].ChkType +
-                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + _temp[r].BankCode + "');";
+                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + _temp[r].BankCode + "','" + _temp[r].Address2.Replace("'", "''") +
+                                      "', '" + _temp[r].Address3.Replace("'","''") +"','" + _temp[r].Address4.Replace("'", "''") +"'); ";
 
 
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
@@ -808,7 +813,8 @@ namespace CPMS_Accounting.Procedures
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName + "',Qty2 = " + _temp[r].Qty +
                                       ",ChkType2 = '" + _temp[r].ChkType + "',ChequeName2 = '" + Type + "',StartingSerial2 = '" + _temp[r].StartingSerial +
-                                      "',EndingSerial2 = '" + _temp[r].EndingSerial + "' where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType + "';";
+                                      "',EndingSerial2 = '" + _temp[r].EndingSerial + "' where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType +
+                                      "',Address22 ='" + _temp[r-1].Address2.Replace("'", "''") + "', Address32 ='" + _temp[r-1].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r-1].Address4.Replace("'", "''") + "';";
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                         cmd2.ExecuteNonQuery();
                         licnt++;
@@ -817,7 +823,9 @@ namespace CPMS_Accounting.Procedures
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN3 = '" + _temp[r].BRSTN + "',BranchName3 = '" + _temp[r].BranchName + "',Qty3 = " + _temp[r].Qty +
                                       ",ChkType3 = '" + _temp[r].ChkType + "',ChequeName3 = '" + Type + "',StartingSerial3 = '" + _temp[r].StartingSerial +
-                                      "',EndingSerial3 = '" + _temp[r].EndingSerial + "' where BRSTN2 = '" + _temp[r - 1].BRSTN + "' and ChkType2 = '" + _temp[r - 1].ChkType + "';";
+                                      "',EndingSerial3 = '" + _temp[r].EndingSerial + "' where BRSTN2 = '" + _temp[r - 1].BRSTN + "' and ChkType2 = '" + _temp[r - 1].ChkType + 
+                                      "',Address23  = '" + _temp[r-1].Address2.Replace("'", "''") +"',Address33 = '" + _temp[r-1].Address3.Replace("'", "''") + "'," +
+                                      "Address43 = '" + _temp[r-1].Address4.Replace("'", "''") + "';";
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                         cmd2.ExecuteNonQuery();
                         licnt = 1;
@@ -881,6 +889,62 @@ namespace CPMS_Accounting.Procedures
             }
             return _temp;
         }
+        public List<TempModel> GetStickerDetailsForPNB(List<TempModel> _temp, string _batch)
+        {
+            Sql = "SELECT BranchName, BRSTN, ChkType,MIN(StartingSerial), MAX(EndingSerial), Count(ChkType), Bank,Address2,Address3,Address4,Name1,Name2" +
+                ",ChequeName, BranchCode,AccountNo  FROM " + gClient.DataBaseName + " WHERE Batch = '" + _batch + "'" +
+                       " GROUP BY ChkType,BranchName ORDER BY ChkType,BranchName";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                TempModel t = new TempModel
+                {
+
+                    BranchName = !myReader.IsDBNull(0) ? myReader.GetString(0) : "",
+                    BRSTN = !myReader.IsDBNull(1) ? myReader.GetString(1) : "",
+                    ChkType = !myReader.IsDBNull(2) ? myReader.GetString(2) : "",
+                    StartingSerial = !myReader.IsDBNull(3) ? myReader.GetString(3) : "",
+                    EndingSerial = !myReader.IsDBNull(4) ? myReader.GetString(4) : "",
+                    Qty = !myReader.IsDBNull(5) ? myReader.GetInt32(5) : 0,
+                    BankCode = !myReader.IsDBNull(6) ? myReader.GetString(6) : "",
+                    Address2 = !myReader.IsDBNull(7) ? myReader.GetString(7) : "",
+                    Address3 = !myReader.IsDBNull(8) ? myReader.GetString(8) : "",
+                    Address4 = !myReader.IsDBNull(9) ? myReader.GetString(9) : "",
+                    Name1 = !myReader.IsDBNull(10) ? myReader.GetString(10) : "",
+                    Name2 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "",
+                    ChequeName = !myReader.IsDBNull(12) ? myReader.GetString(12) : "",
+                    BranchCode  = !myReader.IsDBNull(13) ? myReader.GetString(13) : "",
+                    AccountNo = !myReader.IsDBNull(14) ? myReader.GetString(14) : ""
+                    
+
+
+                };
+                _temp.Add(t);
+            }
+            DBClosed();
+            DBConnect();
+            string sqldel = "Delete from " + gClient.StickerTable;
+            MySqlCommand comdel = new MySqlCommand(sqldel, myConnect);
+            comdel.ExecuteNonQuery();
+
+            DBClosed();
+            DBConnect();
+            _temp.ForEach(r => { 
+            Sql = "Insert into " + gClient.StickerTable + " (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,Bank,Address2,Address3,Address4" +
+                ",Name1,Name2,BranchCode,AccountNo) values('" + _batch + "','" + r.BRSTN + "','" + r.BranchName + "'," + r.Qty + ",'" + r.ChkType +
+                                      "','" +r.ChequeName.Substring(0,r.ChequeName.Length - 6)+ "','" + r.StartingSerial + "','" + r.EndingSerial + "','" +
+                                      r.BankCode + "','" + r.Address2.Replace("'", "''") + "', '" + r.Address3.Replace("'", "''") + "','" +
+                                      r.Address4.Replace("'", "''") + "','" + r.Name1.Replace("'","''") + "','" +r.Name2.Replace("'","''") +"','" + r.BranchCode +"','" +
+                                      r.AccountNo + "'); ";
+
+                cmd = new MySqlCommand(Sql, myConnect);
+                cmd.ExecuteNonQuery();
+            });
+            DBClosed();
+            return _temp;
+        }
         public string FillCRReportParameters()
         {
             string reportPath = "";
@@ -904,11 +968,12 @@ namespace CPMS_Accounting.Procedures
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceipt.rpt";
                             
                         }
-                        else if (gClient.DataBaseName == "pnb_history")
+                        else 
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
-
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
+                            else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
@@ -948,7 +1013,9 @@ namespace CPMS_Accounting.Procedures
                         else if (gClient.DataBaseName == "pnb_history")
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
+                            else if (RecentBatch.report == "STICKER2" || DeliveryReport.report == "STICKER2")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")

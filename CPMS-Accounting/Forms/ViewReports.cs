@@ -67,6 +67,23 @@ namespace CPMS_Accounting
                 this.crystalReportViewer1.ReportSource =cryRpt;
                 this.crystalReportViewer1.RefreshReport();
             }
+            else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
+            {
+                DataSet ds = new DataSet();
+                process.DBConnect();
+
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.StickerTable, process.myConnect);
+
+                adp.Fill(ds);
+
+                ReportDocument cryRpt = new ReportDocument();
+                cryRpt.Load(process.FillCRReportParameters());
+                cryRpt.SetDataSource(ds.Tables[0]);
+                process.DBClosed();
+
+                this.crystalReportViewer1.ReportSource = cryRpt;
+                this.crystalReportViewer1.RefreshReport();
+            }
             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
             {
                 DataSet ds = new DataSet();
