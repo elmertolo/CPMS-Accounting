@@ -79,6 +79,9 @@ namespace CPMS_Accounting
                  //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
 
                 proc.GetDRDetails(orderList[0].Batch, tempDr);
+                if(gClient.ShortName == "PNB")
+                    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                else
                 proc.GetStickerDetails(tempSticker, orderList[0].Batch);
                 
                 MessageBox.Show("Data has been process!!!");

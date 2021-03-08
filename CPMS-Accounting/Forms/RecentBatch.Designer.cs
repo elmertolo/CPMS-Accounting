@@ -45,6 +45,7 @@ namespace CPMS_Accounting
             this.label1 = new System.Windows.Forms.Label();
             this.txtRecentBatch = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.packingListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -78,7 +79,8 @@ namespace CPMS_Accounting
             this.packingToolStripMenuItem,
             this.salesInvoiceToolStripMenuItem,
             this.documentStampToolStripMenuItem,
-            this.deliveryReportToolStripMenuItem});
+            this.deliveryReportToolStripMenuItem,
+            this.packingListToolStripMenuItem});
             this.printDRToolStripMenuItem.Enabled = false;
             this.printDRToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.printDRToolStripMenuItem.Name = "printDRToolStripMenuItem";
@@ -188,6 +190,13 @@ namespace CPMS_Accounting
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
+            // packingListToolStripMenuItem
+            // 
+            this.packingListToolStripMenuItem.Name = "packingListToolStripMenuItem";
+            this.packingListToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.packingListToolStripMenuItem.Text = "Packing List";
+            this.packingListToolStripMenuItem.Click += new System.EventHandler(this.packingListToolStripMenuItem_Click);
+            // 
             // RecentBatch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,5 +237,6 @@ namespace CPMS_Accounting
         private System.Windows.Forms.ToolStripMenuItem documentStampToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ToolStripMenuItem packingListToolStripMenuItem;
     }
 }
