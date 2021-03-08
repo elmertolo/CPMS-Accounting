@@ -104,8 +104,6 @@ namespace CPMS_Accounting
             //03012021 Commented out above lines. placed it into Admin/Standard user login section
             SupplyGlobalClientVariables(cbBankList.Text.ToString());
 
-
-
             //02152021 Log4Net
             //Supply Additional Parameters on log4net
             SupplyParameterValuesOnLog4net();

@@ -31,13 +31,14 @@ namespace CPMS_Accounting
         {
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.lblMessage = new System.Windows.Forms.Label();
+            this.lblMessage1 = new System.Windows.Forms.Label();
             this.txtInput = new System.Windows.Forms.TextBox();
+            this.lblMessage2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(142, 72);
+            this.btnOk.Location = new System.Drawing.Point(141, 77);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 3;
@@ -48,7 +49,7 @@ namespace CPMS_Accounting
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(223, 72);
+            this.btnCancel.Location = new System.Drawing.Point(222, 77);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -56,32 +57,44 @@ namespace CPMS_Accounting
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // lblMessage
+            // lblMessage1
             // 
-            this.lblMessage.AutoSize = true;
-            this.lblMessage.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessage.Location = new System.Drawing.Point(12, 22);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(142, 14);
-            this.lblMessage.TabIndex = 2;
-            this.lblMessage.Text = "Input Sales Invoice Number";
+            this.lblMessage1.AutoSize = true;
+            this.lblMessage1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage1.Location = new System.Drawing.Point(12, 22);
+            this.lblMessage1.Name = "lblMessage1";
+            this.lblMessage1.Size = new System.Drawing.Size(142, 14);
+            this.lblMessage1.TabIndex = 2;
+            this.lblMessage1.Text = "Input Sales Invoice Number";
             // 
             // txtInput
             // 
-            this.txtInput.Location = new System.Drawing.Point(12, 45);
+            this.txtInput.Location = new System.Drawing.Point(11, 46);
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(286, 21);
             this.txtInput.TabIndex = 0;
             this.txtInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInput_KeyDown);
             this.txtInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInput_KeyPress);
             // 
+            // lblMessage2
+            // 
+            this.lblMessage2.AutoSize = true;
+            this.lblMessage2.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage2.Location = new System.Drawing.Point(12, 142);
+            this.lblMessage2.Name = "lblMessage2";
+            this.lblMessage2.Size = new System.Drawing.Size(142, 14);
+            this.lblMessage2.TabIndex = 4;
+            this.lblMessage2.Text = "Input Sales Invoice Number";
+            this.lblMessage2.Visible = false;
+            // 
             // frmMessageInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(310, 108);
+            this.ClientSize = new System.Drawing.Size(310, 112);
+            this.Controls.Add(this.lblMessage2);
             this.Controls.Add(this.txtInput);
-            this.Controls.Add(this.lblMessage);
+            this.Controls.Add(this.lblMessage1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -100,7 +113,8 @@ namespace CPMS_Accounting
 
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Label lblMessage1;
         private System.Windows.Forms.TextBox txtInput;
+        private System.Windows.Forms.Label lblMessage2;
     }
 }
