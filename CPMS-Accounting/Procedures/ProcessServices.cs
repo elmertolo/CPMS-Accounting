@@ -813,8 +813,10 @@ namespace CPMS_Accounting.Procedures
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName + "',Qty2 = " + _temp[r].Qty +
                                       ",ChkType2 = '" + _temp[r].ChkType + "',ChequeName2 = '" + Type + "',StartingSerial2 = '" + _temp[r].StartingSerial +
-                                      "',EndingSerial2 = '" + _temp[r].EndingSerial + "' where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType +
-                                      "',Address22 ='" + _temp[r-1].Address2.Replace("'", "''") + "', Address32 ='" + _temp[r-1].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r-1].Address4.Replace("'", "''") + "';";
+                                      "',EndingSerial2 = '" + _temp[r].EndingSerial + "',Address22 ='" + _temp[r - 1].Address2.Replace("'", "''") + "', " +
+                                      "Address32 ='" + _temp[r - 1].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r - 1].Address4.Replace("'", "''") + "' " +
+                                      " where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType + "';";
+                                      
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                         cmd2.ExecuteNonQuery();
                         licnt++;
@@ -823,9 +825,9 @@ namespace CPMS_Accounting.Procedures
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN3 = '" + _temp[r].BRSTN + "',BranchName3 = '" + _temp[r].BranchName + "',Qty3 = " + _temp[r].Qty +
                                       ",ChkType3 = '" + _temp[r].ChkType + "',ChequeName3 = '" + Type + "',StartingSerial3 = '" + _temp[r].StartingSerial +
-                                      "',EndingSerial3 = '" + _temp[r].EndingSerial + "' where BRSTN2 = '" + _temp[r - 1].BRSTN + "' and ChkType2 = '" + _temp[r - 1].ChkType + 
-                                      "',Address23  = '" + _temp[r-1].Address2.Replace("'", "''") +"',Address33 = '" + _temp[r-1].Address3.Replace("'", "''") + "'," +
-                                      "Address43 = '" + _temp[r-1].Address4.Replace("'", "''") + "';";
+                                      "',EndingSerial3 = '" + _temp[r].EndingSerial + "',Address23  = '" + _temp[r - 1].Address2.Replace("'", "''") + "'" +
+                                      ",Address33 = '" + _temp[r - 1].Address3.Replace("'", "''") + "',Address43 = '" + _temp[r - 1].Address4.Replace("'", "''") +"' " +
+                                      "where BRSTN2 = '" + _temp[r - 1].BRSTN + "' and ChkType2 = '" + _temp[r - 1].ChkType + "';";
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                         cmd2.ExecuteNonQuery();
                         licnt = 1;
@@ -1014,7 +1016,7 @@ namespace CPMS_Accounting.Procedures
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
-                            else if (RecentBatch.report == "STICKER2" || DeliveryReport.report == "STICKER2")
+                            else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
@@ -1594,13 +1596,19 @@ namespace CPMS_Accounting.Procedures
         }
         public void GetBranchLocation(BranchesModel _branches , string _branchCode)
         {
-            Sql = "Select LocationFlag  from " + gClient.BranchesTable + " where BranchCode = " + _branchCode + ";";
+            Sql = "Select LocationFlag,Address1,Address2,Address3,Address4,Address5,Address6  from " + gClient.BranchesTable + " where BranchCode = " + _branchCode + ";";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 _branches.Flag = reader.GetInt32(0);
+                _branches.Address1 = !reader.IsDBNull(1) ? reader.GetString(1) : "";
+                _branches.Address2 = !reader.IsDBNull(2) ? reader.GetString(2) : "";
+                _branches.Address3 = !reader.IsDBNull(3) ? reader.GetString(3) : "";
+                _branches.Address4 = !reader.IsDBNull(4) ? reader.GetString(4) : "";
+                _branches.Address5 = !reader.IsDBNull(5) ? reader.GetString(5) : "";
+                _branches.Address6 = !reader.IsDBNull(6) ? reader.GetString(6) : "";
             }
             reader.Close();
             DBClosed();
@@ -2076,7 +2084,7 @@ namespace CPMS_Accounting.Procedures
 
             }
             counter = 0;
-            _DrNumber++;
+            //_DrNumber++;
 
             var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
             if (Comm.Count > 0)
@@ -2239,12 +2247,14 @@ namespace CPMS_Accounting.Procedures
             if (gClient.DataBaseName != "producers_history")
             {
                 Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank)" +
+                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
+                          ",Address2,Address3,Address4,Address5,Address6)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                          "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "');";
+                          "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
+                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
             }
@@ -2548,6 +2558,13 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _pCode;
         }
+        //public List<BranchesModel> getAllBranches(List<BranchesModel> _branches)
+        //{
+        //    Sql = "Select Brstn,Address1, Address2, Address3, Address4,Address5,Address6,BranchCode,OldBranchCode from " +
+        //            gClient.BranchesTable;
+
+        //    return _branches;
+        //}
      
     }
 }

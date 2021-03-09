@@ -27,5 +27,11 @@ namespace CPMS_Accounting.Models
         public int PONumber { get; set; }
         public int Quantity { get; set; }
         public string BankCode { get; set; }
+        public string Address2 { get; set; }
+        public string Address3 { get; set; }
+        public string Address4 { get; set; }
+        public string Address5 { get; set; }
+        public string Address6 { get; set; }
+        
     }
 }

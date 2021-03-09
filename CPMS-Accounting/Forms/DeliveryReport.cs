@@ -92,6 +92,7 @@ namespace CPMS_Accounting
                 proc.DisableControls(deliveryReportToolStripMenuItem);
 
             }
+            generateToolStripMenuItem.Enabled = false;
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -283,11 +284,16 @@ namespace CPMS_Accounting
                                 proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
                                 order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
-                                                                                    //proc.GetPONUmber(order.ChequeName, poNumber);
-                                                                                    //poNumber.ForEach(x => { 
+                                order.Address2 = branch.Address2.Replace("'", "''");
+                                order.Address3 = branch.Address3.Replace("'", "''");
+                                order.Address4 = branch.Address4.Replace("'", "''");
+                                order.Address5 = branch.Address5.Replace("'", "''");
+                                order.Address6 = branch.Address6.Replace("'", "''");
+                        //proc.GetPONUmber(order.ChequeName, poNumber);
+                        //poNumber.ForEach(x => { 
 
-                            //});
-                              if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                        //});
+                        if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
                               {
 
                                 MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ","Error!");

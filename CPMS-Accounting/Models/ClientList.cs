@@ -32,5 +32,6 @@ namespace CPMS_Accounting.Models
         public string  ProductTable { get; set; } // Addred By ET Feb. 15, 2021
         public string StickerTable { get; set; } // Addred By ET Feb. 22, 2021
 
+
     }
 }
