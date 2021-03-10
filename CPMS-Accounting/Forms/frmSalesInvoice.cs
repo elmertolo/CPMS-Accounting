@@ -242,7 +242,6 @@ namespace CPMS_Accounting
 
         private void AddSelectedDRRow()
         {
-           
 
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
@@ -304,7 +303,9 @@ namespace CPMS_Accounting
                     {
                        
                         frmMessageInput xfrm = new frmMessageInput();
-                        xfrm.labelMessage = "Input Purchase Order Number:";
+                        xfrm.Text = "PO NUMBER REQUIRED.";
+                        xfrm.labelMessage1 = "Input Purchase Order Number For Product Code:\r\n";
+                        xfrm.labelMessage2 = "'" + line.ProductCode + "' with Batch Name '" + line.Batch + "'.";
                         DialogResult result = xfrm.ShowDialog();
                         
                         if (result == DialogResult.OK)
@@ -341,18 +342,26 @@ namespace CPMS_Accounting
                     line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
                     salesInvoiceList.Add(line);
 
+                    //created 'list' variable column sorting by line for datagrid view 
+                    var sortedList = salesInvoiceList
+                        .Select
+                        (i => new { 
+                            i.Quantity, 
+                            i.Batch, 
+                            i.checkName, 
+                            i.drList, 
+                            i.checkType, 
+                            i.salesInvoiceDate, 
+                            i.unitPrice, 
+                            i.lineTotalAmount })
+                        .ToList();
+
+                    dgvListToProcess.DataSource = sortedList;
                     log.Info("Item Successfully Added to Sales Invoice List");
 
                 }
 
-                //created 'list' variable column sorting by line for datagrid view 
-                var sortedList = salesInvoiceList
-                    .Select
-                    (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
-
-                    .ToList();
-
-                dgvListToProcess.DataSource = sortedList;
+                
                 dgvListToProcess.ClearSelection();
 
             }
@@ -363,12 +372,8 @@ namespace CPMS_Accounting
                 return;
             }
 
-
-            
-                //thread.Abort();
-
-
-
+            //Use this when data is large
+            //thread.Abort();
 
         }
 
@@ -491,12 +496,12 @@ namespace CPMS_Accounting
 
             _ = dt.Rows.Count != 0 ? cbCheckedBy.DataSource = dt : cbCheckedBy.DataSource = null;
             cbCheckedBy.BindingContext = new BindingContext();
-            cbCheckedBy.DisplayMember = "UserId";
+            cbCheckedBy.DisplayMember = "FirstName";
             cbCheckedBy.SelectedIndex = -1;
 
             _ = dt.Rows.Count != 0 ? cbApprovedBy.DataSource = dt : cbApprovedBy.DataSource = null;
             cbApprovedBy.BindingContext = new BindingContext();
-            cbApprovedBy.DisplayMember = "UserId";
+            cbApprovedBy.DisplayMember = "FirstName";
             cbApprovedBy.SelectedIndex = -1;
 
         }
