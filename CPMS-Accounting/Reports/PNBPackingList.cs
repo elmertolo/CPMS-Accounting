@@ -16,14 +16,14 @@ namespace CPMS_Accounting.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class PNBStickers : ReportClass {
+    public class PNBPackingList : ReportClass {
         
-        public PNBStickers() {
+        public PNBPackingList() {
         }
         
         public override string ResourceName {
             get {
-                return "PNBStickers.rpt";
+                return "PNBPackingList.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CPMS_Accounting.Reports {
         
         public override string FullResourceName {
             get {
-                return "CPMS_Accounting.Reports.PNBStickers.rpt";
+                return "CPMS_Accounting.Reports.PNBPackingList.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace CPMS_Accounting.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedPNBStickers : Component, ICachedReport {
+    public class CachedPNBPackingList : Component, ICachedReport {
         
-        public CachedPNBStickers() {
+        public CachedPNBPackingList() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace CPMS_Accounting.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            PNBStickers rpt = new PNBStickers();
+            PNBPackingList rpt = new PNBPackingList();
             rpt.Site = this.Site;
             return rpt;
         }

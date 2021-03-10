@@ -235,11 +235,11 @@
       <DependentUpon>PNBDeliveryReceipt.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\PNBStickers.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PNBStickers.rpt</DependentUpon>
+    <Compile Include="Reports\PNBPackingList.cs">
+      <DependentUpon>PNBPackingList.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\PNBStickers2.cs">
       <DependentUpon>PNBStickers2.rpt</DependentUpon>
@@ -350,9 +350,9 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PNBDeliveryReceipt.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\PNBStickers.rpt">
+    <EmbeddedResource Include="Reports\PNBPackingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>PNBStickers.cs</LastGenOutput>
+      <LastGenOutput>PNBPackingList.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\PNBStickers2.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

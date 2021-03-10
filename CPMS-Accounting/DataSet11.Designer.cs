@@ -30,8 +30,6 @@ namespace CPMS_Accounting {
         
         private DocStampDataTable tableDocStamp;
         
-        private PackingListDataTable tablePackingList;
-        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -68,9 +66,6 @@ namespace CPMS_Accounting {
                 }
                 if ((ds.Tables["DocStamp"] != null)) {
                     base.Tables.Add(new DocStampDataTable(ds.Tables["DocStamp"]));
-                }
-                if ((ds.Tables["PackingList"] != null)) {
-                    base.Tables.Add(new PackingListDataTable(ds.Tables["PackingList"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -117,16 +112,6 @@ namespace CPMS_Accounting {
         public DocStampDataTable DocStamp {
             get {
                 return this.tableDocStamp;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public PackingListDataTable PackingList {
-            get {
-                return this.tablePackingList;
             }
         }
         
@@ -206,9 +191,6 @@ namespace CPMS_Accounting {
                 if ((ds.Tables["DocStamp"] != null)) {
                     base.Tables.Add(new DocStampDataTable(ds.Tables["DocStamp"]));
                 }
-                if ((ds.Tables["PackingList"] != null)) {
-                    base.Tables.Add(new PackingListDataTable(ds.Tables["PackingList"]));
-                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -260,12 +242,6 @@ namespace CPMS_Accounting {
                     this.tableDocStamp.InitVars();
                 }
             }
-            this.tablePackingList = ((PackingListDataTable)(base.Tables["PackingList"]));
-            if ((initTable == true)) {
-                if ((this.tablePackingList != null)) {
-                    this.tablePackingList.InitVars();
-                }
-            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -282,8 +258,6 @@ namespace CPMS_Accounting {
             base.Tables.Add(this.tableSticker);
             this.tableDocStamp = new DocStampDataTable();
             base.Tables.Add(this.tableDocStamp);
-            this.tablePackingList = new PackingListDataTable();
-            base.Tables.Add(this.tablePackingList);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -301,12 +275,6 @@ namespace CPMS_Accounting {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private bool ShouldSerializeDocStamp() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        private bool ShouldSerializePackingList() {
             return false;
         }
         
@@ -374,9 +342,6 @@ namespace CPMS_Accounting {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public delegate void DocStampRowChangeEventHandler(object sender, DocStampRowChangeEvent e);
         
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public delegate void PackingListRowChangeEventHandler(object sender, PackingListRowChangeEvent e);
-        
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
@@ -435,6 +400,18 @@ namespace CPMS_Accounting {
             private global::System.Data.DataColumn columnConcatinatedDRD;
             
             private global::System.Data.DataColumn columnBank;
+            
+            private global::System.Data.DataColumn columnAddress2;
+            
+            private global::System.Data.DataColumn columnAddress3;
+            
+            private global::System.Data.DataColumn columnAddress4;
+            
+            private global::System.Data.DataColumn columnName1;
+            
+            private global::System.Data.DataColumn columnName2;
+            
+            private global::System.Data.DataColumn columnAccountNo;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -679,6 +656,54 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Address2Column {
+                get {
+                    return this.columnAddress2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Address3Column {
+                get {
+                    return this.columnAddress3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Address4Column {
+                get {
+                    return this.columnAddress4;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Name1Column {
+                get {
+                    return this.columnName1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Name2Column {
+                get {
+                    return this.columnName2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn AccountNoColumn {
+                get {
+                    return this.columnAccountNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -740,7 +765,13 @@ namespace CPMS_Accounting {
                         string ConcatinatedDRB, 
                         string ConcatinatedDRC, 
                         string ConcatinatedDRD, 
-                        string Bank) {
+                        string Bank, 
+                        string Address2, 
+                        string Address3, 
+                        string Address4, 
+                        string Name1, 
+                        string Name2, 
+                        string AccountNo) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -768,7 +799,13 @@ namespace CPMS_Accounting {
                         ConcatinatedDRB,
                         ConcatinatedDRC,
                         ConcatinatedDRD,
-                        Bank};
+                        Bank,
+                        Address2,
+                        Address3,
+                        Address4,
+                        Name1,
+                        Name2,
+                        AccountNo};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -817,6 +854,12 @@ namespace CPMS_Accounting {
                 this.columnConcatinatedDRC = base.Columns["ConcatinatedDRC"];
                 this.columnConcatinatedDRD = base.Columns["ConcatinatedDRD"];
                 this.columnBank = base.Columns["Bank"];
+                this.columnAddress2 = base.Columns["Address2"];
+                this.columnAddress3 = base.Columns["Address3"];
+                this.columnAddress4 = base.Columns["Address4"];
+                this.columnName1 = base.Columns["Name1"];
+                this.columnName2 = base.Columns["Name2"];
+                this.columnAccountNo = base.Columns["AccountNo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -874,6 +917,18 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnConcatinatedDRD);
                 this.columnBank = new global::System.Data.DataColumn("Bank", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBank);
+                this.columnAddress2 = new global::System.Data.DataColumn("Address2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAddress2);
+                this.columnAddress3 = new global::System.Data.DataColumn("Address3", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAddress3);
+                this.columnAddress4 = new global::System.Data.DataColumn("Address4", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAddress4);
+                this.columnName1 = new global::System.Data.DataColumn("Name1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnName1);
+                this.columnName2 = new global::System.Data.DataColumn("Name2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnName2);
+                this.columnAccountNo = new global::System.Data.DataColumn("AccountNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountNo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1448,14 +1503,14 @@ namespace CPMS_Accounting {
                         string ChequeName, 
                         string BRSTN2, 
                         string BranchName2, 
-                        string Qty2, 
+                        int Qty2, 
                         string ChkType2, 
                         string ChequeName2, 
                         string StartingSerial2, 
                         string EndingSerial2, 
                         string BRSTN3, 
                         string BranchName3, 
-                        string Qty3, 
+                        int Qty3, 
                         string ChkType3, 
                         string ChequeName3, 
                         string StartingSerial3, 
@@ -1595,7 +1650,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnBRSTN2);
                 this.columnBranchName2 = new global::System.Data.DataColumn("BranchName2", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchName2);
-                this.columnQty2 = new global::System.Data.DataColumn("Qty2", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnQty2 = new global::System.Data.DataColumn("Qty2", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQty2);
                 this.columnChkType2 = new global::System.Data.DataColumn("ChkType2", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChkType2);
@@ -1609,7 +1664,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnBRSTN3);
                 this.columnBranchName3 = new global::System.Data.DataColumn("BranchName3", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchName3);
-                this.columnQty3 = new global::System.Data.DataColumn("Qty3", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnQty3 = new global::System.Data.DataColumn("Qty3", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQty3);
                 this.columnChkType3 = new global::System.Data.DataColumn("ChkType3", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChkType3);
@@ -2217,479 +2272,6 @@ namespace CPMS_Accounting {
         }
         
         /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PackingListDataTable : global::System.Data.TypedTableBase<PackingListRow> {
-            
-            private global::System.Data.DataColumn columnBank;
-            
-            private global::System.Data.DataColumn columnBatch;
-            
-            private global::System.Data.DataColumn columnBRSTN;
-            
-            private global::System.Data.DataColumn columnBranchName;
-            
-            private global::System.Data.DataColumn columnQty;
-            
-            private global::System.Data.DataColumn columnChkType;
-            
-            private global::System.Data.DataColumn columnStartingSerial;
-            
-            private global::System.Data.DataColumn columnEndingSerial;
-            
-            private global::System.Data.DataColumn columnChequeName;
-            
-            private global::System.Data.DataColumn columnAddress2;
-            
-            private global::System.Data.DataColumn columnAddress3;
-            
-            private global::System.Data.DataColumn columnAddress4;
-            
-            private global::System.Data.DataColumn columnName1;
-            
-            private global::System.Data.DataColumn columnName2;
-            
-            private global::System.Data.DataColumn columnBranchCode;
-            
-            private global::System.Data.DataColumn columnAccountNo;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListDataTable() {
-                this.TableName = "PackingList";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal PackingListDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected PackingListDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn BankColumn {
-                get {
-                    return this.columnBank;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn BatchColumn {
-                get {
-                    return this.columnBatch;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn BRSTNColumn {
-                get {
-                    return this.columnBRSTN;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn BranchNameColumn {
-                get {
-                    return this.columnBranchName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn QtyColumn {
-                get {
-                    return this.columnQty;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn ChkTypeColumn {
-                get {
-                    return this.columnChkType;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn StartingSerialColumn {
-                get {
-                    return this.columnStartingSerial;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn EndingSerialColumn {
-                get {
-                    return this.columnEndingSerial;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn ChequeNameColumn {
-                get {
-                    return this.columnChequeName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Address2Column {
-                get {
-                    return this.columnAddress2;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Address3Column {
-                get {
-                    return this.columnAddress3;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Address4Column {
-                get {
-                    return this.columnAddress4;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Name1Column {
-                get {
-                    return this.columnName1;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Name2Column {
-                get {
-                    return this.columnName2;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn BranchCodeColumn {
-                get {
-                    return this.columnBranchCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn AccountNoColumn {
-                get {
-                    return this.columnAccountNo;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListRow this[int index] {
-                get {
-                    return ((PackingListRow)(this.Rows[index]));
-                }
-            }
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event PackingListRowChangeEventHandler PackingListRowChanging;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event PackingListRowChangeEventHandler PackingListRowChanged;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event PackingListRowChangeEventHandler PackingListRowDeleting;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event PackingListRowChangeEventHandler PackingListRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void AddPackingListRow(PackingListRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListRow AddPackingListRow(
-                        string Bank, 
-                        string Batch, 
-                        string BRSTN, 
-                        string BranchName, 
-                        string Qty, 
-                        string ChkType, 
-                        string StartingSerial, 
-                        string EndingSerial, 
-                        string ChequeName, 
-                        string Address2, 
-                        string Address3, 
-                        string Address4, 
-                        string Name1, 
-                        string Name2, 
-                        string BranchCode, 
-                        string AccountNo) {
-                PackingListRow rowPackingListRow = ((PackingListRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        Bank,
-                        Batch,
-                        BRSTN,
-                        BranchName,
-                        Qty,
-                        ChkType,
-                        StartingSerial,
-                        EndingSerial,
-                        ChequeName,
-                        Address2,
-                        Address3,
-                        Address4,
-                        Name1,
-                        Name2,
-                        BranchCode,
-                        AccountNo};
-                rowPackingListRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowPackingListRow);
-                return rowPackingListRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public override global::System.Data.DataTable Clone() {
-                PackingListDataTable cln = ((PackingListDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new PackingListDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal void InitVars() {
-                this.columnBank = base.Columns["Bank"];
-                this.columnBatch = base.Columns["Batch"];
-                this.columnBRSTN = base.Columns["BRSTN"];
-                this.columnBranchName = base.Columns["BranchName"];
-                this.columnQty = base.Columns["Qty"];
-                this.columnChkType = base.Columns["ChkType"];
-                this.columnStartingSerial = base.Columns["StartingSerial"];
-                this.columnEndingSerial = base.Columns["EndingSerial"];
-                this.columnChequeName = base.Columns["ChequeName"];
-                this.columnAddress2 = base.Columns["Address2"];
-                this.columnAddress3 = base.Columns["Address3"];
-                this.columnAddress4 = base.Columns["Address4"];
-                this.columnName1 = base.Columns["Name1"];
-                this.columnName2 = base.Columns["Name2"];
-                this.columnBranchCode = base.Columns["BranchCode"];
-                this.columnAccountNo = base.Columns["AccountNo"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            private void InitClass() {
-                this.columnBank = new global::System.Data.DataColumn("Bank", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBank);
-                this.columnBatch = new global::System.Data.DataColumn("Batch", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBatch);
-                this.columnBRSTN = new global::System.Data.DataColumn("BRSTN", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBRSTN);
-                this.columnBranchName = new global::System.Data.DataColumn("BranchName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBranchName);
-                this.columnQty = new global::System.Data.DataColumn("Qty", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnQty);
-                this.columnChkType = new global::System.Data.DataColumn("ChkType", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnChkType);
-                this.columnStartingSerial = new global::System.Data.DataColumn("StartingSerial", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStartingSerial);
-                this.columnEndingSerial = new global::System.Data.DataColumn("EndingSerial", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnEndingSerial);
-                this.columnChequeName = new global::System.Data.DataColumn("ChequeName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnChequeName);
-                this.columnAddress2 = new global::System.Data.DataColumn("Address2", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAddress2);
-                this.columnAddress3 = new global::System.Data.DataColumn("Address3", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAddress3);
-                this.columnAddress4 = new global::System.Data.DataColumn("Address4", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAddress4);
-                this.columnName1 = new global::System.Data.DataColumn("Name1", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnName1);
-                this.columnName2 = new global::System.Data.DataColumn("Name2", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnName2);
-                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBranchCode);
-                this.columnAccountNo = new global::System.Data.DataColumn("AccountNo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAccountNo);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListRow NewPackingListRow() {
-                return ((PackingListRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new PackingListRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override global::System.Type GetRowType() {
-                return typeof(PackingListRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.PackingListRowChanged != null)) {
-                    this.PackingListRowChanged(this, new PackingListRowChangeEvent(((PackingListRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.PackingListRowChanging != null)) {
-                    this.PackingListRowChanging(this, new PackingListRowChangeEvent(((PackingListRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.PackingListRowDeleted != null)) {
-                    this.PackingListRowDeleted(this, new PackingListRowChangeEvent(((PackingListRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.PackingListRowDeleting != null)) {
-                    this.PackingListRowDeleting(this, new PackingListRowChangeEvent(((PackingListRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void RemovePackingListRow(PackingListRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSet1 ds = new DataSet1();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "PackingListDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class DeliveryReceiptRow : global::System.Data.DataRow {
@@ -3121,6 +2703,102 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Address2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.Address2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Address2\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.Address2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Address3 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.Address3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Address3\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.Address3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Address4 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.Address4Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Address4\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.Address4Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Name1 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.Name1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Name1\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.Name1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Name2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.Name2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Name2\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.Name2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string AccountNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.AccountNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountNo\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.AccountNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -3430,6 +3108,78 @@ namespace CPMS_Accounting {
             public void SetBankNull() {
                 this[this.tableDeliveryReceipt.BankColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsAddress2Null() {
+                return this.IsNull(this.tableDeliveryReceipt.Address2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetAddress2Null() {
+                this[this.tableDeliveryReceipt.Address2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsAddress3Null() {
+                return this.IsNull(this.tableDeliveryReceipt.Address3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetAddress3Null() {
+                this[this.tableDeliveryReceipt.Address3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsAddress4Null() {
+                return this.IsNull(this.tableDeliveryReceipt.Address4Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetAddress4Null() {
+                this[this.tableDeliveryReceipt.Address4Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsName1Null() {
+                return this.IsNull(this.tableDeliveryReceipt.Name1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetName1Null() {
+                this[this.tableDeliveryReceipt.Name1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsName2Null() {
+                return this.IsNull(this.tableDeliveryReceipt.Name2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetName2Null() {
+                this[this.tableDeliveryReceipt.Name2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsAccountNoNull() {
+                return this.IsNull(this.tableDeliveryReceipt.AccountNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetAccountNoNull() {
+                this[this.tableDeliveryReceipt.AccountNoColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -3608,10 +3358,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Qty2 {
+            public int Qty2 {
                 get {
                     try {
-                        return ((string)(this[this.tableSticker.Qty2Column]));
+                        return ((int)(this[this.tableSticker.Qty2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Qty2\' in table \'Sticker\' is DBNull.", e);
@@ -3720,10 +3470,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Qty3 {
+            public int Qty3 {
                 get {
                     try {
-                        return ((string)(this[this.tableSticker.Qty3Column]));
+                        return ((int)(this[this.tableSticker.Qty3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Qty3\' in table \'Sticker\' is DBNull.", e);
@@ -4891,469 +4641,6 @@ namespace CPMS_Accounting {
         }
         
         /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        public partial class PackingListRow : global::System.Data.DataRow {
-            
-            private PackingListDataTable tablePackingList;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal PackingListRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tablePackingList = ((PackingListDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Bank {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.BankColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Bank\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.BankColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Batch {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.BatchColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Batch\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.BatchColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string BRSTN {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.BRSTNColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BRSTN\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.BRSTNColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string BranchName {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.BranchNameColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BranchName\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.BranchNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Qty {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.QtyColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Qty\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.QtyColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string ChkType {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.ChkTypeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ChkType\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.ChkTypeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string StartingSerial {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.StartingSerialColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'StartingSerial\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.StartingSerialColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string EndingSerial {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.EndingSerialColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'EndingSerial\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.EndingSerialColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string ChequeName {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.ChequeNameColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ChequeName\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.ChequeNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Address2 {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.Address2Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Address2\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.Address2Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Address3 {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.Address3Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Address3\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.Address3Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Address4 {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.Address4Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Address4\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.Address4Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Name1 {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.Name1Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Name1\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.Name1Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string Name2 {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.Name2Column]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Name2\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.Name2Column] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string BranchCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.BranchCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.BranchCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string AccountNo {
-                get {
-                    try {
-                        return ((string)(this[this.tablePackingList.AccountNoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AccountNo\' in table \'PackingList\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePackingList.AccountNoColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsBankNull() {
-                return this.IsNull(this.tablePackingList.BankColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetBankNull() {
-                this[this.tablePackingList.BankColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsBatchNull() {
-                return this.IsNull(this.tablePackingList.BatchColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetBatchNull() {
-                this[this.tablePackingList.BatchColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsBRSTNNull() {
-                return this.IsNull(this.tablePackingList.BRSTNColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetBRSTNNull() {
-                this[this.tablePackingList.BRSTNColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsBranchNameNull() {
-                return this.IsNull(this.tablePackingList.BranchNameColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetBranchNameNull() {
-                this[this.tablePackingList.BranchNameColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsQtyNull() {
-                return this.IsNull(this.tablePackingList.QtyColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetQtyNull() {
-                this[this.tablePackingList.QtyColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsChkTypeNull() {
-                return this.IsNull(this.tablePackingList.ChkTypeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetChkTypeNull() {
-                this[this.tablePackingList.ChkTypeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsStartingSerialNull() {
-                return this.IsNull(this.tablePackingList.StartingSerialColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetStartingSerialNull() {
-                this[this.tablePackingList.StartingSerialColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsEndingSerialNull() {
-                return this.IsNull(this.tablePackingList.EndingSerialColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetEndingSerialNull() {
-                this[this.tablePackingList.EndingSerialColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsChequeNameNull() {
-                return this.IsNull(this.tablePackingList.ChequeNameColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetChequeNameNull() {
-                this[this.tablePackingList.ChequeNameColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsAddress2Null() {
-                return this.IsNull(this.tablePackingList.Address2Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetAddress2Null() {
-                this[this.tablePackingList.Address2Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsAddress3Null() {
-                return this.IsNull(this.tablePackingList.Address3Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetAddress3Null() {
-                this[this.tablePackingList.Address3Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsAddress4Null() {
-                return this.IsNull(this.tablePackingList.Address4Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetAddress4Null() {
-                this[this.tablePackingList.Address4Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsName1Null() {
-                return this.IsNull(this.tablePackingList.Name1Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetName1Null() {
-                this[this.tablePackingList.Name1Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsName2Null() {
-                return this.IsNull(this.tablePackingList.Name2Column);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetName2Null() {
-                this[this.tablePackingList.Name2Column] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsBranchCodeNull() {
-                return this.IsNull(this.tablePackingList.BranchCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetBranchCodeNull() {
-                this[this.tablePackingList.BranchCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsAccountNoNull() {
-                return this.IsNull(this.tablePackingList.AccountNoColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetAccountNoNull() {
-                this[this.tablePackingList.AccountNoColumn] = global::System.Convert.DBNull;
-            }
-        }
-        
-        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -5441,40 +4728,6 @@ namespace CPMS_Accounting {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DocStampRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public class PackingListRowChangeEvent : global::System.EventArgs {
-            
-            private PackingListRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListRowChangeEvent(PackingListRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public PackingListRow Row {
                 get {
                     return this.eventRow;
                 }

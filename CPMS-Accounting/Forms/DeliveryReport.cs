@@ -266,10 +266,9 @@ namespace CPMS_Accounting
                             
                             order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
 
-                            
                             order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                           
-                       
+                            //order.ChequeName = proc.GetChequeName(order.ChkType);
+
                             order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                             order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
                             order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";

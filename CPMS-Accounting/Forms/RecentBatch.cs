@@ -43,9 +43,9 @@ namespace CPMS_Accounting
               //  batchTemp.Clear();
                 proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
                 tempRecent.Clear();
-                if(gClient.ShortName == "PNB")
-                   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
-                else
+                //if(gClient.ShortName == "PNB")
+                //   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
+                //else
                     proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
 
                 var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
