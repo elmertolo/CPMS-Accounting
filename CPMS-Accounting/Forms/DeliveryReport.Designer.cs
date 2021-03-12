@@ -63,6 +63,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -99,7 +100,8 @@
             this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stickerToolStripMenuItem,
             this.packingToolStripMenuItem,
-            this.deliveryReportToolStripMenuItem});
+            this.deliveryReportToolStripMenuItem,
+            this.pToolStripMenuItem});
             this.reportsToolStripMenuItem.Enabled = false;
             this.reportsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
@@ -426,6 +428,13 @@
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
+            // pToolStripMenuItem
+            // 
+            this.pToolStripMenuItem.Name = "pToolStripMenuItem";
+            this.pToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
+            this.pToolStripMenuItem.Text = "Packing List";
+            this.pToolStripMenuItem.Click += new System.EventHandler(this.pToolStripMenuItem_Click);
+            // 
             // DeliveryReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -503,5 +512,6 @@
         private System.Windows.Forms.ComboBox cbDirect;
         private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
         private System.Windows.Forms.Button btnGenerate2;
+        private System.Windows.Forms.ToolStripMenuItem pToolStripMenuItem;
     }
 }

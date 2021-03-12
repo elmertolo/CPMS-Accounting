@@ -78,8 +78,9 @@ namespace CPMS_Accounting
               ///  else
                  //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
 
-                proc.GetDRDetails(orderList[0].Batch, tempDr);
-                if(gClient.ShortName == "PNB")
+                proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
+                proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+                if (gClient.ShortName == "PNB")
                     proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
                 else
                 proc.GetStickerDetails(tempSticker, orderList[0].Batch);
@@ -266,8 +267,8 @@ namespace CPMS_Accounting
                             
                             order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
 
-                            order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                            //order.ChequeName = proc.GetChequeName(order.ChkType);
+                            //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
+                            order.ChequeName = proc.GetChequeName(order.ChkType);
 
                             order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                             order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
@@ -280,6 +281,7 @@ namespace CPMS_Accounting
                                 order.BranchCode = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
                                 order.OldBranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                                 order.Name3 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                                order.BranchCode.TrimEnd();
                                 proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
                                 order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
@@ -324,7 +326,7 @@ namespace CPMS_Accounting
                         Application.Exit();
                 }
             var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
-            var totalB = orderList.Where(a => a.ChkType == "B").ToList();
+            var totalB = orderList.Where(a => a.ChkType == "B"  || a.ChkType == "D").ToList();
             
 
 
@@ -658,6 +660,13 @@ namespace CPMS_Accounting
             myReader.Close();
             con.Close();
                 return _chkType;
+        }
+
+        private void pToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            report = "PackingList";
+            ViewReports vp = new ViewReports();
+            vp.Show();
         }
     }
 }

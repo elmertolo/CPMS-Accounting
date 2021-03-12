@@ -72,7 +72,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable + " Order by BranchName", process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.PackingList + " Order by BranchName", process.myConnect);
 
                 adp.Fill(ds);
 

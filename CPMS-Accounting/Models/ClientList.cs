@@ -31,7 +31,7 @@ namespace CPMS_Accounting.Models
         public string ChequeTypeTable { get; set; } // Addred By ET Feb. 15, 2021
         public string  ProductTable { get; set; } // Addred By ET Feb. 15, 2021
         public string StickerTable { get; set; } // Addred By ET Feb. 22, 2021
-
+        public string PackingList { get; set; } // Addred By ET March 12, 2021
 
     }
 }
