@@ -18,5 +18,7 @@ namespace CPMS_Accounting.Models
         public List<OrderModel> ManagersCheck { get; set; }
         public List<OrderModel> ManagersCheck_Direct { get; set; }
         public List<OrderModel> ManagersCheck_Provincial { get; set; }
+        public List<OrderModel> ExecutiveOnline_Direct { get; set; }
+        public List<OrderModel> ExecutiveOnline_Provincial { get; set; }
     }
 }

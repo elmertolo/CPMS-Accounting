@@ -168,6 +168,7 @@ namespace CPMS_Accounting
                     gClient.ChequeTypeTable = row.Field<string>("ShortName").ToLower() + "_tCheques" ?? "";
                     gClient.ProductTable = row.Field<string>("ShortName").ToLower() + "_tChequeproducts" ?? "";
                     gClient.StickerTable = "tsticker" ?? "";
+                    gClient.PackingList = "tpackinglist" ?? "";
                 }
             }
 

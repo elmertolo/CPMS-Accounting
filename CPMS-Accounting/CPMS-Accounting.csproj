@@ -251,7 +251,6 @@
     <Compile Include="Models\ChequeProductModel.cs" />
     <Compile Include="Models\ChequeTypesModel.cs" />
     <Compile Include="Models\ClientList.cs" />
-    <Compile Include="Models\ConfigurationModel.cs" />
     <Compile Include="Models\DocStampModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
