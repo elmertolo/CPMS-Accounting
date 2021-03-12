@@ -32,8 +32,8 @@ namespace CPMS_Accounting.Procedures
 
         public void DBConnect()
         {
-            //try
-            //{
+            try
+            {
                 string DBConnection = "";
 
                 //   if (frmLogIn.userName == "elmer")
@@ -57,12 +57,12 @@ namespace CPMS_Accounting.Procedures
 
                 myConnect.Open();
 
-            //}
-            //catch (Exception Error)
-            //{
+            }
+            catch (Exception Error)
+            {
 
-            //    MessageBox.Show(Error.Message, "System Error");
-            //}
+                MessageBox.Show(Error.Message, "System Error");
+            }
         }// end of function
 
         public void DBClosed()
@@ -128,60 +128,71 @@ namespace CPMS_Accounting.Procedures
             checkType.ManagersCheck_Provincial = new List<OrderModel>();
             checkType.ExecutiveOnline_Direct = new List<OrderModel>();
             checkType.ExecutiveOnline_Provincial = new List<OrderModel>();
-
+            List<ChequeTypesModel> type = new List<ChequeTypesModel>();
+            GetChequeTypes(type);
             foreach (OrderModel _check in _orders)
             {
 
                 if (_dReportStyle != 0 && _pReportStyle != 0)
                 {
-                    if (_check.ChkType == "A" && _check.Location == "Direct")
-                    {
-                        checkType.Regular_Personal_Direct.Add(_check);
-                    }
-                    if (_check.ChkType == "A" && _check.Location == "Provincial")
-                    {
-                        checkType.Regular_Personal_Provincial.Add(_check);
-                    }
-                    if (_check.ChkType == "B" && _check.Location == "Direct")
-                    {
-                        checkType.Regular_Commercial_Direct.Add(_check);
-                    }
-                    if (_check.ChkType == "B" && _check.Location == "Provincial")
-                    {
-                        checkType.Regular_Commercial_Provincial.Add(_check);
-                    }
-                    if (_check.ChkType == "C" && _check.Location == "Direct")
-                    {
-                        checkType.ManagersCheck_Direct.Add(_check);
-                    }
-                    if (_check.ChkType == "C" && _check.Location == "Provincial")
-                    {
-                        checkType.ManagersCheck_Provincial.Add(_check);
-                    }
-                    if(_check.ChkType == "D" && _check.Location == "Direct")
-                    {
-                        checkType.ExecutiveOnline_Direct.Add(_check);
-                    }
-                    if (_check.ChkType == "D" && _check.Location == "Provincial")
-                    {
-                        checkType.ExecutiveOnline_Provincial.Add(_check);
-                    }
+                    //foreach (var t in type)
+                    //{
+
+
+                        if (_check.ChkType == "A" && _check.Location == "Direct")
+                        {
+                            checkType.Regular_Personal_Direct.Add(_check);
+                        }
+                        if (_check.ChkType == "A" && _check.Location == "Provincial")
+                        {
+                            checkType.Regular_Personal_Provincial.Add(_check);
+                        }
+                        if (_check.ChkType == "B" && _check.Location == "Direct")
+                        {
+                            checkType.Regular_Commercial_Direct.Add(_check);
+                        }
+                        if (_check.ChkType == "B" && _check.Location == "Provincial")
+                        {
+                            checkType.Regular_Commercial_Provincial.Add(_check);
+                        }
+                        if (_check.ChkType == "C" && _check.Location == "Direct")
+                        {
+                            checkType.ManagersCheck_Direct.Add(_check);
+                        }
+                        if (_check.ChkType == "C" && _check.Location == "Provincial")
+                        {
+                            checkType.ManagersCheck_Provincial.Add(_check);
+                        }
+                        if (_check.ChkType == "D" && _check.Location == "Direct")
+                        {
+                            checkType.ExecutiveOnline_Direct.Add(_check);
+                        }
+                        if (_check.ChkType =="D" && _check.Location == "Provincial")
+                        {
+                            checkType.ExecutiveOnline_Provincial.Add(_check);
+                        }
+                    //}
                 }
                 else
                 {
+                    //foreach (var t in type)
+                    //{
 
-                    if (_check.ChkType == "A" )
-                    {
-                        checkType.Regular_Personal.Add(_check);
-                    }
-                    if (_check.ChkType == "B")
-                    {
-                        checkType.Regular_Commercial.Add(_check);
-                    }
-                    if (_check.ChkType == "C")
-                    {
-                        checkType.ManagersCheck.Add(_check);
-                    }
+
+                        if (_check.ChkType == "A")
+                        {
+                            checkType.Regular_Personal.Add(_check);
+                        }
+                        if (_check.ChkType == "B")
+                        {
+                            checkType.Regular_Commercial.Add(_check);
+                        }
+                        if (_check.ChkType == "C")
+                        {
+                            checkType.ManagersCheck.Add(_check);
+
+                        }
+                    //}
                 }
                 
             }
@@ -628,7 +639,7 @@ namespace CPMS_Accounting.Procedures
             //{
                 
 
-                    string concatDA = ConcatDRNumbers(list[0].Batch, "A", "Direct");
+             string concatDA = ConcatDRNumbers(list[0].Batch, "A", "Direct");
             string concatDB = ConcatDRNumbers(list[0].Batch, "B", "Direct");
             string concatPA = ConcatDRNumbers(list[0].Batch, "A", "Provincial");
             string concatPB = ConcatDRNumbers(list[0].Batch, "B", "Provincial");
@@ -2331,13 +2342,13 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
-                          ",Address2,Address3,Address4,Address5,Address6)" +
+                          ",Address2,Address3,Address4,Address5,Address6,ProductCode)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
                           "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
-                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "');";
+                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "','" + r.ProductCode + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
             }

@@ -47,6 +47,7 @@ namespace CPMS_Accounting
         List<string> chkType = new List<string>();
         Label lb = new Label();
         public static OleDbConnection con;
+        List<ProductModel> listofProducts = new List<ProductModel>();
         //List<int> pIndex = new List<int>();
         //int count = 0;
         //int index = 1;
@@ -80,9 +81,9 @@ namespace CPMS_Accounting
 
                 proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
                 proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
-                if (gClient.ShortName == "PNB")
-                    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
-                else
+                //if (gClient.ShortName == "PNB")
+                //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                //else
                 proc.GetStickerDetails(tempSticker, orderList[0].Batch);
                 
                 MessageBox.Show("Data has been process!!!");
@@ -91,9 +92,9 @@ namespace CPMS_Accounting
                 vp.Show();
                 reportsToolStripMenuItem.Enabled = true;
                 proc.DisableControls(deliveryReportToolStripMenuItem);
-
+                generateToolStripMenuItem.Enabled = false;
             }
-            generateToolStripMenuItem.Enabled = false;
+            
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -101,6 +102,8 @@ namespace CPMS_Accounting
                 GetData();
             else
                 GetData2();
+
+
             generateToolStripMenuItem.Enabled = true;
 
         }
@@ -272,8 +275,15 @@ namespace CPMS_Accounting
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
                             order.Quantity = 1;
-                        
-                                 orderList.Add(order);
+                    proc.GetProducts(listofProducts);
+                    listofProducts.ForEach(x =>
+                    {
+                        if (order.ChkType == x.ChkType)
+                        {
+                            order.ProductCode = x.ProductCode;
+                        }
+                    });
+                    orderList.Add(order);
 
                         }
             
@@ -350,11 +360,11 @@ namespace CPMS_Accounting
             op.Filter = "dbf files (*.dbf)|*.dbf|All files (*.*)|*.*";
             op.FilterIndex = 2;
             op.RestoreDirectory = true;
-            //try
-            //{
-
-            if (op.ShowDialog().Equals(DialogResult.OK))
+            try
             {
+
+                if (op.ShowDialog().Equals(DialogResult.OK))
+                {
                 string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
                 con = new OleDbConnection(ConString);
 
@@ -430,7 +440,14 @@ namespace CPMS_Accounting
                         else
                             order.Location = "Provincial";
 
-                    
+                    proc.GetProducts(listofProducts);
+                    listofProducts.ForEach(x =>
+                    {
+                        if(order.ChkType == x.ChkType  && order.Location == x.DeliveryLocation)
+                        {
+                            order.ProductCode = x.ProductCode;
+                        }
+                    });
 
                     orderList.Add(order);
 
@@ -460,8 +477,6 @@ namespace CPMS_Accounting
                 }
                 else
                 {
-                    if (gClient.DataBaseName != "producers_history")
-                    {
                         var po = orderList.Select(x => x.PONumber).Distinct().ToList();
                         var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
                         po.ForEach(x =>
@@ -502,7 +517,7 @@ namespace CPMS_Accounting
                         BremainingBalance -= totalB.Count;
 
 
-                    }
+                    
 
                     if (errorMessage != "")
                     {
@@ -530,15 +545,15 @@ namespace CPMS_Accounting
             }
 
 
-            //}
+            }
 
 
 
 
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, error.StackTrace);
-            //}
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, error.StackTrace);
+            }
         }
 
         private void DeliveryReport_Load(object sender, EventArgs e)
