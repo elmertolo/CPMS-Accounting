@@ -15,19 +15,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using CPMS_Accounting.Forms;
+using System.Threading;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using CPMS_Accounting.Models;
 
 namespace CPMS_Accounting
 {
 
-   
-
     public partial class frmLogIn : Form
     {
 
-
-
         //02152021-NA Log4Net
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        frmProgress progressBar;
+        Thread thread;
 
 
         //02222021-NA Password Encyption
@@ -44,6 +49,7 @@ namespace CPMS_Accounting
         public frmLogIn()
         {
             InitializeComponent();
+            InitializeGlobalVariables();
             FillBankList();
         }
 
@@ -53,26 +59,24 @@ namespace CPMS_Accounting
             Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
 
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
-            
         }
 
         private void FillBankList()
         {
-           
+
             if (!proc.GetBankList(ref BankListDT))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
                 Application.Exit();
-                
+
             }
             cbBankList.DisplayMember = "description";
             cbBankList.DataSource = BankListDT;
-
         }
 
         private void Login(string UserId, string enteredPassword)
         {
-            
+
             //02222021 Encryption
             string password = enteredPassword;
             if (gEncryptionOn)
@@ -109,10 +113,12 @@ namespace CPMS_Accounting
             SupplyParameterValuesOnLog4net();
             log.Info("User LogIn Sucessful for User: " + gUser.Id + "");
 
+            BackupDataAndApplication();
+
             Main mainFrm = new Main();
             mainFrm.Show();
             this.Hide();
-           
+
         }
 
 
@@ -122,20 +128,20 @@ namespace CPMS_Accounting
             {
                 Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
             }
-            
+
         }
 
         private void SupplyGlobalClientVariables(string bankname)
-        { 
+        {
             DataTable dt = new DataTable();
-            if(!proc.GetClientDetails(bankname,ref dt))
+            if (!proc.GetClientDetails(bankname, ref dt))
             {
                 MessageBox.Show("Server Connection Error (GetClientDetails)\r\n" + proc.errorMessage);
             }
 
             if (dt.Rows.Count > 0)
             {
-                
+
                 foreach (DataRow row in dt.Rows)
                 {
                     gClient.ClientCode = row.Field<string>("ClientCode") ?? "";
@@ -148,15 +154,15 @@ namespace CPMS_Accounting
                     gClient.Princes_DESC = row.Field<string>("Princes_DESC") ?? "";
                     gClient.TIN = row.Field<string>("TIN") ?? "";
                     gClient.WithholdingTaxPercentage = row.Field<decimal>("WithholdingTaxPercentage");
-                    
+
                     //Database Global Tables
                     gClient.DataBaseName = row.Field<string>("ShortName").ToLower() + "_history" ?? "";
                     gClient.SalesInvoiceTempTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_temp" ?? "";
                     gClient.SalesInvoiceFinishedTable = row.Field<string>("ShortName").ToLower() + "_salesinvoice_finished" ?? "";
                     gClient.PriceListTable = row.Field<string>("ShortName").ToLower() + "_pricelist" ?? "";
-                    gClient.DRTempTable =  "ttempdatadr" ?? "";
+                    gClient.DRTempTable = "ttempdatadr" ?? "";
                     gClient.PurchaseOrderFinishedTable = row.Field<string>("ShortName").ToLower() + "_purchaseorder_finished" ?? "";
-                    gClient.DocStampTempTable =  "docstamp_temp" ?? "";
+                    gClient.DocStampTempTable = "docstamp_temp" ?? "";
                     gClient.BranchesTable = row.Field<string>("ShortName").ToLower() + "_branches" ?? "";
                     gClient.CancelledTable = "cancelled_transaction" ?? "";
                     gClient.ChequeTypeTable = row.Field<string>("ShortName").ToLower() + "_tCheques" ?? "";
@@ -164,12 +170,15 @@ namespace CPMS_Accounting
                     gClient.StickerTable = "tsticker" ?? "";
                 }
             }
-           
-            
+
+
         }
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
+           
+
+
             //string line = new string('=', 100);
             log.Info(new string('=', 100));
             log.Info("Login Form Loaded");
@@ -178,7 +187,7 @@ namespace CPMS_Accounting
             {
                 this.Text = "GOOD MORNING!";
             }
-            else if (DateTime.Now.Hour  <= 17)
+            else if (DateTime.Now.Hour <= 17)
             {
                 this.Text = "GOOD AFTERNOON!";
             }
@@ -195,12 +204,12 @@ namespace CPMS_Accounting
 
 
         }
-        public void SupplyGlobalUserVariables(ref DataTable dt, bool userIsAdmin = false) 
+        public void SupplyGlobalUserVariables(ref DataTable dt, bool userIsAdmin = false)
         {
             ///<summary>
             ///
             /// </summary>
-            
+
             if (!userIsAdmin)
             {
                 foreach (DataRow row in dt.Rows)
@@ -235,7 +244,7 @@ namespace CPMS_Accounting
                 gUser.Lockout = "100";
 
             }
-           
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -375,12 +384,12 @@ namespace CPMS_Accounting
                 gUser.IsDcEditAllowed = true;
                 gUser.IsDcDeleteAllowed = true;
             }
-            
+
         }
 
         private bool StandardLogin(string userId, string password, ref DataTable dt)
         {
-           
+
             if (!proc.UserLogin(userId, password, ref dt))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
@@ -391,7 +400,7 @@ namespace CPMS_Accounting
             if (dt.Rows.Count > 0)
             {
                 return true;
-               
+
             }
             else
             {
@@ -405,7 +414,7 @@ namespace CPMS_Accounting
         {
             if (userId == "1" && password == "1")
             {
-                
+
                 return true;
             }
             else
@@ -413,6 +422,110 @@ namespace CPMS_Accounting
                 return false;
             }
         }
+
+        private void BackupDataAndApplication()
+        {
+            if (gDailyBackupOn)
+            {
+                log.Info("Database backup in progress");
+                //Start Progress Bar View
+                progressBar = new frmProgress();
+                progressBar.message = "Database backup in progress";
+                thread = new Thread(() => progressBar.ShowDialog());
+                thread.Start();
+
+                ///<summary>
+                ///
+                /// </summary>
+                if (!proc.MySqlBackupTableData(gBackupPath))
+                {
+                    p.MessageAndLog("Backup Unsuccessful", ref log, "info");
+                    return;
+                }
+                UpdateJsonFile("Database", "LastBackupDate", DateTime.Now.ToShortDateString());
+
+                //filePath = System.IO.Path.GetFullPath("app.config");
+
+                //var map = new ExeConfigurationFileMap { ExeConfigFilename = filePath };
+                //Configuration config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+                //config.AppSettings.Settings["LastBackupDate"].Value = DateTime.Now.ToShortDateString();
+                ////config.Save();
+                //config.Save(ConfigurationSaveMode.Modified);
+
+                //ConfigurationManager.RefreshSection("appSettings");
+
+                thread.Abort();
+                //p.MessageAndLog("Backup Successful", ref log, "info");
+
+
+
+            }
+
+        }
+
+        private void UpdateJsonFile(string section, string key, string value)
+        {
+
+            //Determine path when running through IDE or not
+            string filePath;
+            if (Debugger.IsAttached)
+            {
+                filePath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Config.json";
+            }
+            else
+            {
+                filePath = System.IO.Path.GetFullPath("Config.json");
+            }
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            //https://stackoverflow.com/questions/21695185/change-values-in-json-file-writing-files/56027969
+            //Read Json File
+            string json = File.ReadAllText(filePath);
+            //Deserialize Json Object dynamically
+            dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            //Edit Key Value
+            jsonObj[section][key] = value;
+            //Serialize edited output to string
+            string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+            //Write or save to json file
+            File.WriteAllText(filePath, output);
+
+        }
+
+        private void InitializeGlobalVariables(){
+
+            //02222021 Encryption
+            gEncryptionOn = Convert.ToBoolean(p.ReadJsonConfigFile("Encryption", "EncryptionOn", "false"));
+            gEncryptionType = p.ReadJsonConfigFile("Encryption", "EncryptionType", "SHA1");
+
+            /// <summary>
+            /// This variables is used for SalesInvoice Processes only.
+            /// </summary
+            //variables from appconfig file=================================================
+            //public static List<SalesInvoiceModel> gSalesInvoiceList = new List<SalesInvoiceModel>();
+
+            gViewReportFirst = int.Parse(ConfigurationManager.AppSettings["ViewReportFirst"]);
+            gHeaderReportCompanyName = ConfigurationManager.AppSettings["SIHeaderReportCompanyName"]; //"PRODUCERS BANK";
+            gSIheaderReportTitle = ConfigurationManager.AppSettings["SIheaderReportTitle"]; //"SALES INVOICE";
+            gSIHeaderReportAddress1 = ConfigurationManager.AppSettings["SIHeaderReportAddress1"]; //"6197 Ayala Avenue";
+            gSIHeaderReportAddress2 = ConfigurationManager.AppSettings["SIHeaderReportAddress2"]; //"Salcedo Village";
+            gSIHeaderReportAddress3 = ConfigurationManager.AppSettings["SIHeaderReportAddress3"]; //"Makati City";                                                                                                 
+            //=============================================================================
+
+            ///<summary>
+            ///03102021
+            ///Daily Backup
+            ///Started Reading Config from Json File
+            /// </summary>
+            gDailyBackupOn = Convert.ToBoolean(p.ReadJsonConfigFile("Database", "DailyBackupOn", "false"));
+            gLastBackupDate = Convert.ToDateTime(p.ReadJsonConfigFile("Database", "LastBackupDate", "19 Aug 1983"));
+            gBackupPath = p.ReadJsonConfigFile("Database", "BackupPath", "");
+
+        }
+        
 
 
 

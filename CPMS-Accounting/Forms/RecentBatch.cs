@@ -20,7 +20,7 @@ namespace CPMS_Accounting
         Main frm;
         public static string report = "";
         ProcessServices proc = new ProcessServices();
-         List<TempModel> tempRecent = new List<TempModel>();
+        List<TempModel> tempRecent = new List<TempModel>();
         List<TempModel> batchTemp = new List<TempModel>();
         List<DocStampModel> docTemp = new List<DocStampModel>();
         List<int> docStampNumber = new List<int>();

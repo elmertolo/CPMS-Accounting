@@ -1069,5 +1069,53 @@ namespace CPMS_Accounting.Procedures
         //}
 
 
+        public bool MySqlBackupTableData(string backupPath)
+        {
+
+            log.Info("Attempting to backup database");
+            string fileName = backupPath + gClient.ShortName + "_" + DateTime.Now.ToShortDateString() + @"_backup.sql";
+            if (File.Exists(fileName))
+            {
+                log.Info("Database backup file already exist.");
+                return true;
+            }
+
+            try
+            {
+
+                MySqlCommand cmd = new MySqlCommand("",con);
+                using (MySqlBackup mb = new MySqlBackup(cmd))
+                {
+                    //Whole Database
+                    //mb.ExportToFile(file);
+                    mb.ExportInfo.TablesToBeExportedList = new List<string>
+                    {
+                        gClient.DataBaseName,
+                        gClient.SalesInvoiceTempTable,
+                        gClient.SalesInvoiceFinishedTable,
+                        gClient.PriceListTable,
+                        gClient.DRTempTable,
+                        gClient.PurchaseOrderFinishedTable,
+                        gClient.DocStampTempTable,
+                        gClient.BranchesTable,
+                        gClient.CancelledTable,
+                        gClient.ChequeTypeTable,
+                        gClient.ProductTable,
+                        gClient.StickerTable
+                    };
+                    mb.ExportToFile(fileName);
+
+                }
+                    return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+
     }
 }

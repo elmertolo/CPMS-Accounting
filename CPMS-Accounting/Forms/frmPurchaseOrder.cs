@@ -553,10 +553,9 @@ namespace CPMS_Accounting
                 MessageBox.Show("Record Deleted!");
                 RefreshView();
             }
-
-
-
         }
+
+
 
 
 

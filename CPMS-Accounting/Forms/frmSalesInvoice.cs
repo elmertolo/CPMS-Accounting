@@ -932,9 +932,7 @@ namespace CPMS_Accounting
                 gProduct.ChkType = row.Field<string>("FinalChkType");
                 gProduct.DocStampPrice = row.Field<double>("Docstamp");
                 gProduct.UnitPrice = row.Field<double>("UnitPrice");
-
             }
-
         }
 
         private void GeneratePrintSalesInvoice()
