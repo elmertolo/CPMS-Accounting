@@ -8,6 +8,7 @@ using System.Data;
 using CPMS_Accounting.Models;
 using CrystalDecisions.Shared;
 using CrystalDecisions.CrystalReports.Engine;
+using CPMS_Accounting.Procedures;
 
 namespace CPMS_Accounting
 { 
@@ -30,10 +31,8 @@ namespace CPMS_Accounting
         public static UserLevelModel gUserLevel = new UserLevelModel();
 
         //02222021 Encryption
-        public static bool gEncryptionOn = Convert.ToBoolean(ConfigurationManager.AppSettings["EncryptionOn"]);
-        public static string gEncryptionType = ConfigurationManager.AppSettings["EncryptionType"];
-
-        //
+        public static bool gEncryptionOn;
+        public static string gEncryptionType;
 
         /// <summary>
         /// This variables is used for SalesInvoice Processes only.
@@ -41,15 +40,22 @@ namespace CPMS_Accounting
         //variables from appconfig file=================================================
         //public static List<SalesInvoiceModel> gSalesInvoiceList = new List<SalesInvoiceModel>();
 
-        public static int gViewReportFirst = int.Parse(ConfigurationManager.AppSettings["ViewReportFirst"]);
-        public static string gHeaderReportCompanyName = ConfigurationManager.AppSettings["SIHeaderReportCompanyName"]; //"PRODUCERS BANK";
-        public static string gSIheaderReportTitle = ConfigurationManager.AppSettings["SIheaderReportTitle"]; //"SALES INVOICE";
-        public static string gSIHeaderReportAddress1 = ConfigurationManager.AppSettings["SIHeaderReportAddress1"]; //"6197 Ayala Avenue";
-        public static string gSIHeaderReportAddress2 = ConfigurationManager.AppSettings["SIHeaderReportAddress2"]; //"Salcedo Village";
-        public static string gSIHeaderReportAddress3 = ConfigurationManager.AppSettings["SIHeaderReportAddress3"]; //"Makati City";
-        //resettable variables
-     
+        public static int gViewReportFirst;
+        public static string gHeaderReportCompanyName; //"PRODUCERS BANK";
+        public static string gSIheaderReportTitle; //"SALES INVOICE";
+        public static string gSIHeaderReportAddress1; //"6197 Ayala Avenue";
+        public static string gSIHeaderReportAddress2; //"Salcedo Village";
+        public static string gSIHeaderReportAddress3; //"Makati City";                                                                                                 //resettable variables
+
         //=============================================================================
+
+        ///03102021
+        ///Daily Backup
+        ///Started Reading Config from Json File
+        /// </summary>
+        public static bool gDailyBackupOn;
+        public static DateTime gLastBackupDate;
+        public static string gBackupPath;
 
     }
 }
