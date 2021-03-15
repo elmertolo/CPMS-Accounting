@@ -64,37 +64,43 @@ namespace CPMS_Accounting
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            deliveryDate = dateTimePicker1.Value;
-            if (deliveryDate == dateTime)
-            {
-                MessageBox.Show("Please set Delivery Date!");
-            }
-            else
-            {
 
-                sReport();
-              //  if (gClient.DataBaseName != "producers_history")
-                    proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle,ProvincialReportStyle);
-              ///  else
-                 //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+            try
+            {
+                deliveryDate = dateTimePicker1.Value;
+                if (deliveryDate == dateTime)
+                {
+                    MessageBox.Show("Please set Delivery Date!");
+                }
+                else
+                {
 
-                proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
-                proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
-                //if (gClient.ShortName == "PNB")
-                //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
-                //else
-                proc.GetStickerDetails(tempSticker, orderList[0].Batch);
-                
-                MessageBox.Show("Data has been process!!!");
-                ViewReports vp = new ViewReports();
-                // vp.MdiParent = this;
-                vp.Show();
-                reportsToolStripMenuItem.Enabled = true;
-                proc.DisableControls(deliveryReportToolStripMenuItem);
-                generateToolStripMenuItem.Enabled = false;
+                    sReport();
+                    //  if (gClient.DataBaseName != "producers_history")
+                    proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                    ///  else
+                    //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+
+                    proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
+                    proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+                    //if (gClient.ShortName == "PNB")
+                    //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                    //else
+                    proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+
+                    MessageBox.Show("Data has been process!!!");
+                    ViewReports vp = new ViewReports();
+                    // vp.MdiParent = this;
+                    vp.Show();
+                    reportsToolStripMenuItem.Enabled = true;
+                    proc.DisableControls(deliveryReportToolStripMenuItem);
+                    generateToolStripMenuItem.Enabled = false;
+                }
             }
-            
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -414,7 +420,7 @@ namespace CPMS_Accounting
                         order.OldBranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                         order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
                         order.Block = !myReader.IsDBNull(13) ? myReader.GetInt32(13) : 0;
-                        order.Segment = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
+                        order.Segment = !myReader.IsDBNull(14) ? myReader.GetInt32(14) : 0;
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 

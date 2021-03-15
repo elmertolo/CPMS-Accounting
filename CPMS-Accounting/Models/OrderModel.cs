@@ -22,7 +22,7 @@ namespace CPMS_Accounting.Models
 
         public string BranchCode { get; set; }
         public string OldBranchCode { get; set; }
-        public string Segment { get; set; }
+        public int Segment { get; set; }
         public int Block { get; set; }
         public string Location { get; set; }
         public string Name3 { get; set; }

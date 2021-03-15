@@ -2342,13 +2342,14 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
-                          ",Address2,Address3,Address4,Address5,Address6,ProductCode)" +
+                          ",Address2,Address3,Address4,Address5,Address6,ProductCode,Block,Segment)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
                           "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
-                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "','" + r.ProductCode + "');";
+                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "','" + r.ProductCode +
+                          "'," + r.Block  + "," + r.Segment+"));";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
             }
