@@ -380,7 +380,7 @@ namespace CPMS_Accounting
 
                 
                  sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                            "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3 FROM " + filePath;
+                            "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3,BLOCK,SEGMENT FROM " + filePath;
 
                 
 
@@ -413,6 +413,8 @@ namespace CPMS_Accounting
                         order.BranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                         order.OldBranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                         order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                        order.Block = !myReader.IsDBNull(13) ? myReader.GetInt32(13) : 0;
+                        order.Segment = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
