@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using CPMS_Accounting.Forms;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
 //using ProducersBank.Services;
 
 namespace CPMS_Accounting.Procedures
@@ -309,6 +310,36 @@ namespace CPMS_Accounting.Procedures
             }
             return stringBuilder.ToString();
 
+        }
+
+        public static string ReadJsonConfigFile(string section, string key, string def)
+        {
+            //Determine path when running through IDE or not
+            string filePath;
+            if (Debugger.IsAttached)
+            {
+                filePath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Config.json";
+            }
+            else
+            {
+                filePath = System.IO.Path.GetFullPath("Config.json");
+            }
+            if (!File.Exists(filePath))
+            {
+                p.MessageAndLog("'Config.json' File not found.\r\nPlease contact your system administrator",ref log,"fatal");
+                Application.Exit();
+            }
+
+            var config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile(filePath).Build();
+
+            var sectionName = config.GetSection(section);
+            var value = sectionName.GetValue<string>(key);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return def;
+            }
+            return value;
         }
 
 

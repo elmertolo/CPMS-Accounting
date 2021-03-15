@@ -1,0 +1,25 @@
+{
+  "ServerConfig": {
+    "IP": "172.1.0.10",
+    "Port": 9999,
+    "PathToCSV": "C:\\Files.csv"
+  },
+  "ClientConfig": {
+    "RestartComputerAfterScript": true,
+    "Install": [
+      "Firefox",
+      "Chrome",
+      "PrinterLogic"
+    ],
+    "TempLoc": "D:\\TEMP"
+  },
+  "Database": {
+    "DailyBackupOn": true,
+    "BackupPath": "D:\\",
+    "LastBackupDate": "12 Mar 2021"
+  },
+  "Encryption": {
+    "EncryptionOn": false,
+    "EncryptionType": "SHA1"
+  }
+}

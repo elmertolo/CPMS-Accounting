@@ -79,9 +79,9 @@ namespace CPMS_Accounting
 
         private void Main_Load(object sender, EventArgs e)
         {
-           
+            
 
-                WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
             if (gClient.DataBaseName != "producers_history")
             {
                 documentStampToolStripMenuItem.Enabled = true;
@@ -214,5 +214,11 @@ namespace CPMS_Accounting
             Form frm = new frmUserLevelManagement(this);
             frm.ShowDialog();
         }
+
+
+
+
+
+
     }
 }
