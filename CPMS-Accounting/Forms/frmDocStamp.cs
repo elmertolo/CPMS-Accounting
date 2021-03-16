@@ -72,6 +72,7 @@ namespace CPMS_Accounting.Forms
         }
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            tempdocstamp.Clear();
             try
             {
                 if (docstamp != null || docstamp.Count != 0)
