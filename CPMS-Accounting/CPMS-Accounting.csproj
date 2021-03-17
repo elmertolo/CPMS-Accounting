@@ -311,10 +311,10 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\PNB_SalesInvoice.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>PNB_SalesInvoice.rpt</DependentUpon>
       <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\Producers_SalesInvoice.cs">
       <AutoGen>True</AutoGen>

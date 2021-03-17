@@ -22,6 +22,8 @@ namespace CPMS_Accounting.Models
 
         public string BranchCode { get; set; }
         public string OldBranchCode { get; set; }
+        public int Segment { get; set; }
+        public int  Block { get; set; }
         public string Location { get; set; }
         public string Name3 { get; set; }
         public int PONumber { get; set; }
@@ -34,6 +36,7 @@ namespace CPMS_Accounting.Models
         public string Address6 { get; set; }
         public string DeliveryTo { get; set; }
         public string ProductCode { get; set; }
+        public string ProductType { get; set; }
 
     }
 }

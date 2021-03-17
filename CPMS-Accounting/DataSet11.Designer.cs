@@ -1164,6 +1164,24 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnAccountNo;
             
+            private global::System.Data.DataColumn columnBlock;
+            
+            private global::System.Data.DataColumn columnBlock2;
+            
+            private global::System.Data.DataColumn columnBlock3;
+            
+            private global::System.Data.DataColumn columnSegment;
+            
+            private global::System.Data.DataColumn columnSegment2;
+            
+            private global::System.Data.DataColumn columnSegment3;
+            
+            private global::System.Data.DataColumn columnProductType;
+            
+            private global::System.Data.DataColumn columnProductType2;
+            
+            private global::System.Data.DataColumn columnProductType3;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public StickerDataTable() {
@@ -1487,6 +1505,78 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn BlockColumn {
+                get {
+                    return this.columnBlock;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Block2Column {
+                get {
+                    return this.columnBlock2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Block3Column {
+                get {
+                    return this.columnBlock3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn SegmentColumn {
+                get {
+                    return this.columnSegment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Segment2Column {
+                get {
+                    return this.columnSegment2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Segment3Column {
+                get {
+                    return this.columnSegment3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ProductTypeColumn {
+                get {
+                    return this.columnProductType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ProductType2Column {
+                get {
+                    return this.columnProductType2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ProductType3Column {
+                get {
+                    return this.columnProductType3;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1558,7 +1648,16 @@ namespace CPMS_Accounting {
                         string Name1, 
                         string Name2, 
                         string BranchCode, 
-                        string AccountNo) {
+                        string AccountNo, 
+                        int Block, 
+                        int Block2, 
+                        int Block3, 
+                        int Segment, 
+                        int Segment2, 
+                        int Segment3, 
+                        string ProductType, 
+                        string ProductType2, 
+                        string ProductType3) {
                 StickerRow rowStickerRow = ((StickerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -1596,7 +1695,16 @@ namespace CPMS_Accounting {
                         Name1,
                         Name2,
                         BranchCode,
-                        AccountNo};
+                        AccountNo,
+                        Block,
+                        Block2,
+                        Block3,
+                        Segment,
+                        Segment2,
+                        Segment3,
+                        ProductType,
+                        ProductType2,
+                        ProductType3};
                 rowStickerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStickerRow);
                 return rowStickerRow;
@@ -1655,6 +1763,15 @@ namespace CPMS_Accounting {
                 this.columnName2 = base.Columns["Name2"];
                 this.columnBranchCode = base.Columns["BranchCode"];
                 this.columnAccountNo = base.Columns["AccountNo"];
+                this.columnBlock = base.Columns["Block"];
+                this.columnBlock2 = base.Columns["Block2"];
+                this.columnBlock3 = base.Columns["Block3"];
+                this.columnSegment = base.Columns["Segment"];
+                this.columnSegment2 = base.Columns["Segment2"];
+                this.columnSegment3 = base.Columns["Segment3"];
+                this.columnProductType = base.Columns["ProductType"];
+                this.columnProductType2 = base.Columns["ProductType2"];
+                this.columnProductType3 = base.Columns["ProductType3"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1732,6 +1849,24 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnBranchCode);
                 this.columnAccountNo = new global::System.Data.DataColumn("AccountNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAccountNo);
+                this.columnBlock = new global::System.Data.DataColumn("Block", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBlock);
+                this.columnBlock2 = new global::System.Data.DataColumn("Block2", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBlock2);
+                this.columnBlock3 = new global::System.Data.DataColumn("Block3", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBlock3);
+                this.columnSegment = new global::System.Data.DataColumn("Segment", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSegment);
+                this.columnSegment2 = new global::System.Data.DataColumn("Segment2", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSegment2);
+                this.columnSegment3 = new global::System.Data.DataColumn("Segment3", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSegment3);
+                this.columnProductType = new global::System.Data.DataColumn("ProductType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductType);
+                this.columnProductType2 = new global::System.Data.DataColumn("ProductType2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductType2);
+                this.columnProductType3 = new global::System.Data.DataColumn("ProductType3", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductType3);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3860,6 +3995,150 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Block {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.BlockColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Block\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.BlockColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Block2 {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.Block2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Block2\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.Block2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Block3 {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.Block3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Block3\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.Block3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Segment {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.SegmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Segment\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.SegmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Segment2 {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.Segment2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Segment2\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.Segment2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int Segment3 {
+                get {
+                    try {
+                        return ((int)(this[this.tableSticker.Segment3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Segment3\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.Segment3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ProductType {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.ProductTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductType\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.ProductTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ProductType2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.ProductType2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductType2\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.ProductType2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ProductType3 {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.ProductType3Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductType3\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.ProductType3Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableSticker.BatchColumn);
             }
@@ -4288,6 +4567,114 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetAccountNoNull() {
                 this[this.tableSticker.AccountNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBlockNull() {
+                return this.IsNull(this.tableSticker.BlockColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBlockNull() {
+                this[this.tableSticker.BlockColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBlock2Null() {
+                return this.IsNull(this.tableSticker.Block2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBlock2Null() {
+                this[this.tableSticker.Block2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBlock3Null() {
+                return this.IsNull(this.tableSticker.Block3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBlock3Null() {
+                this[this.tableSticker.Block3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSegmentNull() {
+                return this.IsNull(this.tableSticker.SegmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSegmentNull() {
+                this[this.tableSticker.SegmentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSegment2Null() {
+                return this.IsNull(this.tableSticker.Segment2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSegment2Null() {
+                this[this.tableSticker.Segment2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsSegment3Null() {
+                return this.IsNull(this.tableSticker.Segment3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetSegment3Null() {
+                this[this.tableSticker.Segment3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsProductTypeNull() {
+                return this.IsNull(this.tableSticker.ProductTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetProductTypeNull() {
+                this[this.tableSticker.ProductTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsProductType2Null() {
+                return this.IsNull(this.tableSticker.ProductType2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetProductType2Null() {
+                this[this.tableSticker.ProductType2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsProductType3Null() {
+                return this.IsNull(this.tableSticker.ProductType3Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetProductType3Null() {
+                this[this.tableSticker.ProductType3Column] = global::System.Convert.DBNull;
             }
         }
         

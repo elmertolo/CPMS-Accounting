@@ -37,6 +37,9 @@ namespace CPMS_Accounting.Models
         public string Address2 { get; set; }
         public string Address3 { get; set; }
         public string Address4 { get; set; }
+        public int Block { get; set; }
+        public int Segment { get; set; }
+        public string ProducType { get; set; }
     }
 
 }

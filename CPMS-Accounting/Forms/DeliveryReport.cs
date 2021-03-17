@@ -37,6 +37,7 @@ namespace CPMS_Accounting
         Int32 pNumber = 0;
         Int64 _dr = 0;
         Main frm;
+        
         int DirectReportStyle = 0;
         int ProvincialReportStyle = 0;
         string errorMessage = "";
@@ -60,41 +61,54 @@ namespace CPMS_Accounting
 
             dateTime = dateTimePicker1.MinDate = DateTime.Now; //Disable selection of backdated dates to prevent errors  
             this.frm = frm1;
+            txtDrNumber.MaxLength = 7;
+            txtPackNumber.MaxLength = 7;
         }
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            deliveryDate = dateTimePicker1.Value;
-            if (deliveryDate == dateTime)
-            {
-                MessageBox.Show("Please set Delivery Date!");
-            }
-            else
-            {
 
-                sReport();
-              //  if (gClient.DataBaseName != "producers_history")
-                    proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle,ProvincialReportStyle);
-              ///  else
-                 //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+            try
+            {
+                deliveryDate = dateTimePicker1.Value;
+                if (deliveryDate == dateTime)
+                {
+                    MessageBox.Show("Please set Delivery Date!");
+                }
 
-                proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
-                proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
-                //if (gClient.ShortName == "PNB")
-                //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
-                //else
-                proc.GetStickerDetails(tempSticker, orderList[0].Batch);
-                
-                MessageBox.Show("Data has been process!!!");
-                ViewReports vp = new ViewReports();
-                // vp.MdiParent = this;
-                vp.Show();
-                reportsToolStripMenuItem.Enabled = true;
-                proc.DisableControls(deliveryReportToolStripMenuItem);
-                generateToolStripMenuItem.Enabled = false;
+                else
+                {
+                    if(isValidateGeneration())
+                    {
+                        sReport();
+                        //  if (gClient.DataBaseName != "producers_history")
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                        ///  else
+                        //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+
+                        proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
+                        tempDr.Clear();
+                        proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+
+                        //if (gClient.ShortName == "PNB")
+                        //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                        //else
+                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+
+                        MessageBox.Show("Data has been process!!!");
+                        ViewReports vp = new ViewReports();
+                        // vp.MdiParent = this;
+                        vp.Show();
+                        reportsToolStripMenuItem.Enabled = true;
+                        proc.DisableControls(deliveryReportToolStripMenuItem);
+                        generateToolStripMenuItem.Enabled = false;
+                    }
+                }
             }
-            
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -360,8 +374,8 @@ namespace CPMS_Accounting
             op.Filter = "dbf files (*.dbf)|*.dbf|All files (*.*)|*.*";
             op.FilterIndex = 2;
             op.RestoreDirectory = true;
-            try
-            {
+            //try
+            //{
 
                 if (op.ShowDialog().Equals(DialogResult.OK))
                 {
@@ -378,11 +392,12 @@ namespace CPMS_Accounting
                 string sql = "";
 
 
-                
-                 sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                            "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3 FROM " + filePath;
 
-                
+                //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                //           "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
+                sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                           "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
+
 
                 OleDbCommand cmd = new OleDbCommand(sql, con);
                 con.Open();
@@ -392,16 +407,16 @@ namespace CPMS_Accounting
                 {
 
                     OrderModel order = new OrderModel();
-                    order.Batch = !myReader.IsDBNull(0) ? myReader.GetString(0) : "";
-                    order.BRSTN = !myReader.IsDBNull(1) ? myReader.GetString(1) : "";
-                    order.BranchName = !myReader.IsDBNull(2) ? myReader.GetString(2) : "";
-                    order.AccountNo = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
+                    order.Batch = !myReader.IsDBNull(0) ? myReader[0].ToString() : "";
+                    order.BRSTN = !myReader.IsDBNull(1) ? myReader[1].ToString(): "";
+                    order.BranchName = !myReader.IsDBNull(2) ? myReader[2].ToString() : "";
+                    order.AccountNo = !myReader.IsDBNull(3) ? myReader[3].ToString() : "";
 
-                    order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
+                    order.ChkType = !myReader.IsDBNull(4) ? myReader[4].ToString() : "";
 
                     //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
                     order.ChequeName = proc.GetChequeName(order.ChkType);
-
+                    //order.ChequeName.Replace("'", "''");
                     order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                     order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
                     order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
@@ -412,11 +427,20 @@ namespace CPMS_Accounting
             
                         order.BranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                         order.OldBranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
-                        order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                        //order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                       //  order.Name3.Trim();
+                        order.Name2.TrimEnd();
+                        order.Name1.TrimEnd();
+                        
+                        order.Block = !myReader.IsDBNull(12) ? int.Parse(myReader[12].ToString()) : 0;
+                        
+                        order.Segment = !myReader.IsDBNull(13) ? int.Parse(myReader[13].ToString()) : 0;
+                        order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
 
                         order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+            
                         order.Address2 = branch.Address2.Replace("'", "''");
                         order.Address3 = branch.Address3.Replace("'", "''");
                         order.Address4 = branch.Address4.Replace("'", "''");
@@ -545,15 +569,15 @@ namespace CPMS_Accounting
             }
 
 
-            }
+            //}
 
 
 
 
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message, error.StackTrace);
-            }
+            //catch (Exception error)
+            //{
+            //    MessageBox.Show(error.Message, "Get Data For PNB" , MessageBoxButtons.OK,MessageBoxIcon.Error);
+            //}
         }
 
         private void DeliveryReport_Load(object sender, EventArgs e)
@@ -707,33 +731,40 @@ namespace CPMS_Accounting
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            int sum = 0;
-
-            for (int i = 0; i < this.dataGridView1.Rows.Count; i++)
-
+            try
             {
+                int sum = 0;
 
-                sum += Convert.ToInt32(this.dataGridView1[16, i].Value);
+                for (int i = 0; i < this.dataGridView1.Rows.Count; i++)
 
+                {
+
+                    sum += Convert.ToInt32(this.dataGridView1[16, i].Value);
+
+                }
+
+                tb.Text = sum.ToString();
+
+
+
+                int X = this.dataGridView1.GetCellDisplayRectangle(0, -1, true).Location.X;
+
+                lb.Width = this.dataGridView1.Columns[0].Width + X;
+
+                lb.Location = new Point(0, this.dataGridView1.Height - tb.Height);
+
+
+
+                tb.Width = this.dataGridView1.Columns[1].Width;
+
+                X = this.dataGridView1.GetCellDisplayRectangle(1, -1, true).Location.X;
+
+                tb.Location = new Point(X, this.dataGridView1.Height - tb.Height);
             }
-
-            tb.Text = sum.ToString();
-
-
-
-            int X = this.dataGridView1.GetCellDisplayRectangle(0, -1, true).Location.X;
-
-            lb.Width = this.dataGridView1.Columns[0].Width + X;
-
-            lb.Location = new Point(0, this.dataGridView1.Height - tb.Height);
-
-
-
-            tb.Width = this.dataGridView1.Columns[1].Width;
-
-            X = this.dataGridView1.GetCellDisplayRectangle(1, -1, true).Location.X;
-
-            tb.Location = new Point(X, this.dataGridView1.Height - tb.Height);
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Color for View ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void LoadSubtotal()
         {
@@ -801,6 +832,55 @@ namespace CPMS_Accounting
             report = "PackingList";
             ViewReports vp = new ViewReports();
             vp.Show();
+        }
+
+        private bool isValidateGeneration()
+        {
+            try
+            {
+                if (txtDrNumber.Text == null || txtDrNumber.Text == "")
+                {
+                    MessageBox.Show("Please Enter Delivery Receipt Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                else
+                {
+
+
+                    if (txtPackNumber.Text == null || txtPackNumber.Text == "")
+                    {
+                        MessageBox.Show("Please Enter Pack Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return false;
+                    }
+                    else
+                    {
+
+                        if (txtDrNumber.TextLength < 7)
+                        {
+                            MessageBox.Show("Delivery Receipt Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        }
+                        else
+                        {
+                           
+                            if (txtPackNumber.TextLength < 7)
+                            {
+                                MessageBox.Show("Pack Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return false;
+                            }
+                            else
+                                return true;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            
+
         }
     }
 }

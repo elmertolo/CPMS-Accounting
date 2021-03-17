@@ -241,7 +241,7 @@
             this.groupBox3.Controls.Add(this.cbProvincial);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.cbDirect);
-            this.groupBox3.Location = new System.Drawing.Point(15, 185);
+            this.groupBox3.Location = new System.Drawing.Point(15, 174);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(292, 137);
             this.groupBox3.TabIndex = 14;
@@ -303,7 +303,7 @@
             // 
             this.lblTotalA.AutoSize = true;
             this.lblTotalA.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalA.Location = new System.Drawing.Point(191, 372);
+            this.lblTotalA.Location = new System.Drawing.Point(191, 361);
             this.lblTotalA.Name = "lblTotalA";
             this.lblTotalA.Size = new System.Drawing.Size(16, 16);
             this.lblTotalA.TabIndex = 10;
@@ -313,7 +313,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(34, 418);
+            this.label7.Location = new System.Drawing.Point(34, 407);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(117, 16);
             this.label7.TabIndex = 9;
@@ -323,7 +323,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(36, 396);
+            this.label6.Location = new System.Drawing.Point(36, 385);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(102, 16);
             this.label6.TabIndex = 8;
@@ -333,7 +333,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(38, 374);
+            this.label5.Location = new System.Drawing.Point(38, 363);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 16);
             this.label5.TabIndex = 7;
@@ -345,7 +345,7 @@
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.lblTotalB);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Location = new System.Drawing.Point(15, 328);
+            this.groupBox2.Location = new System.Drawing.Point(15, 317);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(292, 120);
             this.groupBox2.TabIndex = 13;
@@ -356,7 +356,7 @@
             this.lblTotalChecks.AutoSize = true;
             this.lblTotalChecks.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalChecks.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblTotalChecks.Location = new System.Drawing.Point(176, 89);
+            this.lblTotalChecks.Location = new System.Drawing.Point(176, 78);
             this.lblTotalChecks.Name = "lblTotalChecks";
             this.lblTotalChecks.Size = new System.Drawing.Size(16, 16);
             this.lblTotalChecks.TabIndex = 12;
@@ -376,7 +376,7 @@
             // 
             this.lblTotalB.AutoSize = true;
             this.lblTotalB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalB.Location = new System.Drawing.Point(176, 66);
+            this.lblTotalB.Location = new System.Drawing.Point(176, 55);
             this.lblTotalB.Name = "lblTotalB";
             this.lblTotalB.Size = new System.Drawing.Size(16, 16);
             this.lblTotalB.TabIndex = 11;
