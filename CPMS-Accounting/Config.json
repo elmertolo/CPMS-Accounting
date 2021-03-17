@@ -14,9 +14,10 @@
     "TempLoc": "D:\\TEMP"
   },
   "Database": {
+    "ConnectionString": "Database=captive_accounting;Server=192.168.10.61;Port=3306;Uid=root;Pwd=CorpCaptive;",
     "DailyBackupOn": true,
     "BackupPath": "D:\\",
-    "LastBackupDate": "12 Mar 2021"
+    "LastBackupDate": "16 Mar 2021"
   },
   "Encryption": {
     "EncryptionOn": false,
