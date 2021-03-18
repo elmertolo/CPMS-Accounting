@@ -356,7 +356,7 @@
             this.lblTotalChecks.AutoSize = true;
             this.lblTotalChecks.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalChecks.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblTotalChecks.Location = new System.Drawing.Point(176, 78);
+            this.lblTotalChecks.Location = new System.Drawing.Point(176, 91);
             this.lblTotalChecks.Name = "lblTotalChecks";
             this.lblTotalChecks.Size = new System.Drawing.Size(16, 16);
             this.lblTotalChecks.TabIndex = 12;
@@ -376,7 +376,7 @@
             // 
             this.lblTotalB.AutoSize = true;
             this.lblTotalB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalB.Location = new System.Drawing.Point(176, 55);
+            this.lblTotalB.Location = new System.Drawing.Point(176, 67);
             this.lblTotalB.Name = "lblTotalB";
             this.lblTotalB.Size = new System.Drawing.Size(16, 16);
             this.lblTotalB.TabIndex = 11;
