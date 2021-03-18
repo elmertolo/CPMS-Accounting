@@ -1061,15 +1061,17 @@ namespace CPMS_Accounting.Procedures
                     else
                     {
 
-                        if (gClient.DataBaseName == "producers_history")
+                        if (gClient.DataBaseName != "pnb_history")
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceipt.rpt";
-                            
+
                         }
                         else 
                         {
@@ -1587,24 +1589,28 @@ namespace CPMS_Accounting.Procedures
         //{
          public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
          {
-            //Orginal Query
-            Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
-                  "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
-                  "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location from " + gClient.DataBaseName +
-                  " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
-                  " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
-            //_docStampNumber.ForEach(x => { 
-            //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
-            //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
-            //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
-            //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
-            //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
-            DBConnect();
+            try
+            {
+
+
+                //Orginal Query
+                Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
+                      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
+                      "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location from " + gClient.DataBaseName +
+                      " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
+                      " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
+                //_docStampNumber.ForEach(x => { 
+                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
+                //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
+                //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
+                //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
+                //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
+                DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                DocStampModel doc = new DocStampModel();
+                    DocStampModel doc = new DocStampModel();
 
                     doc.BankCode = !reader.IsDBNull(0) ? reader.GetString(0) : "";
                     doc.DocStampNumber = !reader.IsDBNull(1) ? reader.GetInt32(1) : 0;
@@ -1612,7 +1618,7 @@ namespace CPMS_Accounting.Procedures
                     doc.TotalQuantity = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0;
                     doc.ChkType = !reader.IsDBNull(4) ? reader.GetString(4) : "";
                     doc.DocDesc = !reader.IsDBNull(5) ? reader.GetString(5) : "";
-                //  TotalAmount = !reader.IsDBNull(5) ? reader.GetDouble(5) : 0,
+                    //  TotalAmount = !reader.IsDBNull(5) ? reader.GetDouble(5) : 0,
                     doc.DocStampPrice = !reader.IsDBNull(6) ? reader.GetInt32(6) : 0;
                     doc.PreparedBy = !reader.IsDBNull(7) ? reader.GetString(7) : "";
                     doc.CheckedBy = !reader.IsDBNull(8) ? reader.GetString(8) : "";
@@ -1621,10 +1627,10 @@ namespace CPMS_Accounting.Procedures
                     doc.batches = !reader.IsDBNull(11) ? reader.GetString(11) : "";
                     doc.TotalAmount = !reader.IsDBNull(12) ? reader.GetDouble(12) : 0;
                     doc.Location = !reader.IsDBNull(13) ? reader.GetString(13) : "";
-                
+
                     _temp.Add(doc);
                 }
-                    reader.Close();
+                reader.Close();
                 DBClosed();
                 DBConnect();
                 string Sql1 = "Delete from " + gClient.DocStampTempTable;
@@ -1634,18 +1640,23 @@ namespace CPMS_Accounting.Procedures
                 DBConnect();
                 _temp.ForEach(d =>
                 {
-                 
-                string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
-                            "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location)Values('" + d.BankCode + "'," + d.DocStampNumber +
-                            ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'","''") +
-                            "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "',"+d.POorder+","+d.QuantityOnHand+
-                            ",'" + d.batches + "',"+d.TotalAmount+",'"+d.Location+"')";
-                MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
-                cmd2.ExecuteNonQuery();
+
+                    string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
+                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location)Values('" + d.BankCode + "'," + d.DocStampNumber +
+                                ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
+                                "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
+                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "')";
+                    MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
+                    cmd2.ExecuteNonQuery();
                 });
-          //  });
-            DBClosed();
-            return;
+                //  });
+                DBClosed();
+                return;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "GetDocStampDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         public void GetUsers(List<UserListModel> _users)
         {
@@ -2164,16 +2175,9 @@ namespace CPMS_Accounting.Procedures
             var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
             if (Personal.Count > 0)
             {
-                //counter++;
-                //_checks.Regular_Personal.ForEach(r =>
-                //{
-                //_checks.Regular_Personal.OrderBy(r => r.BranchName).ToList();
+                
                 var _list = Personal.Select(r => r.BRSTN).Distinct().ToList();
-                //var sorted = (from c in _checks.Regular_Personal
-                //                orderby c.BranchName
-                //                         ascending
-                //                select c).ToList();
-
+             
 
                 //Working Proccess Jan. 27 2021
                 foreach (string Brstn in _list)
@@ -2185,7 +2189,6 @@ namespace CPMS_Accounting.Procedures
 
 
                         Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
-
 
 
                     }
@@ -2207,6 +2210,7 @@ namespace CPMS_Accounting.Procedures
             var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
             if (Comm.Count > 0)
             {
+                _DrNumber++;
                 var _List = Comm.Select(r => r.BRSTN).Distinct().ToList();
                 //var sorted = (from c in _checks.Regular_Commercial
                 //              orderby c.BranchName

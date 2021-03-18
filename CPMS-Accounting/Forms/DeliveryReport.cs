@@ -184,7 +184,7 @@ namespace CPMS_Accounting
             cbProvincial.Items.Add("Cheque Type per Branch");
             cbProvincial.Items.Add("Cheque Type per Location");
             cbProvincial.Items.Add("Location,Cheque Type and Branch");
-            if(gClient.DataBaseName != "producers_history")
+            if(gClient.ShortName == "PNB")
             {
                 cbDirect.SelectedIndex = 5;
                 cbProvincial.SelectedIndex = 4;
