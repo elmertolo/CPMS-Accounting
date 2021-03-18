@@ -50,7 +50,6 @@ namespace CPMS_Accounting.Procedures
             OpenDB();
 
         }
-
         private bool OpenDB()
         {
             try
@@ -116,7 +115,6 @@ namespace CPMS_Accounting.Procedures
             }
 
         }
-
 
         public bool LoadSearchedItem(string inputText ,ref DataTable dt)
         {
@@ -295,7 +293,7 @@ namespace CPMS_Accounting.Procedures
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.checkType.ToString() + "'" +
                         " and location = '" + item.Location + "'" +
-                        " and chequename = '" + item.checkName.Replace("'","''") + "';"; //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                        " and chequename = '" + item.checkName + "';";
                     }
                     else
                     {
@@ -309,7 +307,7 @@ namespace CPMS_Accounting.Procedures
                         ") and batch = '" + item.Batch + "'" +
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.checkType.ToString() + "'" +
-                        " and chequename = '" + item.checkName.Replace("'","''") + "';"; //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                        " and chequename = '" + item.checkName + "';";
                     }
 
                     cmd = new MySqlCommand(sql, con);
@@ -695,11 +693,11 @@ namespace CPMS_Accounting.Procedures
                 //double onhandQuantity = double.Parse(SeekReturn("select quantityonhand from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //double newItemQuantity = onhandQuantity - quantity;
 
-                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName.Replace("'","''") + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
-                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName.Replace("'","''") + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 double newItemQuantity = onhandQuantity - processedQuantity;
 
-                MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName.Replace("'","''") + "'", con);
+                MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName + "'", con);
                 rowNumbersAffected = cmd.ExecuteNonQuery();
                 return true;
             }
@@ -990,7 +988,6 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-
         public bool GetUserLevels(ref DataTable dt)
         {
             try
@@ -1067,7 +1064,6 @@ namespace CPMS_Accounting.Procedures
         //        return false;
         //    }
         //}
-
 
         public bool MySqlBackupTableData(string backupPath)
         {

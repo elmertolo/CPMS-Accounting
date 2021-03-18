@@ -503,6 +503,9 @@ namespace CPMS_Accounting
             gEncryptionType = p.ReadJsonConfigFile("Encryption", "EncryptionType", "SHA1");
 
             /// <summary>
+            /// \
+            /// 
+            /// 
             /// This variables is used for SalesInvoice Processes only.
             /// </summary
             //variables from appconfig file=================================================
