@@ -194,14 +194,30 @@ namespace CPMS_Accounting.Procedures
             {
                 foreach (var row in SalesInvoiceList)
                 {
-                    string sql = "insert into " + gClient.SalesInvoiceTempTable + " " +
-                                 "(Quantity, Batch, CheckName, DRList) values " +
-                                 "(" + row.Quantity + "," +
-                                 " '" + row.Batch.ToString() + "'," +
-                                 " '" + row.checkName.Replace("'","''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
-                                 " '" + row.drList.ToString() + "'" +
+                    string sql;
+                    if (gClient.ShortName != "PNB")
+                    {
+                        sql = "insert into " + gClient.SalesInvoiceTempTable + " " +
+                              "(Quantity, Batch, CheckName, DRList) values " +
+                              "(" + row.Quantity + "," +
+                              " '" + row.Batch.ToString() + "'," +
+                              " '" + row.checkName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                              " '" + row.drList.ToString() + "'" +
+                              ");";
+                    }
+                    else
+                    {
 
-                                 ");";
+                        //03192021 PNB Enhancement (Added Location)
+                        sql = "insert into " + gClient.SalesInvoiceTempTable + " " +
+                               "(Quantity, Batch, CheckName, DRList, Location) values " +
+                               "(" + row.Quantity + "," +
+                               " '" + row.Batch.ToString() + "'," +
+                               " '" + row.checkName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                               " '" + row.drList.ToString() + "'," +
+                               " '" + row.Location.ToString() + "'" +
+                               ");";
+                    }
                     MySqlCommand cmd = new MySqlCommand(sql, con);
                     cmd.ExecuteNonQuery();
                 }
