@@ -1337,7 +1337,7 @@ namespace CPMS_Accounting.Procedures
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
             DBClosed();
-            Sql = "Update " + gClient.DataBaseName + " set DRNumber = '"+_newDR+" ' where DRNumber = '" + _temp.DrNumber + "'";
+            Sql = "Update " + gClient.DataBaseName + " set DRNumber = '"+_newDR+" ' where DRNumber = '" + _temp.DrNumber + "' ";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();

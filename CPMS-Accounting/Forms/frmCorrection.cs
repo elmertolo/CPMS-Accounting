@@ -199,6 +199,7 @@ namespace CPMS_Accounting.Forms
                     if(isSelected)
                     {
                         tempModel.DrNumber = row.Cells["Delivery Receipt No."].Value.ToString();
+                        tempModel.Qty = int.Parse(row.Cells["Quantity"].Value.ToString());
                     //  MessageBox.Show(tempModel.DrNumber);
                         
                     }
