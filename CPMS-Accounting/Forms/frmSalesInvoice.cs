@@ -242,12 +242,10 @@ namespace CPMS_Accounting
 
         private void AddSelectedDRRow()
         {
-
+            //Check if theres atleast one selected row in batch list
             if (dgvDRList.SelectedRows != null && dgvDRList.SelectedRows.Count > 0)
             {
-
-                
-
+                //Process data every each row.
                 foreach (DataGridViewRow row in dgvDRList.SelectedRows)
                 {
                     

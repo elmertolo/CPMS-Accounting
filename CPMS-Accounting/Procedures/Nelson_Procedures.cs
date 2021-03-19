@@ -146,7 +146,6 @@ namespace CPMS_Accounting.Procedures
             else
             {
                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName + "_" + reportType + ".rpt";
-
             }
 
             if (!File.Exists(reportPath))
