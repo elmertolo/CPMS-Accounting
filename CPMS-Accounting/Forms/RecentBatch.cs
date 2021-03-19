@@ -29,9 +29,6 @@ namespace CPMS_Accounting
             InitializeComponent();
             this.frm = frm1;
         }
-
-
-
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -69,6 +66,7 @@ namespace CPMS_Accounting
                             }
 
                         });
+                        
 
                     }
                  
@@ -86,21 +84,18 @@ namespace CPMS_Accounting
             else
                 MessageBox.Show("Please enter Batch Number!");
         }
-
         private void deliveryReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             report = "DR";
             ViewReports vp = new ViewReports();
             vp.Show();
         }
-
         //private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
         //{
         //    this.Hide();
         //    Main m = new Main();
         //    m.Show();
         //}
-
         private void printDRToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -140,7 +135,6 @@ namespace CPMS_Accounting
           
         }
 
-      
         private void txtRecentBatch_TextChanged(object sender, EventArgs e)
         {
             batchTemp.Clear();

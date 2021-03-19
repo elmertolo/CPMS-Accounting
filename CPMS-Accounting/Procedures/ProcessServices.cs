@@ -2459,15 +2459,13 @@ namespace CPMS_Accounting.Procedures
                         {
                             drDisplay += existingDr.ToString();
                         }
-
-
                     }
                     else
                     {
                         if ((oldDr + 1) == existingDr)
                         {
-                            drDisplay = drDisplay + " - " + existingDr.ToString().Substring(existingDr.ToString().Length - (existingDr.ToString().Length - 4), 3);
-
+                            //drDisplay = drDisplay + " - " + existingDr.ToString().Substring(existingDr.ToString().Length - (existingDr.ToString().Length - 4), 3);
+                            drDisplay = drDisplay + " - " + existingDr.ToString();
                         }
                         else
 
