@@ -40,7 +40,7 @@ namespace CPMS_Accounting.Procedures
                 //  {
               //  DBConnection = ConfigurationManager.AppSettings["ConnectionString"];
 
-              DBConnection =  p.ReadJsonConfigFile("Database", "ConnectionString1", "");
+              DBConnection =  p.ReadJsonConfigFile("Database", "ConnectionString", "");
                 //databaseName = "captive_accounting";
                 //  MessageBox.Show(databaseName);
                 //   }

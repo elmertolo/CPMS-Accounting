@@ -63,12 +63,10 @@ namespace CPMS_Accounting
 
         private void FillBankList()
         {
-
             if (!proc.GetBankList(ref BankListDT))
             {
                 MessageBox.Show("Unable to connect to server. \r\n" + proc.errorMessage);
                 Application.Exit();
-
             }
             cbBankList.DisplayMember = "description";
             cbBankList.DataSource = BankListDT;
