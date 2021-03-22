@@ -18,7 +18,7 @@
     "BackupPath": "D:\\",
     "LastBackupDate": "12 Mar 2021",
     "ConnectionString": "Database=captive_accounting;Server=localhost;Port=3306;Uid=root;Pwd=CorpCaptive;"
-    //"ConnectionString": "Database=captive_accounting;Server=192.168.0.254;Port=3306;Uid=root;Pwd=CorpCaptive;"
+    //"ConnectionString": "Database=captive_accounting;Server=192.168.10.254;Port=3306;Uid=root;Pwd=CorpCaptive;"
   },
   "Encryption": {
     "EncryptionOn": false,

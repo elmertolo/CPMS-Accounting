@@ -40,8 +40,11 @@ namespace CPMS_Accounting
               //  batchTemp.Clear();
                 proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
                 tempRecent.Clear();
-                proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
-                tempRecent.Clear();
+                if (gClient.ShortName == "PNB")
+                {
+                    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
+                    tempRecent.Clear();
+                }   
                 //if(gClient.ShortName == "PNB")
                 //   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
                 //else

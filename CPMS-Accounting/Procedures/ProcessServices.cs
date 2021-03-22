@@ -311,7 +311,6 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
-        
         public void GenerateData2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber,int _dReportStyle,int _pReportStyle)
         {
 
@@ -1363,7 +1362,6 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
-  
         public static DialogResult InputBox(string title, string promptText, ref string value)
         {
 
