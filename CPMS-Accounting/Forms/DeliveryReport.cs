@@ -340,9 +340,9 @@ namespace CPMS_Accounting
                             
                             ProcessServices.bg_dtg(dataGridView1);
                              
-                            lblTotalA.Text = totalA.Count.ToString();
-                            lblTotalB.Text = totalB.Count.ToString();
-                            lblTotalChecks.Text = orderList.Count.ToString();
+                            //lblTotalA.Text = totalA.Count.ToString();
+                            //lblTotalB.Text = totalB.Count.ToString();
+                            //lblTotalChecks.Text = orderList.Count.ToString();
 
                         }
                     
@@ -558,9 +558,9 @@ namespace CPMS_Accounting
 
                         ProcessServices.bg_dtg(dataGridView1);
 
-                        lblTotalA.Text = totalA.Count.ToString();
-                        lblTotalB.Text = totalB.Count.ToString();
-                        lblTotalChecks.Text = orderList.Count.ToString();
+                        //lblTotalA.Text = totalA.Count.ToString();
+                        //lblTotalB.Text = totalB.Count.ToString();
+                        //lblTotalChecks.Text = orderList.Count.ToString();
 
                     }
 
@@ -583,7 +583,7 @@ namespace CPMS_Accounting
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
 
-            
+            isBankActive();
             //ChequeName();
             ReporStyle();
             lb.Text = "Total";
