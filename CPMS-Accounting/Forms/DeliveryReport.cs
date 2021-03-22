@@ -882,5 +882,41 @@ namespace CPMS_Accounting
             
 
         }
+        private void isBankActive()
+        {
+            proc.GetChequeTypes(productList);
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Cheque Name");
+            dt.Columns.Add("Quantity");
+
+            productList.ForEach(x => { dt.Rows.Add(new object[] { x.ChequeName, "0" }); });
+
+
+            dgvProducts.DataSource = dt;
+            dgvProducts.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
+            dgvProducts.Columns[0].Width = 230;
+
+            //for (int i = 0; i < productList.Count; i++)
+            //{
+            //    Label mylab = new Label();
+            //    mylab.Text = ;
+            //    mylab.Location = new Point(34, 460);// 34, 448 //213, 474
+            //    mylab.AutoSize = true;
+            //    mylab.Font = new Font("Microsoft Sans Serif", 12);
+            //    mylab.ForeColor = Color.Black;
+            //    mylab.Padding = new Padding(6);
+            //    //mylab.BringToFront();
+            //    Label mylab2 = new Label();
+            //    mylab2.Text = "0";
+            //    mylab2.Location = new Point(213, 460);// 34, 448 //213, 474
+            //    mylab2.AutoSize = true;
+            //    mylab2.Font = new Font("Microsoft Sans Serif", 12);
+            //    mylab2.ForeColor = Color.Black;
+            //    mylab2.Padding = new Padding(6);
+            //    // Adding this control to the form 
+            //    this.Controls.Add(mylab);
+            //    this.Controls.Add(mylab2);
+            //}
+        }
     }
 }
