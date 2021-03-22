@@ -25,7 +25,7 @@ namespace CPMS_Accounting
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
-        List<SalesInvoiceModel> salesInvoiceList = new List<SalesInvoiceModel>();
+        List<SalesInvoiceFinishedDetailModel> salesInvoiceList = new List<SalesInvoiceFinishedDetailModel>();
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
         Main frm;
         frmProgress progressBar;
@@ -152,7 +152,7 @@ namespace CPMS_Accounting
 
                 dgvDRList.Columns[2].Name = "BATCH NAME";
                 dgvDRList.Columns[2].Width = 150;
-                dgvDRList.Columns[2].DataPropertyName = "batch"; //this must be the actual table name in sql
+                dgvDRList.Columns[2].DataPropertyName = "Batch"; //this must be the actual table name in sql
 
                 dgvDRList.Columns[3].Name = "CHECK NAME";
                 dgvDRList.Columns[3].Width = 200;
@@ -193,7 +193,7 @@ namespace CPMS_Accounting
 
             dgvListToProcess.Columns[1].Name = "BATCH";
             dgvListToProcess.Columns[1].Width = 70;
-            dgvListToProcess.Columns[1].DataPropertyName = "Batch"; //this must be the actual table name in sql
+            dgvListToProcess.Columns[1].DataPropertyName = "BatchName"; //this must be the actual table name in sql
 
             dgvListToProcess.Columns[2].Name = "CHECK NAME";
             dgvListToProcess.Columns[2].Width = 180;
@@ -253,12 +253,14 @@ namespace CPMS_Accounting
                     LogBatchInfo(row);
 
 
-                    SalesInvoiceModel line = new SalesInvoiceModel();
-
+                    //SalesInvoiceModel siFinishedDetailLine = new SalesInvoiceModel();
+                    //03222021 Sales Invoice Refactor for EF
+                    SalesInvoiceFinishedModel siFinishedLine = new SalesInvoiceFinishedModel();
+                    SalesInvoiceFinishedDetailModel siFinishedDetailLine = new SalesInvoiceFinishedDetailModel();
 
 
                     //Fill Global Price List Model
-                    if(row.Cells["Product Code"].Value.ToString() == "")
+                    if (row.Cells["Product Code"].Value.ToString() == "")
                     {
                         p.MessageAndLog("Unable to process. Item product Code is blank.", ref log, "Error");
                         return;
@@ -268,29 +270,31 @@ namespace CPMS_Accounting
 
 
                     //Supply values on sales invoice model list based on datagrid view values
-                    line.ProductCode = gProduct.ProductCode;
-                    line.Batch = row.Cells["batch Name"].Value.ToString();
-                    line.checkName = row.Cells["check name"].Value.ToString();
-                    line.checkType = row.Cells["check type"].Value.ToString();
-                    line.salesInvoiceDate = DateTime.Parse(dtpInvoiceDate.Value.ToShortDateString());
-                    line.deliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
-                    line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                    siFinishedDetailLine.ProductCode = gProduct.ProductCode;
+                    siFinishedDetailLine.BatchName = row.Cells["batch Name"].Value.ToString();
+                    siFinishedDetailLine.CheckName = row.Cells["check name"].Value.ToString();
+                    siFinishedDetailLine.CheckType = row.Cells["check type"].Value.ToString();
+                    //siFinishedDetailLine.SalesInvoiceDate = DateTime.Parse(dtpInvoiceDate.Value.ToShortDateString());
+                    siFinishedDetailLine.DeliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
+                    siFinishedDetailLine.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                    //03192021 Enhancement - Sales Invoice Reprint
+                    siFinishedDetailLine.UOM = "BKT";
 
                     //Include Location field if PNB
                     if (gClient.ShortName == "PNB")
                     {
-                        line.Location = row.Cells["location"].Value.ToString();
+                        siFinishedDetailLine.Location = row.Cells["location"].Value.ToString();
                     }
 
 
                     //line.unitPrice = proc.GetUnitPrice(line.checkName);
                     //Modified code replace getunitprice (above code)procedure to retrieved product model value. 02112021
-                    line.unitPrice = gProduct.UnitPrice;
+                    siFinishedDetailLine.UnitPrice = gProduct.UnitPrice;
 
-                    line.lineTotalAmount = Math.Round(line.Quantity * line.unitPrice, 2);
+                    siFinishedDetailLine.LineTotalAmount = Math.Round(siFinishedDetailLine.Quantity * siFinishedDetailLine.UnitPrice, 2);
                     
                     //Check if record is already inserted
-                    if (p.BatchRecordHasDuplicate(line, salesInvoiceList))
+                    if (p.BatchRecordHasDuplicate(siFinishedDetailLine, salesInvoiceList))
                     {
                         MessageBox.Show("Selected Batch already added");
                         return;
@@ -303,7 +307,7 @@ namespace CPMS_Accounting
                         frmMessageInput xfrm = new frmMessageInput();
                         xfrm.Text = "PO NUMBER REQUIRED.";
                         xfrm.labelMessage1 = "Input Purchase Order Number For Product Code:\r\n";
-                        xfrm.labelMessage2 = "'" + line.ProductCode + "' with Batch Name '" + line.Batch + "'.";
+                        xfrm.labelMessage2 = "'" + siFinishedDetailLine.ProductCode + "' with Batch Name '" + siFinishedDetailLine.BatchName + "'.";
                         DialogResult result = xfrm.ShowDialog();
                         
                         if (result == DialogResult.OK)
@@ -316,18 +320,19 @@ namespace CPMS_Accounting
                             //thread = new Thread(() => progressBar.ShowDialog());
                             //thread.Start();
 
-                            line.PurchaseOrderNumber = int.Parse(xfrm.userInput);
-                            double remainingQuantity = 0;
-                            
+                            siFinishedDetailLine.PurchaseOrderNumber = int.Parse(xfrm.userInput);
+                            int remainingQuantity = 0;
+
                             //Check if quantity is sufficient
-                            if (!proc.IsQuantityOnHandSufficient(line.Quantity, line.ProductCode, line.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
+                            //if (!proc.IsQuantityOnHandSufficient(siFinishedDetailLine.Quantity, siFinishedDetailLine.ProductCode, siFinishedDetailLine.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
+                            if (!proc.IsQuantityOnHandSufficient(siFinishedDetailLine,ref remainingQuantity, ref salesInvoiceList))
                             {
                                 //thread.Abort();
                                 //MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
-                                p.MessageAndLog("Insufficient quantity for " + line.checkName + "", ref log, "warn");
+                                p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
                                 return;
                             }
-                            line.RemainingQuantity = remainingQuantity;
+                            siFinishedDetailLine.PurchaseOrderBalance = remainingQuantity;
 
                         }
                         else if (result == DialogResult.Cancel)
@@ -337,21 +342,22 @@ namespace CPMS_Accounting
                         }
                     }
 
-                    line.drList = proc.GetDRList(line.Batch, line.checkType, line.deliveryDate, line.Location);
-                    salesInvoiceList.Add(line);
+                    //siFinishedDetailLine.DRList = proc.GetDRList(siFinishedDetailLine.BatchName, siFinishedDetailLine.CheckType, siFinishedDetailLine.DeliveryDate, siFinishedDetailLine.Location);
+                    siFinishedDetailLine.DRList = proc.GetDRList(siFinishedDetailLine);
+                    salesInvoiceList.Add(siFinishedDetailLine);
 
                     //created 'list' variable column sorting by line for datagrid view 
                     var sortedList = salesInvoiceList
                         .Select
                         (i => new { 
                             i.Quantity, 
-                            i.Batch, 
-                            i.checkName, 
-                            i.drList, 
-                            i.checkType, 
-                            i.salesInvoiceDate, 
-                            i.unitPrice, 
-                            i.lineTotalAmount })
+                            i.BatchName, 
+                            i.CheckName, 
+                            i.DRList, 
+                            i.CheckType, 
+                            i.SalesInvoiceDate, 
+                            i.UnitPrice, 
+                            i.LineTotalAmount })
                         .ToList();
 
                     dgvListToProcess.DataSource = sortedList;
@@ -553,7 +559,6 @@ namespace CPMS_Accounting
                 if (gClient.ShortName == "PNB")
                 {
                 }
-
             }
 
             //Get Sales Invoice List Details to be supplied to Global Report Datatable
@@ -620,7 +625,16 @@ namespace CPMS_Accounting
 
             var sortedList = salesInvoiceList
                     .Select
-                    (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+                    (i => new 
+                    { 
+                        i.Quantity, 
+                        i.BatchName, 
+                        i.CheckName, 
+                        i.DRList, 
+                        i.CheckType,
+                        i.SalesInvoiceDate,
+                        i.UnitPrice,
+                        i.LineTotalAmount })
                     .ToList();
 
             dgvListToProcess.DataSource = sortedList;
@@ -679,7 +693,15 @@ namespace CPMS_Accounting
 
             var sortedList = salesInvoiceList
                     .Select
-                    (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+                    (i => new {
+                        i.Quantity, 
+                        i.BatchName, 
+                        i.CheckName,
+                        i.DRList,
+                        i.CheckType,
+                        i.SalesInvoiceDate,
+                        i.UnitPrice, 
+                        i.LineTotalAmount })
                     .ToList();
 
             dgvListToProcess.DataSource = sortedList;
@@ -753,17 +775,19 @@ namespace CPMS_Accounting
             foreach (DataRow row in siListDT.Rows)
             {
 
-                SalesInvoiceModel line = new SalesInvoiceModel();
+                SalesInvoiceFinishedDetailModel line = new SalesInvoiceFinishedDetailModel();
 
-                line.Batch = row.Field<string>("Batch");
-                line.checkName = row.Field<string>("CheckName");
-                line.checkType = row.Field<string>("ChkType");
-                line.deliveryDate = row.Field<DateTime>("deliverydate");
-                line.Quantity = Convert.ToInt32(row.Field<Int64>("Quantity"));
-                line.drList = row.Field<string>("DRList");
-                line.unitPrice = row.Field<double>("UnitPrice");
-                line.lineTotalAmount = row.Field<double>("LineTotalAmount");
-                line.salesInvoiceDate = row.Field<DateTime>("SalesInvoiceDate");
+                line.BatchName = row.Field<string>("BatchName");
+                line.CheckName = row.Field<string>("CheckName");
+                line.CheckType = row.Field<string>("CheckType");
+                line.DeliveryDate = row.Field<DateTime>("DeliveryDate");
+
+                line.Quantity = row.Field<int>("Quantity");
+                line.DRList = row.Field<string>("DRList");
+                line.UnitPrice = row.Field<double>("UnitPrice");
+                line.LineTotalAmount = row.Field<double>("LineTotalAmount");
+
+                line.SalesInvoiceDate = row.Field<DateTime>("SalesInvoiceDate");
 
                 if (gClient.ShortName == "PNB")
                 {
@@ -777,7 +801,14 @@ namespace CPMS_Accounting
             //created 'list' variable column sorting by line for datagrid view 
             var sortedList = salesInvoiceList
                 .Select
-                (i => new { i.Quantity, i.Batch, i.checkName, i.drList, i.checkType, i.salesInvoiceDate, i.unitPrice, i.lineTotalAmount })
+                (i => new { i.Quantity, 
+                    i.BatchName,
+                    i.CheckName,
+                    i.DRList,
+                    i.CheckType, 
+                    i.SalesInvoiceDate, 
+                    i.UnitPrice, 
+                    i.LineTotalAmount })
 
                 .ToList();
 
@@ -894,13 +925,14 @@ namespace CPMS_Accounting
             
         }
 
-        public void SeekDRList(ref string drList, string Batch, string checkType, DateTime deliveryDate, string Location)
-        {
-            DataTable dt = new DataTable();
-            drList = proc.GetDRList(Batch, checkType, deliveryDate, Location);
-            p.setDataSource(ref dt, ref progressBar, dgvDRList);
+        //03222021 Code Refacrtor for Sales Invoice Reprint and EF 
+        //public void SeekDRList(ref string drList, string Batch, string checkType, DateTime deliveryDate, string Location)
+        //{
+        //    DataTable dt = new DataTable();
+        //    drList = proc.GetDRList(Batch, checkType, deliveryDate, Location);
+        //    p.setDataSource(ref dt, ref progressBar, dgvDRList);
 
-        }
+        //}
 
         private void CallProgressBar()
         {
@@ -972,12 +1004,12 @@ namespace CPMS_Accounting
                     gSalesInvoiceFinished.CheckedBy = cbCheckedBy.Text.ToString();
                     gSalesInvoiceFinished.ApprovedBy = cbApprovedBy.Text.ToString();
                     gSalesInvoiceFinished.SalesInvoiceNumber = double.Parse(txtSalesInvoiceNumber.Text.ToString());
-                    gSalesInvoiceFinished.TotalAmount = double.Parse(salesInvoiceList.Sum(x => x.lineTotalAmount).ToString());
+                    gSalesInvoiceFinished.TotalAmount = double.Parse(salesInvoiceList.Sum(x => x.LineTotalAmount).ToString());
                     gSalesInvoiceFinished.VatAmount = p.GetVatAmount(gSalesInvoiceFinished.TotalAmount);
                     gSalesInvoiceFinished.NetOfVatAmount = p.GetNetOfVatAmount(gSalesInvoiceFinished.TotalAmount);
 
                     ///Sort Sales Invoice By Batch before saving and Printing
-                    var sortedList = salesInvoiceList.OrderBy(x => x.Batch).ToList();
+                    var sortedList = salesInvoiceList.OrderBy(x => x.BatchName).ToList();
 
                     ///Update Database
                     if (!proc.UpdateSalesInvoiceHistory(sortedList))
@@ -991,7 +1023,7 @@ namespace CPMS_Accounting
                     {
                         foreach (var item in sortedList)
                         {
-                            if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.checkName, item.PurchaseOrderNumber))
+                            if (!proc.UpdateItemQuantityOnhand(item.Quantity, item.CheckName, item.PurchaseOrderNumber))
                             {
                                 MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
                                 return;
