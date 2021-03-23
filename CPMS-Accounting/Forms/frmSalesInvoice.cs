@@ -532,7 +532,7 @@ namespace CPMS_Accounting
 
         public void ReprintSalesInvoice(int salesInvoiceNumber)
         {
-
+            //TestLang
             //get Finished Sales Inbvoice details if exist
             DataTable siFinishedDT = new DataTable();
             if (!proc.SalesInvoiceExist(salesInvoiceNumber, ref siFinishedDT))
