@@ -48,6 +48,7 @@ namespace CPMS_Accounting
         List<string> chkType = new List<string>();
         Label lb = new Label();
         public static OleDbConnection con;
+        int A, B, C, D, E;
         List<ProductModel> listofProducts = new List<ProductModel>();
         //List<int> pIndex = new List<int>();
         //int count = 0;
@@ -297,6 +298,7 @@ namespace CPMS_Accounting
                             order.ProductCode = x.ProductCode;
                         }
                     });
+                    CountChkType(order.ChkType);
                     orderList.Add(order);
 
                         }
@@ -339,7 +341,7 @@ namespace CPMS_Accounting
                             dataGridView1.DataSource = orderList;
                             
                             ProcessServices.bg_dtg(dataGridView1);
-                             
+                        Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
                             //lblTotalA.Text = totalA.Count.ToString();
                             //lblTotalB.Text = totalB.Count.ToString();
                             //lblTotalChecks.Text = orderList.Count.ToString();
@@ -472,7 +474,7 @@ namespace CPMS_Accounting
                             order.ProductCode = x.ProductCode;
                         }
                     });
-
+                    CountChkType(order.ChkType);
                     orderList.Add(order);
 
 
@@ -557,7 +559,7 @@ namespace CPMS_Accounting
                         dataGridView1.DataSource = orderList;
 
                         ProcessServices.bg_dtg(dataGridView1);
-
+                        Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
                         //lblTotalA.Text = totalA.Count.ToString();
                         //lblTotalB.Text = totalB.Count.ToString();
                         //lblTotalChecks.Text = orderList.Count.ToString();
@@ -917,6 +919,57 @@ namespace CPMS_Accounting
             //    this.Controls.Add(mylab);
             //    this.Controls.Add(mylab2);
             //}
+        }
+        private void Totalchecks(string chk, string chkB, string chkC,string chkD,string chkE)
+        {
+
+            foreach (DataGridViewRow row in dgvProducts.Rows)
+            {
+                if (row.Index == 0)
+                {
+                    row.Cells[1].Value = chk;
+                }
+                if (row.Index == 1)
+                {
+                    row.Cells[1].Value = chkB;
+                }
+                if (row.Index == 2)
+                {
+                    row.Cells[1].Value = chkC;
+                }
+                if (row.Index == 3)
+                {
+                    row.Cells[1].Value = chkD;
+                }
+                if (row.Index == 4)
+                {
+                    row.Cells[1].Value = chkE;
+                }
+            }
+
+        }
+        private void CountChkType(string chk)
+        {
+            if (chk == "A")
+            {
+                A++;
+            }
+            else if (chk == "B")
+            {
+                B++;
+            }
+            else if (chk == "C")
+            {
+                C++;
+            }
+            else if (chk == "D")
+            {
+                D++;
+            }
+            else if (chk == "E")
+            {
+                D++;
+            }
         }
     }
 }

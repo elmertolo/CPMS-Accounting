@@ -1184,7 +1184,7 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
+                MessageBox.Show(error.Message, "DisplayAllBatches",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return _batch;
             }
             
@@ -1224,7 +1224,7 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
+                MessageBox.Show(error.Message, "DisplayAllBatches2", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return _batch;
             }
 
@@ -1267,8 +1267,8 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
-                return _batch;
+                MessageBox.Show(error.Message, "DisplayAllBatchData",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return "";
             }
 
         }

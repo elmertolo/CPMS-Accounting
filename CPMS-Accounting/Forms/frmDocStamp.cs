@@ -145,33 +145,54 @@ namespace CPMS_Accounting.Forms
         private void btnProcess_Click(object sender, EventArgs e)
         {
             
+            
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddData();
+        }
+
+        private void AddData()
+        {
             try
             {
+
                 if (txtDocStampNo.Text == "")
                     MessageBox.Show("Please input Document Stamp Number!");
 
                 else
                 {
                     docstamp.Clear();
-
+                    TotalQty = 0;
                     int docs = int.Parse(txtDocStampNo.Text);
-                   
+
                     if (DgvDSalesInvoice.SelectedRows != null && DgvDSalesInvoice.SelectedRows.Count > 0)
                     {
-                       
+
                         foreach (DataGridViewRow row in DgvDSalesInvoice.SelectedRows)
                         {
                             DocStampModel doc = new DocStampModel();
                             doc.DocStampNumber = docs;
                             proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
-                            
+
 
                             doc.BankCode = priceA.BankCode;
-                          
+
                             doc.DocStampDate = dtpDocDate.Value;
                             doc.batches = row.Cells["Batch"].Value.ToString();
-                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(), 
-                                row.Cells["Branch Location"].Value.ToString(),dtpDocDate.Value);
+                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(),
+                                row.Cells["Branch Location"].Value.ToString(), dtpDocDate.Value);
                             doc.DocStampPrice = priceA.DocStampPrice;
                             doc.ChkType = row.Cells["ChkType"].Value.ToString();
                             doc.DocDesc = priceA.ChequeDescription;
@@ -180,16 +201,16 @@ namespace CPMS_Accounting.Forms
                             doc.TotalQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
                             doc.TotalAmount = doc.TotalQuantity * doc.DocStampPrice;
                             // doc.PreparedBy = 
-                            
+
 
                             docstamp.Add(doc);
                             docs++;
                             TotalQty += doc.TotalQuantity;
-                            
+
                         }
 
 
-                      
+
                         //created 'list' variable column sorting by line for datagrid view 
                         DataTable dt = new DataTable();
 
@@ -216,28 +237,33 @@ namespace CPMS_Accounting.Forms
                         dgvOutput.Columns[6].Width = 100;
                         dgvOutput.ClearSelection();
                         txtTotalQty.Text = TotalQty.ToString();
+                        generateToolStripMenuItem.Enabled = true;
                     }
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message, error.Source);
+
             }
         }
-
-        private void btnClear_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             docstamp.Clear();
-            dgvOutput.DataSource = null;
-            //dgvOutput.Rows.Clear();
-            dgvOutput.Refresh();
-            TotalQty = 0;
-            txtTotalQty.Text = "0";
+            dgvOutput.DataSource = "";
+            txtDocStampNo.Text = "";
+            txtTotalQty.Text = "";
+            generateToolStripMenuItem.Enabled = false;
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void DgvDSalesInvoice_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            AddData();
+        }
 
+        private void DgvDSalesInvoice_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            AddData();
         }
     }
 }
