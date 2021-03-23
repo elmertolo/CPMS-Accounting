@@ -620,10 +620,10 @@ namespace CPMS_Accounting.Procedures
                     sql =
                     "select Quantity, BatchName, CheckName, DRList, " +
                     " Checktype, DeliveryDate, SalesInvoiceDate, UnitPrice, " +
-                    "LineTotalAmount, location " +
+                    "LineTotalAmount, PurchaseOrderNumber, PurchaseOrderBalance, location " +
                     "from " + gClient.SalesInvoiceFinishedDetailTable + " " +
                     "where salesinvoicenumber = " + salesInvoiceNumber + " " +
-                    "group by BatchName, CheckName, location order by BatchName;";
+                    "group by BatchName, CheckName, CheckType, location order by BatchName;";
 
                 }
                 else
@@ -646,7 +646,7 @@ namespace CPMS_Accounting.Procedures
                     "LineTotalAmount " +
                     "from " + gClient.SalesInvoiceFinishedDetailTable + " " +
                     "where salesinvoicenumber = " + salesInvoiceNumber + " " +
-                    "group by BatchName, CheckName, ChkType order by BatchName;";
+                    "group by BatchName, CheckName, CheckType order by BatchName;";
 
                 }
 

@@ -846,9 +846,9 @@ namespace CPMS_Accounting
 
                 else if (proc.SalesInvoiceExist(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt))
                 {
+
                     log.Info("Existing Sales Invoice Record");
                     DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
-
                     //DisplayOldSalesInvoiceList(int.Parse(txtSalesInvoiceNumber.Text.ToString()), ref dt);
                 }
                 else
