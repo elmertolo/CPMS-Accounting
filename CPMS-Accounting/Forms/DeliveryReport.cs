@@ -341,10 +341,11 @@ namespace CPMS_Accounting
                             dataGridView1.DataSource = orderList;
                             
                             ProcessServices.bg_dtg(dataGridView1);
-                        Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                            Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                            
                             //lblTotalA.Text = totalA.Count.ToString();
                             //lblTotalB.Text = totalB.Count.ToString();
-                            //lblTotalChecks.Text = orderList.Count.ToString();
+                            lblTotalChecks.Text = orderList.Count.ToString();
 
                         }
                     
@@ -562,7 +563,7 @@ namespace CPMS_Accounting
                         Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
                         //lblTotalA.Text = totalA.Count.ToString();
                         //lblTotalB.Text = totalB.Count.ToString();
-                        //lblTotalChecks.Text = orderList.Count.ToString();
+                        lblTotalChecks.Text = orderList.Count.ToString();
 
                     }
 
@@ -902,14 +903,14 @@ namespace CPMS_Accounting
 
 
             dgvProducts.DataSource = dt;
-            if(dgvProducts.Rows.Count > 6)
+            if(dgvProducts.Rows.Count > 10)
             {
                 dgvProducts.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Bold);
             }
             else
             dgvProducts.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
 
-            dgvProducts.Columns[0].Width = 230;
+            dgvProducts.Columns[0].Width = 300;
 
             //for (int i = 0; i < productList.Count; i++)
             //{
