@@ -835,6 +835,29 @@ namespace CPMS_Accounting.Procedures
 
             return pack;
         }
+        public Int32 GetMaxPackNumber2()
+        {
+  //          GetBankTables();
+            //InsertToMaxTB();
+            DBConnect();
+//            List<Int32> pack = new List<Int32>();
+            Int32 dr = 0;
+         
+
+                Sql = "Select PackNumber from " + gClient.DataBaseName + " where Date >= '2020-12-01' order by PackNumber desc Limit 1";
+
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader read = cmd.ExecuteReader();
+
+                    while (read.Read())
+                    {
+                        dr = !read.IsDBNull(0) ? read.GetInt32(0) : 0;
+                    }
+
+                read.Close();
+                DBClosed();
+                return dr;
+        }
 
         public List<TempModel> GetStickerDetails(List<TempModel> _temp, string _batch)
         {

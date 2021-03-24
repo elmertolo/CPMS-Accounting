@@ -727,7 +727,9 @@ namespace CPMS_Accounting
         {
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
-            GetPack();
+            //GetPack();
+            Int32 pack = proc.GetMaxPackNumber2();
+            txtPackNumber.Text = (pack + 1).ToString();
             MessageBox.Show("Getting PackNumber done!!");
         }
 
