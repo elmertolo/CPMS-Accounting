@@ -86,7 +86,7 @@ namespace CPMS_Accounting
                         proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
                         ///  else
                         //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
-
+                        tempDr.Clear();
                         proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
                         tempDr.Clear();
                         proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);

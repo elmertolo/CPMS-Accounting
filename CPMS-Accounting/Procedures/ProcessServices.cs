@@ -38,9 +38,9 @@ namespace CPMS_Accounting.Procedures
 
                 //   if (frmLogIn.userName == "elmer")
                 //  {
-              //  DBConnection = ConfigurationManager.AppSettings["ConnectionString"];
+                DBConnection = ConfigurationManager.AppSettings["ConnectionString"];
 
-              DBConnection =  p.ReadJsonConfigFile("Database", "ConnectionString", "");
+      //        DBConnection =  p.ReadJsonConfigFile("Database", "ConnectionString", "");
                 //databaseName = "captive_accounting";
                 //  MessageBox.Show(databaseName);
                 //   }
@@ -638,13 +638,13 @@ namespace CPMS_Accounting.Procedures
 
                 //foreach (var item in chk)
                 //{
-                list.ForEach(x =>
-                {
-                    if(x.ChkType == "A" && x.Location == "Direct")
-                    {
-                        string concat = ConcatDRNumbers(x.Batch, x.ChkType, x.Location);
-                    }
-                });
+                //list.ForEach(x =>
+                //{
+                //    if(x.ChkType == "A" && x.Location == "Direct")
+                //    {
+                //        string concat = ConcatDRNumbers(x.Batch, x.ChkType, x.Location);
+                //    }
+                //});
 
                 string concatDA = ConcatDRNumbers(list[0].Batch, "A", "Direct");
                 string concatDB = ConcatDRNumbers(list[0].Batch, "B", "Direct");
@@ -654,8 +654,8 @@ namespace CPMS_Accounting.Procedures
                 string concatECP = ConcatDRNumbers(list[0].Batch, "D", "Provincial");
                 string concatMCD = ConcatDRNumbers(list[0].Batch, "C", "Direct");
                 string concatMCP = ConcatDRNumbers(list[0].Batch, "C", "Provincial");
-                //}
-                
+                ////}
+
                 for (int i = 0; i < list.Count; i++)
                 {
                     
@@ -692,6 +692,9 @@ namespace CPMS_Accounting.Procedures
                     {
                         concat = ConcatDRNumbers(list[i].Batch, list[i].ChkType, list[i].Location);
                     }
+
+
+                    
                     DBConnect();
                     string sql2 = "Insert into " + gClient.DRTempTable + " (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
                                   "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
@@ -2190,8 +2193,9 @@ namespace CPMS_Accounting.Procedures
 
 
                     }
-                    counter++;
                     _packNumber++;
+                    counter++;
+                    
                     if (counter == 10)
                     {
                         _DrNumber++;
@@ -2225,8 +2229,9 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     }
-                    counter++;
+                    
                     _packNumber++;
+                    counter++;
                     if (counter == 10)
                     {
                         _DrNumber++;
