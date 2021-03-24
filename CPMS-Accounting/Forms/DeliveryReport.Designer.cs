@@ -48,7 +48,6 @@
             this.txtPackNumber = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvProducts = new System.Windows.Forms.DataGridView();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnGenerate2 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -58,6 +57,7 @@
             this.btnGenerate = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
@@ -74,7 +74,7 @@
             this.reportsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1125, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1116, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -140,7 +140,7 @@
             this.btnBrowse.FlatAppearance.BorderSize = 0;
             this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBrowse.Location = new System.Drawing.Point(21, 155);
+            this.btnBrowse.Location = new System.Drawing.Point(25, 27);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 50);
             this.btnBrowse.TabIndex = 1;
@@ -151,7 +151,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Location = new System.Drawing.Point(37, 245);
+            this.dateTimePicker1.Location = new System.Drawing.Point(385, 53);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(297, 22);
             this.dateTimePicker1.TabIndex = 4;
@@ -160,7 +160,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(20, 219);
+            this.label1.Location = new System.Drawing.Point(382, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 16);
             this.label1.TabIndex = 5;
@@ -170,7 +170,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(99, 156);
+            this.label3.Location = new System.Drawing.Point(103, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 16);
             this.label3.TabIndex = 7;
@@ -179,7 +179,7 @@
             // txtDrNumber
             // 
             this.txtDrNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDrNumber.Location = new System.Drawing.Point(190, 153);
+            this.txtDrNumber.Location = new System.Drawing.Point(194, 25);
             this.txtDrNumber.Name = "txtDrNumber";
             this.txtDrNumber.Size = new System.Drawing.Size(100, 22);
             this.txtDrNumber.TabIndex = 8;
@@ -188,7 +188,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(99, 187);
+            this.label4.Location = new System.Drawing.Point(103, 59);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 15);
             this.label4.TabIndex = 9;
@@ -197,22 +197,26 @@
             // txtPackNumber
             // 
             this.txtPackNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPackNumber.Location = new System.Drawing.Point(190, 184);
+            this.txtPackNumber.Location = new System.Drawing.Point(194, 56);
             this.txtPackNumber.Name = "txtPackNumber";
             this.txtPackNumber.Size = new System.Drawing.Size(100, 22);
             this.txtPackNumber.TabIndex = 10;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dgvProducts);
-            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btnGenerate2);
-            this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.btnGenerate);
+            this.groupBox1.Controls.Add(this.btnBrowse);
+            this.groupBox1.Controls.Add(this.txtPackNumber);
+            this.groupBox1.Controls.Add(this.dateTimePicker1);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.txtDrNumber);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 118);
+            this.groupBox1.Location = new System.Drawing.Point(380, 108);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(336, 499);
+            this.groupBox1.Size = new System.Drawing.Size(718, 90);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input Data";
@@ -228,7 +232,7 @@
             this.dgvProducts.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Control;
@@ -238,7 +242,7 @@
             this.dgvProducts.ColumnHeadersVisible = false;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
@@ -246,13 +250,13 @@
             this.dgvProducts.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvProducts.Enabled = false;
             this.dgvProducts.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvProducts.Location = new System.Drawing.Point(15, 334);
+            this.dgvProducts.Location = new System.Drawing.Point(25, 136);
             this.dgvProducts.Name = "dgvProducts";
             this.dgvProducts.ReadOnly = true;
             this.dgvProducts.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Control;
@@ -261,24 +265,14 @@
             this.dgvProducts.RowHeadersVisible = false;
             this.dgvProducts.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvProducts.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgvProducts.Size = new System.Drawing.Size(307, 150);
+            this.dgvProducts.Size = new System.Drawing.Size(301, 324);
             this.dgvProducts.TabIndex = 17;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 313);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 16);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Products :";
             // 
             // btnGenerate2
             // 
             this.btnGenerate2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGenerate2.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerate2.Image")));
-            this.btnGenerate2.Location = new System.Drawing.Point(282, 63);
+            this.btnGenerate2.Location = new System.Drawing.Point(301, 50);
             this.btnGenerate2.Name = "btnGenerate2";
             this.btnGenerate2.Size = new System.Drawing.Size(43, 27);
             this.btnGenerate2.TabIndex = 15;
@@ -291,9 +285,10 @@
             this.groupBox3.Controls.Add(this.cbProvincial);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.cbDirect);
-            this.groupBox3.Location = new System.Drawing.Point(15, 174);
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(12, 474);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(292, 137);
+            this.groupBox3.Size = new System.Drawing.Size(334, 128);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Report";
@@ -302,7 +297,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(28, 73);
+            this.label9.Location = new System.Drawing.Point(29, 72);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(85, 16);
             this.label9.TabIndex = 9;
@@ -312,9 +307,9 @@
             // 
             this.cbProvincial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbProvincial.FormattingEnabled = true;
-            this.cbProvincial.Location = new System.Drawing.Point(30, 94);
+            this.cbProvincial.Location = new System.Drawing.Point(31, 93);
             this.cbProvincial.Name = "cbProvincial";
-            this.cbProvincial.Size = new System.Drawing.Size(234, 24);
+            this.cbProvincial.Size = new System.Drawing.Size(250, 24);
             this.cbProvincial.TabIndex = 8;
             this.cbProvincial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbProvincial_KeyPress);
             // 
@@ -322,7 +317,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(28, 25);
+            this.label8.Location = new System.Drawing.Point(29, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(57, 16);
             this.label8.TabIndex = 7;
@@ -332,9 +327,9 @@
             // 
             this.cbDirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbDirect.FormattingEnabled = true;
-            this.cbDirect.Location = new System.Drawing.Point(31, 44);
+            this.cbDirect.Location = new System.Drawing.Point(32, 43);
             this.cbDirect.Name = "cbDirect";
-            this.cbDirect.Size = new System.Drawing.Size(234, 24);
+            this.cbDirect.Size = new System.Drawing.Size(249, 24);
             this.cbDirect.TabIndex = 0;
             this.cbDirect.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbDirect_KeyPress);
             // 
@@ -342,7 +337,7 @@
             // 
             this.btnGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGenerate.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerate.Image")));
-            this.btnGenerate.Location = new System.Drawing.Point(282, 34);
+            this.btnGenerate.Location = new System.Drawing.Point(301, 21);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(43, 27);
             this.btnGenerate.TabIndex = 13;
@@ -353,9 +348,9 @@
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(354, 127);
+            this.dataGridView1.Location = new System.Drawing.Point(382, 204);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(757, 479);
+            this.dataGridView1.Size = new System.Drawing.Size(718, 399);
             this.dataGridView1.TabIndex = 12;
             this.dataGridView1.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
             // 
@@ -369,22 +364,28 @@
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(12, 116);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(334, 356);
+            this.groupBox2.TabIndex = 18;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Product List";
+            // 
             // DeliveryReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1125, 620);
+            this.ClientSize = new System.Drawing.Size(1116, 620);
+            this.Controls.Add(this.dgvProducts);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.txtPackNumber);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtDrNumber);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DeliveryReport";
@@ -435,6 +436,6 @@
         private System.Windows.Forms.Button btnGenerate2;
         private System.Windows.Forms.ToolStripMenuItem pToolStripMenuItem;
         private System.Windows.Forms.DataGridView dgvProducts;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

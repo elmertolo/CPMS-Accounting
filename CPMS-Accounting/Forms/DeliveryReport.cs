@@ -838,6 +838,11 @@ namespace CPMS_Accounting
             vp.Show();
         }
 
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private bool isValidateGeneration()
         {
             try
@@ -897,7 +902,13 @@ namespace CPMS_Accounting
 
 
             dgvProducts.DataSource = dt;
+            if(dgvProducts.Rows.Count > 6)
+            {
+                dgvProducts.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Bold);
+            }
+            else
             dgvProducts.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
+
             dgvProducts.Columns[0].Width = 230;
 
             //for (int i = 0; i < productList.Count; i++)
