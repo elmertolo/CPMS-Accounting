@@ -44,7 +44,7 @@ namespace CPMS_Accounting
         string errorMessage = "";
         int AremainingBalance = 0;
         int BremainingBalance = 0;
-        int MCremainingBalance = 0;
+   //     int MCremainingBalance = 0;
         TextBox tb = new TextBox();
         List<string> chkType = new List<string>();
         Label lb = new Label();
@@ -1027,7 +1027,7 @@ namespace CPMS_Accounting
             OleDbDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                _total = int.Parse(myReader.GetString(0));
+                _total = int.Parse(myReader[0].ToString());
             }
             myReader.Close();
             con.Close();

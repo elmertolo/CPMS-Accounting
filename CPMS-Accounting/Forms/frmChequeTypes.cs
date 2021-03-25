@@ -68,19 +68,21 @@ namespace CPMS_Accounting.Forms
             dt.Columns.Add("Description");
             dt.Columns.Add("Date Modified");
             dt.Columns.Add("Product Name");
+            dt.Columns.Add("CodeSeq");
 
             listofCheques.ForEach(x =>
             {
-                dt.Rows.Add(new object[] { x.Type, x.ChequeName, x.Description, x.DateModified.ToString("yyyy-MM-dd"), x.ProductName });
+                dt.Rows.Add(new object[] { x.Type, x.ChequeName, x.Description, x.DateModified.ToString("yyyy-MM-dd"), x.ProductName, x.ProductCode });
             });
 
             DgvCheques.DataSource = dt;
             ProcessServices.bg_dtg(DgvCheques);
             DgvCheques.Columns[0].Width = 50;
-            DgvCheques.Columns[1].Width = 150;
+            DgvCheques.Columns[1].Width = 200;
             DgvCheques.Columns[2].Width = 200;
             DgvCheques.Columns[3].Width = 100;
             DgvCheques.Columns[4].Width = 120;
+            DgvCheques.Columns[5].Visible = false;
 
 
         }
@@ -205,12 +207,13 @@ namespace CPMS_Accounting.Forms
             int rowindex = DgvCheques.CurrentCell.RowIndex;
             int columnindex = DgvCheques.CurrentCell.ColumnIndex;
 
-            // student.Stud_ID = int.Parse(dtgList.Rows[rowindex].Cells[columnindex].Value.ToString());
 
+            
             txtType.Text = DgvCheques.Rows[rowindex].Cells[0].Value.ToString();
             txtCheckName.Text = DgvCheques.Rows[rowindex].Cells[1].Value.ToString();
             txtDescription.Text = DgvCheques.Rows[rowindex].Cells[2].Value.ToString();
             cmbProducts.Text = DgvCheques.Rows[rowindex].Cells[4].Value.ToString();
+            pCode = int.Parse(DgvCheques.Rows[rowindex].Cells[5].Value.ToString());
         }
 
         private void txtType_KeyPress(object sender, KeyPressEventArgs e)

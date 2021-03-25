@@ -159,7 +159,7 @@ namespace CPMS_Accounting.Forms
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(568, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(754, 28);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -213,7 +213,7 @@ namespace CPMS_Accounting.Forms
             this.DgvCheques.Location = new System.Drawing.Point(12, 256);
             this.DgvCheques.Name = "DgvCheques";
             this.DgvCheques.ReadOnly = true;
-            this.DgvCheques.Size = new System.Drawing.Size(538, 211);
+            this.DgvCheques.Size = new System.Drawing.Size(730, 211);
             this.DgvCheques.TabIndex = 3;
             this.DgvCheques.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCheques_CellClick);
             // 
@@ -222,7 +222,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 27);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(590, 63);
+            this.pictureBox1.Size = new System.Drawing.Size(765, 63);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
@@ -231,7 +231,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(568, 485);
+            this.ClientSize = new System.Drawing.Size(754, 485);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.DgvCheques);
             this.Controls.Add(this.menuStrip1);
