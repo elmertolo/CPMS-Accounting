@@ -309,11 +309,8 @@ namespace CPMS_Accounting.Procedures
                         " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.CheckType.ToString() + "'" +
                         " and location = '" + item.Location + "'" +
-<<<<<<< HEAD
                         " and chequename = '" + item.checkName.Replace("'","''") + "';";
-=======
-                        " and chequename = '" + item.CheckName + "';";
->>>>>>> 8ecfe733d21d184036ae09d6cf241b8926c98cc3
+
                     }
                     else
                     {
@@ -324,19 +321,14 @@ namespace CPMS_Accounting.Procedures
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
                         "Salesinvoicedate = '" + gSalesInvoiceFinished.SalesInvoiceDateTime.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
-<<<<<<< HEAD
+
                         " where drnumber in(" + item.drList.ToString() +
                         ") and batch = '" + item.Batch + "'" +
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.checkType.ToString() + "'" +
                         " and chequename = '" + item.checkName.Replace("'","''") + "';";
-=======
-                        " where drnumber in(" + item.DRList.ToString() +
-                        ") and batch = '" + item.BatchName + "'" +
-                        " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
-                        " and chktype = '" + item.CheckType.ToString() + "'" +
-                        " and chequename = '" + item.CheckName + "';";
->>>>>>> 8ecfe733d21d184036ae09d6cf241b8926c98cc3
+
+
                     }
 
 
