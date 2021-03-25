@@ -592,7 +592,7 @@ namespace CPMS_Accounting.Procedures
                 DBConnect();
                 Sql = "SELECT DRNumber, PackNumber, BRSTN, ChkType, BranchName, COUNT(BRSTN)," +
                      "MIN(StartingSerial), MAX(EndingSerial),ChequeName, Batch,username,BranchCode,OldBranchCode,location,PurchaseOrderNumber,Bank,Address2,Address3,Address4," +
-                     "Name1,Name2,AccountNo FROM " +
+                     "Name1,Name2,AccountNo,DeliveryToBrstn,DeliveryToBranch,AttentionTo FROM " +
                      gClient.DataBaseName + " WHERE  Batch = '" + _batch.TrimEnd() + "' GROUP BY DRNumber, BRSTN, ChkType, BranchName," +
                      "ChequeName ,Batch ORDER BY DRNumber, PackNumber;";
 
@@ -623,7 +623,9 @@ namespace CPMS_Accounting.Procedures
                     order.Name1 = !myReader.IsDBNull(19) ? myReader.GetString(19) : "";
                     order.Name2 = !myReader.IsDBNull(20) ? myReader.GetString(20) : "";
                     order.AccountNo = !myReader.IsDBNull(21) ? myReader.GetString(21) : "";
-
+                    order.DeliveryToBrstn = !myReader.IsDBNull(22) ? myReader.GetString(22) : "";
+                    order.DeliveryToBranch = !myReader.IsDBNull(23) ? myReader.GetString(23) : "";
+                    order.AttentionTo = !myReader.IsDBNull(24) ? myReader.GetString(24) : "";
 
                     list.Add(order);
                 }
@@ -646,14 +648,14 @@ namespace CPMS_Accounting.Procedures
                 //    }
                 //});
 
-                string concatDA = ConcatDRNumbers(list[0].Batch, "A", "Direct");
-                string concatDB = ConcatDRNumbers(list[0].Batch, "B", "Direct");
-                string concatPA = ConcatDRNumbers(list[0].Batch, "A", "Provincial");
-                string concatPB = ConcatDRNumbers(list[0].Batch, "B", "Provincial");
-                string concatECD = ConcatDRNumbers(list[0].Batch, "D", "Direct");
-                string concatECP = ConcatDRNumbers(list[0].Batch, "D", "Provincial");
-                string concatMCD = ConcatDRNumbers(list[0].Batch, "C", "Direct");
-                string concatMCP = ConcatDRNumbers(list[0].Batch, "C", "Provincial");
+                //string concatDA = ConcatDRNumbers(list[0].Batch, "A", "Direct");
+                //string concatDB = ConcatDRNumbers(list[0].Batch, "B", "Direct");
+                //string concatPA = ConcatDRNumbers(list[0].Batch, "A", "Provincial");
+                //string concatPB = ConcatDRNumbers(list[0].Batch, "B", "Provincial");
+                //string concatECD = ConcatDRNumbers(list[0].Batch, "D", "Direct");
+                //string concatECP = ConcatDRNumbers(list[0].Batch, "D", "Provincial");
+                //string concatMCD = ConcatDRNumbers(list[0].Batch, "C", "Direct");
+                //string concatMCP = ConcatDRNumbers(list[0].Batch, "C", "Provincial");
                 ////}
 
                 for (int i = 0; i < list.Count; i++)
@@ -693,20 +695,36 @@ namespace CPMS_Accounting.Procedures
                         concat = ConcatDRNumbers(list[i].Batch, list[i].ChkType, list[i].Location);
                     }
 
-
-                    
+                    var TotalA = list.Where(x => x.ChkType == "A");
+                    var TotalB = list.Where(x => x.ChkType == "B");
+                    var TotalC = list.Where(x => x.ChkType == "C");
+                    var TotalD = list.Where(x => x.ChkType == "D");
                     DBConnect();
+
+                    //Original Script
+                    //string sql2 = "Insert into " + gClient.DRTempTable + " (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
+                    //              "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
+                    //              "ConcatinatedDRB,ConcatinatedDRC,ConcatinatedDRD,Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,ConcatinatedDRDD,ConcatinatedDRPD)" +
+                    //              " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
+                    //              "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
+                    //              ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'","''") + "','" +
+                    //              list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
+                    //              list[i].Location + "'," + list[i].PONumber + ",'" + concat + "','" + concatDB + "','" + concatPA + "','" + concatPB + "','" +
+                    //              list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") + "','" + list[i].Address3.Replace("'", "''") + "','" +
+                    //              list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") + "','" + list[i].Name2.Replace("'", "''") + "','" +
+                    //              list[i].AccountNo + "','" + concatECD + "','" + concatECP + "');";
                     string sql2 = "Insert into " + gClient.DRTempTable + " (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
                                   "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
-                                  "ConcatinatedDRB,ConcatinatedDRC,ConcatinatedDRD,Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,ConcatinatedDRDD,ConcatinatedDRPD)" +
+                                  "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
                                   " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
                                   "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
-                                  ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'","''") + "','" +
+                                  ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
                                   list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
-                                  list[i].Location + "'," + list[i].PONumber + ",'" + concat + "','" + concatDB + "','" + concatPA + "','" + concatPB + "','" +
-                                  list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") + "','" + list[i].Address3.Replace("'", "''") + "','" +
-                                  list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") + "','" + list[i].Name2.Replace("'", "''") + "','" +
-                                  list[i].AccountNo + "','" + concatECD + "','" + concatECP + "');";
+                                  list[i].Location + "'," + list[i].PONumber + ",'" + concat + "','" + list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") +
+                                  "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") + 
+                                  "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
+                                  "','" + gClient.Description.ToUpper().Replace("'","''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'","''").TrimEnd() + 
+                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
                     MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                 }
@@ -2714,10 +2732,12 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _pCode;
         }
-        public string GetChequeName(string _chkType)
+        public string GetChequeName(string _chkType,string _productName)
         {
             string chequeName = "";
-            Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "'";
+            Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
+                 " inner join " +gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
+            //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2807,5 +2827,6 @@ namespace CPMS_Accounting.Procedures
                 return "";
             }
         }
+
     }
 }

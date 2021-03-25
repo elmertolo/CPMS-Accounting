@@ -37,7 +37,8 @@ namespace CPMS_Accounting
         Int32 pNumber = 0;
         Int64 _dr = 0;
         Main frm;
-        
+
+        List<int> TotalPerChecks = new List<int>();
         int DirectReportStyle = 0;
         int ProvincialReportStyle = 0;
         string errorMessage = "";
@@ -263,7 +264,7 @@ namespace CPMS_Accounting
                     //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
                     //         "CK_NO_B,CK_NO_E FROM " + filePath  + " where CHKTYPE = '" + z + "'";
                             sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                     "CK_NO_B,CK_NO_E,DELIVERTO FROM " + filePath;
+                                     "CK_NO_B,CK_NO_E,DELIVERTO,CHKNAME FROM " + filePath;
                     
                        
                         OleDbCommand cmd = new OleDbCommand(sql, con);
@@ -280,29 +281,32 @@ namespace CPMS_Accounting
                             order.AccountNo = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
                             
                             order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
-
+                     
                             //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                            order.ChequeName = proc.GetChequeName(order.ChkType);
+                    
 
                             order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                             order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
                             order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
-                            order.Quantity = 1;
-                    proc.GetProducts(listofProducts);
-                    listofProducts.ForEach(x =>
-                    {
-                        if (order.ChkType == x.ChkType)
-                        {
-                            order.ProductCode = x.ProductCode;
-                        }
-                    });
-                    CountChkType(order.ChkType);
+                                order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                                order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                                order.Quantity = 1;
+                                proc.GetProducts(listofProducts);
+                                listofProducts.ForEach(x =>
+                                {
+                                    if (order.ChkType == x.ChkType)
+                                    {
+                                        order.ProductCode = x.ProductCode;
+                                    }
+                                });
+                                CountChkType(order.ChequeName);
+                 // TotalPerChecks = GetTotalChecks(order.ChequeName.Substring(0,10));
                     orderList.Add(order);
 
                         }
-            
+                           
                 }
                 else
                 {
@@ -341,8 +345,10 @@ namespace CPMS_Accounting
                             dataGridView1.DataSource = orderList;
                             
                             ProcessServices.bg_dtg(dataGridView1);
-                            Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
-                            
+                //     TotalPerChecks =   DisplayTotal();
+                        //Totalchecks(TotalPerChecks[0].ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                        TotalChecks();
+                        //    MessageBox.Show(TotalPerChecks[0].ToString());
                             //lblTotalA.Text = totalA.Count.ToString();
                             //lblTotalB.Text = totalB.Count.ToString();
                             lblTotalChecks.Text = orderList.Count.ToString();
@@ -355,6 +361,7 @@ namespace CPMS_Accounting
 
 
             //}
+
 
 
 
@@ -418,7 +425,7 @@ namespace CPMS_Accounting
                     order.ChkType = !myReader.IsDBNull(4) ? myReader[4].ToString() : "";
 
                     //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                    order.ChequeName = proc.GetChequeName(order.ChkType);
+                  
                     //order.ChequeName.Replace("'", "''");
                     order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
                     order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
@@ -441,8 +448,8 @@ namespace CPMS_Accounting
                         order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
-
-                        order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+                            order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                            order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
             
                         order.Address2 = branch.Address2.Replace("'", "''");
                         order.Address3 = branch.Address3.Replace("'", "''");
@@ -560,7 +567,7 @@ namespace CPMS_Accounting
                         dataGridView1.DataSource = orderList;
 
                         ProcessServices.bg_dtg(dataGridView1);
-                        Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                     //   Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
                         //lblTotalA.Text = totalA.Count.ToString();
                         //lblTotalB.Text = totalB.Count.ToString();
                         lblTotalChecks.Text = orderList.Count.ToString();
@@ -934,56 +941,110 @@ namespace CPMS_Accounting
             //    this.Controls.Add(mylab2);
             //}
         }
-        private void Totalchecks(string chk, string chkB, string chkC,string chkD,string chkE)
+      //  private void Totalchecks(string chk, string chkB, string chkC,string chkD,string chkE)
+        private void TotalChecks()
         {
+            List<int> Total = DisplayTotal();
 
-            foreach (DataGridViewRow row in dgvProducts.Rows)
+            //foreach (DataGridViewRow row in dgvProducts.Rows)
+            //{
+            //    if (row.Index == 0)
+            //    {
+            //        row.Cells[1].Value = chk;
+            //    }
+            //    if (row.Index == 1)
+            //    {
+            //        row.Cells[1].Value = chkB;
+            //    }
+            //    if (row.Index == 2)
+            //    {
+            //        row.Cells[1].Value = chkC;
+            //    }
+            //    if (row.Index == 3)
+            //    {
+            //        row.Cells[1].Value = chkD;
+            //    }
+            //    if (row.Index == 4)
+            //    {
+            //        row.Cells[1].Value = chkE;
+            //    }
+            //}
+            for (int i = 0; i < dgvProducts.Rows.Count; i++)
             {
-                if (row.Index == 0)
-                {
-                    row.Cells[1].Value = chk;
-                }
-                if (row.Index == 1)
-                {
-                    row.Cells[1].Value = chkB;
-                }
-                if (row.Index == 2)
-                {
-                    row.Cells[1].Value = chkC;
-                }
-                if (row.Index == 3)
-                {
-                    row.Cells[1].Value = chkD;
-                }
-                if (row.Index == 4)
-                {
-                    row.Cells[1].Value = chkE;
-                }
+                if (dgvProducts.Rows[i].Index == i)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i+1)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 2)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 3)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 4)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
             }
 
         }
         private void CountChkType(string chk)
         {
-            if (chk == "A")
+            //for (int i = 0; i < dgvProducts.Rows.Count; i++)
+            //{
+            //    if (chk == dgvProducts.Rows[0].Cells[0].Value.ToString())
+            //    {
+            //        A++;
+            //    }
+            //}
+            if (chk == dgvProducts.Rows[0].Cells[0].Value.ToString())
             {
+              //  dgvProducts.Rows[0].Cells[1].Value += dgvProducts.Rows[0].Cells[1].Value;
                 A++;
             }
-            else if (chk == "B")
+            else if (chk == dgvProducts.Rows[1].Cells[0].Value.ToString())
             {
                 B++;
             }
-            else if (chk == "C")
+            else if (chk == dgvProducts.Rows[2].Cells[0].Value.ToString())
             {
                 C++;
             }
-            else if (chk == "D")
+            else if (chk == dgvProducts.Rows[3].Cells[0].Value.ToString())
             {
                 D++;
             }
-            else if (chk == "E")
+            else if (chk == dgvProducts.Rows[4].Cells[0].Value.ToString())
             {
-                D++;
+                E++;
             }
+        }
+        private int GetTotalChecks(string _chkName)
+        {
+            int _total = 0;
+            string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
+         string   filePath = Path.GetFileNameWithoutExtension(op.FileName);
+            con = new OleDbConnection(ConString);
+            string Sql = "SELECT COUNT(CHKTYPE) FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            OleDbCommand cmd = new OleDbCommand(Sql, con);
+            con.Open();
+            OleDbDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                _total = int.Parse(myReader.GetString(0));
+            }
+            myReader.Close();
+            con.Close();
+            return _total;
+        }
+        private List<int> DisplayTotal()
+        {
+            List<int> list = new List<int>();
+            int _total = 0;
+            List<ChequeTypesModel> listofChkType = new List<ChequeTypesModel>();
+            proc.GetChequeTypes(listofChkType);
+            for (int i = 0; i < listofChkType.Count; i++)
+            {
+               _total =GetTotalChecks(listofChkType[i].ChequeName.Substring(0,listofChkType[i].ChequeName.Length - 6));
+                list.Add(_total);
+            }
+            return list;
         }
     }
 }
