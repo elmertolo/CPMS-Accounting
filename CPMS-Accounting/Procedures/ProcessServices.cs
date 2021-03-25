@@ -2616,8 +2616,7 @@ namespace CPMS_Accounting.Procedures
         }
         public List<ChequeTypesModel> GetChequeTypes(List<ChequeTypesModel> _cheques)
         {
-            Sql = "Select Type, ChequeName, Description, A.DateTimeModified,A.CProductCode, ProductName from " + gClient.ChequeTypeTable + "  A " +
-                " inner join " + gClient.ProductTable  + "  B on A.CProductCode = B.CProductCode ;"  ;
+            Sql = "Select Type, ChequeName, Description, DateTimeModified from " + gClient.ChequeTypeTable ;
             DBConnect();
             cmd = new MySqlCommand(Sql,myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2628,10 +2627,7 @@ namespace CPMS_Accounting.Procedures
                     Type = !reader.IsDBNull(0) ? reader.GetString(0) : "",
                     ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
                     Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
-                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now,
-                    ProductCode = !reader.IsDBNull(4) ? reader.GetInt32(4) : 0,
-                    ProductName = !reader.IsDBNull(5) ? reader.GetString(5) : ""
-
+                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now
                 };
                 _cheques.Add(c);
             }
