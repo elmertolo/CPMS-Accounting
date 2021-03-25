@@ -29,9 +29,12 @@ namespace CPMS_Accounting.Models
         public string BranchesTable { get; set; } // Added By ET Jan. 27, 2021
         public string CancelledTable { get; set; }  // Added By ET Feb. 05, 2021
         public string ChequeTypeTable { get; set; } // Addred By ET Feb. 15, 2021
-        public string  ProductTable { get; set; } // Addred By ET Feb. 15, 2021
+        public string ProductTable { get; set; } // Addred By ET Feb. 15, 2021
         public string StickerTable { get; set; } // Addred By ET Feb. 22, 2021
         public string PackingList { get; set; } // Addred By ET March 12, 2021
+
+        //03192021 Enhancement - PNB Reprint
+        public string SalesInvoiceFinishedDetailTable {get;set;}
 
     }
 }

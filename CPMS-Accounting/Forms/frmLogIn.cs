@@ -167,6 +167,11 @@ namespace CPMS_Accounting
                     gClient.ProductTable = row.Field<string>("ShortName").ToLower() + "_tChequeproducts" ?? "";
                     gClient.StickerTable = "tsticker" ?? "";
                     gClient.PackingList = "tpackinglist" ?? "";
+
+                    //03192021 Enhancement - Sales Invoice Reprint
+                    gClient.SalesInvoiceFinishedDetailTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_finished_detail" ?? "";
+
+
                 }
             }
 

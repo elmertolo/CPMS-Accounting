@@ -1460,11 +1460,11 @@ namespace CPMS_Accounting.Procedures
             {
                 SalesInvoiceModel sales = new SalesInvoiceModel
                 {
-                    salesInvoiceDate = !reader.IsDBNull(0) ? reader.GetDateTime(0) : DateTime.Now,
-                    salesInvoiceNumber = !reader.IsDBNull(1) ? reader.GetDouble(1) : 0,
+                    SalesInvoiceDate = !reader.IsDBNull(0) ? reader.GetDateTime(0) : DateTime.Now,
+                    SalesInvoiceNumber = !reader.IsDBNull(1) ? reader.GetDouble(1) : 0,
                     Quantity = !reader.IsDBNull(2) ? reader.GetInt32(2) : 0,
-                    checkType = !reader.IsDBNull(3) ? reader.GetString(3) : "",
-                    checkName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                    Checktype = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                    CheckName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
                     Batch = !reader.IsDBNull(5) ? reader.GetString(5) : ""
 
 

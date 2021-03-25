@@ -136,13 +136,12 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public string GetDRList(string batch, string checktype, DateTime deliveryDate, string location)
+        //public string GetDRList(string batch, string checktype, DateTime deliveryDate, string location)
+        public string GetDRList(SalesInvoiceFinishedDetailModel siFinishedDetail)
         {
            
             try
             {
-
-
                 DataTable dt = new DataTable();
                 string sql;
 
@@ -151,18 +150,18 @@ namespace CPMS_Accounting.Procedures
                 {
                     sql = "select group_concat(distinct(drnumber) separator ', ') from " + gClient.DataBaseName + " " +
                     "WHERE salesinvoice is null " +
-                    "and batch = '" + batch + "' " +
-                    "and chktype = '" + checktype + "' " +
-                    "and location = '" + location + "' " +
-                    "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
+                    "and batch = '" + siFinishedDetail.BatchName + "' " +
+                    "and chktype = '" + siFinishedDetail.CheckType + "' " +
+                    "and location = '" + siFinishedDetail.Location + "' " +
+                    "and deliverydate = '" + siFinishedDetail.DeliveryDate.ToString("yyyy-MM-dd") + "';";
                 }
                 else
                 {
                    sql = "select group_concat(distinct(drnumber) separator ', ') from " + gClient.DataBaseName + " " +
                    "WHERE salesinvoice is null " +
-                   "and batch = '" + batch + "' " +
-                   "and chktype = '" + checktype + "' " +
-                   "and deliverydate = '" + deliveryDate.ToString("yyyy-MM-dd") + "';";
+                   "and batch = '" + siFinishedDetail.BatchName + "' " +
+                   "and chktype = '" + siFinishedDetail.CheckType + "' " +
+                   "and deliverydate = '" + siFinishedDetail.DeliveryDate.ToString("yyyy-MM-dd") + "';";
                 }
 
                 
@@ -188,7 +187,7 @@ namespace CPMS_Accounting.Procedures
             }
         }
         
-        public bool UpdateTempTableSI(List<SalesInvoiceModel> SalesInvoiceList)
+        public bool UpdateTempTableSI(List<SalesInvoiceFinishedDetailModel> SalesInvoiceList)
         {
             try
             {
@@ -200,9 +199,9 @@ namespace CPMS_Accounting.Procedures
                         sql = "insert into " + gClient.SalesInvoiceTempTable + " " +
                               "(Quantity, Batch, CheckName, DRList) values " +
                               "(" + row.Quantity + "," +
-                              " '" + row.Batch.ToString() + "'," +
-                              " '" + row.checkName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
-                              " '" + row.drList.ToString() + "'" +
+                              " '" + row.BatchName.ToString() + "'," +
+                              " '" + row.CheckName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                              " '" + row.DRList.ToString() + "'" +
                               ");";
                     }
                     else
@@ -212,9 +211,9 @@ namespace CPMS_Accounting.Procedures
                         sql = "insert into " + gClient.SalesInvoiceTempTable + " " +
                                "(Quantity, Batch, CheckName, DRList, Location) values " +
                                "(" + row.Quantity + "," +
-                               " '" + row.Batch.ToString() + "'," +
-                               " '" + row.checkName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
-                               " '" + row.drList.ToString() + "'," +
+                               " '" + row.BatchName.ToString() + "'," +
+                               " '" + row.CheckName.Replace("'", "''").ToString() + "'," + //Added Replace method for Checkname to accept data with (') updated by ET March 16, 2021
+                               " '" + row.DRList.ToString() + "'," +
                                " '" + row.Location.ToString() + "'" +
                                ");";
                     }
@@ -285,7 +284,7 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public bool UpdateSalesInvoiceHistory(List<SalesInvoiceModel> siListToProcess)
+        public bool UpdateSalesInvoiceHistory(List<SalesInvoiceFinishedDetailModel> siListToProcess)
         {
             try
             {
@@ -293,47 +292,112 @@ namespace CPMS_Accounting.Procedures
                 MySqlCommand cmd;
                 foreach (var item in siListToProcess)
                 {
-                    string sql;
+                    string updateHistory;
+                    string updateFinishedDetails;
                     //PNB Update. Added Purchase Order Field upon updating
                     if (gClient.ShortName == "PNB")
                     {
                         //Update History Table
-                         sql = "update " + gClient.DataBaseName + " set " +
-                        "unitprice = " + item.unitPrice + ", " +
+                        updateHistory = "update " + gClient.DataBaseName + " set " +
+                        "unitprice = " + item.UnitPrice + ", " +
                         "purchaseordernumber = " + item.PurchaseOrderNumber + ", " +
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
-                        "Salesinvoicedate = '" + item.salesInvoiceDate.ToString("yyyy-MM-dd") + "', " +
+                        "Salesinvoicedate = '" + gSalesInvoiceFinished.SalesInvoiceDateTime.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
-                        " where drnumber in(" + item.drList.ToString() +
-                        ") and batch = '" + item.Batch + "'" +
-                        " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
-                        " and chktype = '" + item.checkType.ToString() + "'" +
+                        " where drnumber in(" + item.DRList.ToString() +
+                        ") and batch = '" + item.BatchName + "'" +
+                        " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
+                        " and chktype = '" + item.CheckType.ToString() + "'" +
                         " and location = '" + item.Location + "'" +
+<<<<<<< HEAD
                         " and chequename = '" + item.checkName.Replace("'","''") + "';";
+=======
+                        " and chequename = '" + item.CheckName + "';";
+>>>>>>> 8ecfe733d21d184036ae09d6cf241b8926c98cc3
                     }
                     else
                     {
                         //Update History Table
-                        sql = "update " + gClient.DataBaseName + " set " +
-                        "unitprice = " + item.unitPrice + ", " +
+
+                        updateHistory = "update " + gClient.DataBaseName + " set " +
+                        "unitprice = " + item.UnitPrice + ", " +
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
-                        "Salesinvoicedate = '" + item.salesInvoiceDate.ToString("yyyy-MM-dd") + "', " +
+                        "Salesinvoicedate = '" + gSalesInvoiceFinished.SalesInvoiceDateTime.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
+<<<<<<< HEAD
                         " where drnumber in(" + item.drList.ToString() +
                         ") and batch = '" + item.Batch + "'" +
                         " and deliverydate = '" + item.deliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.checkType.ToString() + "'" +
                         " and chequename = '" + item.checkName.Replace("'","''") + "';";
+=======
+                        " where drnumber in(" + item.DRList.ToString() +
+                        ") and batch = '" + item.BatchName + "'" +
+                        " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
+                        " and chktype = '" + item.CheckType.ToString() + "'" +
+                        " and chequename = '" + item.CheckName + "';";
+>>>>>>> 8ecfe733d21d184036ae09d6cf241b8926c98cc3
                     }
 
-                    cmd = new MySqlCommand(sql, con);
+
+                    cmd = new MySqlCommand(updateHistory, con);
                     rowNumbersAffected = cmd.ExecuteNonQuery();
+
+
+                    //03192021 Enhancement - Sales Invoice Reprint
+                    //insert data to FinishedDetails table
+                    updateFinishedDetails = "insert into " + gClient.SalesInvoiceFinishedDetailTable + " (" +
+                    "ProductCode, " +
+                    "salesinvoicenumber, " +
+                    "PurchaseOrderNumber, " +
+                    "PurchaseOrderBalance, " +
+                    "BatchName, " +
+                    "Quantity, " +
+                    "UOM, " +
+                    "CheckName, " +
+                    "Location, " +
+                    "DRList, " +
+                    "LineTotalAmount, " +
+                    "UnitPrice, " +
+                    "CheckType, " +
+                    "DeliveryDate, " +
+                    "SalesInvoiceDate) " +
+                    "Values ('" +
+                    item.ProductCode + "', " +
+                    gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
+                    item.PurchaseOrderNumber + ", " +
+                    item.PurchaseOrderBalance + ", '" +
+                    item.BatchName + "', " +
+                    item.Quantity + ", '" +
+                    item.UOM + "', '" +
+                    item.CheckName + "', '" +
+                    item.Location + "', '" +
+                    item.DRList + "', " +
+                    item.LineTotalAmount + ", " +
+                    item.UnitPrice + ", '" +
+                    item.CheckType + "', '" +
+                    item.DeliveryDate.ToString("yyyy-MM-dd HH:mm") + "', '" +
+                    gSalesInvoiceFinished.SalesInvoiceDateTime.ToString("yyyy-MM-dd HH:mm") + "');";
+
+
+                    cmd = new MySqlCommand(updateFinishedDetails, con);
+                    rowNumbersAffected = cmd.ExecuteNonQuery();
+
+
 
                 }
 
-                //Insert to SalesInvoice Finished
-                string sql2 = "insert into " + gClient.SalesInvoiceFinishedTable + " " +
-                "(ClientCode, SalesInvoiceNumber, salesInvoiceDateTime, GeneratedBy, CheckedBy, ApprovedBy, TotalAmount, VatAmount, NetOfVatAmount) " +
+                //Insert Data to SalesInvoice Finished
+                string updateFinishedTransaction = "insert into " + gClient.SalesInvoiceFinishedTable + " " +
+                "(ClientCode, " +
+                "SalesInvoiceNumber, " +
+                "salesInvoiceDateTime, " +
+                "GeneratedBy, " +
+                "CheckedBy, " +
+                "ApprovedBy, " +
+                "TotalAmount, " +
+                "VatAmount, " +
+                "NetOfVatAmount) " +
                 "Values ('" +
                 gSalesInvoiceFinished.ClientCode + "', " +
                 gSalesInvoiceFinished.SalesInvoiceNumber + ", '" +
@@ -345,7 +409,7 @@ namespace CPMS_Accounting.Procedures
                 gSalesInvoiceFinished.VatAmount + ", " +
                 gSalesInvoiceFinished.NetOfVatAmount + ");";
 
-                cmd = new MySqlCommand(sql2, con);
+                cmd = new MySqlCommand(updateFinishedTransaction, con);
                 rowNumbersAffected = cmd.ExecuteNonQuery();
 
                 return true;
@@ -555,24 +619,46 @@ namespace CPMS_Accounting.Procedures
                 
                 if (gClient.ShortName == "PNB")
                 {
+                    //sql =
+                    //"select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList , " +
+                    //"ChkType, deliverydate, UnitPrice, " +
+                    //"count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate, location " +
+                    //"from " + gClient.DataBaseName + " " +
+                    //"where salesinvoice = " + salesInvoiceNumber + " " +
+                    //"group by batch, CheckName, ChkType, location order by Batch;";
+
+                    //Commented OUt Above line of codes. Changed Table where old record to fetch data
+                    //03192021 Enhancement - Sales Invoice Reprint
                     sql =
-                    "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList , " +
-                    "ChkType, deliverydate, UnitPrice, " +
-                    "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate, location " +
-                    "from " + gClient.DataBaseName + " " +
-                    "where salesinvoice = " + salesInvoiceNumber + " " +
-                    "group by batch, CheckName, ChkType, location order by Batch;";
+                    "select Quantity, BatchName, CheckName, DRList, " +
+                    " Checktype, DeliveryDate, SalesInvoiceDate, UnitPrice, " +
+                    "LineTotalAmount, PurchaseOrderNumber, PurchaseOrderBalance, location " +
+                    "from " + gClient.SalesInvoiceFinishedDetailTable + " " +
+                    "where salesinvoicenumber = " + salesInvoiceNumber + " " +
+                    "group by BatchName, CheckName, CheckType, location order by BatchName;";
 
                 }
                 else
                 {
+
+                    //sql =
+                    //"select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList , " +
+                    //"ChkType, deliverydate, UnitPrice, " +
+                    //"count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate " +
+                    //"from " + gClient.DataBaseName + " " +
+                    //"where salesinvoice = " + salesInvoiceNumber + " " +
+                    //"group by batch, CheckName, ChkType order by Batch;";
+
+
+                    //Commented OUt Above line of codes. Changed Table where old record to fetch data
+                    //03192021 Enhancement - Sales Invoice Reprint
                     sql =
-                    "select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList, " +
-                    "ChkType, deliverydate, Unitprice, " +
-                    "count(ChkType) * UnitPrice as LineTotalAmount, SalesInvoiceDate " +
-                    "from " + gClient.DataBaseName + " " +
-                    "where salesinvoice = " + salesInvoiceNumber + " " +
-                    "group by batch, CheckName, ChkType order by Batch;";
+                    "select Quantity, BatchName, CheckName, DRList, " +
+                    "Checktype, DeliveryDate, SalesInvoiceDate, UnitPrice, " +
+                    "LineTotalAmount " +
+                    "from " + gClient.SalesInvoiceFinishedDetailTable + " " +
+                    "where salesinvoicenumber = " + salesInvoiceNumber + " " +
+                    "group by BatchName, CheckName, CheckType order by BatchName;";
 
                 }
 
@@ -660,7 +746,8 @@ namespace CPMS_Accounting.Procedures
         }
 
         //PNB
-        public bool IsQuantityOnHandSufficient(double toProcessQuantity, string productCode, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceModel> salesInvoiceList)
+        //public bool IsQuantityOnHandSufficient(double toProcessQuantity, string productCode, int purchaseOrderNumber, ref double remainingQuantity, ref List<SalesInvoiceFinishedDetailModel> salesInvoiceList)
+        public bool IsQuantityOnHandSufficient(SalesInvoiceFinishedDetailModel siDetails, ref int remainingQuantity, ref List<SalesInvoiceFinishedDetailModel> salesInvoiceList)
         {
             
             try
@@ -669,21 +756,21 @@ namespace CPMS_Accounting.Procedures
                 //Check Onhand quantity first. cancel update if onhand quantity is insufficient
                 //double onhandQuantity = double.Parse(SeekReturn("select (quantityonhand) from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
-                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where productcode = '" + productCode + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
-                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where productcode = '" + productCode + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                int onhandQuantity = Convert.ToInt32(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where productcode = '" + siDetails.ProductCode + "' and purchaseorderno = " + siDetails.PurchaseOrderNumber + "", 0));
+                int processedQuantity = Convert.ToInt32(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where productcode = '" + siDetails.ProductCode + "' and purchaseordernumber = " + siDetails.PurchaseOrderNumber + "", 0));
                 int totalPunchedItemQuantity = 0;
 
                 //Check and add Punched Item on grid
 
                 foreach (var item in salesInvoiceList)
                 {
-                    if (item.ProductCode == productCode)
+                    if (item.ProductCode == siDetails.ProductCode)
                     {
                         totalPunchedItemQuantity += item.Quantity;
                     }
                 }
                 
-                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - toProcessQuantity;
+                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - siDetails.Quantity;
 
                 if (remainingQuantity < 0)
                 {

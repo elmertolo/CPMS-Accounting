@@ -146,7 +146,6 @@ namespace CPMS_Accounting.Procedures
             else
             {
                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName + "_" + reportType + ".rpt";
-
             }
 
             if (!File.Exists(reportPath))
@@ -160,7 +159,7 @@ namespace CPMS_Accounting.Procedures
 
         }
 
-        public static bool BatchRecordHasDuplicate(SalesInvoiceModel line, List<SalesInvoiceModel> salesInvoiceList)
+        public static bool BatchRecordHasDuplicate(SalesInvoiceFinishedDetailModel line, List<SalesInvoiceFinishedDetailModel> salesInvoiceList)
         {
 
             //PNB Added Location
@@ -169,10 +168,10 @@ namespace CPMS_Accounting.Procedures
                 foreach (var item in salesInvoiceList)
                 {
                     if (line.Quantity == item.Quantity &&
-                        line.Batch == item.Batch &&
-                        line.checkName == item.checkName &&
-                        line.deliveryDate == item.deliveryDate &&
-                        line.checkType == item.checkType &&
+                        line.BatchName == item.BatchName &&
+                        line.CheckName == item.CheckName &&
+                        line.DeliveryDate == item.DeliveryDate &&
+                        line.CheckType == item.CheckType &&
                         line.Location == item.Location)
 
                     {
@@ -186,10 +185,10 @@ namespace CPMS_Accounting.Procedures
                 foreach (var item in salesInvoiceList)
                 {
                     if (line.Quantity == item.Quantity &&
-                        line.Batch == item.Batch &&
-                        line.checkName == item.checkName &&
-                        line.deliveryDate == item.deliveryDate &&
-                        line.checkType == item.checkType)
+                        line.BatchName == item.BatchName &&
+                        line.CheckName == item.CheckName &&
+                        line.DeliveryDate == item.DeliveryDate &&
+                        line.CheckType == item.CheckType)
                     {
                         return true;
                     }

@@ -272,6 +272,7 @@
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\PurchaseOrderModel.cs" />
     <Compile Include="Models\ReportRequirement.cs" />
+    <Compile Include="Models\SalesInvoiceFinishedDetailModel.cs" />
     <Compile Include="Models\SalesInvoiceFinishedModel.cs" />
     <Compile Include="Models\SalesInvoiceModel.cs" />
     <Compile Include="Models\TempModel.cs" />
