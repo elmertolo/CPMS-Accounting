@@ -2732,16 +2732,16 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _pCode;
         }
-        public string GetChequeName(string _chkType,string _productName)
+        public string GetChequeName(string _chkType, string _productName)
         {
             string chequeName = "";
             Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
-                 " inner join " +gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
+                 " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
             //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
             }
@@ -2749,6 +2749,23 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return chequeName;
         }
+        //public string GetChequeName(string _chkType)
+        //{
+        //    string chequeName = "";
+        //    Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
+        //         " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "';";
+        //    //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
+        //    DBConnect();
+        //    cmd = new MySqlCommand(Sql, myConnect);
+        //    MySqlDataReader reader = cmd.ExecuteReader();
+        //    while (reader.Read())
+        //    {
+        //        chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+        //    }
+        //    reader.Close();
+        //    DBClosed();
+        //    return chequeName;
+        //}
         public string GetPackingListwithSticker(string _batch, List<TempModel> list)
         {
             try

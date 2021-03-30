@@ -445,7 +445,7 @@ namespace CPMS_Accounting
                         order.Block = !myReader.IsDBNull(12) ? int.Parse(myReader[12].ToString()) : 0;
                         
                         order.Segment = !myReader.IsDBNull(13) ? int.Parse(myReader[13].ToString()) : 0;
-                        order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
+                        order.ProductName = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
                             order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
@@ -1010,10 +1010,10 @@ namespace CPMS_Accounting
             {
                 D++;
             }
-            else if (chk == dgvProducts.Rows[4].Cells[0].Value.ToString())
-            {
-                E++;
-            }
+            //else if (chk == dgvProducts.Rows[4].Cells[0].Value.ToString())
+            //{
+            //    E++;
+            //}
         }
         private int GetTotalChecks(string _chkName)
         {
