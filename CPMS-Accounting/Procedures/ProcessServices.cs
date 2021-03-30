@@ -2863,6 +2863,90 @@ namespace CPMS_Accounting.Procedures
                 return "";
             }
         }
+        public List<TempModel> fGetDrDirect(string _batch, List<TempModel> list)
+        {
+            try
+            {
+                DBConnect();
+                Sql = "SELECT DRNumber, PackNumber, BRSTN, ChkType, BranchName, COUNT(BRSTN)," +
+                     "MIN(StartingSerial), MAX(EndingSerial),ChequeName, Batch,username,BranchCode,OldBranchCode,location,PurchaseOrderNumber,Bank,Address2,Address3,Address4," +
+                     "Name1,Name2,AccountNo,DeliveryToBrstn,DeliveryToBranch,AttentionTo FROM " +
+                     gClient.DataBaseName + " WHERE  Batch = '" + _batch.TrimEnd() + "' and Location = 'Direct' GROUP BY DRNumber, BRSTN, ChkType, BranchName," +
+                     "ChequeName ,Batch ORDER BY DRNumber, PackNumber;";
+
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
+                {
+                    TempModel order = new TempModel();
+                    order.DrNumber = !myReader.IsDBNull(0) ? myReader.GetString(0) : "";
+                    order.PackNumber = !myReader.IsDBNull(1) ? myReader.GetString(1) : "";
+                    order.BRSTN = !myReader.IsDBNull(2) ? myReader.GetString(2) : "";
+                    order.ChkType = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
+                    order.BranchName = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
+                    order.Qty = !myReader.IsDBNull(5) ? myReader.GetInt32(5) : 0;
+                    order.StartingSerial = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
+                    order.EndingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
+                    order.ChequeName = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
+                    order.Batch = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
+                    order.username = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                    order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                    order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                    order.Location = !myReader.IsDBNull(13) ? myReader.GetString(13) : "";
+                    order.PONumber = !myReader.IsDBNull(14) ? myReader.GetInt32(14) : 0;
+                    order.BankCode = !myReader.IsDBNull(15) ? myReader.GetString(15) : "";
+                    order.Address2 = !myReader.IsDBNull(16) ? myReader.GetString(16) : "";
+                    order.Address3 = !myReader.IsDBNull(17) ? myReader.GetString(17) : "";
+                    order.Address4 = !myReader.IsDBNull(18) ? myReader.GetString(18) : "";
+                    order.Name1 = !myReader.IsDBNull(19) ? myReader.GetString(19) : "";
+                    order.Name2 = !myReader.IsDBNull(20) ? myReader.GetString(20) : "";
+                    order.AccountNo = !myReader.IsDBNull(21) ? myReader.GetString(21) : "";
+                    order.DeliveryToBrstn = !myReader.IsDBNull(22) ? myReader.GetString(22) : "";
+                    order.DeliveryToBranch = !myReader.IsDBNull(23) ? myReader.GetString(23) : "";
+                    order.AttentionTo = !myReader.IsDBNull(24) ? myReader.GetString(24) : "";
+
+                    list.Add(order);
+                }
+                DBClosed();
+                DBConnect();
+                string sqldel = "Delete from " + gClient.DRTempTable + ";";
+                MySqlCommand comdel = new MySqlCommand(sqldel, myConnect);
+                comdel.ExecuteNonQuery();
+
+                DBClosed();
+                var TotalA = list.Where(x => x.ChkType == "A");
+                var TotalB = list.Where(x => x.ChkType == "B");
+                var TotalC = list.Where(x => x.ChkType == "C");
+                var TotalD = list.Where(x => x.ChkType == "D");
+                for (int i = 0; i < list.Count; i++)
+                {
+
+
+                    string sql2 = "Insert into " + gClient.DRTempTable + " (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
+                                  "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
+                                  "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
+                                  " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
+                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
+                                  ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
+                                  list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
+                                  list[i].Location + "'," + list[i].PONumber + ",'','" + list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") +
+                                  "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") +
+                                  "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
+                                  "','" + gClient.Description.ToUpper().Replace("'", "''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'", "''").TrimEnd() +
+                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
+                    MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                    cmd2.ExecuteNonQuery();
+                }
+                DBClosed();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "GetDRDirectBranches", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+        }
 
     }
 }
