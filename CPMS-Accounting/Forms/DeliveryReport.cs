@@ -569,7 +569,8 @@ namespace CPMS_Accounting
                         dataGridView1.DataSource = orderList;
 
                         ProcessServices.bg_dtg(dataGridView1);
-                     //   Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                        //   Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                        TotalChecks();
                         //lblTotalA.Text = totalA.Count.ToString();
                         //lblTotalB.Text = totalB.Count.ToString();
                         lblTotalChecks.Text = orderList.Count.ToString();
@@ -1023,13 +1024,15 @@ namespace CPMS_Accounting
             string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
          string   filePath = Path.GetFileNameWithoutExtension(op.FileName);
             con = new OleDbConnection(ConString);
-            string Sql = "SELECT COUNT(CHKTYPE) FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            //string Sql = "SELECT COUNT(CHKTYPE) FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            string Sql = "SELECT CHKTYPE FROM " + filePath + " WHERE CHKTYPE = '" + _chkName +"' ";
             OleDbCommand cmd = new OleDbCommand(Sql, con);
             con.Open();
             OleDbDataReader myReader = cmd.ExecuteReader();
             while (myReader.Read())
             {
-                _total = int.Parse(myReader.GetString(0));
+                //_total = int.Parse(myReader.GetString(0));
+                _total++;
             }
             myReader.Close();
             con.Close();
@@ -1043,7 +1046,8 @@ namespace CPMS_Accounting
             proc.GetChequeTypes(listofChkType);
             for (int i = 0; i < listofChkType.Count; i++)
             {
-               _total =GetTotalChecks(listofChkType[i].ChequeName.Substring(0,listofChkType[i].ChequeName.Length - 6));
+                //   _total =GetTotalChecks(listofChkType[i].ChequeName.Substring(0,listofChkType[i].ChequeName.Length - 6));
+                _total = GetTotalChecks(listofChkType[i].Type);
                 list.Add(_total);
             }
             return list;
