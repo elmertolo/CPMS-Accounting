@@ -362,7 +362,7 @@ namespace CPMS_Accounting.Procedures
                     item.BatchName + "', " +
                     item.Quantity + ", '" +
                     item.UOM + "', '" +
-                    item.CheckName + "', '" +
+                    item.CheckName.Replace("'","''") + "', '" + // added Replace Method to Accept single ' for Chequename by ET March 30,2021
                     item.Location + "', '" +
                     item.DRList + "', " +
                     item.LineTotalAmount + ", " +
