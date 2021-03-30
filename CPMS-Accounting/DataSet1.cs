@@ -4,6 +4,10 @@
 
     partial class DataSet1
     {
+        partial class Sticker2DataTable
+        {
+        }
+
         partial class DocStampDataTable
         {
 

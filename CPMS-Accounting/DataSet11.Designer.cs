@@ -1182,6 +1182,8 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnProductType3;
             
+            private global::System.Data.DataColumn columnBranchCode2;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public StickerDataTable() {
@@ -1577,6 +1579,14 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn BranchCode2Column {
+                get {
+                    return this.columnBranchCode2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1657,7 +1667,8 @@ namespace CPMS_Accounting {
                         int Segment3, 
                         string ProductType, 
                         string ProductType2, 
-                        string ProductType3) {
+                        string ProductType3, 
+                        string BranchCode2) {
                 StickerRow rowStickerRow = ((StickerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -1704,7 +1715,8 @@ namespace CPMS_Accounting {
                         Segment3,
                         ProductType,
                         ProductType2,
-                        ProductType3};
+                        ProductType3,
+                        BranchCode2};
                 rowStickerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStickerRow);
                 return rowStickerRow;
@@ -1772,6 +1784,7 @@ namespace CPMS_Accounting {
                 this.columnProductType = base.Columns["ProductType"];
                 this.columnProductType2 = base.Columns["ProductType2"];
                 this.columnProductType3 = base.Columns["ProductType3"];
+                this.columnBranchCode2 = base.Columns["BranchCode2"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1867,6 +1880,8 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnProductType2);
                 this.columnProductType3 = new global::System.Data.DataColumn("ProductType3", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProductType3);
+                this.columnBranchCode2 = new global::System.Data.DataColumn("BranchCode2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode2);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4139,6 +4154,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string BranchCode2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.BranchCode2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode2\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.BranchCode2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableSticker.BatchColumn);
             }
@@ -4675,6 +4706,18 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetProductType3Null() {
                 this[this.tableSticker.ProductType3Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsBranchCode2Null() {
+                return this.IsNull(this.tableSticker.BranchCode2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetBranchCode2Null() {
+                this[this.tableSticker.BranchCode2Column] = global::System.Convert.DBNull;
             }
         }
         
