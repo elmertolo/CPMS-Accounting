@@ -256,18 +256,26 @@ namespace CPMS_Accounting
                     //Read the contents of the file into a stream
                     var fileStream = op.OpenFile();
                     string sql = "";
-                    
-                   
-                    // Checking what table was selected to read the packing file
-                        
 
-                    //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                    //         "CK_NO_B,CK_NO_E FROM " + filePath  + " where CHKTYPE = '" + z + "'";
-                            sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                     "CK_NO_B,CK_NO_E,DELIVERTO,CHKNAME FROM " + filePath;
-                    
-                       
-                        OleDbCommand cmd = new OleDbCommand(sql, con);
+
+                // Checking what table was selected to read the packing file
+
+
+                //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                //         "CK_NO_B,CK_NO_E FROM " + filePath  + " where CHKTYPE = '" + z + "'";
+                if (gClient.ShortName == "RCBC")
+                {
+                    sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                                    "CK_NO_B,CK_NO_E,DELIVERTO,CHKNAME FROM " + filePath;
+                }
+                else
+                {
+                    sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                                 "CK_NO_B,CK_NO_E,DELIVERTO FROM " + filePath;
+                }
+
+
+                OleDbCommand cmd = new OleDbCommand(sql, con);
                         con.Open();
                         OleDbDataReader myReader = cmd.ExecuteReader();
 
@@ -290,7 +298,10 @@ namespace CPMS_Accounting
                             order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
-                                order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                    if (gClient.ShortName == "RCBC")
+                    {
+                        order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                    }
                     //   order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
                     order.ChequeName = proc.GetChequeName(order.ChkType);
                                 order.Quantity = 1;
@@ -1024,8 +1035,8 @@ namespace CPMS_Accounting
             string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
          string   filePath = Path.GetFileNameWithoutExtension(op.FileName);
             con = new OleDbConnection(ConString);
-            //string Sql = "SELECT COUNT(CHKTYPE) FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
-            string Sql = "SELECT CHKTYPE FROM " + filePath + " WHERE CHKTYPE = '" + _chkName +"' ";
+            string Sql = "SELECT CHKTYPE FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
+           // string Sql = "SELECT CHKTYPE FROM " + filePath + " WHERE CHKTYPE = '" + _chkName +"' ";
             OleDbCommand cmd = new OleDbCommand(Sql, con);
             con.Open();
             OleDbDataReader myReader = cmd.ExecuteReader();
@@ -1046,11 +1057,33 @@ namespace CPMS_Accounting
             proc.GetChequeTypes(listofChkType);
             for (int i = 0; i < listofChkType.Count; i++)
             {
-                //   _total =GetTotalChecks(listofChkType[i].ChequeName.Substring(0,listofChkType[i].ChequeName.Length - 6));
-                _total = GetTotalChecks(listofChkType[i].Type);
+                if(gClient.ShortName == "RCBC")
+                    _total = GetTotalChecks(listofChkType[i].ChequeName.Substring(0, listofChkType[i].ChequeName.Length - 6));
+                else
+                _total = GetTotalChecksDefault(listofChkType[i].Type);
                 list.Add(_total);
             }
             return list;
+        }
+        private int GetTotalChecksDefault(string _chkName)
+        {
+            int _total = 0;
+            string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
+            string filePath = Path.GetFileNameWithoutExtension(op.FileName);
+            con = new OleDbConnection(ConString);
+            //string Sql = "SELECT COUNT(CHKTYPE) FROM " + filePath + " WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            string Sql = "SELECT CHKTYPE FROM " + filePath + " WHERE CHKTYPE = '" + _chkName + "' ";
+            OleDbCommand cmd = new OleDbCommand(Sql, con);
+            con.Open();
+            OleDbDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                //_total = int.Parse(myReader.GetString(0));
+                _total++;
+            }
+            myReader.Close();
+            con.Close();
+            return _total;
         }
     }
 }
