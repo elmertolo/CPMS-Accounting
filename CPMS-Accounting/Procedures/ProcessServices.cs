@@ -2616,7 +2616,8 @@ namespace CPMS_Accounting.Procedures
         }
         public List<ChequeTypesModel> GetChequeTypes(List<ChequeTypesModel> _cheques)
         {
-            Sql = "Select Type, ChequeName, Description, DateTimeModified from " + gClient.ChequeTypeTable ;
+            Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName  from " + gClient.ChequeTypeTable  + " A " +
+                "inner join "  + gClient.ProductTable + " B on A.CProductCode = B.CProductCode ;";
             DBConnect();
             cmd = new MySqlCommand(Sql,myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -2627,7 +2628,8 @@ namespace CPMS_Accounting.Procedures
                     Type = !reader.IsDBNull(0) ? reader.GetString(0) : "",
                     ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
                     Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
-                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now
+                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now,
+                    ProductName = !reader.IsDBNull(4) ? reader.GetString(4) : ""
                 };
                 _cheques.Add(c);
             }
@@ -2732,28 +2734,11 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _pCode;
         }
-        public string GetChequeName(string _chkType, string _productName)
-        {
-            string chequeName = "";
-            Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
-                 " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
-            //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
-            DBConnect();
-            cmd = new MySqlCommand(Sql, myConnect);
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
-            }
-            reader.Close();
-            DBClosed();
-            return chequeName;
-        }
-        //public string GetChequeName(string _chkType)
+        //public string GetChequeName(string _chkType, string _productName)
         //{
         //    string chequeName = "";
         //    Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
-        //         " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "';";
+        //         " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
         //    //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
         //    DBConnect();
         //    cmd = new MySqlCommand(Sql, myConnect);
@@ -2766,6 +2751,23 @@ namespace CPMS_Accounting.Procedures
         //    DBClosed();
         //    return chequeName;
         //}
+        public string GetChequeName(string _chkType)
+        {
+            string chequeName = "";
+            Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
+                 " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "';";
+            //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+            }
+            reader.Close();
+            DBClosed();
+            return chequeName;
+        }
         public string GetPackingListwithSticker(string _batch, List<TempModel> list)
         {
             try

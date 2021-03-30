@@ -291,7 +291,8 @@ namespace CPMS_Accounting
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
                                 order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
-                                order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                    //   order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                    order.ChequeName = proc.GetChequeName(order.ChkType);
                                 order.Quantity = 1;
                                 proc.GetProducts(listofProducts);
                                 listofProducts.ForEach(x =>
@@ -445,10 +446,11 @@ namespace CPMS_Accounting
                         order.Block = !myReader.IsDBNull(12) ? int.Parse(myReader[12].ToString()) : 0;
                         
                         order.Segment = !myReader.IsDBNull(13) ? int.Parse(myReader[13].ToString()) : 0;
-                        order.ProductName = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
+                        order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
-                            order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                    order.ChequeName = proc.GetChequeName(order.ChkType);
+                           // order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
                             order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
             
                         order.Address2 = branch.Address2.Replace("'", "''");
@@ -489,7 +491,7 @@ namespace CPMS_Accounting
 
                 }
 
-            }
+                }
             else
             {
                 errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
