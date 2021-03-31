@@ -31,67 +31,40 @@ namespace CPMS_Accounting
         }
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            bool flag = true;
-            if (txtRecentBatch.Text != "")
-            {
-                tempRecent.Clear();
-                docStampNumber.Clear();
-              //  batchTemp.Clear();
-                proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
-                tempRecent.Clear();
-                if (gClient.ShortName == "PNB")
-                {
-                    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
-                    tempRecent.Clear();
-                }   
-                //if(gClient.ShortName == "PNB")
-                //   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
-                //else
-                proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
-
-                var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
-
-                if (gClient.DataBaseName != "producers_history")
-                {
-                    foreach (string batch in dBatchtemp)
-                    {
-                      
-                        var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
-                        _dbatch.ForEach(f =>
-                        {
-                            //  docStampNumber.Add(f.DocStampNumber);
-                            if (flag == true)
-                            {
-                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
-
-                               // flag = false;
-                            }
-
-                        });
-                        
-
-                    }
-                 
-                }
-              
-                 
-                printDRToolStripMenuItem.Enabled = true;
-             //   concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
-
-                MessageBox.Show("Batch :" + txtRecentBatch.Text + " has been generated!!!");
-                proc.DisableControls(deliveryReportToolStripMenuItem);
-                proc.DisableControls(documentStampToolStripMenuItem);
-                // MessageBox.Show(concatDR);
-            }
+            if(gClient.BankCode == "028")
+                ProcessRecentBatch();
             else
-                MessageBox.Show("Please enter Batch Number!");
+                ProcessRecentBatchDefault();
+
         }
         private void deliveryReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            report = "DR";
-            ViewReports vp = new ViewReports();
-            vp.Show();
+            if (gClient.BankCode == "028")
+            {
+
+                tempRecent.Clear();
+                proc.fGetDrDirect(txtRecentBatch.Text, tempRecent);
+                report = "DR";
+                ViewReports vp = new ViewReports();
+                vp.Show();
+                vp.Text = "Delivery Receipt Direct Branches";
+                tempRecent.Clear();
+                proc.fGetDrProvincial(txtRecentBatch.Text, tempRecent);
+                report = "DR";
+                ViewReports vp1 = new ViewReports();
+                vp1.Show();
+                vp1.Text = "Delivery Receipt Provincial Branches";
+            }
+            else
+            {
+
+                tempRecent.Clear();
+                proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
+                report = "DR";
+                ViewReports vp = new ViewReports();
+                vp.Show();
+                vp.Text = "Delivery Receipt Direct and Provincial Branches";
+            }
         }
         //private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
         //{
@@ -106,9 +79,12 @@ namespace CPMS_Accounting
 
         private void stickersToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            tempRecent.Clear();
+            proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
             report = "STICKER";
             ViewReports vp = new ViewReports();
             vp.Show();
+            vp.Text = "Sticker Report";
         }
 
         private void packingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -116,6 +92,7 @@ namespace CPMS_Accounting
             report = "Packing";
             ViewReports vp = new ViewReports();
             vp.Show();
+            vp.Text = "Packing Report";
         }
 
         private void salesInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -214,6 +191,7 @@ namespace CPMS_Accounting
             report = "DOC";
             ViewReports vp = new ViewReports();
             vp.Show();
+            vp.Text = "Document Stamp Report";
         }
 
         private void txtDrNumber_KeyPress(object sender, KeyPressEventArgs e)
@@ -239,6 +217,7 @@ namespace CPMS_Accounting
             report = "DRR";
             ViewReports vp = new ViewReports();
             vp.Show();
+            vp.Text = "Delivery Report";
         }
 
         private void packingListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -246,6 +225,122 @@ namespace CPMS_Accounting
             report = "PackingList";
             ViewReports vp = new ViewReports();
             vp.Show();
+            vp.Text = "Sticker with Brstn and Branchcode Report";
+        }
+
+        private void ProcessRecentBatchDefault()
+        {
+            bool flag = true;
+            if (txtRecentBatch.Text != "")
+            {
+                tempRecent.Clear();
+                docStampNumber.Clear();
+                //  batchTemp.Clear();
+             //   proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
+                
+                if (gClient.ShortName == "PNB")
+                {
+                    tempRecent.Clear();
+                    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
+                    
+                }
+                tempRecent.Clear();
+                //if(gClient.ShortName == "PNB")
+                //   proc.GetStickerDetailsForPNB(tempRecent, txtRecentBatch.Text);
+                //else
+                proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
+
+                var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
+
+                if (gClient.DataBaseName != "producers_history")
+                {
+                    foreach (string batch in dBatchtemp)
+                    {
+
+                        var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
+                        _dbatch.ForEach(f =>
+                        {
+                            //  docStampNumber.Add(f.DocStampNumber);
+                            if (flag == true)
+                            {
+                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
+
+                                // flag = false;
+                            }
+
+                        });
+
+
+                    }
+
+                }
+
+
+                printDRToolStripMenuItem.Enabled = true;
+                //   concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
+
+                MessageBox.Show("Batch :" + txtRecentBatch.Text + " has been generated!!!");
+                proc.DisableControls(deliveryReportToolStripMenuItem);
+                proc.DisableControls(documentStampToolStripMenuItem);
+                // MessageBox.Show(concatDR);
+            }
+            else
+                MessageBox.Show("Please enter Batch Number!");
+        }
+        private void ProcessRecentBatch()
+        {
+            bool flag = true;
+            if (txtRecentBatch.Text != "")
+            {
+                tempRecent.Clear();
+                docStampNumber.Clear();
+                //  batchTemp.Clear();
+                //proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
+                //tempRecent.Clear();
+                //if (gClient.ShortName == "PNB")
+                //{
+                //    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
+                //    tempRecent.Clear();
+                //}
+               
+               
+
+                var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
+
+                //if (gClient.DataBaseName != "producers_history")
+                //{
+                    foreach (string batch in dBatchtemp)
+                    {
+
+                        var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
+                        _dbatch.ForEach(f =>
+                        {
+                            //  docStampNumber.Add(f.DocStampNumber);
+                            if (flag == true)
+                            {
+                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
+
+                                // flag = false;
+                            }
+
+                        });
+
+
+                    }
+
+                //}
+
+
+                printDRToolStripMenuItem.Enabled = true;
+                //   concatDR = proc.ConcatDRNumbers(txtRecentBatch.Text,"A");
+
+                MessageBox.Show("Batch :" + txtRecentBatch.Text + " has been generated!!!");
+                proc.DisableControls(deliveryReportToolStripMenuItem);
+                proc.DisableControls(documentStampToolStripMenuItem);
+                // MessageBox.Show(concatDR);
+            }
+            else
+                MessageBox.Show("Please enter Batch Number!");
         }
     }
 }

@@ -44,13 +44,13 @@ namespace CPMS_Accounting
         string errorMessage = "";
         int AremainingBalance = 0;
         int BremainingBalance = 0;
-        int MCremainingBalance = 0;
+   //     int MCremainingBalance = 0;
         TextBox tb = new TextBox();
         List<string> chkType = new List<string>();
         Label lb = new Label();
         public static OleDbConnection con;
-        int A, B, C, D, E;
-        List<ProductModel> listofProducts = new List<ProductModel>();
+        int A, B, C, D;
+            List<ProductModel> listofProducts = new List<ProductModel>();
         //List<int> pIndex = new List<int>();
         //int count = 0;
         //int index = 1;
@@ -69,48 +69,58 @@ namespace CPMS_Accounting
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (gClient.BankCode == "028")
+                ProcessData();
+            else
+                ProcessDataDefault();
+        }
+        private bool isValidateGeneration()
+        {
             try
             {
-                deliveryDate = dateTimePicker1.Value;
-                if (deliveryDate == dateTime)
+                if (txtDrNumber.Text == null || txtDrNumber.Text == "")
                 {
-                    MessageBox.Show("Please set Delivery Date!");
+                    MessageBox.Show("Please Enter Delivery Receipt Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
                 }
-
                 else
                 {
-                    if(isValidateGeneration())
+
+
+                    if (txtPackNumber.Text == null || txtPackNumber.Text == "")
                     {
-                        sReport();
-                        //  if (gClient.DataBaseName != "producers_history")
-                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
-                        ///  else
-                        //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
-                        tempDr.Clear();
-                        proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
-                        tempDr.Clear();
-                        proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+                        MessageBox.Show("Please Enter Pack Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return false;
+                    }
+                    else
+                    {
 
-                        //if (gClient.ShortName == "PNB")
-                        //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
-                        //else
-                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+                        if (txtDrNumber.TextLength < 7)
+                        {
+                            MessageBox.Show("Delivery Receipt Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        }
+                        else
+                        {
 
-                        MessageBox.Show("Data has been process!!!");
-                        ViewReports vp = new ViewReports();
-                        // vp.MdiParent = this;
-                        vp.Show();
-                        reportsToolStripMenuItem.Enabled = true;
-                        proc.DisableControls(deliveryReportToolStripMenuItem);
-                        generateToolStripMenuItem.Enabled = false;
+                            if (txtPackNumber.TextLength < 7)
+                            {
+                                MessageBox.Show("Pack Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return false;
+                            }
+                            else
+                                return true;
+                        }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
+
+
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -302,8 +312,8 @@ namespace CPMS_Accounting
                     {
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                     }
-                    //   order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
-                    order.ChequeName = proc.GetChequeName(order.ChkType);
+                       order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType,order.ProductName);
+                  //  order.ChequeName = proc.GetChequeName(order.ChkType);
                                 order.Quantity = 1;
                                 proc.GetProducts(listofProducts);
                                 listofProducts.ForEach(x =>
@@ -313,7 +323,12 @@ namespace CPMS_Accounting
                                         order.ProductCode = x.ProductCode;
                                     }
                                 });
-                                CountChkType(order.ChequeName);
+                    if(order.BRSTN.StartsWith("01"))
+                    order.Location = "Direct";
+                    else
+                    order.Location = "Provincial";
+
+                    CountChkType(order.ChequeName);
                  // TotalPerChecks = GetTotalChecks(order.ChequeName.Substring(0,10));
                     orderList.Add(order);
 
@@ -865,54 +880,7 @@ namespace CPMS_Accounting
 
         }
 
-        private bool isValidateGeneration()
-        {
-            try
-            {
-                if (txtDrNumber.Text == null || txtDrNumber.Text == "")
-                {
-                    MessageBox.Show("Please Enter Delivery Receipt Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
-                }
-                else
-                {
-
-
-                    if (txtPackNumber.Text == null || txtPackNumber.Text == "")
-                    {
-                        MessageBox.Show("Please Enter Pack Number!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return false;
-                    }
-                    else
-                    {
-
-                        if (txtDrNumber.TextLength < 7)
-                        {
-                            MessageBox.Show("Delivery Receipt Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            return false;
-                        }
-                        else
-                        {
-                           
-                            if (txtPackNumber.TextLength < 7)
-                            {
-                                MessageBox.Show("Pack Number should not be less than 7 digits!", "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return false;
-                            }
-                            else
-                                return true;
-                        }
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "isValidateGeneration", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            
-
-        }
+        
         private void isBankActive()
         {
             proc.GetChequeTypes(productList);
@@ -1376,6 +1344,106 @@ namespace CPMS_Accounting
             }
         }
 
+        private void ProcessDataDefault()
+        {
+            try
+            {
+                deliveryDate = dateTimePicker1.Value;
+                if (deliveryDate == dateTime)
+                {
+                    MessageBox.Show("Please set Delivery Date!");
+                }
 
+                else
+                {
+                    if (isValidateGeneration())
+                    {
+                        sReport();
+                        //  if (gClient.DataBaseName != "producers_history")
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                        ///  else
+                        //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+
+                        tempDr.Clear();
+                        proc.GetDRDetails(orderList[0].Batch.Trim(), tempDr);
+
+                        tempDr.Clear();
+                        proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+
+                        //if (gClient.ShortName == "PNB")
+                        //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                        //else
+                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+
+                        MessageBox.Show("Data has been process!!!");
+                        ViewReports vp = new ViewReports();
+                        // vp.MdiParent = this;
+                        vp.Show();
+                        reportsToolStripMenuItem.Enabled = true;
+                        proc.DisableControls(deliveryReportToolStripMenuItem);
+                        generateToolStripMenuItem.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void ProcessData()
+        {
+            try
+            {
+                deliveryDate = dateTimePicker1.Value;
+                if (deliveryDate == dateTime)
+                {
+                    MessageBox.Show("Please set Delivery Date!");
+                }
+
+                else
+                {
+                    if (isValidateGeneration())
+                    {
+                        sReport();
+                        //  if (gClient.DataBaseName != "producers_history")
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                        ///  else
+                        //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+                        MessageBox.Show("Data has been process!!!");
+                        tempDr.Clear();
+                        proc.fGetDrDirect(orderList[0].Batch.Trim(), tempDr);
+                        ViewReports vpDrD = new ViewReports();
+                        vpDrD.Show();
+                        vpDrD.Text = "Delivery Receipt Direct Branches";
+
+                        tempDr.Clear();
+                        proc.fGetDrProvincial(orderList[0].Batch.Trim(), tempDr);
+                        ViewReports vpDrP = new ViewReports();
+                        vpDrP.Show();
+                        vpDrP.Text = "Delivery Receipt Direct Branches";
+
+                        tempDr.Clear();
+                        proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+
+                        //if (gClient.ShortName == "PNB")
+                        //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                        //else
+                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+                        
+
+                        //ViewReports vp = new ViewReports();
+                        //// vp.MdiParent = this;
+                        //vp.Show();
+                        reportsToolStripMenuItem.Enabled = true;
+                        proc.DisableControls(deliveryReportToolStripMenuItem);
+                        generateToolStripMenuItem.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

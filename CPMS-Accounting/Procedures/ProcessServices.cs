@@ -941,10 +941,11 @@ namespace CPMS_Accounting.Procedures
                         Type = "MC";
                     if (licnt == 1)
                     {
-                        string sql2 = "Insert into " + gClient.StickerTable + " (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial," +
+                        string sql2 = "Insert into " + gClient.StickerTable + "(Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial," +
                                       "Bank,Address2,Address3,Address4,Block,Segment,ProductType)" +
                                       "values('" + _batch + "','" + _temp[r].BRSTN + "','" + _temp[r].BranchName + "'," + _temp[r].Qty + ",'" + _temp[r].ChkType +
-                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + _temp[r].BankCode + "','" + _temp[r].Address2.Replace("'", "''") +
+                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'","''")
+                                      + "','" + _temp[r].Address2.Replace("'", "''") +
                                       "', '" + _temp[r].Address3.Replace("'", "''") + "','" + _temp[r].Address4.Replace("'", "''") + "'," + _temp[r].Block + "," +
                                       _temp[r].Segment + ",'" + _temp[r].ProducType +"'); ";
 
@@ -1093,12 +1094,107 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _temp;
         }
+        //public string FillCRReportParameters()
+        //{
+        //    string reportPath = "";
+        //    try
+        //    {
+                
+        //        if (Debugger.IsAttached)
+        //        {
+        //            if (gClient.DataBaseName == "")
+        //                MessageBox.Show("There is no table selected!");
+        //            else
+        //            {
+
+        //                if (gClient.DataBaseName != "pnb_history")
+        //                {
+        //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
+        //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+        //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
+        //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceipt.rpt";
+
+        //                }
+        //                else 
+        //                {
+        //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
+        //                    else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBPackingList.rpt";
+        //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+        //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
+                            
+        //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReport.rpt";
+        //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReceipt.rpt";
+
+        //                }
+        //                //if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+        //                //    reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Stickers.rpt";
+        //                //else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+        //                //    reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\PackingReport.rpt";
+        //            }
+
+
+        //        }
+        //        else
+        //        {
+        //            if (gClient.DataBaseName == "")
+        //                MessageBox.Show("There is no table selected!");
+        //            else
+        //            {
+
+        //                if (gClient.DataBaseName == "producers_history")
+        //                {
+
+        //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
+        //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
+        //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceipt.rpt";
+        //                }
+        //                else if (gClient.DataBaseName == "pnb_history")
+        //                {
+        //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
+        //                    else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBPackingList.rpt";
+        //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
+        //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
+                           
+        //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReport.rpt";
+        //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReceipt.rpt";
+        //                }
+        //            }
+
+        //        }
+
+        //        return reportPath;
+        //    }
+        //    catch (Exception error)
+        //    {
+        //        MessageBox.Show(error.Message, error.InnerException.Message);
+        //        return reportPath;
+        //    }
+        //}
         public string FillCRReportParameters()
         {
             string reportPath = "";
             try
             {
-                
+
                 if (Debugger.IsAttached)
                 {
                     if (gClient.DataBaseName == "")
@@ -1106,7 +1202,37 @@ namespace CPMS_Accounting.Procedures
                     else
                     {
 
-                        if (gClient.DataBaseName != "pnb_history")
+                        if (gClient.BankCode == "008")
+                        {
+                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
+                            else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBPackingList.rpt";
+                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
+
+                            else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReport.rpt";
+                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReceipt.rpt";
+
+                        }
+                        else if (gClient.BankCode == "028")
+                        {
+                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
+                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
+                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceiptDirect.rpt";
+                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceiptProvincial.rpt";
+                        }
+                        else
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
@@ -1117,22 +1243,6 @@ namespace CPMS_Accounting.Procedures
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceipt.rpt";
 
-                        }
-                        else 
-                        {
-                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
-                            else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBPackingList.rpt";
-                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
-                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
-                            
-                            else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReport.rpt";
-                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReceipt.rpt";
 
                         }
                         //if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
@@ -1150,17 +1260,7 @@ namespace CPMS_Accounting.Procedures
                     else
                     {
 
-                        if (gClient.DataBaseName == "producers_history")
-                        {
-
-                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
-                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
-                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceipt.rpt";
-                        }
-                        else if (gClient.DataBaseName == "pnb_history")
+                        if (gClient.BankCode == "008")
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
@@ -1170,11 +1270,35 @@ namespace CPMS_Accounting.Procedures
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
-                           
+
                             else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReport.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReceipt.rpt";
+
+
+                        }
+                        else if (gClient.BankCode == "028")
+                        {
+                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
+                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
+                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceiptDirect.rpt";
+                            else if (RecentBatch.report == "DRP" || DeliveryReport.report == "DRP")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceiptProvincial.rpt";
+                        }
+                        else
+                        {
+                            if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
+                            else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceipt.rpt";
                         }
                     }
 
@@ -2432,17 +2556,18 @@ namespace CPMS_Accounting.Procedures
         }
         private void Script(string _table ,OrderModel r,int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
-            if (gClient.DataBaseName != "producers_history")
+            if (gClient.BankCode == "008")
             {
                 Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
                           ",Address2,Address3,Address4,Address5,Address6,ProductCode,Block,Segment,ProductType)" +
-                          "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                          "VALUES('" + r.BRSTN + "','" + r.BranchName.Replace("'", "''") + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName.Replace("'","''") + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
                           "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
-                          "'" + r.Address2 + "','" + r.Address3 + "','" + r.Address4 + "','" + r.Address5 + "','" + r.Address6 + "','" + r.ProductCode +
+                          "'" + r.Address2.Replace("'","''") + "','" + r.Address3.Replace("'", "''") + "','" + r.Address4.Replace("'", "''") + "','" + r.Address5.Replace("'", "''") +
+                          "','" + r.Address6.Replace("'", "''") + "','" + r.ProductCode +
                           "'," + r.Block  + "," + r.Segment+",'" + r.ProductType +"');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
@@ -2450,12 +2575,12 @@ namespace CPMS_Accounting.Procedures
             else
             {
                 Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank)" +
+                          "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank,ProductCode)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                          "','" + r.Location + "','" + gClient.ShortName + "');";
+                          "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
             }
@@ -2756,23 +2881,23 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _pCode;
         }
-        //public string GetChequeName(string _chkType, string _productName)
-        //{
-        //    string chequeName = "";
-        //    Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
-        //         " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
-        //    //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
-        //    DBConnect();
-        //    cmd = new MySqlCommand(Sql, myConnect);
-        //    MySqlDataReader reader = cmd.ExecuteReader();
-        //    while (reader.Read())
-        //    {
-        //        chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
-        //    }
-        //    reader.Close();
-        //    DBClosed();
-        //    return chequeName;
-        //}
+        public string GetChequeNamewithProductCode(string _chkType, string _productName)
+        {
+            string chequeName = "";
+            Sql = " SELECT ChequeName FROM " + gClient.ChequeTypeTable + " A" +
+                 " inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode where Type = '" + _chkType + "' and ChequeName like '" + _productName.TrimEnd() + "%';";
+            //Sql = "Select ChequeName from " + gClient.ChequeTypeTable + " where Type ='" + _chkType + "' and  inner join";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                chequeName = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+            }
+            reader.Close();
+            DBClosed();
+            return chequeName;
+        }
         public string GetChequeName(string _chkType)
         {
             string chequeName = "";
@@ -2999,10 +3124,96 @@ namespace CPMS_Accounting.Procedures
                 comdel.ExecuteNonQuery();
 
                 DBClosed();
+                
                 var TotalA = list.Where(x => x.ChkType == "A");
                 var TotalB = list.Where(x => x.ChkType == "B");
                 var TotalC = list.Where(x => x.ChkType == "C");
                 var TotalD = list.Where(x => x.ChkType == "D");
+                DBConnect();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string sql2 = "Insert into " + gClient.DRTempTable + " (DRNumber,PackNumber,BRSTN, ChkType, BranchName,Qty,StartingSerial," +
+                                  "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
+                                  "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
+                                  " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
+                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
+                                  ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
+                                  list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
+                                  list[i].Location + "'," + list[i].PONumber + ",'','" + list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") +
+                                  "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") +
+                                  "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
+                                  "','" + gClient.Description.ToUpper().Replace("'", "''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'", "''").TrimEnd() +
+                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
+                    MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                    cmd2.ExecuteNonQuery();
+                }
+                DBClosed();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "GetDRDirectBranches", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return list;
+            }
+
+        }
+        public List<TempModel> fGetDrProvincial(string _batch, List<TempModel> list)
+        {
+            try
+            {
+                DBConnect();
+                Sql = "SELECT DRNumber, PackNumber, BRSTN, ChkType, BranchName, COUNT(BRSTN)," +
+                     "MIN(StartingSerial), MAX(EndingSerial),ChequeName, Batch,username,BranchCode,OldBranchCode,location,PurchaseOrderNumber,Bank,Address2,Address3,Address4," +
+                     "Name1,Name2,AccountNo,DeliveryToBrstn,DeliveryToBranch,AttentionTo FROM " +
+                     gClient.DataBaseName + " WHERE  Batch = '" + _batch.TrimEnd() + "' and Location = 'Provincial' GROUP BY DRNumber, BRSTN, ChkType, BranchName," +
+                     "ChequeName ,Batch ORDER BY DRNumber, PackNumber;";
+
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
+                {
+                    TempModel order = new TempModel();
+                    order.DrNumber = !myReader.IsDBNull(0) ? myReader.GetString(0) : "";
+                    order.PackNumber = !myReader.IsDBNull(1) ? myReader.GetString(1) : "";
+                    order.BRSTN = !myReader.IsDBNull(2) ? myReader.GetString(2) : "";
+                    order.ChkType = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
+                    order.BranchName = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
+                    order.Qty = !myReader.IsDBNull(5) ? myReader.GetInt32(5) : 0;
+                    order.StartingSerial = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
+                    order.EndingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
+                    order.ChequeName = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
+                    order.Batch = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
+                    order.username = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                    order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                    order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                    order.Location = !myReader.IsDBNull(13) ? myReader.GetString(13) : "";
+                    order.PONumber = !myReader.IsDBNull(14) ? myReader.GetInt32(14) : 0;
+                    order.BankCode = !myReader.IsDBNull(15) ? myReader.GetString(15) : "";
+                    order.Address2 = !myReader.IsDBNull(16) ? myReader.GetString(16) : "";
+                    order.Address3 = !myReader.IsDBNull(17) ? myReader.GetString(17) : "";
+                    order.Address4 = !myReader.IsDBNull(18) ? myReader.GetString(18) : "";
+                    order.Name1 = !myReader.IsDBNull(19) ? myReader.GetString(19) : "";
+                    order.Name2 = !myReader.IsDBNull(20) ? myReader.GetString(20) : "";
+                    order.AccountNo = !myReader.IsDBNull(21) ? myReader.GetString(21) : "";
+                    order.DeliveryToBrstn = !myReader.IsDBNull(22) ? myReader.GetString(22) : "";
+                    order.DeliveryToBranch = !myReader.IsDBNull(23) ? myReader.GetString(23) : "";
+                    order.AttentionTo = !myReader.IsDBNull(24) ? myReader.GetString(24) : "";
+
+                    list.Add(order);
+                }
+                DBClosed();
+                DBConnect();
+                string sqldel = "Delete from " + gClient.DRTempTable + ";";
+                MySqlCommand comdel = new MySqlCommand(sqldel, myConnect);
+                comdel.ExecuteNonQuery();
+
+                DBClosed();
+                
+                var TotalA = list.Where(x => x.ChkType == "A");
+                var TotalB = list.Where(x => x.ChkType == "B");
+                var TotalC = list.Where(x => x.ChkType == "C");
+                var TotalD = list.Where(x => x.ChkType == "D");
+                DBConnect();
                 for (int i = 0; i < list.Count; i++)
                 {
 
@@ -3027,8 +3238,8 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "GetDRDirectBranches", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                MessageBox.Show(ex.Message, "GetDRProvincialBranches", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return list;
             }
 
         }
