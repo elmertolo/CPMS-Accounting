@@ -958,36 +958,34 @@ namespace CPMS_Accounting
       //  private void Totalchecks(string chk, string chkB, string chkC,string chkD,string chkE)
         private void TotalChecks()
         {
+           
             List<int> Total = DisplayTotal();
-
-            //foreach (DataGridViewRow row in dgvProducts.Rows)
-            //{
-            //    if (row.Index == 0)
-            //    {
-            //        row.Cells[1].Value = chk;
-            //    }
-            //    if (row.Index == 1)
-            //    {
-            //        row.Cells[1].Value = chkB;
-            //    }
-            //    if (row.Index == 2)
-            //    {
-            //        row.Cells[1].Value = chkC;
-            //    }
-            //    if (row.Index == 3)
-            //    {
-            //        row.Cells[1].Value = chkD;
-            //    }
-            //    if (row.Index == 4)
-            //    {
-            //        row.Cells[1].Value = chkE;
-            //    }
-            //}
+            
             for (int i = 0; i < dgvProducts.Rows.Count; i++)
             {
                 if (dgvProducts.Rows[i].Index == i)
                     dgvProducts.Rows[i].Cells[1].Value = Total[i];
                 if (dgvProducts.Rows[i].Index == i+1)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 2)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 3)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 4)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+            }
+
+        }
+        private void TotalChecksfromSearching()
+        {
+
+            List<int> Total = DisplayTotalforSearching();
+
+            for (int i = 0; i < dgvProducts.Rows.Count; i++)
+            {
+                if (dgvProducts.Rows[i].Index == i)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 1)
                     dgvProducts.Rows[i].Cells[1].Value = Total[i];
                 if (dgvProducts.Rows[i].Index == i + 2)
                     dgvProducts.Rows[i].Cells[1].Value = Total[i];
@@ -1061,14 +1059,34 @@ namespace CPMS_Accounting
                     _total = GetTotalChecks(listofChkType[i].ChequeName.Substring(0, listofChkType[i].ChequeName.Length - 6));
                 else
                 _total = GetTotalChecksDefault(listofChkType[i].Type);
+                _total = fGetTotalChecks(listofChkType[i].ChequeName, orderList);
                 list.Add(_total);
             }
             return list;
         }
-
+        private List<int> DisplayTotalforSearching()
+        {
+            List<int> list = new List<int>();
+            int _total = 0;
+            List<ChequeTypesModel> listofChkType = new List<ChequeTypesModel>();
+            proc.GetChequeTypes(listofChkType);
+            for (int i = 0; i < listofChkType.Count; i++)
+            {
+                //if (gClient.ShortName == "RCBC")
+                //    _total = GetTotalChecks(listofChkType[i].ChequeName.Substring(0, listofChkType[i].ChequeName.Length - 6));
+                //else
+                //    _total = GetTotalChecksDefault(listofChkType[i].Type);
+                _total = fGetTotalChecks(listofChkType[i].ChequeName, orderList);
+                list.Add(_total);
+            }
+            return list;
+        }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            GetDataFromDB();
+            if(gClient.BankCode == "008")
+                GetDataFromDB2();
+            else
+                GetDataFromDB();
         }
 
         private int GetTotalChecksDefault(string _chkName)
@@ -1237,7 +1255,7 @@ namespace CPMS_Accounting
 
                             MessageBox.Show("Checking files done! No Errors found");
                             dataGridView1.DataSource = orderList;
-                            TotalChecks();
+                            TotalChecksfromSearching();
                             ProcessServices.bg_dtg(dataGridView1);
                             dataGridView1.Columns[0].Width = 80;
                             dataGridView1.Columns[1].Width = 80;
@@ -1332,7 +1350,7 @@ namespace CPMS_Accounting
 
                             MessageBox.Show("Checking files done! No Errors found");
                             dataGridView1.DataSource = orderList;
-                            TotalChecks();
+                            TotalChecksfromSearching();
                             ProcessServices.bg_dtg(dataGridView1);
                             dataGridView1.Columns[0].Width = 80;
                             dataGridView1.Columns[1].Width = 80;
