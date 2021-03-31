@@ -1085,5 +1085,254 @@ namespace CPMS_Accounting
             con.Close();
             return _total;
         }
+        private void GetDataFromDB2()
+        {
+
+            //if (gClient.ShortName == "Producers")
+            //    bankCode = "122";
+            try
+            {
+                lblTotalChecks.Text = "0";
+                dataGridView1.DataSource = "";
+                orderList.Clear();
+                proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                listofProducts.Clear();
+                proc.GetProducts(listofProducts);
+                orderList.ForEach(x =>
+                {
+                    x.ChequeName.Replace("Check", "Cheques");
+                    x.PONumber = proc.GetPONUmber(x.ChequeName);
+                    if (x.BRSTN.StartsWith("01"))
+                        x.Location = "Direct";
+                    else
+                        x.Location = "Provincial";
+
+                    listofProducts.ForEach(d =>
+                    {
+                        if (x.ChkType == d.ChkType && x.Location == d.DeliveryLocation)
+                        {
+                            x.ProductCode = d.ProductCode;
+                        }
+                    });
+
+                    if (x.PONumber == 0)// Checking if there is Purchase order Number from the database
+                    {
+                        MessageBox.Show("Please add Purchase Order Number for Cheque Type " + x.ChkType + "!!! ", "Error!");
+                        errorMessage += "There is no Purchase Order for Cheque Type : " + x.ChkType;
+                        //break;
+                    }
+
+                });
+
+
+                //    dt.Clear();
+                //    dt.Columns.Clear();
+                //    dt.Columns.Add("Batch"); //0
+                //    dt.Columns.Add("BRSTN");//1
+                //    dt.Columns.Add("Branch Name"); //2
+                //    dt.Columns.Add("Account No."); //3
+                //    dt.Columns.Add("Name 1"); //4 
+                //    dt.Columns.Add("Name 2"); //5
+                //    dt.Columns.Add("No. of Books"); //6
+                //    dt.Columns.Add("Starting Serial"); //7
+                //    dt.Columns.Add("Ending Serial"); //8
+                //    dt.Columns.Add("Block No."); //9
+                //    dt.Columns.Add("Segment No."); //10
+                //    dt.Columns.Add("Delivery Date"); //11
+
+                //    tempList.ForEach(x =>
+                //    {
+                //        dt.Rows.Add(new object[] { x.Batch , x.BRSTN, x.BranchName, x.AccountNo, x.Name1, x.Name2, x.Qty, x.StartingSerial, x.EndingSerial, 
+                //             x.Block, x.Segment, x.DeliveryDate.ToString("yyyy-MM-dd") });
+                //});
+
+                if (orderList.Count > 0)
+                {
+                    if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
+                    {
+
+                        errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
+                        MessageBox.Show(errorMessage);
+
+                    }
+                    else
+                    {
+                        var po = orderList.Select(x => x.PONumber).Distinct().ToList();
+                        var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
+                        po.ForEach(x =>
+                        {
+
+                            chkType.ForEach(d =>
+                            {
+                                //if (d == comboBox1.Text.Substring(0,comboBox1.Text.Length - 6) +" Personal Checks" || d == "Manager's Checks")
+                                //    AremainingBalance = proc.CheckPOQuantity(x, d);
+                                //else if (d == comboBox1.Text.Substring(0, comboBox1.Text.Length - 6)+ " Personal Checks")
+                                //    BremainingBalance = proc.CheckPOQuantity(x, d);
+                                //else if (d == "C")
+                                //    AremainingBalance = proc.CheckPOQuantity(x, d);
+
+
+                                if (AremainingBalance < 0)
+                                {
+                                    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
+
+                                }
+                                else if (BremainingBalance < 0)
+                                {
+                                    //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
+                                    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
+
+                                }
+                                //else if (MCremainingBalance < 0)
+                                //{
+                                //    //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
+                                //    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d);
+
+                                //}
+                            });
+                        });
+
+
+                        //AremainingBalance -= totalA.Count;
+                        //BremainingBalance -= totalB.Count;
+
+
+
+
+
+                        if (errorMessage != "")
+                        {
+                            ProcessServices.ErrorMessage(errorMessage);
+                            MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
+                            this.Close();
+                        }
+                        else
+                        {
+
+
+                            MessageBox.Show("Checking files done! No Errors found");
+                            dataGridView1.DataSource = orderList;
+                            TotalChecks();
+                            ProcessServices.bg_dtg(dataGridView1);
+                            dataGridView1.Columns[0].Width = 80;
+                            dataGridView1.Columns[1].Width = 80;
+                            dataGridView1.Columns[2].Width = 90;
+                            dataGridView1.Columns[3].Width = 120;
+                            dataGridView1.Columns[4].Width = 100;
+                            dataGridView1.Columns[5].Width = 100;
+                            dataGridView1.Columns[6].Width = 60;
+                            dataGridView1.Columns[7].Width = 80;
+                            dataGridView1.Columns[8].Width = 80;
+                            dataGridView1.Columns[9].Width = 30;
+                            dataGridView1.Columns[10].Width = 30;
+                            dataGridView1.Columns[11].Width = 90;
+                            lblTotalChecks.Text = orderList.Count().ToString();
+                            generateToolStripMenuItem.Enabled = true;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Get Data From Ordering Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void GetDataFromDB()
+        {
+
+
+
+            //if (gClient.ShortName == "Producers")
+            //    bankCode = "122";
+            try
+            {
+                lblTotalChecks.Text = "0";
+                dataGridView1.DataSource = "";
+                orderList.Clear();
+                proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                orderList.ForEach(x =>
+                {
+                    if (x.BRSTN.StartsWith("01"))
+                        x.Location = "Direct";
+                    else
+                        x.Location = "Provincial";
+
+
+                });
+
+                //    dt.Clear();
+                //    dt.Columns.Clear();
+                //    dt.Columns.Add("Batch"); //0
+                //    dt.Columns.Add("BRSTN");//1
+                //    dt.Columns.Add("Branch Name"); //2
+                //    dt.Columns.Add("Account No."); //3
+                //    dt.Columns.Add("Name 1"); //4 
+                //    dt.Columns.Add("Name 2"); //5
+                //    dt.Columns.Add("No. of Books"); //6
+                //    dt.Columns.Add("Starting Serial"); //7
+                //    dt.Columns.Add("Ending Serial"); //8
+                //    dt.Columns.Add("Block No."); //9
+                //    dt.Columns.Add("Segment No."); //10
+                //    dt.Columns.Add("Delivery Date"); //11
+
+                //    tempList.ForEach(x =>
+                //    {
+                //        dt.Rows.Add(new object[] { x.Batch , x.BRSTN, x.BranchName, x.AccountNo, x.Name1, x.Name2, x.Qty, x.StartingSerial, x.EndingSerial, 
+                //             x.Block, x.Segment, x.DeliveryDate.ToString("yyyy-MM-dd") });
+                //});
+
+                if (orderList.Count > 0)
+                {
+                    if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
+                    {
+
+                        errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
+                        MessageBox.Show(errorMessage);
+
+                    }
+                    else
+                    {
+
+
+                        if (errorMessage != "")
+                        {
+                            ProcessServices.ErrorMessage(errorMessage);
+                            MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
+                            this.Close();
+                        }
+                        else
+                        {
+
+
+                            MessageBox.Show("Checking files done! No Errors found");
+                            dataGridView1.DataSource = orderList;
+                            TotalChecks();
+                            ProcessServices.bg_dtg(dataGridView1);
+                            dataGridView1.Columns[0].Width = 80;
+                            dataGridView1.Columns[1].Width = 80;
+                            dataGridView1.Columns[2].Width = 90;
+                            dataGridView1.Columns[3].Width = 120;
+                            dataGridView1.Columns[4].Width = 100;
+                            dataGridView1.Columns[5].Width = 100;
+                            dataGridView1.Columns[6].Width = 60;
+                            dataGridView1.Columns[7].Width = 80;
+                            dataGridView1.Columns[8].Width = 80;
+                            dataGridView1.Columns[9].Width = 30;
+                            dataGridView1.Columns[10].Width = 30;
+                            dataGridView1.Columns[11].Width = 90;
+                            lblTotalChecks.Text = orderList.Count().ToString();
+                            generateToolStripMenuItem.Enabled = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Get Data From Ordering Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
     }
 }

@@ -29,6 +29,8 @@ namespace CPMS_Accounting.Procedures
         List<Int64> listofDR = new List<long>();
         MySqlCommand cmd;
         string Sql = "";
+        string ConString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+        MySqlConnection con;
 
         public void DBConnect()
         {
@@ -2863,6 +2865,70 @@ namespace CPMS_Accounting.Procedures
                 return "";
             }
         }
+        public List<OrderModel> GetProcessedDataFromDB(List<OrderModel> _tempList, string _bankCode, string _batch) // Updated By ET for getting history data from the Ordering system March 31, 2021
+        {
+
+            //Sql = "Select A.fBatchNo,A.fBrstn,fBranchCode,A.fBranchName,A.fAccountNo,fAccountName1,fAccountName2, " +
+            //        "A.fNoOfBooks,fStartSerial, fEndSerial,fBlocks,fBlock,A.fDeliveryDate " +
+            //        "from tmaincheque A inner join tmainbatch B on A.fBankCode = B.fBankCode " +
+            //        "where A.fBankCode = '" + _bankCode + "' and A.fBatchNo = '"+_batch+"' limit 50000; ";
+            Sql = "Select A.fBatchNo,A.fBrstn,A.fBranchName,fAccountNo,fAccountName1,fAccountName2,fNoOfBooks," +
+                    "fStartSerial,fEndSerial,fBlocks,fBlock,fDeliveryDate,fBranchCode,C.fChequeTypeName, C.fTag,fBranchCode2,fProductCode " +
+                    "from tmaincheque A inner join tlibbranch B on (B.fBRSTN = A.fBRSTN) " +
+                    "  inner join tlibchequetype C on (A.fChequeTypeSeq = C.fSeq) " +
+                    " where A.fBankCode = '" + _bankCode + "' and A.fBatchNo = '" + _batch + "';";
+            con = new MySqlConnection(ConString);
+            con.Open();
+            cmd = new MySqlCommand(Sql, con);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                OrderModel t = new OrderModel();
+
+                t.Batch = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+                t.BRSTN = !reader.IsDBNull(1) ? reader.GetString(1) : "";
+                t.BranchName = !reader.IsDBNull(2) ? reader.GetString(2) : "";
+                t.AccountNo = !reader.IsDBNull(3) ? reader.GetString(3) : "";
+                t.Name1 = !reader.IsDBNull(4) ? reader.GetString(4) : "";
+                t.Name2 = !reader.IsDBNull(5) ? reader.GetString(5) : "";
+                t.Quantity = !reader.IsDBNull(6) ? int.Parse(reader.GetString(6)) : 0;
+                t.StartingSerial = !reader.IsDBNull(7) ? reader.GetString(7) : "";
+                t.EndingSerial = !reader.IsDBNull(8) ? reader.GetString(8) : "";
+                t.Block = !reader.IsDBNull(9) ? int.Parse(reader.GetString(9)) : 0;
+                t.Segment = !reader.IsDBNull(10) ? int.Parse(reader.GetString(10)) : 0;
+                t.DeliveryDate = !reader.IsDBNull(11) ? DateTime.Parse(reader.GetString(11)) : DateTime.Now;
+                t.BranchCode = !reader.IsDBNull(12) ? reader.GetString(12) : "";
+                t.ChequeName = !reader.IsDBNull(13) ? reader.GetString(13) : "";
+                t.ChkType = !reader.IsDBNull(14) ? reader.GetString(14) : "";
+                t.OldBranchCode = !reader.IsDBNull(15) ? reader.GetString(15) : "";
+                t.ProductType = !reader.IsDBNull(16) ? reader.GetString(16) : "";
+
+                _tempList.Add(t);
+            }
+            reader.Close();
+            con.Close();
+            return _tempList;
+        } 
+        public int fGetTotalChecks(string _chkName, List<OrderModel> _list)
+        {
+            int _total = 0;
+            con = new MySqlConnection(ConString);
+
+            var chkType = _list.Where(x => x.ChequeName == _chkName).ToList();
+            chkType.Count();
+            string Sql = "SELECT f FROM   WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            cmd = new MySqlCommand(Sql, con);
+            con.Open();
+            MySqlDataReader myReader = cmd.ExecuteReader();
+            while (myReader.Read())
+            {
+                _total++;
+            }
+            myReader.Close();
+            con.Close();
+            return _total;
+        }
+
         public List<TempModel> fGetDrDirect(string _batch, List<TempModel> list)
         {
             try
