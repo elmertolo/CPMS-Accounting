@@ -2410,6 +2410,79 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
+        public void ByChequetTypeWithDeliveryTO(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        {
+            DBConnect();
+            int counter = 0;
+            var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
+            if (Personal.Count > 0)
+            {
+
+                var _list = Personal.Select(r => r.DeliveryTo).Distinct().ToList();
+
+
+                //Working Proccess Jan. 27 2021
+                foreach (string Brstn in _list)
+                {
+                    var _model = Personal.Where(t => t.DeliveryTo == Brstn);
+
+                    foreach (var r in _model)
+                    {
+
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+
+                    }
+                    _packNumber++;
+                    counter++;
+
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+
+
+                }
+
+            }
+            counter = 0;
+            //_DrNumber++;
+
+            var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
+            if (Comm.Count > 0)
+            {
+                _DrNumber++;
+                var _List = Comm.Select(r => r.DeliveryTo).Distinct().ToList();
+                //var sorted = (from c in _checks.Regular_Commercial
+                //              orderby c.BranchName
+                //                       ascending
+                //              select c).ToList();
+
+                foreach (string Brstn in _List)
+                {
+                    var _model = Comm.Where(a => a.DeliveryTo == Brstn);
+                    foreach (var r in _model)
+                    {
+
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                    }
+
+                    _packNumber++;
+                    counter++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+                }
+            }
+            DBClosed();
+            return;
+        }
         public void ByLocation(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
             DBConnect();
