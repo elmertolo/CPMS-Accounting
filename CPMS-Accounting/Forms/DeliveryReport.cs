@@ -1065,6 +1065,12 @@ namespace CPMS_Accounting
             }
             return list;
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            GetDataFromDB();
+        }
+
         private int GetTotalChecksDefault(string _chkName)
         {
             int _total = 0;
@@ -1083,6 +1089,25 @@ namespace CPMS_Accounting
             }
             myReader.Close();
             con.Close();
+            return _total;
+        }
+        private int fGetTotalChecks(string _chkName, List<OrderModel> _list)
+        {
+            int _total = 0;
+            // con = new MySqlConnection(ConString);
+
+            var chkType = _list.Where(x => x.ChequeName == _chkName).ToList();
+            _total = chkType.Count();
+            //string Sql = "SELECT f FROM   WHERE CHKNAME LIKE '" + _chkName + "%' ";
+            //  cmd = new MySqlCommand(Sql, con);
+            //   con.Open();
+            //   MySqlDataReader myReader = cmd.ExecuteReader();
+            //while (myReader.Read())
+            //{
+            //    _total++;
+            //}
+            //myReader.Close();
+            //con.Close();
             return _total;
         }
         private void GetDataFromDB2()

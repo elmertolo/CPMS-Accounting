@@ -722,7 +722,7 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 string sql = "select clientcode, shortname, description, address1, address2, address3, attentionto, Princes_DESC, TIN, WithholdingTaxPercentage, " +
-                    "databasename from clientlist " +
+                    "databasename,BankCode from clientlist " +
                     "where description = '" + clientDescription + "' order by shortname;";
                 MySqlCommand cmd = new MySqlCommand(sql , con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
