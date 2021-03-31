@@ -3145,7 +3145,6 @@ namespace CPMS_Accounting.Procedures
             con.Close();
             return _total;
         }
-
         public List<TempModel> fGetDrDirect(string _batch, List<TempModel> list)
         {
             try
