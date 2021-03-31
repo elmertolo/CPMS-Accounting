@@ -417,6 +417,10 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnConcatinatedDRPD;
             
+            private global::System.Data.DataColumn columnDeliveryToBrstn;
+            
+            private global::System.Data.DataColumn columnDeliveryToBranch;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DeliveryReceiptDataTable() {
@@ -724,6 +728,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeliveryToBrstnColumn {
+                get {
+                    return this.columnDeliveryToBrstn;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeliveryToBranchColumn {
+                get {
+                    return this.columnDeliveryToBranch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -793,7 +813,9 @@ namespace CPMS_Accounting {
                         string Name2, 
                         string AccountNo, 
                         string ConcatinatedDRDD, 
-                        string ConcatinatedDRPD) {
+                        string ConcatinatedDRPD, 
+                        string DeliveryToBrstn, 
+                        string DeliveryToBranch) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -829,7 +851,9 @@ namespace CPMS_Accounting {
                         Name2,
                         AccountNo,
                         ConcatinatedDRDD,
-                        ConcatinatedDRPD};
+                        ConcatinatedDRPD,
+                        DeliveryToBrstn,
+                        DeliveryToBranch};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -886,6 +910,8 @@ namespace CPMS_Accounting {
                 this.columnAccountNo = base.Columns["AccountNo"];
                 this.columnConcatinatedDRDD = base.Columns["ConcatinatedDRDD"];
                 this.columnConcatinatedDRPD = base.Columns["ConcatinatedDRPD"];
+                this.columnDeliveryToBrstn = base.Columns["DeliveryToBrstn"];
+                this.columnDeliveryToBranch = base.Columns["DeliveryToBranch"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -959,6 +985,10 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnConcatinatedDRDD);
                 this.columnConcatinatedDRPD = new global::System.Data.DataColumn("ConcatinatedDRPD", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnConcatinatedDRPD);
+                this.columnDeliveryToBrstn = new global::System.Data.DataColumn("DeliveryToBrstn", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryToBrstn);
+                this.columnDeliveryToBranch = new global::System.Data.DataColumn("DeliveryToBranch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryToBranch);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3011,6 +3041,38 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DeliveryToBrstn {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.DeliveryToBrstnColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryToBrstn\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.DeliveryToBrstnColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DeliveryToBranch {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.DeliveryToBranchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryToBranch\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.DeliveryToBranchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -3415,6 +3477,30 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetConcatinatedDRPDNull() {
                 this[this.tableDeliveryReceipt.ConcatinatedDRPDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeliveryToBrstnNull() {
+                return this.IsNull(this.tableDeliveryReceipt.DeliveryToBrstnColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeliveryToBrstnNull() {
+                this[this.tableDeliveryReceipt.DeliveryToBrstnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeliveryToBranchNull() {
+                return this.IsNull(this.tableDeliveryReceipt.DeliveryToBranchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeliveryToBranchNull() {
+                this[this.tableDeliveryReceipt.DeliveryToBranchColumn] = global::System.Convert.DBNull;
             }
         }
         

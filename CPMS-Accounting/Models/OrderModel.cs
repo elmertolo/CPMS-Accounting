@@ -39,6 +39,7 @@ namespace CPMS_Accounting.Models
         public string ProductType { get; set; }
         public string ProductName { get; set; }
         public DateTime DeliveryDate { get; set; }
+        public string DeliverytoBranch { get; set; }
 
     }
 }

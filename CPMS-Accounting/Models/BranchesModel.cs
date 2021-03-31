@@ -15,7 +15,7 @@ namespace CPMS_Accounting.Models
         public string Address4 { get; set; }
         public string Address5 { get; set; }
         public string Address6 { get; set; }
-        public int BranchCode { get; set; }
+        public string BranchCode { get; set; }
         public int OldBranchCode { get; set; }
         public int Flag { get; set; }
     }

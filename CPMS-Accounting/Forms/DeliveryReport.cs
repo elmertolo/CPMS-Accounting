@@ -37,7 +37,7 @@ namespace CPMS_Accounting
         Int32 pNumber = 0;
         Int64 _dr = 0;
         Main frm;
-
+        int withDeliveryTo = 0;
         List<int> TotalPerChecks = new List<int>();
         int DirectReportStyle = 0;
         int ProvincialReportStyle = 0;
@@ -258,7 +258,7 @@ namespace CPMS_Accounting
                     string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
                     con = new OleDbConnection(ConString);
 
-
+                    dataGridView1.DataSource = "";
                     orderList.Clear();
                     //Get the path of specified file
                     filePath = Path.GetFileNameWithoutExtension(op.FileName);
@@ -308,12 +308,16 @@ namespace CPMS_Accounting
                             order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
+                    order.DeliveryTo.TrimEnd();
                     if (gClient.ShortName == "RCBC")
                     {
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                     }
-                       order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType,order.ProductName);
-                  //  order.ChequeName = proc.GetChequeName(order.ChkType);
+                                order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType,order.ProductName);
+                    //  order.ChequeName = proc.GetChequeName(order.ChkType);
+                                proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
+                                order.DeliverytoBranch = branch.Address1;
+                            order.BranchCode = branch.BranchCode;
                                 order.Quantity = 1;
                                 proc.GetProducts(listofProducts);
                                 listofProducts.ForEach(x =>
@@ -340,8 +344,8 @@ namespace CPMS_Accounting
                         errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
                         Application.Exit();
                 }
-            var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
-            var totalB = orderList.Where(a => a.ChkType == "B"  || a.ChkType == "D").ToList();
+            //var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
+            //var totalB = orderList.Where(a => a.ChkType == "B"  || a.ChkType == "D").ToList();
             
 
 
@@ -419,8 +423,8 @@ namespace CPMS_Accounting
                 string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
                 con = new OleDbConnection(ConString);
 
-
-                orderList.Clear();
+                    dataGridView1.DataSource = "";
+                    orderList.Clear();
                 //Get the path of specified file
                 filePath = Path.GetFileNameWithoutExtension(op.FileName);
 
@@ -475,7 +479,7 @@ namespace CPMS_Accounting
                         order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
                         order.BranchCode.TrimEnd();
                         proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
-                    order.ChequeName = proc.GetChequeName(order.ChkType);
+                        order.ChequeName = proc.GetChequeName(order.ChkType);
                            // order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
                             order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
             
@@ -1343,7 +1347,6 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Get Data From Ordering Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void ProcessDataDefault()
         {
             try
@@ -1359,8 +1362,12 @@ namespace CPMS_Accounting
                     if (isValidateGeneration())
                     {
                         sReport();
+                        if (cbDeliveryTo.Checked == true)
+                            withDeliveryTo = 1;
+                        else
+                            withDeliveryTo = 0;
                         //  if (gClient.DataBaseName != "producers_history")
-                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle,withDeliveryTo);
                         ///  else
                         //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
 
@@ -1405,8 +1412,12 @@ namespace CPMS_Accounting
                     if (isValidateGeneration())
                     {
                         sReport();
+                        if (cbDeliveryTo.Checked == true)
+                            withDeliveryTo = 1;
+                        else
+                            withDeliveryTo = 0;
                         //  if (gClient.DataBaseName != "producers_history")
-                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle);
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle,withDeliveryTo);
                         ///  else
                         //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
                         MessageBox.Show("Data has been process!!!");
@@ -1445,5 +1456,6 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }
