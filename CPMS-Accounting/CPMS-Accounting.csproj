@@ -338,16 +338,16 @@
       <DependentUpon>Producers_SalesInvoice.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\RCBC_DeliveryReceiptDirect.cs">
+    <Compile Include="Reports\DeliveryReceiptDirect.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RCBC_DeliveryReceiptDirect.rpt</DependentUpon>
+      <DependentUpon>DeliveryReceiptDirect.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\RCBC_DeliveryReceiptProvincial.cs">
+    <Compile Include="Reports\DeliveryReceiptProvincial.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RCBC_DeliveryReceiptProvincial.rpt</DependentUpon>
+      <DependentUpon>DeliveryReceiptProvincial.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\Robinsons_SalesInvoice.cs">
@@ -463,13 +463,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Producers_SalesInvoice.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\RCBC_DeliveryReceiptDirect.rpt">
+    <EmbeddedResource Include="Reports\DeliveryReceiptDirect.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>RCBC_DeliveryReceiptDirect.cs</LastGenOutput>
+      <LastGenOutput>DeliveryReceiptDirect.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\RCBC_DeliveryReceiptProvincial.rpt">
+    <EmbeddedResource Include="Reports\DeliveryReceiptProvincial.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>RCBC_DeliveryReceiptProvincial.cs</LastGenOutput>
+      <LastGenOutput>DeliveryReceiptProvincial.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Robinsons_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -1059,7 +1059,7 @@ namespace CPMS_Accounting
                     _total = GetTotalChecks(listofChkType[i].ChequeName.Substring(0, listofChkType[i].ChequeName.Length - 6));
                 else
                 _total = GetTotalChecksDefault(listofChkType[i].Type);
-                _total = fGetTotalChecks(listofChkType[i].ChequeName, orderList);
+                //_total = fGetTotalChecks(listofChkType[i].ChequeName, orderList);
                 list.Add(_total);
             }
             return list;
@@ -1114,7 +1114,7 @@ namespace CPMS_Accounting
             int _total = 0;
             // con = new MySqlConnection(ConString);
 
-            var chkType = _list.Where(x => x.ChequeName == _chkName).ToList();
+            var chkType = _list.Where(x => x.ChequeName.Contains(_chkName)).ToList();
             _total = chkType.Count();
             //string Sql = "SELECT f FROM   WHERE CHKNAME LIKE '" + _chkName + "%' ";
             //  cmd = new MySqlCommand(Sql, con);
@@ -1144,7 +1144,7 @@ namespace CPMS_Accounting
                 orderList.ForEach(x =>
                 {
                     x.ChequeName.Replace("Check", "Cheques");
-                    x.PONumber = proc.GetPONUmber(x.ChequeName);
+                    x.PONumber = proc.GetPONUmberforSearching(x.ChequeName);
                     if (x.BRSTN.StartsWith("01"))
                         x.Location = "Direct";
                     else

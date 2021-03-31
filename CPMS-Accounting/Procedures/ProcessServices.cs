@@ -2411,6 +2411,25 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _poNumber;
         }
+        public int GetPONUmberforSearching(string _chkType)
+        {
+            int _poNumber = 0;
+
+            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName like '%" + _chkType.Replace("|", "''") + "%' ";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+
+                _poNumber = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
+
+                //  _poNumber.Add(po);
+            }
+            reader.Close();
+            DBClosed();
+            return _poNumber;
+        }
         private void Script(string _table ,OrderModel r,int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
             if (gClient.DataBaseName != "producers_history")

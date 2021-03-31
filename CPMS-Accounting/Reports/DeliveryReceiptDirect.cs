@@ -16,14 +16,14 @@ namespace CPMS_Accounting.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class RCBC_DeliveryReceiptProvincial : ReportClass {
+    public class DeliveryReceiptDirect : ReportClass {
         
-        public RCBC_DeliveryReceiptProvincial() {
+        public DeliveryReceiptDirect() {
         }
         
         public override string ResourceName {
             get {
-                return "RCBC_DeliveryReceiptProvincial.rpt";
+                return "DeliveryReceiptDirect.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CPMS_Accounting.Reports {
         
         public override string FullResourceName {
             get {
-                return "CPMS_Accounting.Reports.RCBC_DeliveryReceiptProvincial.rpt";
+                return "CPMS_Accounting.Reports.DeliveryReceiptDirect.rpt";
             }
             set {
                 // Do nothing
@@ -106,9 +106,9 @@ namespace CPMS_Accounting.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedRCBC_DeliveryReceiptProvincial : Component, ICachedReport {
+    public class CachedDeliveryReceiptDirect : Component, ICachedReport {
         
-        public CachedRCBC_DeliveryReceiptProvincial() {
+        public CachedDeliveryReceiptDirect() {
         }
         
         [Browsable(false)]
@@ -145,7 +145,7 @@ namespace CPMS_Accounting.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            RCBC_DeliveryReceiptProvincial rpt = new RCBC_DeliveryReceiptProvincial();
+            DeliveryReceiptDirect rpt = new DeliveryReceiptDirect();
             rpt.Site = this.Site;
             return rpt;
         }
