@@ -50,7 +50,7 @@ namespace CPMS_Accounting
                 vp.Text = "Delivery Receipt Direct Branches";
                 tempRecent.Clear();
                 proc.fGetDrProvincial(txtRecentBatch.Text, tempRecent);
-                report = "DR";
+                report = "DRP";
                 ViewReports vp1 = new ViewReports();
                 vp1.Show();
                 vp1.Text = "Delivery Receipt Provincial Branches";

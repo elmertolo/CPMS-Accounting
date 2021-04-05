@@ -1214,6 +1214,12 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnBranchCode2;
             
+            private global::System.Data.DataColumn columnDeliveryToBranch;
+            
+            private global::System.Data.DataColumn columnDeliveryToBranch1;
+            
+            private global::System.Data.DataColumn columnDeliveryToBranch2;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public StickerDataTable() {
@@ -1617,6 +1623,30 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeliveryToBranchColumn {
+                get {
+                    return this.columnDeliveryToBranch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeliveryToBranch1Column {
+                get {
+                    return this.columnDeliveryToBranch1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeliveryToBranch2Column {
+                get {
+                    return this.columnDeliveryToBranch2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1698,7 +1728,10 @@ namespace CPMS_Accounting {
                         string ProductType, 
                         string ProductType2, 
                         string ProductType3, 
-                        string BranchCode2) {
+                        string BranchCode2, 
+                        string DeliveryToBranch, 
+                        string DeliveryToBranch1, 
+                        string DeliveryToBranch2) {
                 StickerRow rowStickerRow = ((StickerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -1746,7 +1779,10 @@ namespace CPMS_Accounting {
                         ProductType,
                         ProductType2,
                         ProductType3,
-                        BranchCode2};
+                        BranchCode2,
+                        DeliveryToBranch,
+                        DeliveryToBranch1,
+                        DeliveryToBranch2};
                 rowStickerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStickerRow);
                 return rowStickerRow;
@@ -1815,6 +1851,9 @@ namespace CPMS_Accounting {
                 this.columnProductType2 = base.Columns["ProductType2"];
                 this.columnProductType3 = base.Columns["ProductType3"];
                 this.columnBranchCode2 = base.Columns["BranchCode2"];
+                this.columnDeliveryToBranch = base.Columns["DeliveryToBranch"];
+                this.columnDeliveryToBranch1 = base.Columns["DeliveryToBranch1"];
+                this.columnDeliveryToBranch2 = base.Columns["DeliveryToBranch2"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1912,6 +1951,12 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnProductType3);
                 this.columnBranchCode2 = new global::System.Data.DataColumn("BranchCode2", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBranchCode2);
+                this.columnDeliveryToBranch = new global::System.Data.DataColumn("DeliveryToBranch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryToBranch);
+                this.columnDeliveryToBranch1 = new global::System.Data.DataColumn("DeliveryToBranch1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryToBranch1);
+                this.columnDeliveryToBranch2 = new global::System.Data.DataColumn("DeliveryToBranch2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryToBranch2);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4256,6 +4301,54 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DeliveryToBranch {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.DeliveryToBranchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryToBranch\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.DeliveryToBranchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DeliveryToBranch1 {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.DeliveryToBranch1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryToBranch1\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.DeliveryToBranch1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string DeliveryToBranch2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableSticker.DeliveryToBranch2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryToBranch2\' in table \'Sticker\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSticker.DeliveryToBranch2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableSticker.BatchColumn);
             }
@@ -4804,6 +4897,42 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetBranchCode2Null() {
                 this[this.tableSticker.BranchCode2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeliveryToBranchNull() {
+                return this.IsNull(this.tableSticker.DeliveryToBranchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeliveryToBranchNull() {
+                this[this.tableSticker.DeliveryToBranchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeliveryToBranch1Null() {
+                return this.IsNull(this.tableSticker.DeliveryToBranch1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeliveryToBranch1Null() {
+                this[this.tableSticker.DeliveryToBranch1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeliveryToBranch2Null() {
+                return this.IsNull(this.tableSticker.DeliveryToBranch2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeliveryToBranch2Null() {
+                this[this.tableSticker.DeliveryToBranch2Column] = global::System.Convert.DBNull;
             }
         }
         

@@ -1429,9 +1429,10 @@ namespace CPMS_Accounting
 
                         tempDr.Clear();
                         proc.fGetDrProvincial(orderList[0].Batch.Trim(), tempDr);
+                        report = "DRP";
                         ViewReports vpDrP = new ViewReports();
                         vpDrP.Show();
-                        vpDrP.Text = "Delivery Receipt Direct Branches";
+                        vpDrP.Text = "Delivery Receipt Provincial Branches";
 
                         tempDr.Clear();
                         proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
