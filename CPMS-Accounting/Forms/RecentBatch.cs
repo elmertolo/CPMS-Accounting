@@ -12,13 +12,14 @@ using MySql.Data.MySqlClient;
 using CPMS_Accounting.Models;
 using CPMS_Accounting.Procedures;
 using static CPMS_Accounting.GlobalVariables;
+using System.Threading;
 
 namespace CPMS_Accounting
 {
     public partial class RecentBatch : Form
     {
         Main frm;
-        public static string report = "";
+        public static string report = "DR";
         ProcessServices proc = new ProcessServices();
         List<TempModel> tempRecent = new List<TempModel>();
         List<TempModel> batchTemp = new List<TempModel>();
@@ -42,12 +43,16 @@ namespace CPMS_Accounting
             if (gClient.BankCode == "028")
             {
 
+                
                 tempRecent.Clear();
                 proc.fGetDrDirect(txtRecentBatch.Text, tempRecent);
-                report = "DR";
+                 report = "DR";
                 ViewReports vp = new ViewReports();
                 vp.Show();
                 vp.Text = "Delivery Receipt Direct Branches";
+
+                Thread.Sleep(1200);
+                
                 tempRecent.Clear();
                 proc.fGetDrProvincial(txtRecentBatch.Text, tempRecent);
                 report = "DRP";
@@ -252,8 +257,8 @@ namespace CPMS_Accounting
 
                 var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
 
-                if (gClient.DataBaseName != "producers_history")
-                {
+                //if (gClient.DataBaseName != "producers_history")
+                //{
                     foreach (string batch in dBatchtemp)
                     {
 
@@ -273,7 +278,7 @@ namespace CPMS_Accounting
 
                     }
 
-                }
+                //}
 
 
                 printDRToolStripMenuItem.Enabled = true;

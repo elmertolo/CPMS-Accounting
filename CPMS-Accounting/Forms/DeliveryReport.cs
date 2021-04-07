@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CPMS_Accounting.Forms;
@@ -22,7 +23,7 @@ namespace CPMS_Accounting
     public partial class DeliveryReport : Form
     {
 
-        public static string report = "DR";
+        public static string report = "";
         OpenFileDialog op = new OpenFileDialog();
         List<OrderModel> orderList = new List<OrderModel>();
         ProcessServices proc = new ProcessServices();
@@ -70,7 +71,9 @@ namespace CPMS_Accounting
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gClient.BankCode == "028")
-                ProcessData();
+                ProcessDataRCBC();
+            else if (gClient.BankCode == "008")
+                ProcessDataPNB();
             else
                 ProcessDataDefault();
         }
@@ -196,7 +199,7 @@ namespace CPMS_Accounting
             cbProvincial.Items.Add("Cheque Type per Branch");
             cbProvincial.Items.Add("Cheque Type per Location");
             cbProvincial.Items.Add("Location,Cheque Type and Branch");
-            if(gClient.ShortName == "PNB")
+            if(gClient.BankCode == "008" || gClient.BankCode == "028")
             {
                 cbDirect.SelectedIndex = 5;
                 cbProvincial.SelectedIndex = 4;
@@ -308,7 +311,7 @@ namespace CPMS_Accounting
                             order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
                             order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
                             order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
-                    order.DeliveryTo.TrimEnd();
+                    order.DeliveryTo.Trim();
                     if (gClient.ShortName == "RCBC")
                     {
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
@@ -719,7 +722,6 @@ namespace CPMS_Accounting
             ViewReports vp = new ViewReports();
             vp.Show();
         }
-
         private void btnGenerate_Click(object sender, EventArgs e)
         {
            
@@ -730,7 +732,6 @@ namespace CPMS_Accounting
          
             MessageBox.Show("Getting DrNumber done!!");
         }
-
         private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar))
@@ -739,7 +740,6 @@ namespace CPMS_Accounting
             }
 
         }
-
         private void cbDirect_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar))
@@ -748,7 +748,6 @@ namespace CPMS_Accounting
             }
 
         }
-
         private void cbProvincial_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar))
@@ -1060,7 +1059,6 @@ namespace CPMS_Accounting
             else
                 GetDataFromDB();
         }
-
         private int GetTotalChecksDefault(string _chkName)
         {
             int _total = 0;
@@ -1397,7 +1395,7 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void ProcessData()
+        private void ProcessDataRCBC()
         {
             try
             {
@@ -1421,12 +1419,15 @@ namespace CPMS_Accounting
                         ///  else
                         //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
                         MessageBox.Show("Data has been process!!!");
+                        
                         tempDr.Clear();
+                        report = "DR";
                         proc.fGetDrDirect(orderList[0].Batch.Trim(), tempDr);
                         ViewReports vpDrD = new ViewReports();
                         vpDrD.Show();
                         vpDrD.Text = "Delivery Receipt Direct Branches";
 
+                        Thread.Sleep(1200);
                         tempDr.Clear();
                         proc.fGetDrProvincial(orderList[0].Batch.Trim(), tempDr);
                         report = "DRP";
@@ -1457,6 +1458,86 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void ProcessDataPNB()
+        {
+            try
+            {
+                deliveryDate = dateTimePicker1.Value;
+                if (deliveryDate == dateTime)
+                {
+                    MessageBox.Show("Please set Delivery Date!");
+                }
 
+                else
+                {
+                    if (isValidateGeneration())
+                    {
+                        sReport();
+                        if (cbDeliveryTo.Checked == true)
+                            withDeliveryTo = 1;
+                        else
+                            withDeliveryTo = 0;
+                        //  if (gClient.DataBaseName != "producers_history")
+                        proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle, withDeliveryTo);
+                        ///  else
+                        //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
+                        
+
+                        tempDr.Clear();
+                        proc.GetDRDetails(orderList[0].Batch, tempDr);
+                        MessageBox.Show("Data has been process!!!");
+                        report = "DR";
+                        ViewReports vp = new ViewReports();
+                        //// vp.MdiParent = this;
+                        vp.Show();
+                        vp.Text = "Delivery Receipt Report";
+                        //tempDr.Clear();
+                        //proc.GetDRDetails(orderList[0].Batch, tempDr);
+                        MessageBox.Show("Data has been process!!!");
+                        report = "Packing";
+                        ViewReports vpP = new ViewReports();
+                        //// vp.MdiParent = this;
+                        vpP.Show();
+                        vpP.Text = "Packing Report";
+
+                        //tempDr.Clear();
+                        //proc.GetDRDetails(orderList[0].Batch, tempDr);
+                        MessageBox.Show("Data has been process!!!");
+                        report = "DRR";
+                        ViewReports vpDR = new ViewReports();
+                        //// vp.MdiParent = this;
+                        vpDR.Show();
+                        vpDR.Text = "Delivery Report";
+
+                        tempSticker.Clear();
+                        proc.GetPackingListwithSticker(orderList[0].Batch, tempSticker);
+                        report = "PackingList";
+                        ViewReports vpS = new ViewReports();
+                        //// vp.MdiParent = this;
+                        vpS.Show();
+                        vpS.Text = "Sticker 2 Report";
+                        //if (gClient.ShortName == "PNB")
+                        //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
+                        //else
+
+                        tempSticker.Clear();
+                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+                        report = "STICKER";
+                        ViewReports vpS2 = new ViewReports();
+                        //// vp.MdiParent = this;
+                        vpS2.Show();
+                        vpS2.Text = "Sticker Report";
+
+                        reportsToolStripMenuItem.Enabled = true;
+                        proc.DisableControls(deliveryReportToolStripMenuItem);
+                        generateToolStripMenuItem.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
