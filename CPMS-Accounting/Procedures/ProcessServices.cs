@@ -2493,7 +2493,7 @@ namespace CPMS_Accounting.Procedures
             //DeliveryTo same as BRSTN
             if (_checks.Regular_Personal_Direct.Count > 0)
             {
-
+                // without deliveryTO
                 // generating DR number per Branches with ChkType A
                 var dBranch = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch.ForEach(y =>
@@ -2514,8 +2514,9 @@ namespace CPMS_Accounting.Procedures
 
                     
                 });
-
-                    var dBranch2 = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                // END without deliveryTO
+                // with deliveryTO
+                var dBranch2 = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
                 {
                     var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
@@ -2524,16 +2525,23 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         isInsertData = true;
                     });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
 
 
-
-                        //isInsertData = false;
+                    //isInsertData = false;
 
                 });
+                // END with deliveryTO
             }
             if (_checks.Regular_Commercial_Direct.Count > 0)
             {
                 // generating DR number per Branches with ChkType B in Direct Branches
+                //Without DeliveryTo
                 var dBranch = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch.ForEach(y =>
                 {
@@ -2550,6 +2558,8 @@ namespace CPMS_Accounting.Procedures
                     }
                     isInsertData = false;
                 });
+                //END Without DeliveryTo
+                // with deliveryTO
                 // generating DR number per Branches with ChkType B in Direct Branches
                 var dBranch2 = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
@@ -2569,68 +2579,17 @@ namespace CPMS_Accounting.Procedures
                        isInsertData = false;
 
                 });
-
+                //END with deliveryTO
 
             }
-
-            //With deliveryto 
-            //if (_checks.Regular_Personal_Direct.Count > 0)
-            //{
-            //    if (!isInsertData)
-            //    {
-            //        _packNumber++;
-            //        _DrNumber++;
-            //    }
-            //    // generating DR number per Branches with ChkType A
-            //    var dBranch = _checks.Regular_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
-            //    dBranch.ForEach(y =>
-            //    {
-            //        var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
-            //        dRecord.ForEach(r =>
-            //        {
-            //            Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
-            //            isInsertData = true;
-            //        });
-
-
-
-            //        //isInsertData = false;
-            //    });
-
-            //}
-            //if (_checks.Regular_Commercial_Direct.Count > 0)
-            //{
-            //    if (!isInsertData)
-            //    {
-            //        _packNumber++;
-            //        _DrNumber++;
-            //    }
-            //    // generating DR number per Branches with ChkType B in Direct Branches
-            //    var dBranch = _checks.Regular_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
-            //    dBranch.ForEach(y =>
-            //    {
-            //        var dRecord = _checks.Regular_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
-            //        dRecord.ForEach(r =>
-            //        {
-            //            Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
-            //            isInsertData = true;
-            //        });
-
-
-            //        //   isInsertData = false;
-
-            //    });
-
-            //}
-
 
 
             if (_checks.Regular_Personal_Provincial.Count > 0)
             {
-                //_DrNumber++;
+              //  _DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-
+                //Without DeliveryTo
                 dBranch.ForEach(y =>
                 {
                     var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
@@ -2652,18 +2611,14 @@ namespace CPMS_Accounting.Procedures
                     }
                     isInsertData = false;
                 });
+                //END Without DeliveryTo
+                // with deliveryTO
+                _DrNumber++;
 
-            }
-
-
-            if (_checks.Regular_Personal_Provincial.Count > 0)
-            {
-
-                //Generating DR per CheckType in Provincial Branches
-                var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch.ForEach(y =>
+                var dBranch2 = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
                 {
-
+                    
                     var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
 
                     dRecord.ForEach(r =>
@@ -2671,25 +2626,25 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         isInsertData = true;
                     });
+
                     if (isInsertData)
                     {
                         _packNumber++;
 
                         _DrNumber++;
                     }
-
                     isInsertData = false;
                 });
+                //ENd with deliveryTO
 
             }
-            
-
 
 
             if (_checks.Regular_Commercial_Provincial.Count > 0)
             {
                 //_DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
                 var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch.ForEach(y =>
                 {
@@ -2716,19 +2671,12 @@ namespace CPMS_Accounting.Procedures
                     }
                     isInsertData = false;
                 });
-
-            }
-            //Without DeliveryTo
-
-            
-
-            
-            
-            if (_checks.Regular_Commercial_Provincial.Count > 0)
-            {
+                //End Without DeliveryTo
                 //Generating DR per CheckType in Provincial Branches
-                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch.ForEach(y =>
+                _DrNumber++;
+                // with deliveryTO
+                var dBranch2 = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
                 {
                     var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
                     dRecord.ForEach(r =>
@@ -2746,10 +2694,9 @@ namespace CPMS_Accounting.Procedures
                     }
                     isInsertData = false;
                 });
-
+                // end with deliveryTO
             }
-            // end with deliveryTO
-             
+
             DBClosed();
             return;
         }
