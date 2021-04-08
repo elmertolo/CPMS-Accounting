@@ -22,7 +22,8 @@ namespace CPMS_Accounting
 {
     public partial class DeliveryReport : Form
     {
-
+        //02152021 Log4Net
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static string report = "";
         OpenFileDialog op = new OpenFileDialog();
         List<OrderModel> orderList = new List<OrderModel>();
@@ -70,6 +71,7 @@ namespace CPMS_Accounting
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            log.Info("Generating data Start...");
             if (gClient.BankCode == "028")
                 ProcessDataRCBC();
             else if (gClient.BankCode == "008")
@@ -633,8 +635,8 @@ namespace CPMS_Accounting
             //ChequeName();
             ReporStyle();
             lb.Text = "Total";
+            log.Info("Delivery Transaction Report Form Loaded");
 
-            
         }
         private void GetPack()
         {
@@ -1415,6 +1417,7 @@ namespace CPMS_Accounting
                         else
                             withDeliveryTo = 0;
                         //  if (gClient.DataBaseName != "producers_history")
+                        log.Info("Process of Data has been started...");
                         proc.Process2(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text), DirectReportStyle, ProvincialReportStyle,withDeliveryTo);
                         ///  else
                         //   proc.Process(orderList, this, int.Parse(txtDrNumber.Text), int.Parse(txtPackNumber.Text));
@@ -1450,6 +1453,8 @@ namespace CPMS_Accounting
                         reportsToolStripMenuItem.Enabled = true;
                         proc.DisableControls(deliveryReportToolStripMenuItem);
                         generateToolStripMenuItem.Enabled = false;
+
+                        log.Info("Genearating Data Done");
                     }
                 }
             }
