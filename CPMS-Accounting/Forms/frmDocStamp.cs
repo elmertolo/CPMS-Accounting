@@ -101,6 +101,8 @@ namespace CPMS_Accounting.Forms
         {
             try
             {
+                List<ChequeTypesModel> listofCheques = new List<ChequeTypesModel>();
+                proc.GetChequeTypes(listofCheques);
                 tempSI.Clear();
                 proc.DisplayAllSalesInvoice(txtBatch.Text, tempSI);
                 DataTable dt = new DataTable();
@@ -114,10 +116,11 @@ namespace CPMS_Accounting.Forms
                 dt.Columns.Add("Cheque Name");
                 dt.Columns.Add("Batch");
                 dt.Columns.Add("Branch Location");
+                dt.Columns.Add("Product Code");
 
                 tempSI.ForEach(r =>
                 {
-                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch,r.Location });
+                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch,r.Location,r.ProductCode });
                 });
 
                 DgvDSalesInvoice.DataSource = dt;
@@ -129,6 +132,8 @@ namespace CPMS_Accounting.Forms
                 DgvDSalesInvoice.Columns[4].Width = 190;
                 DgvDSalesInvoice.Columns[5].Width = 100;
                 DgvDSalesInvoice.Columns[6].Width = 100;
+                DgvDSalesInvoice.Columns[7].Width = 100;
+                //   DgvDSalesInvoice.Columns[7].Visible = false;
             }
             catch(Exception error)
             {
@@ -179,13 +184,13 @@ namespace CPMS_Accounting.Forms
 
                     if (DgvDSalesInvoice.SelectedRows != null && DgvDSalesInvoice.SelectedRows.Count > 0)
                     {
-
+                        
                         foreach (DataGridViewRow row in DgvDSalesInvoice.SelectedRows)
                         {
                             DocStampModel doc = new DocStampModel();
                             doc.DocStampNumber = docs;
-                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
-
+                            
+                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString(), row.Cells["Product Code"].Value.ToString());
 
                             doc.BankCode = priceA.BankCode;
 
@@ -243,7 +248,7 @@ namespace CPMS_Accounting.Forms
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
+                MessageBox.Show(error.Message, "Add Data to Document Stamp View", MessageBoxButtons.OK, MessageBoxIcon.Error );
 
             }
         }

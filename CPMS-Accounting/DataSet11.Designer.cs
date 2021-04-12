@@ -2310,7 +2310,7 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, string DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, int PONumber, double BalanceOrder, string Batch, string Location) {
+            public DocStampRow AddDocStampRow(string Bank, int DocstampNumber, int SalesInvoice, int Quantity, string ChkType, string ChequeDesc, System.DateTime DocStampDate, double TotalAmount, string DocStampPrice, string PreparedBy, string CheckedBy, int PONumber, double BalanceOrder, string Batch, string Location) {
                 DocStampRow rowDocStampRow = ((DocStampRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Bank,
@@ -2382,7 +2382,7 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnChkType);
                 this.columnChequeDesc = new global::System.Data.DataColumn("ChequeDesc", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChequeDesc);
-                this.columnDocStampDate = new global::System.Data.DataColumn("DocStampDate", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDocStampDate = new global::System.Data.DataColumn("DocStampDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDocStampDate);
                 this.columnTotalAmount = new global::System.Data.DataColumn("TotalAmount", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalAmount);
@@ -5048,10 +5048,10 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string DocStampDate {
+            public System.DateTime DocStampDate {
                 get {
                     try {
-                        return ((string)(this[this.tableDocStamp.DocStampDateColumn]));
+                        return ((global::System.DateTime)(this[this.tableDocStamp.DocStampDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'DocStampDate\' in table \'DocStamp\' is DBNull.", e);

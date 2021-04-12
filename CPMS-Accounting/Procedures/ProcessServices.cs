@@ -1371,7 +1371,7 @@ namespace CPMS_Accounting.Procedures
             {
                 log.Info("Getting Data from database..");
                 DBConnect();
-                if (gClient.DataBaseName != "producers_history")
+                if (gClient.BankCode == "008")
                 {
                     Sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity,SalesInvoice,DocStampNumber from  " + gClient.DataBaseName +
                           " where DrNumber is not null  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%' OR DocStampNumber Like '%" + _batch + "%' )" +
@@ -1704,12 +1704,12 @@ namespace CPMS_Accounting.Procedures
 
 
         //}
-        public PriceListModel GetPriceList(PriceListModel price, string chkType)
+        public PriceListModel GetPriceList(PriceListModel price, string chkType,string _cProductCode)
         {
             try
             {
                 log.Info("Getting Price list data from database..");
-                Sql = "Select BankCode, Description, Docstamp from " + gClient.PriceListTable + " where FinalChkType ='" + chkType + "'; ";
+                Sql = "Select BankCode, Description, Docstamp from " + gClient.PriceListTable + " where FinalChkType ='" + chkType + "' and ProductCode = '"+_cProductCode+"'; ";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -1729,7 +1729,7 @@ namespace CPMS_Accounting.Procedures
             }
             catch(Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
+                MessageBox.Show(error.Message, "Get Pricelist Data ", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return price;
             }
         }
@@ -1779,15 +1779,15 @@ namespace CPMS_Accounting.Procedures
         {
             log.Info("Getting Data from database..");
             DBConnect();
-            if (gClient.DataBaseName != "producers_history")
+            if (gClient.BankCode == "008")
             {
-                Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location from  " + gClient.DataBaseName +
+                Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location,ProductCode from  " + gClient.DataBaseName +
                             " where (DocStampNumber is null or DocStampNumber = 0) and SalesInvoice != 0  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%') " +
                             "group by location,SalesInvoice, ChkType order by SalesInvoice, Batch,ChkType;";
             }
             else
             {
-                Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location from  " + gClient.DataBaseName +
+                Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location,ProductCode from  " + gClient.DataBaseName +
                     " where (DocStampNumber is null or DocStampNumber = 0 ) and SalesInvoice != 0  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%') " +
                     "group by SalesInvoice, ChkType order by SalesInvoice, Batch,ChkType;";
             }
@@ -1803,7 +1803,8 @@ namespace CPMS_Accounting.Procedures
                     ChkType = !reader.IsDBNull(3) ? reader.GetString(3) : "",
                     ChequeName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
                     Batch = !reader.IsDBNull(5) ? reader.GetString(5) : "",
-                    Location = !reader.IsDBNull(6) ? reader.GetString(6):""
+                    Location = !reader.IsDBNull(6) ? reader.GetString(6):"",
+                    ProductCode = !reader.IsDBNull(7) ? reader.GetString(7): ""
 
                 };
                 _temp.Add(t);
@@ -1825,7 +1826,7 @@ namespace CPMS_Accounting.Procedures
                 //Orginal Query
                 Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
                       "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
-                      "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location from " + gClient.DataBaseName +
+                      "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate from " + gClient.DataBaseName +
                       " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
                       " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
                 //_docStampNumber.ForEach(x => { 
@@ -1856,6 +1857,7 @@ namespace CPMS_Accounting.Procedures
                     doc.batches = !reader.IsDBNull(11) ? reader.GetString(11) : "";
                     doc.TotalAmount = !reader.IsDBNull(12) ? reader.GetDouble(12) : 0;
                     doc.Location = !reader.IsDBNull(13) ? reader.GetString(13) : "";
+                    doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
 
                     _temp.Add(doc);
                 }
@@ -1871,10 +1873,10 @@ namespace CPMS_Accounting.Procedures
                 {
 
                     string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
-                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location)Values('" + d.BankCode + "'," + d.DocStampNumber +
+                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + d.BankCode + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "')";
+                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting to Docstamp table Done..");

@@ -281,7 +281,7 @@ namespace CPMS_Accounting
                 if (gClient.ShortName == "RCBC")
                 {
                     sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                    "CK_NO_B,CK_NO_E,DELIVERTO,CHKNAME FROM " + filePath;
+                                    "CK_NO_B,CK_NO_E,DRBRSTN,CHKNAME,PICKBRC FROM " + filePath;
                 }
                 else
                 {
@@ -317,17 +317,21 @@ namespace CPMS_Accounting
                     if (gClient.ShortName == "RCBC")
                     {
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                        order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                        order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
                     }
-                                order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType,order.ProductName);
-                    //  order.ChequeName = proc.GetChequeName(order.ChkType);
-                                proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
-                                order.DeliverytoBranch = branch.Address1;
-                            order.BranchCode = branch.BranchCode;
+                    else
+                    {
+                        order.ChequeName = proc.GetChequeName(order.ChkType);
+                    }
+                          proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
+                          order.DeliverytoBranch = branch.Address1;
+                           // order.BranchCode = branch.BranchCode;
                                 order.Quantity = 1;
                                 proc.GetProducts(listofProducts);
                                 listofProducts.ForEach(x =>
                                 {
-                                    if (order.ChkType == x.ChkType)
+                                    if (order.ChkType == x.ChkType && order.ProductName.StartsWith(x.ChequeName.Substring(0,x.ChequeName.Length - 9)))
                                     {
                                         order.ProductCode = x.ProductCode;
                                     }

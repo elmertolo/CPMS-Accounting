@@ -44,6 +44,7 @@ namespace CPMS_Accounting.Models
         public string DeliveryToBranch { get; set; }
         public string DeliveryToBrstn { get; set; }
         public string AttentionTo { get; set; }
+        public string ProductCode { get; set; }
     }
 
 }
