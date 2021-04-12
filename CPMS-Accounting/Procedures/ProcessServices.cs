@@ -2885,7 +2885,7 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
-                          ",Address2,Address3,Address4,Address5,Address6,ProductCode,Block,Segment,ProductType)" +
+                          ",Address2,Address3,Address4,Address5,Address6,ProductCode,Block,Segment,ProductType,AttentionTo)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName.Replace("'", "''") + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName.Replace("'","''") + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
@@ -2893,7 +2893,7 @@ namespace CPMS_Accounting.Procedures
                           "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
                           "'" + r.Address2.Replace("'","''") + "','" + r.Address3.Replace("'", "''") + "','" + r.Address4.Replace("'", "''") + "','" + r.Address5.Replace("'", "''") +
                           "','" + r.Address6.Replace("'", "''") + "','" + r.ProductCode +
-                          "'," + r.Block  + "," + r.Segment+",'" + r.ProductType +"');";
+                          "'," + r.Block  + "," + r.Segment+",'" + r.ProductType +"','" + gClient.AttentionTo + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
@@ -2902,12 +2902,13 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank,ProductCode," +
-                          "BranchCode,DeliveryToBrstn,DeliveryToBranch)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
+                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
                           "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                          "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','"+ r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch + "');";
+                          "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','"+ r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch +
+                          "','" + gClient.AttentionTo + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
