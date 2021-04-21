@@ -281,7 +281,7 @@ namespace CPMS_Accounting
                 if (gClient.ShortName == "RCBC")
                 {
                     sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                    "CK_NO_B,CK_NO_E,DRBRSTN,CHKNAME,PICKBRC FROM " + filePath;
+                                    "CK_NO_B,CK_NO_E,DRBRSTN,CHKNAME,PICKBRC,DRBRC FROM " + filePath;
                 }
                 else
                 {
@@ -318,28 +318,30 @@ namespace CPMS_Accounting
                     {
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                         order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                        order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
                         order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
                     }
                     else
                     {
                         order.ChequeName = proc.GetChequeName(order.ChkType);
                     }
-                          proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
+                    if (order.BRSTN.StartsWith("01"))
+                        order.Location = "Direct";
+                    else
+                        order.Location = "Provincial";
+                    proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
                           order.DeliverytoBranch = branch.Address1;
                            // order.BranchCode = branch.BranchCode;
                                 order.Quantity = 1;
                                 proc.GetProducts(listofProducts);
                                 listofProducts.ForEach(x =>
                                 {
-                                    if (order.ChkType == x.ChkType && order.ProductName.StartsWith(x.ChequeName.Substring(0,x.ChequeName.Length - 9)))
+                                    if (order.ChkType == x.ChkType && order.Location == x.DeliveryLocation  && order.ProductName.StartsWith(x.ChequeName.Substring(0,x.ChequeName.Length - 9)))
                                     {
                                         order.ProductCode = x.ProductCode;
                                     }
                                 });
-                    if(order.BRSTN.StartsWith("01"))
-                    order.Location = "Direct";
-                    else
-                    order.Location = "Provincial";
+                    
 
                     CountChkType(order.ChequeName);
                  // TotalPerChecks = GetTotalChecks(order.ChequeName.Substring(0,10));
@@ -1448,7 +1450,8 @@ namespace CPMS_Accounting
                         //if (gClient.ShortName == "PNB")
                         //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);
                         //else
-                        proc.GetStickerDetails(tempSticker, orderList[0].Batch);
+
+                        proc.GetStickerDetailsWithDeliveryTo(tempSticker, orderList[0].Batch);
                         
 
                         //ViewReports vp = new ViewReports();

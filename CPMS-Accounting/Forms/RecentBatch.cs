@@ -84,8 +84,16 @@ namespace CPMS_Accounting
 
         private void stickersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tempRecent.Clear();
-            proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
+            if (gClient.BankCode == "028")
+            {
+                tempRecent.Clear();
+                proc.GetStickerDetailsWithDeliveryTo(tempRecent, txtRecentBatch.Text);
+            }
+            else
+            {
+                tempRecent.Clear();
+                proc.GetStickerDetails(tempRecent, txtRecentBatch.Text);
+            }
             report = "STICKER";
             ViewReports vp = new ViewReports();
             vp.Show();

@@ -421,6 +421,8 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnDeliveryToBranch;
             
+            private global::System.Data.DataColumn columnTIN;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DeliveryReceiptDataTable() {
@@ -744,6 +746,14 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TINColumn {
+                get {
+                    return this.columnTIN;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -815,7 +825,8 @@ namespace CPMS_Accounting {
                         string ConcatinatedDRDD, 
                         string ConcatinatedDRPD, 
                         string DeliveryToBrstn, 
-                        string DeliveryToBranch) {
+                        string DeliveryToBranch, 
+                        string TIN) {
                 DeliveryReceiptRow rowDeliveryReceiptRow = ((DeliveryReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Batch,
@@ -853,7 +864,8 @@ namespace CPMS_Accounting {
                         ConcatinatedDRDD,
                         ConcatinatedDRPD,
                         DeliveryToBrstn,
-                        DeliveryToBranch};
+                        DeliveryToBranch,
+                        TIN};
                 rowDeliveryReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDeliveryReceiptRow);
                 return rowDeliveryReceiptRow;
@@ -912,6 +924,7 @@ namespace CPMS_Accounting {
                 this.columnConcatinatedDRPD = base.Columns["ConcatinatedDRPD"];
                 this.columnDeliveryToBrstn = base.Columns["DeliveryToBrstn"];
                 this.columnDeliveryToBranch = base.Columns["DeliveryToBranch"];
+                this.columnTIN = base.Columns["TIN"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -989,6 +1002,8 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnDeliveryToBrstn);
                 this.columnDeliveryToBranch = new global::System.Data.DataColumn("DeliveryToBranch", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDeliveryToBranch);
+                this.columnTIN = new global::System.Data.DataColumn("TIN", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTIN);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3118,6 +3133,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string TIN {
+                get {
+                    try {
+                        return ((string)(this[this.tableDeliveryReceipt.TINColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TIN\' in table \'DeliveryReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDeliveryReceipt.TINColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBatchNull() {
                 return this.IsNull(this.tableDeliveryReceipt.BatchColumn);
             }
@@ -3546,6 +3577,18 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetDeliveryToBranchNull() {
                 this[this.tableDeliveryReceipt.DeliveryToBranchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTINNull() {
+                return this.IsNull(this.tableDeliveryReceipt.TINColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTINNull() {
+                this[this.tableDeliveryReceipt.TINColumn] = global::System.Convert.DBNull;
             }
         }
         

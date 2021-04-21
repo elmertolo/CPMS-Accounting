@@ -32,7 +32,7 @@ namespace CPMS_Accounting.Procedures
         string Sql = "";
         string ConString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
         MySqlConnection con;
-
+        
         public void DBConnect()
         {
             try
@@ -69,7 +69,6 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(Error.Message, "System Error");
             }
         }// end of function
-
         public void DBClosed()
         {
             log.Info("Closing Connections Database Connections..");
@@ -135,6 +134,25 @@ namespace CPMS_Accounting.Procedures
             checkType.ManagersCheck_Provincial = new List<OrderModel>();
             checkType.ExecutiveOnline_Direct = new List<OrderModel>();
             checkType.ExecutiveOnline_Provincial = new List<OrderModel>();
+            checkType.DragonBlue_Personal_Direct = new List<OrderModel>();
+            checkType.DragonBlue_Commercial_Direct = new List<OrderModel>();
+            checkType.DragonBlue_Commercial_Provicial = new List<OrderModel>();
+            checkType.DragonBlue_Personal_Provincial = new List<OrderModel>();
+            checkType.DragonYellow_Commercial_Direct = new List<OrderModel>();
+            checkType.DragonYellow_Commercial_Provincial = new List<OrderModel>();
+            checkType.DragonYellow_Personal_Direct = new List<OrderModel>();
+            checkType.DragonYellow_Personal_Provincial = new List<OrderModel>();
+            checkType.Reca_Commercial_Direct = new List<OrderModel>();
+            checkType.Reca_Commercial_Provincial = new List<OrderModel>();
+            checkType.Reca_Personal_Direct = new List<OrderModel>();
+            checkType.Reca_Personal_Provincial = new List<OrderModel>();
+            checkType.Online_Commercial_Direct = new List<OrderModel>();
+            checkType.Online_Commercial_Provincial = new List<OrderModel>();
+            checkType.Online_Personal_Direct = new List<OrderModel>();
+            checkType.Online_Personal_Provincial = new List<OrderModel>();
+            checkType.Customized_Direct = new List<OrderModel>();
+            checkType.Customized_Provincial = new List<OrderModel>();
+
             List<ChequeTypesModel> type = new List<ChequeTypesModel>();
             GetChequeTypes(type);
             foreach (OrderModel _check in _orders)
@@ -145,8 +163,10 @@ namespace CPMS_Accounting.Procedures
                 {
                     //foreach (var t in type)
                     //{
-                    log.Info("Separating Data by Checktype and Location ");
-                    log.Info("Adding Data into a List"); 
+                    if(gClient.BankCode == "008")
+                    { 
+                        log.Info("Separating Data by Checktype and Location ");
+                        log.Info("Adding Data into a List"); 
 
                         if (_check.ChkType == "A" && _check.Location == "Direct")
                         {
@@ -180,36 +200,254 @@ namespace CPMS_Accounting.Procedures
                         {
                             checkType.ExecutiveOnline_Provincial.Add(_check);
                         }
-                    //}
-                }
-                //else if (_dReportStyle == 0 && _pReportStyle == 0 && _withDeliveryTo == 1)
-                //{
 
-                //    if (_check.ChkType == "A" && _check.Location == "Direct")
-                //    {
-                //        checkType.Regular_Personal_Direct.Add(_check);
-                //    }
-                //    if (_check.ChkType == "A" && _check.Location == "Provincial")
-                //    {
-                //        checkType.Regular_Personal_Provincial.Add(_check);
-                //    }
-                //    if (_check.ChkType == "B" && _check.Location == "Direct")
-                //    {
-                //        checkType.Regular_Commercial_Direct.Add(_check);
-                //    }
-                //    if (_check.ChkType == "B" && _check.Location == "Provincial")
-                //    {
-                //        checkType.Regular_Commercial_Provincial.Add(_check);
-                //    }
-                //    if (_check.ChkType == "C" && _check.Location == "Direct")
-                //    {
-                //        checkType.ManagersCheck_Direct.Add(_check);
-                //    }
-                //    if (_check.ChkType == "C" && _check.Location == "Provincial")
-                //    {
-                //        checkType.ManagersCheck_Provincial.Add(_check);
-                //    }
-                //}
+                    }
+                    //else if (_dReportStyle != 0 && _pReportStyle != 0 && _withDeliveryTo == 1)
+                    else
+
+                    {
+                        List<ProductModel> _listofCheques = new List<ProductModel>();
+                        GetProducts(_listofCheques);
+                        //for (int i = 0; i < _listofCheques.Count; i++)
+                        //{
+
+
+
+                        for (int i = 0; i < _listofCheques.Count; i++)
+                        {
+
+
+                            if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            {
+                                if(_check.ProductCode == _listofCheques[0].ProductCode)
+                                    checkType.Regular_Personal_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[2].ProductCode)
+                                    checkType.Regular_Commercial_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[5].ProductCode)
+                                    checkType.DragonBlue_Personal_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[6].ProductCode)
+                                    checkType.DragonBlue_Commercial_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[8].ProductCode)
+                                    checkType.DragonYellow_Personal_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[10].ProductCode)
+                                    checkType.DragonYellow_Commercial_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[12].ProductCode)
+                                    checkType.Online_Commercial_Direct.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[14].ProductCode)
+                                    checkType.Reca_Commercial_Direct.Add(_check);
+
+                            }
+                            else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            {
+                                if (_check.ProductCode == _listofCheques[1].ProductCode)
+                                    checkType.Regular_Personal_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[3].ProductCode)
+                                    checkType.Regular_Commercial_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[4].ProductCode)
+                                    checkType.DragonBlue_Personal_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[7].ProductCode)
+                                    checkType.DragonBlue_Commercial_Provicial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[9].ProductCode)
+                                    checkType.DragonYellow_Personal_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[11].ProductCode)
+                                    checkType.DragonYellow_Commercial_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[13].ProductCode)
+                                    checkType.Online_Commercial_Provincial.Add(_check);
+                                else if (_check.ProductCode == _listofCheques[15].ProductCode)
+                                    checkType.Reca_Commercial_Provincial.Add(_check);
+                            }
+
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Regular_Commercial_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Regular_Commercial_Provincial.Add(_check);
+                            //}
+                            ////else if (_check.ChkType == "C" && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            ////{
+                            ////    checkType.ManagersCheck_Direct.Add(_check);
+                            ////}
+                            ////else if (_check.ChkType == "C" && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            ////{
+                            ////    checkType.ManagersCheck_Provincial.Add(_check);
+                            ////}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonBlue_Personal_Provincial.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonBlue_Personal_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonBlue_Commercial_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonBlue_Commercial_Provicial.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonYellow_Personal_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonYellow_Personal_Provincial.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonYellow_Commercial_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.DragonYellow_Commercial_Provincial.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Online_Commercial_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Online_Commercial_Provincial.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Reca_Commercial_Direct.Add(_check);
+                            //}
+                            //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                            //{
+                            //    checkType.Reca_Commercial_Provincial.Add(_check);
+                            //}
+
+                        }
+
+
+
+                        //    else if (_check.ChkType == _listofCheques[2].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[2].ProductCode)
+                        //{
+                        //    checkType.Regular_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[3].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[3].ProductCode)
+                        //{
+                        //    checkType.Regular_Commercial_Provincial.Add(_check);
+                        //}
+                        ////else if (_check.ChkType == "C" && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        ////{
+                        ////    checkType.ManagersCheck_Direct.Add(_check);
+                        ////}
+                        ////else if (_check.ChkType == "C" && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        ////{
+                        ////    checkType.ManagersCheck_Provincial.Add(_check);
+                        ////}
+                        //else if (_check.ChkType == _listofCheques[4].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[4].ProductCode)
+                        //{
+                        //    checkType.DragonBlue_Personal_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[5].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[5].ProductCode)
+                        //{
+                        //    checkType.DragonBlue_Personal_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[6].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[6].ProductCode)
+                        //{
+                        //    checkType.DragonBlue_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[7].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[7].ProductCode)
+                        //{
+                        //    checkType.DragonBlue_Commercial_Provicial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[8].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[8].ProductCode)
+                        //{
+                        //    checkType.DragonYellow_Personal_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[9].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[9].ProductCode)
+                        //{
+                        //    checkType.DragonYellow_Personal_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[10].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[10].ProductCode)
+                        //{
+                        //    checkType.DragonYellow_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[11].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[11].ProductCode)
+                        //{
+                        //    checkType.DragonYellow_Commercial_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[12].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[12].ProductCode)
+                        //{
+                        //    checkType.Online_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[13].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[13].ProductCode)
+                        //{
+                        //    checkType.Online_Commercial_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[14].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[14].ProductCode)
+                        //{
+                        //    checkType.Reca_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[15].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[15].ProductCode)
+                        //{
+                        //    checkType.Reca_Commercial_Provincial.Add(_check);
+                        //}
+
+
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Online_Commercial_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Online_Commercial_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Online_Personal_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Online_Personal_Provincial.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Customized_Direct.Add(_check);
+                        //}
+                        //else if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Provincial" && _check.ProductCode == _listofCheques[i].ProductCode)
+                        //{
+                        //    checkType.Customized_Provincial.Add(_check);
+                        //}
+                        //if (_check.ChkType == r.ChkType && _check.Location == "Direct" && _check.ProductCode == r.ProductCode)
+                        //{
+                        //    checkType.Regular_Personal_Direct.Add(_check);
+                        //}
+                        //if (_check.ChkType == "A" && _check.Location == "Provincial" && _check.ProductCode == r.ProductCode)
+                        //{
+                        //    checkType.Regular_Personal_Provincial.Add(_check);
+                        //}
+                        //if (_check.ChkType == "B" && _check.Location == "Direct")
+                        //{
+                        //    checkType.Regular_Commercial_Direct.Add(_check);
+                        //}
+                        //if (_check.ChkType == "B" && _check.Location == "Provincial")
+                        //{
+                        //    checkType.Regular_Commercial_Provincial.Add(_check);
+                        //}
+                        //if (_check.ChkType == "C" && _check.Location == "Direct")
+                        //{
+                        //    checkType.ManagersCheck_Direct.Add(_check);
+                        //}
+                        //if (_check.ChkType == "C" && _check.Location == "Provincial")
+                        //{
+                        //    checkType.ManagersCheck_Provincial.Add(_check);
+                        //}
+                        //if (_check.ChkType == "C" && _check.Location == "Provincial")
+                        //{
+                        //    checkType.ManagersCheck_Provincial.Add(_check);
+                        //}
+                    }
+//                    }
+                }
+                
                 else
                 {
                     //foreach (var t in type)
@@ -240,7 +478,24 @@ namespace CPMS_Accounting.Procedures
             checkType.Regular_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
-            
+            checkType.Customized_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Customized_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonBlue_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonBlue_Commercial_Provicial.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonBlue_Personal_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonBlue_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonYellow_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonYellow_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonYellow_Personal_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.DragonYellow_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.Reca_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Reca_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.Reca_Personal_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Reca_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.Online_Commercial_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Online_Commercial_Provincial.OrderBy(r => r.BranchName).ToList();
+            checkType.Online_Personal_Direct.OrderBy(r => r.BranchName).ToList();
+            checkType.Online_Personal_Provincial.OrderBy(r => r.BranchName).ToList();
             checkType.ManagersCheck_Direct.OrderBy(r => r.BranchName).ToList();
             checkType.ManagersCheck_Provincial.OrderBy(r => r.BranchName).ToList();
             checkType.ExecutiveOnline_Direct.OrderBy(r => r.BranchName).ToList();
@@ -1631,7 +1886,6 @@ namespace CPMS_Accounting.Procedures
             value = textBox.Text;
             return dialogResult;
         }
-
         public List<SalesInvoiceModel> ListofProcessSI(List<SalesInvoiceModel> _SI)
         {
             log.Info("Getting Data from database..");
@@ -1774,7 +2028,6 @@ namespace CPMS_Accounting.Procedures
             //    return;
             //}
         }
-
         public string DisplayAllSalesInvoice(string _batch, List<TempModel> _temp)
         {
             log.Info("Getting Data from database..");
@@ -2252,7 +2505,6 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
 
         }
-
         private void ByLocationAndTypeFilterByBranchCode(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
             log.Info("Assigning Delivery Receipt Number..");
@@ -2615,17 +2867,790 @@ namespace CPMS_Accounting.Procedures
                 //END with deliveryTO
 
             }
+            // ------------------------------------------------ End of Regular Checks Direct Branches --------------------------------------- //
+
+            if (_checks.DragonBlue_Personal_Direct.Count > 0)
+            {
+                // without deliveryTO
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.DragonBlue_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
 
 
+                });
+                // END without deliveryTO
+                // with deliveryTO
+                var dBranch2 = _checks.DragonBlue_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                    //isInsertData = false;
+
+                });
+                // END with deliveryTO
+            }
+            if (_checks.DragonBlue_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                //Without DeliveryTo
+                var dBranch = _checks.DragonBlue_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch2 = _checks.DragonBlue_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+
+                    isInsertData = false;
+
+                });
+                //END with deliveryTO
+
+            }
+            // ------------------------------------------------ End of Dragon Blue Checks Direct Branches --------------------------------------- //
+
+            if (_checks.DragonYellow_Personal_Direct.Count > 0)
+            {
+                // without deliveryTO
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.DragonYellow_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonYellow_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                });
+                // END without deliveryTO
+                // with deliveryTO
+                var dBranch2 = _checks.DragonYellow_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonYellow_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                    //isInsertData = false;
+
+                });
+                // END with deliveryTO
+            }
+            if (_checks.DragonYellow_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                //Without DeliveryTo
+                var dBranch = _checks.DragonYellow_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonYellow_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch2 = _checks.DragonYellow_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonYellow_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+
+                    isInsertData = false;
+
+                });
+                //END with deliveryTO
+
+            }
+            // ------------------------------------------------ End of Dragon Yellow Checks Direct Branches --------------------------------------- //
+
+            if (_checks.Reca_Personal_Direct.Count > 0)
+            {
+                // without deliveryTO
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.Reca_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                });
+                // END without deliveryTO
+                // with deliveryTO
+                var dBranch2 = _checks.Reca_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+
+                    isInsertData = false;
+
+
+                    //isInsertData = false;
+
+                });
+                // END with deliveryTO
+            }
+
+            if (_checks.Reca_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Reca_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch2 = _checks.Reca_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+
+                    isInsertData = false;
+
+                });
+                //END with deliveryTO
+
+            }
+
+            // ------------------------------------------------ End of Reca Checks Direct Branches --------------------------------------- //
+
+            if (_checks.Online_Personal_Direct.Count > 0)
+            {
+                // without deliveryTO
+                // generating DR number per Branches with ChkType A
+                var dBranch = _checks.Online_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                });
+                // END without deliveryTO
+                // with deliveryTO
+                var dBranch2 = _checks.Online_Personal_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Personal_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+
+
+                    //isInsertData = false;
+
+                });
+                // END with deliveryTO
+            }
+            if (_checks.Online_Commercial_Direct.Count > 0)
+            {
+                // generating DR number per Branches with ChkType B in Direct Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Online_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                // generating DR number per Branches with ChkType B in Direct Branches
+                var dBranch2 = _checks.Online_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Commercial_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+                        _DrNumber++;
+                    }
+
+                    isInsertData = false;
+
+                });
+                //END with deliveryTO
+
+            }
+            // ------------------------------------------------ End of Online Checks Direct Branches --------------------------------------- //
+
+            if (_checks.Customized_Direct.Count > 0)
+            {
+                //_DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Customized_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Customized_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //End Without DeliveryTo
+                
+                _DrNumber++;
+                // with deliveryTO
+                var dBranch2 = _checks.Customized_Direct.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Customized_Direct.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        _packNumber++;
+
+                        _DrNumber++;
+                    }
+                    isInsertData = false;
+                });
+                // end with deliveryTO
+            }
+            // ------------------------------------------------ End of Customized Checks Direct Branches --------------------------------------- //
+
+
+            // ------------------------------------------------ Start of Process for Provincial Branches --------------------------------------- //
+            
             if (_checks.Regular_Personal_Provincial.Count > 0)
             {
-              //  _DrNumber++;
+
+                //_DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 //Without DeliveryTo
+
                 dBranch.ForEach(y =>
                 {
+                  
+                    
                     var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                  
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                dBranch.ForEach(y =>
+                {
+
+                    var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+                    }
+                    
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = false;
+                    });
+
+                    isInsertData = true;
+                });
+                //ENd with deliveryTO
+
+                //isInsertData = false;
+
+            }
+            //if (_checks.Regular_Personal_Provincial.Count > 0)
+            //{
+            //    var dBranch = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+
+
+            //}
+            isInsertData = false;
+            if (_checks.Regular_Commercial_Provincial.Count > 0)
+            {
+               // _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //   // counter++;
+                // //   _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                //    isInsertData = false;
+                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                         counter++;
+                           _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //End Without DeliveryTo
+                //Generating DR per CheckType in Provincial Branches
+                //_DrNumber++;
+                // with deliveryTO
+                
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    
+
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = false;
+                    });
+
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                // end with deliveryTO
+            }
+            //if (_checks.Regular_Commercial_Provincial.Count  > 0)
+            //{
+            //    var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+            //    // isInsertData = true;
+               
+            //}
+            //------------------------------------------ END of Regular Cheques Provincial Branches ---------------------------------//
+
+            if (_checks.DragonBlue_Personal_Provincial.Count > 0)
+            {
+                 _DrNumber++;
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //counter++;
+                //    //_packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.DragonBlue_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                //Without DeliveryTo
+                dBranch.ForEach(y =>
+                {
+                   
+                //    isInsertData = false;
+                    var dRecord = _checks.DragonBlue_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+
+                    isInsertData = false;
+                    
+                    
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                //_DrNumber++;
+                dBranch.ForEach(y =>
+                {
+                    // isInsertData = false;
+                    var dRecord = _checks.DragonBlue_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = false;
+                    });
+
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                //ENd with deliveryTO
+
+
+            }
+
+            if (_checks.DragonBlue_Commercial_Provicial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                _DrNumber++;
+                ////Generating DR per CheckType in Provincial Branches
+                ////Without DeliveryTo
+                //if (isInsertData)
+                //{
+                //    //counter++;
+                // //   _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+
+                var dBranch = _checks.DragonBlue_Commercial_Provicial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Commercial_Provicial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+                //    isInsertData = false;
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+
+                    isInsertData = false;
+                });
+                //_DrNumber++;
+                //End Without DeliveryTo
+                //Generating DR per CheckType in Provincial Branches
+                //_DrNumber++;
+                // with deliveryTO
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonBlue_Commercial_Provicial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = false;
+                    });
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                // end with deliveryTO            
+            }
+            //if (_checks.DragonYellow_Commercial_Provincial.Count > 0)
+            //{
+            //    var dBranch = _checks.DragonBlue_Commercial_Provicial.Select(a => a.BRSTN).Distinct().ToList();
+            //}
+            //------------------------------------------ END of Dragon Blue Cheques Provincial Branches ---------------------------------//
+
+            if (_checks.DragonYellow_Personal_Provincial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //counter++;
+                //    //_packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+
+                _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.DragonYellow_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                //Without DeliveryTo
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.DragonYellow_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
@@ -2646,42 +3671,63 @@ namespace CPMS_Accounting.Procedures
                 });
                 //END Without DeliveryTo
                 // with deliveryTO
-                _DrNumber++;
-
-                var dBranch2 = _checks.Regular_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch2.ForEach(y =>
+                dBranch.ForEach(y =>
                 {
-                    
-                    var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
 
+                    var dRecord = _checks.DragonYellow_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
-                        isInsertData = true;
+                        isInsertData = false;
                     });
 
-                    if (isInsertData)
-                    {
-                        _packNumber++;
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
 
-                        _DrNumber++;
-                    }
-                    isInsertData = false;
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
                 });
                 //ENd with deliveryTO
 
+
+
             }
+           
 
-
-            if (_checks.Regular_Commercial_Provincial.Count > 0)
+            if (_checks.DragonYellow_Commercial_Provincial.Count > 0)
             {
-                //_DrNumber++;
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                ////    counter++;
+                //  //  _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+
+                _DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 //Without DeliveryTo
-                var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                var dBranch = _checks.DragonYellow_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch.ForEach(y =>
                 {
-                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    var dRecord = _checks.DragonYellow_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
                     //if (dRecord != null)
                     //    _DrNumber++;
 
@@ -2706,12 +3752,140 @@ namespace CPMS_Accounting.Procedures
                 });
                 //End Without DeliveryTo
                 //Generating DR per CheckType in Provincial Branches
-                _DrNumber++;
+                //_DrNumber++;
+
                 // with deliveryTO
-                var dBranch2 = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
-                dBranch2.ForEach(y =>
+                dBranch.ForEach(y =>
                 {
-                    var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    var dRecord = _checks.DragonYellow_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = false;
+                    });
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                // end with deliveryTO
+            }
+            
+            //------------------------------------------ END of Dragon Yellow Cheques Provincial Branches ---------------------------------//
+
+            if (_checks.Reca_Personal_Provincial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //    counter++;
+                //    //  _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                  _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Reca_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                //Without DeliveryTo
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                //_DrNumber++;
+                dBranch.ForEach(y =>
+                {
+
+                    var dRecord = _checks.Reca_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = false;
+                    });
+
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                //ENd with deliveryTO
+
+            }
+            
+            if (_checks.Reca_Commercial_Provincial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //    counter++;
+                //    //  _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Reca_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+
                     dRecord.ForEach(r =>
                     {
 
@@ -2721,14 +3895,279 @@ namespace CPMS_Accounting.Procedures
                     });
                     if (isInsertData)
                     {
+                        counter++;
                         _packNumber++;
-
-                        _DrNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
                     }
+                    isInsertData = false;
+                });
+                //End Without DeliveryTo
+                //Generating DR per CheckType in Provincial Branches
+             //   _DrNumber++;
+                // with deliveryTO
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Reca_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = false;
+                    });
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                // end with deliveryTO
+            }
+            
+            //------------------------------------------ END of Reca Cheques Provincial Branches ---------------------------------//
+
+            if (_checks.Online_Personal_Provincial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //    counter++;
+                //    //  _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                  _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                var dBranch = _checks.Online_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                //Without DeliveryTo
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = true;
+                    });
+
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //END Without DeliveryTo
+                // with deliveryTO
+                //_DrNumber++;
+                dBranch.ForEach(y =>
+                {
+
+                    var dRecord = _checks.Online_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        isInsertData = false;
+                    });
+
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                //ENd with deliveryTO
+
+            }
+            
+            if (_checks.Online_Commercial_Provincial.Count > 0)
+            {
+                //counter = 10;
+                //isInsertData = true;
+                //if (isInsertData)
+                //{
+                //    //    counter++;
+                //    //  _packNumber++;
+                //    if (counter == 10)
+                //    {
+                //        _DrNumber++;
+                //        counter = 0;
+                //    }
+                //}
+                _DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Online_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //End Without DeliveryTo
+                //Generating DR per CheckType in Provincial Branches
+                //     _DrNumber++;
+                // with deliveryTO
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Online_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+
+                    }
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = false;
+                    });
+                    //if (isInsertData)
+                    //{
+                    //    _packNumber++;
+
+                    //    _DrNumber++;
+                    //}
+                    isInsertData = true;
+                });
+                // end with deliveryTO
+            }
+            
+            //------------------------------------------ END of Online Cheques Provincial Branches ---------------------------------//
+            if (_checks.Customized_Provincial.Count > 0)
+            {
+                counter = 10;
+                isInsertData = true;
+                if (isInsertData)
+                {
+                    //    counter++;
+                    //  _packNumber++;
+                    if (counter == 10)
+                    {
+                        _DrNumber++;
+                        counter = 0;
+                    }
+                }
+                //_DrNumber++;
+                //Generating DR per CheckType in Provincial Branches
+                //Without DeliveryTo
+                var dBranch = _checks.Customized_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch.ForEach(y =>
+                {
+                    var dRecord = _checks.Customized_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
+                    //if (dRecord != null)
+                    //    _DrNumber++;
+
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+                    if (isInsertData)
+                    {
+                        counter++;
+                        _packNumber++;
+                        if (counter == 10)
+                        {
+                            _DrNumber++;
+                            counter = 0;
+                        }
+                    }
+                    isInsertData = false;
+                });
+                //End Without DeliveryTo
+                //Generating DR per CheckType in Provincial Branches
+            //    _DrNumber++;
+                // with deliveryTO
+                var dBranch2 = _checks.Customized_Provincial.Select(a => a.BRSTN).Distinct().ToList();
+                dBranch2.ForEach(y =>
+                {
+                    var dRecord = _checks.Customized_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != y).ToList();
+                    if (!isInsertData)
+                    {
+                        if (dRecord.Count > 0)
+                        {
+                            _packNumber++;
+
+                            _DrNumber++;
+                        }
+                    }
+                    dRecord.ForEach(r =>
+                    {
+
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
+
+                        isInsertData = true;
+                    });
+    
                     isInsertData = false;
                 });
                 // end with deliveryTO
             }
+            //------------------------------------------ END of Customized Cheques Provincial Branches ---------------------------------//
 
             DBClosed();
             return;
@@ -2904,13 +4343,13 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank,ProductCode," +
-                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
+                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo,OldBranchCode)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
                           "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
                           "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','"+ r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch +
-                          "','" + gClient.AttentionTo + "');";
+                          "','" + gClient.AttentionTo + "','" + r.OldBranchCode + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
@@ -3486,14 +4925,14 @@ namespace CPMS_Accounting.Procedures
                                   "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
                                   "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
                                   " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
-                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
+                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName.TrimEnd()  + " (" + list[i].BranchCode + ")'," + list[i].Qty +
                                   ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
                                   list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
                                   list[i].Location + "'," + list[i].PONumber + ",'','" + gClient.Description.ToUpper() + "','" + list[i].Address2.Replace("'", "''") +
                                   "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") +
                                   "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
                                   "','" + gClient.Description.ToUpper().Replace("'", "''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'", "''").TrimEnd() +
-                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
+                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch.TrimEnd() + " (" + list[i].OldBranchCode + ")','" + list[i].DeliveryToBrstn + "');";
                     MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting Data to Database Done..");
@@ -3574,14 +5013,14 @@ namespace CPMS_Accounting.Procedures
                                   "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
                                   "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
                                   " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
-                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName + "'," + list[i].Qty +
+                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName.TrimEnd() + " (" + list[i].BranchCode + ")'," + list[i].Qty +
                                   ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
                                   list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
                                   list[i].Location + "'," + list[i].PONumber + ",'','" + gClient.Description.ToUpper() + "','" + list[i].Address2.Replace("'", "''") +
                                   "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") +
                                   "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
                                   "','" + gClient.Description.ToUpper().Replace("'", "''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'", "''").TrimEnd() +
-                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
+                                  "','" + gClient.TIN + "','" + list[i].DeliveryToBranch.TrimEnd() + " (" + list[i].OldBranchCode + ")','" + list[i].DeliveryToBrstn + "');";
                     MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting Data into Database done..");
@@ -3596,7 +5035,169 @@ namespace CPMS_Accounting.Procedures
             }
 
         }
+        public List<TempModel> GetStickerDetailsWithDeliveryTo(List<TempModel> _temp, string _batch)
+        {
+            try
+            {
+                log.Info("Generating Sticker data..");
+                Sql = "SELECT BranchName, BRSTN, ChkType,MIN(StartingSerial), MAX(EndingSerial), Count(ChkType), Bank,Address2,Address3,Address4,Block,Segment,ProductType, " +
+                      "DeliveryToBranch,ChequeName FROM " + gClient.DataBaseName + "  WHERE Batch = '" + _batch + "'" +
+                       " GROUP BY ChkType,ChequeName,BranchName,DeliveryToBranch ORDER BY ChkType,BranchName";
+                DBConnect();
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader myReader = cmd.ExecuteReader();
+                while (myReader.Read())
+                {
+                    TempModel t = new TempModel
+                    {
 
+                        BranchName = !myReader.IsDBNull(0) ? myReader.GetString(0) : "",
+                        BRSTN = !myReader.IsDBNull(1) ? myReader.GetString(1) : "",
+                        ChkType = !myReader.IsDBNull(2) ? myReader.GetString(2) : "",
+                        StartingSerial = !myReader.IsDBNull(3) ? myReader.GetString(3) : "",
+                        EndingSerial = !myReader.IsDBNull(4) ? myReader.GetString(4) : "",
+                        Qty = !myReader.IsDBNull(5) ? myReader.GetInt32(5) : 0,
+                        BankCode = !myReader.IsDBNull(6) ? myReader.GetString(6) : "",
+                        Address2 = !myReader.IsDBNull(7) ? myReader.GetString(7) : "",
+                        Address3 = !myReader.IsDBNull(8) ? myReader.GetString(8) : "",
+                        Address4 = !myReader.IsDBNull(9) ? myReader.GetString(9) : "",
+                        Block = !myReader.IsDBNull(10) ? myReader.GetInt32(10) : 0,
+                        Segment = !myReader.IsDBNull(11) ? myReader.GetInt32(11) : 0,
+                        ProducType = !myReader.IsDBNull(12) ? myReader.GetString(12) : "",
+                        DeliveryToBranch = !myReader.IsDBNull(13) ? myReader.GetString(13) : "",
+                        ChequeName = !myReader.IsDBNull(14) ? myReader.GetString(14): ""
+
+
+                    };
+                    _temp.Add(t);
+                }
+                DBClosed();
+                DBConnect();
+                string sqldel = "Delete from " + gClient.StickerTable;
+                MySqlCommand comdel = new MySqlCommand(sqldel, myConnect);
+                comdel.ExecuteNonQuery();
+
+                DBClosed();
+                DBConnect();
+                //_temp.OrderBy(b => b.BranchName).ToList();
+                //var sorted = (from c in _temp
+                //              orderby c.ChkType,c.BranchName
+                //                       ascending
+                //              select c).ToList();
+                // int dataCount = 0;
+                string Type = "";
+                int licnt = 1;
+
+                for (int r = 0; r < _temp.Count; r++)
+                {
+                    //if (_temp[r].ChkType == "A")
+                    //    Type = "Personal";
+                    //else if (_temp[r].ChkType == "B")
+                    //    Type = "Commercial";
+                    //else if (_temp[r].ChkType == "C")
+                    //    Type = "MC";
+                    if (licnt == 1)
+                    {
+                        string sql2 = "Insert into " + gClient.StickerTable + "(Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial," +
+                                      "Bank,Address2,Address3,Address4,Block,Segment,ProductType,DeliveryToBranch)" +
+                                      "values('" + _batch + "','" + _temp[r].BRSTN + "','" + _temp[r].BranchName + "'," + _temp[r].Qty + ",'" + _temp[r].ChkType +
+                                      "','" + _temp[r].ChequeName.Substring(0,_temp[r].ChequeName.Length - 6) +   "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'", "''")
+                                      + "','" + _temp[r].Address2.Replace("'", "''") +
+                                      "', '" + _temp[r].Address3.Replace("'", "''") + "','" + _temp[r].Address4.Replace("'", "''") + "'," + _temp[r].Block + "," +
+                                      _temp[r].Segment + ",'" + _temp[r].ProducType + "','" + _temp[r].DeliveryToBranch + "' ); ";
+
+
+                        MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                        cmd2.ExecuteNonQuery();
+                        licnt++;
+                    }
+                    else if (licnt == 2)
+                    {
+                        string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName.Replace("'", "''") +
+                                    "',Qty2 = " + _temp[r].Qty + ",ChkType2 = '" + _temp[r].ChkType + "', ChequeName2 = '"+_temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) +  
+                                    "',StartingSerial2 = '" + _temp[r].StartingSerial +
+                                      "',EndingSerial2 = '" + _temp[r].EndingSerial + "',Address22 ='" + _temp[r].Address2.Replace("'", "''") +
+                                      "', Address32 ='" + _temp[r].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r].Address4.Replace("'", "''") +
+                                      "', Block2 = " + _temp[r].Block + ", Segment2 = " + _temp[r].Segment + ",ProductType2 = '" + _temp[r].ProducType + "' " +
+                                      ", DeliveryToBranch1 = '" + _temp[r].DeliveryToBranch + "' " +
+                                      "where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType + "';";
+
+                        MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                        cmd2.ExecuteNonQuery();
+                        licnt++;
+                    }
+                    else if (licnt == 3)
+                    {
+                        string sql2 = "Update " + gClient.StickerTable + " set BRSTN3 = '" + _temp[r].BRSTN + "',BranchName3 = '" + _temp[r].BranchName + "',Qty3 = " + _temp[r].Qty +
+                                      ",ChkType3 = '" + _temp[r].ChkType + "',ChequeName3 = '"+ _temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) + "',StartingSerial3 = '" + _temp[r].StartingSerial +
+                                      "',EndingSerial3 = '" + _temp[r].EndingSerial + "',Address23  = '" + _temp[r].Address2.Replace("'", "''") + "'" +
+                                      ",Address33 = '" + _temp[r].Address3.Replace("'", "''") + "',Address43 = '" + _temp[r].Address4.Replace("'", "''") +
+                                      "',Block3 = " + _temp[r].Block + ", Segment3 = " + _temp[r].Segment + ",ProductType3 = '" + _temp[r].ProducType +
+                                      "',DeliveryToBranch2 = '" + _temp[r].DeliveryToBranch + "'" +
+                                      "  where BRSTN2 = '" + _temp[r - 1].BRSTN + "' and ChkType2 = '" + _temp[r - 1].ChkType + "';";
+                        MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                        cmd2.ExecuteNonQuery();
+                        licnt = 1;
+                    }
+                    log.Info("Inserting data into Database done..");
+                }
+                //for (int z = 0; z < _temp.Count; z++)
+                //{
+
+                //    if (licnt == 3)
+                //    {
+                //        //if ((z % 3) == 0)
+                //        //{
+
+                //        if (_temp[z + dataCount].ChkType == "A")
+                //            Type = "PERSONAL";
+                //        else
+                //            Type = "COMMERCIAL";
+
+                //        string sql2 = "Insert into producers_sticker (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,BRSTN2,"
+                //               + "BranchName2,Qty2,ChkType2,ChequeName2,StartingSerial2,EndingSerial2,BRSTN3,BranchName3,Qty3,ChkType3,ChequeName3,StartingSerial3,EndingSerial3)"
+                //               + "Values('" + _temp[z].Batch + "','" + _temp[z].BRSTN + "','" + _temp[z].BranchName + "'," + _temp[z].Qty
+                //               + ",'" + _temp[z].ChkType + "'," + "'" + Type + "','" + _temp[z].StartingSerial + "','" + _temp[z].EndingSerial
+                //               + "','" + _temp[z + 1].BRSTN + "','" + _temp[z + 1].BranchName + "'," + _temp[z + 1].Qty + ",'" + _temp[z + 1].ChkType + "','" + Type
+                //               + "','" + _temp[z + 1].StartingSerial + "','" + _temp[z + 1].EndingSerial + "','" + _temp[z + 2].BRSTN + "','" + _temp[z + 2].BranchName + "',"
+                //               + _temp[z + 2].Qty + ",'" + _temp[z + 2].ChkType + "','" + Type + "','" + _temp[z + 2].StartingSerial + "','" + _temp[z + 2].EndingSerial + "');";
+
+
+                //        MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                //        cmd2.ExecuteNonQuery();
+
+
+                //        if (licnt == 3) licnt = 1;
+                //    }
+                //    else
+                //    {
+                //        licnt++;
+
+                //        //if (z == _temp.Count)
+                //        //{
+                //        //    string sql2 = "Insert into producers_sticker (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,BRSTN2,"
+                //        //       + "BranchName2,Qty2,ChkType2,ChequeName2,StartingSerial2,EndingSerial2,BRSTN3,BranchName3,Qty3,ChkType3,ChequeName3,StartingSerial3,EndingSerial3)"
+                //        //       + "Values('" + _temp[z].Batch + "','" + _temp[z].BRSTN + "','" + _temp[z].BranchName + "'," + _temp[z].Qty
+                //        //       + ",'" + _temp[z].ChkType + "'," + "'" + Type + "','" + _temp[z].StartingSerial + "','" + _temp[z].EndingSerial
+                //        //       + "','" + _temp[z + 1].BRSTN + "','" + _temp[z + 1].BranchName + "'," + _temp[z + 1].Qty + ",'" + _temp[z + 1].ChkType + "','" + Type
+                //        //       + "','" + _temp[z + 1].StartingSerial + "','" + _temp[z + 1].EndingSerial + "','" + _temp[z + 2].BRSTN + "','" + _temp[z + 2].BranchName + "',"
+                //        //       + _temp[z + 2].Qty + ",'" + _temp[z + 2].ChkType + "','" + Type + "','" + _temp[z + 2].StartingSerial + "','" + _temp[z + 2].EndingSerial + "');";
+                //        //    MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
+                //        //    cmd2.ExecuteNonQuery();
+                //        //}
+                //    }
+
+
+                //}
+
+                DBClosed();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "GetStickerDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return _temp;
+        }
     }
 }
     

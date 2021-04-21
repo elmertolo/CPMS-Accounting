@@ -23,6 +23,7 @@ namespace CPMS_Accounting
         public static SalesInvoiceFinishedModel gSalesInvoiceFinished = new SalesInvoiceFinishedModel();
         public static PurchaseOrderModel gPurchaseOrderFinished = new PurchaseOrderModel();
         public static PriceListModel gProduct = new PriceListModel();
+        public static ChequeTypesModel gChequeTypes = new ChequeTypesModel(); // Added by ET  April 12, 2021
 
         //Crystal Report Global Variable (Crystal Report Prerequisites)
         public static ReportDocument gCrystalDocument;

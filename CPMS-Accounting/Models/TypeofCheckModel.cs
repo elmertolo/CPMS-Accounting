@@ -20,5 +20,26 @@ namespace CPMS_Accounting.Models
         public List<OrderModel> ManagersCheck_Provincial { get; set; }
         public List<OrderModel> ExecutiveOnline_Direct { get; set; }
         public List<OrderModel> ExecutiveOnline_Provincial { get; set; }
+        public List<OrderModel> DragonBlue_Commercial_Direct { get; set; }
+        public List<OrderModel> DragonBlue_Personal_Direct { get; set; }
+        public List<OrderModel> DragonBlue_Commercial_Provicial { get; set; }
+        public List<OrderModel> DragonBlue_Personal_Provincial { get; set; }
+        public List<OrderModel> DragonYellow_Commercial_Direct { get; set; }
+        public List<OrderModel> DragonYellow_Personal_Direct { get; set; }
+        public List<OrderModel> DragonYellow_Commercial_Provincial { get; set; }
+        public List<OrderModel> DragonYellow_Personal_Provincial { get; set; }
+        public List<OrderModel> Reca_Commercial_Direct { get; set; }
+        public List<OrderModel> Reca_Personal_Direct { get; set; }
+        public List<OrderModel> Reca_Commercial_Provincial { get; set; }
+        public List<OrderModel> Reca_Personal_Provincial { get; set; }
+        public List<OrderModel> Online_Commercial_Direct { get; set; }
+        public List<OrderModel> Online_Personal_Direct { get; set; }
+        public List<OrderModel> Online_Commercial_Provincial { get; set; }
+        public List<OrderModel> Online_Personal_Provincial { get; set; }
+        public List<OrderModel> Customized_Direct { get; set; }
+        public List<OrderModel> Customized_Provincial { get; set; }
+
+
+
     }
 }
