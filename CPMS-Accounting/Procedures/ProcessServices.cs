@@ -1531,7 +1531,7 @@ namespace CPMS_Accounting.Procedures
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliverToStickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCPackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
                             else if (RecentBatch.report == "DRP" || DeliveryReport.report == "DRP")
@@ -1914,7 +1914,6 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _SI;
         }
-
         public string ContcatSalesInvoice(string batch, string checktype, string _location,DateTime salesinvoicedate)
         {
 
@@ -2069,7 +2068,7 @@ namespace CPMS_Accounting.Procedures
         }
         //public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
         //{
-         public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
+        public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
          {
             log.Info("Generating Document Stamp Details..");
             try

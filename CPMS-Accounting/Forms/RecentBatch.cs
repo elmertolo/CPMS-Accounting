@@ -102,6 +102,8 @@ namespace CPMS_Accounting
 
         private void packingToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            tempRecent.Clear();
+            proc.GetDRDetails(txtRecentBatch.Text, tempRecent);
             report = "Packing";
             ViewReports vp = new ViewReports();
             vp.Show();

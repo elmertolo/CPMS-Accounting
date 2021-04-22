@@ -31,6 +31,7 @@ namespace CPMS_Accounting
         List<TempModel> tempDr = new List<TempModel>();
         List<TempModel> tempSticker = new List<TempModel>();
         List<ChequeTypesModel> productList = new List<ChequeTypesModel>();
+        List<PriceListModel> priceList = new List<PriceListModel>();
         public DateTime deliveryDate;
         DateTime dateTime;
         BranchesModel branch = new BranchesModel();
@@ -972,6 +973,10 @@ namespace CPMS_Accounting
                     dgvProducts.Rows[i].Cells[1].Value = Total[i];
                 if (dgvProducts.Rows[i].Index == i + 4)
                     dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 5)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
+                if (dgvProducts.Rows[i].Index == i + 6)
+                    dgvProducts.Rows[i].Cells[1].Value = Total[i];
             }
 
         }
@@ -1062,10 +1067,13 @@ namespace CPMS_Accounting
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            
             if(gClient.BankCode == "008")
                 GetDataFromDB2();
             else
                 GetDataFromDB();
+
+
         }
         private int GetTotalChecksDefault(string _chkName)
         {
@@ -1092,7 +1100,7 @@ namespace CPMS_Accounting
             int _total = 0;
             // con = new MySqlConnection(ConString);
 
-            var chkType = _list.Where(x => x.ChequeName.Contains(_chkName)).ToList();
+            var chkType = _list.Where(x => x.ChequeName.Contains(_chkName)  || x.ChequeName.Contains(_chkName.Substring(0,_chkName.Length - 1))).ToList();
             _total = chkType.Count();
             //string Sql = "SELECT f FROM   WHERE CHKNAME LIKE '" + _chkName + "%' ";
             //  cmd = new MySqlCommand(Sql, con);
@@ -1119,8 +1127,10 @@ namespace CPMS_Accounting
                 proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
                 listofProducts.Clear();
                 proc.GetProducts(listofProducts);
+                
                 orderList.ForEach(x =>
                 {
+                    x.AccountNoWithHypen = "";
                     x.ChequeName.Replace("Check", "Cheques");
                     x.PONumber = proc.GetPONUmberforSearching(x.ChequeName);
                     if (x.BRSTN.StartsWith("01"))
@@ -1135,7 +1145,12 @@ namespace CPMS_Accounting
                             x.ProductCode = d.ProductCode;
                         }
                     });
-
+                    proc.GetBranchLocation(branch, x.BranchCode);
+                    x.Address2 = branch.Address2.Replace("'", "''").TrimEnd();
+                    x.Address3 = branch.Address3.Replace("'", "''").TrimEnd();
+                    x.Address4 = branch.Address4.Replace("'", "''").TrimEnd();
+                    x.Address5 = branch.Address5.Replace("'", "''").TrimEnd();
+                    x.Address6 = branch.Address6.Replace("'", "''").TrimEnd();
                     if (x.PONumber == 0)// Checking if there is Purchase order Number from the database
                     {
                         MessageBox.Show("Please add Purchase Order Number for Cheque Type " + x.ChkType + "!!! ", "Error!");
@@ -1272,14 +1287,23 @@ namespace CPMS_Accounting
                 dataGridView1.DataSource = "";
                 orderList.Clear();
                 proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                proc.GetProducts(listofProducts);
                 orderList.ForEach(x =>
                 {
+                  
+
                     if (x.BRSTN.StartsWith("01"))
                         x.Location = "Direct";
                     else
                         x.Location = "Provincial";
 
-
+                    listofProducts.ForEach(d =>
+                    {
+                        if (x.ChkType == d.ChkType)
+                        {
+                            x.ProductCode = d.ProductCode;
+                        }
+                    });
                 });
 
                 //    dt.Clear();
