@@ -72,6 +72,7 @@ namespace CPMS_Accounting
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             log.Info("Generating data Start...");
             if (gClient.BankCode == "028")
                 ProcessDataRCBC();
@@ -130,6 +131,7 @@ namespace CPMS_Accounting
         }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             if (gClient.ShortName != "PNB")
                 GetData();
             else
@@ -1067,8 +1069,8 @@ namespace CPMS_Accounting
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            
-            if(gClient.BankCode == "008")
+            Cursor.Current = Cursors.WaitCursor;
+            if (gClient.BankCode == "008")
                 GetDataFromDB2();
             else
                 GetDataFromDB();
@@ -1377,6 +1379,19 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Get Data From Ordering Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void txtBatch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Convert.ToInt32(e.KeyChar) == 13)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (gClient.BankCode == "008")
+                    GetDataFromDB2();
+                else
+                    GetDataFromDB();
+            }
+        }
+
         private void ProcessDataDefault()
         {
             try

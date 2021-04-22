@@ -154,7 +154,7 @@ namespace CPMS_Accounting
             
             dgvDRList.DataSource = dt;
 
-            dgvDRList.Columns[3].Width = 200;
+            dgvDRList.Columns[3].Width = 270;
             dgvDRList.Columns[5].Width = 130;
         }
 

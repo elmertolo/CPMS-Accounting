@@ -2733,7 +2733,7 @@ namespace CPMS_Accounting.Procedures
             var Comm = _checks.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
             if (Comm.Count > 0)
             {
-                _DrNumber++;
+                //_DrNumber++;
                 var _List = Comm.Select(r => r.BRSTN).Distinct().ToList();
                 //var sorted = (from c in _checks.Regular_Commercial
                 //              orderby c.BranchName

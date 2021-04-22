@@ -91,7 +91,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvView.Size = new System.Drawing.Size(377, 322);
+            this.dgvView.Size = new System.Drawing.Size(377, 409);
             this.dgvView.TabIndex = 1;
             this.dgvView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvView_CellClick);
             // 
@@ -147,7 +147,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvData.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvData.Size = new System.Drawing.Size(801, 322);
+            this.dgvData.Size = new System.Drawing.Size(801, 409);
             this.dgvData.TabIndex = 6;
             this.dgvData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellClick);
             // 
@@ -223,7 +223,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1221, 463);
+            this.ClientSize = new System.Drawing.Size(1221, 548);
             this.Controls.Add(this.txtNewDr);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnModify);

@@ -451,6 +451,7 @@
             this.txtBatch.Name = "txtBatch";
             this.txtBatch.Size = new System.Drawing.Size(100, 22);
             this.txtBatch.TabIndex = 20;
+            this.txtBatch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBatch_KeyPress);
             // 
             // label6
             // 
