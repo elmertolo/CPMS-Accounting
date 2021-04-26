@@ -40,6 +40,18 @@ namespace CPMS_Accounting.Models
         public int Block { get; set; }
         public int Segment { get; set; }
         public string ProducType { get; set; }
+        public string TIN { get; set; }
+        public string DeliveryToBranch { get; set; }
+        public string DeliveryToBrstn { get; set; }
+        public string AttentionTo { get; set; }
+        public string ProductCode { get; set; }
+        public double UnitPrice { get; set; }
+        public double DocStampPrice { get; set; }
+        public string SalesInvoiceGeneratedBy { get; set; }
+        public DateTime SalesInvoiceDate { get; set; }
+        public string CheckedBy { get; set; }
+
+
     }
 
 }

@@ -16,14 +16,14 @@ namespace CPMS_Accounting.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class PNBPackingList : ReportClass {
+    public class PNBDocStamp : ReportClass {
         
-        public PNBPackingList() {
+        public PNBDocStamp() {
         }
         
         public override string ResourceName {
             get {
-                return "PNBPackingList.rpt";
+                return "PNBDocStamp.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CPMS_Accounting.Reports {
         
         public override string FullResourceName {
             get {
-                return "CPMS_Accounting.Reports.PNBPackingList.rpt";
+                return "CPMS_Accounting.Reports.PNBDocStamp.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,17 +82,33 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[5];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+            get {
+                return this.ReportDefinition.Sections[6];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedPNBPackingList : Component, ICachedReport {
+    public class CachedPNBDocStamp : Component, ICachedReport {
         
-        public CachedPNBPackingList() {
+        public CachedPNBDocStamp() {
         }
         
         [Browsable(false)]
@@ -129,7 +145,7 @@ namespace CPMS_Accounting.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            PNBPackingList rpt = new PNBPackingList();
+            PNBDocStamp rpt = new PNBDocStamp();
             rpt.Site = this.Site;
             return rpt;
         }

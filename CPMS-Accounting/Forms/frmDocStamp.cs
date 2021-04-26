@@ -77,12 +77,23 @@ namespace CPMS_Accounting.Forms
             {
                 if (docstamp != null || docstamp.Count != 0)
                 {
-                    proc.UpdateDocstamp(docstamp);
-                    docstamp.ForEach(x => {
 
-                        proc.GetDocStampDetails(tempdocstamp, x.DocStampNumber);
-                    });
-                    
+
+                    //if (gClient.BankCode == "008")
+                    //{
+                        proc.UpdateDocstamp(docstamp);
+                        docstamp.ForEach(x =>
+                        {
+
+                            proc.GetDocStampDetails(tempdocstamp, x.DocStampNumber);
+
+                        });
+                    //}
+                    //else
+                    //{
+                    //    proc.fUpdateDocstamp(docstamp);
+                    //    proc.GetDocStampDetailsRCBC(tempdocstamp, docstamp[0].DocStampNumber);
+                    //}
                     MessageBox.Show("Documetn Stamp has been process!!!");
                     ViewReports vp = new ViewReports();
                     DeliveryReport.report = "DOC";
@@ -101,6 +112,8 @@ namespace CPMS_Accounting.Forms
         {
             try
             {
+                List<ChequeTypesModel> listofCheques = new List<ChequeTypesModel>();
+                proc.GetChequeTypes(listofCheques);
                 tempSI.Clear();
                 proc.DisplayAllSalesInvoice(txtBatch.Text, tempSI);
                 DataTable dt = new DataTable();
@@ -114,21 +127,24 @@ namespace CPMS_Accounting.Forms
                 dt.Columns.Add("Cheque Name");
                 dt.Columns.Add("Batch");
                 dt.Columns.Add("Branch Location");
+                dt.Columns.Add("Product Code");
 
                 tempSI.ForEach(r =>
                 {
-                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch,r.Location });
+                    dt.Rows.Add(new object[] { r.SI_Date.ToString("yyyy-MM-dd"), r.SalesInvoice, r.Qty, r.ChkType, r.ChequeName, r.Batch,r.Location,r.ProductCode });
                 });
 
                 DgvDSalesInvoice.DataSource = dt;
                 ProcessServices.bg_dtg(DgvDSalesInvoice);
-                DgvDSalesInvoice.Columns[0].Width = 150;
-                DgvDSalesInvoice.Columns[1].Width = 150;
+                DgvDSalesInvoice.Columns[0].Width = 130;
+                DgvDSalesInvoice.Columns[1].Width = 130;
                 DgvDSalesInvoice.Columns[2].Width = 70;
                 DgvDSalesInvoice.Columns[3].Width = 70;
-                DgvDSalesInvoice.Columns[4].Width = 190;
+                DgvDSalesInvoice.Columns[4].Width = 250;
                 DgvDSalesInvoice.Columns[5].Width = 100;
                 DgvDSalesInvoice.Columns[6].Width = 100;
+                DgvDSalesInvoice.Columns[7].Width = 100;
+                //   DgvDSalesInvoice.Columns[7].Visible = false;
             }
             catch(Exception error)
             {
@@ -145,33 +161,55 @@ namespace CPMS_Accounting.Forms
         private void btnProcess_Click(object sender, EventArgs e)
         {
             
+            
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddData();
+        }
+
+        private void AddData()
+        {
             try
             {
+
                 if (txtDocStampNo.Text == "")
                     MessageBox.Show("Please input Document Stamp Number!");
 
                 else
                 {
                     docstamp.Clear();
-
+                    TotalQty = 0;
                     int docs = int.Parse(txtDocStampNo.Text);
-                   
+
                     if (DgvDSalesInvoice.SelectedRows != null && DgvDSalesInvoice.SelectedRows.Count > 0)
                     {
-                       
+                        
                         foreach (DataGridViewRow row in DgvDSalesInvoice.SelectedRows)
                         {
                             DocStampModel doc = new DocStampModel();
                             doc.DocStampNumber = docs;
-                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString());
                             
+                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString(), row.Cells["Product Code"].Value.ToString());
 
                             doc.BankCode = priceA.BankCode;
-                          
-                            doc.DocStampDate = dtpDocDate.Value;
+
+                            doc.DocStampDate =DateTime.Parse(row.Cells["Sales Invoice Date"].Value.ToString());
                             doc.batches = row.Cells["Batch"].Value.ToString();
-                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(), 
-                                row.Cells["Branch Location"].Value.ToString(),dtpDocDate.Value);
+                            //doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(),
+                            //    row.Cells["Branch Location"].Value.ToString(), dtpDocDate.Value);
+                            doc.SalesInvoiceNumber = row.Cells["Sales Invoice No."].Value.ToString();
                             doc.DocStampPrice = priceA.DocStampPrice;
                             doc.ChkType = row.Cells["ChkType"].Value.ToString();
                             doc.DocDesc = priceA.ChequeDescription;
@@ -180,16 +218,111 @@ namespace CPMS_Accounting.Forms
                             doc.TotalQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
                             doc.TotalAmount = doc.TotalQuantity * doc.DocStampPrice;
                             // doc.PreparedBy = 
-                            
+
 
                             docstamp.Add(doc);
-                            docs++;
+                           //if (gClient.BankCode == "008")
+                           // {
+                                docs++;
+                           
+                           
                             TotalQty += doc.TotalQuantity;
-                            
+
                         }
 
 
-                      
+
+                        //created 'list' variable column sorting by line for datagrid view 
+                        DataTable dt = new DataTable();
+
+                        dt.Columns.Add("Docstamp No.");
+                        dt.Columns.Add("Sales Invoice No.");
+                        dt.Columns.Add("Quantity");
+                        dt.Columns.Add("Description");
+                        dt.Columns.Add("Docstamp Price");
+                        dt.Columns.Add("Total Amount");
+                        dt.Columns.Add("Sales Inovice Date");
+
+                        docstamp.ForEach(r =>
+                        {
+                            dt.Rows.Add(new object[] { r.DocStampNumber, r.SalesInvoiceNumber, r.TotalQuantity, r.DocDesc, r.DocStampPrice, r.TotalAmount, r.DocStampDate.ToString("yyyy-MM-dd") });
+                        });
+                        dgvOutput.DataSource = dt;
+                        ProcessServices.bg_dtg(dgvOutput);
+                        dgvOutput.Columns[0].Width = 100;
+                        dgvOutput.Columns[1].Width = 120;
+                        dgvOutput.Columns[2].Width = 70;
+                        dgvOutput.Columns[3].Width = 270;
+                        dgvOutput.Columns[4].Width = 70;
+                        dgvOutput.Columns[5].Width = 90;
+                        dgvOutput.Columns[6].Width = 100;
+                        dgvOutput.ClearSelection();
+                        txtTotalQty.Text = TotalQty.ToString();
+                        generateToolStripMenuItem.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, "Add Data to Document Stamp View", MessageBoxButtons.OK, MessageBoxIcon.Error );
+
+            }
+        }
+        private void AddDataRCBC()
+        {
+            try
+            {
+
+                if (txtDocStampNo.Text == "")
+                    MessageBox.Show("Please input Document Stamp Number!");
+
+                else
+                {
+                    docstamp.Clear();
+                    TotalQty = 0;
+                    int docs = int.Parse(txtDocStampNo.Text);
+
+                    if (DgvDSalesInvoice.SelectedRows != null && DgvDSalesInvoice.SelectedRows.Count > 0)
+                    {
+
+                        foreach (DataGridViewRow row in DgvDSalesInvoice.SelectedRows)
+                        {
+                            DocStampModel doc = new DocStampModel();
+                            doc.DocStampNumber = docs;
+
+                            proc.GetPriceList(priceA, row.Cells["ChkType"].Value.ToString(), row.Cells["Product Code"].Value.ToString());
+
+                            doc.BankCode = priceA.BankCode;
+
+                            doc.DocStampDate = dtpDocDate.Value;
+                            doc.batches = row.Cells["Batch"].Value.ToString();
+                            doc.SalesInvoiceNumber = proc.ContcatSalesInvoice(row.Cells["Batch"].Value.ToString(), row.Cells["ChkType"].Value.ToString(),
+                                row.Cells["Branch Location"].Value.ToString(), dtpDocDate.Value);
+                            doc.DocStampPrice = priceA.DocStampPrice;
+                            doc.ChkType = row.Cells["ChkType"].Value.ToString();
+                            doc.DocDesc = priceA.ChequeDescription;
+                            doc.Location = row.Cells["Branch Location"].Value.ToString();
+                            // doc.unitprice = priceA.unitprice;
+                            doc.TotalQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                            doc.TotalAmount = doc.TotalQuantity * doc.DocStampPrice;
+                            // doc.PreparedBy = 
+
+
+                            docstamp.Add(doc);
+                            if (gClient.BankCode == "008")
+                            {
+                                docs++;
+                            }
+                            else
+                            {
+
+                            }
+                            TotalQty += doc.TotalQuantity;
+
+                        }
+
+
+
                         //created 'list' variable column sorting by line for datagrid view 
                         DataTable dt = new DataTable();
 
@@ -216,28 +349,33 @@ namespace CPMS_Accounting.Forms
                         dgvOutput.Columns[6].Width = 100;
                         dgvOutput.ClearSelection();
                         txtTotalQty.Text = TotalQty.ToString();
+                        generateToolStripMenuItem.Enabled = true;
                     }
                 }
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                MessageBox.Show(error.Message, error.Source);
+                MessageBox.Show(error.Message, "Add Data to Document Stamp View", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
-
-        private void btnClear_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             docstamp.Clear();
-            dgvOutput.DataSource = null;
-            //dgvOutput.Rows.Clear();
-            dgvOutput.Refresh();
-            TotalQty = 0;
-            txtTotalQty.Text = "0";
+            dgvOutput.DataSource = "";
+            txtDocStampNo.Text = "";
+            txtTotalQty.Text = "";
+            generateToolStripMenuItem.Enabled = false;
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void DgvDSalesInvoice_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            AddData();
+        }
 
+        private void DgvDSalesInvoice_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            AddData();
         }
     }
 }

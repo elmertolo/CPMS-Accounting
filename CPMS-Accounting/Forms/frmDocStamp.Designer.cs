@@ -31,8 +31,6 @@ namespace CPMS_Accounting.Forms
         {
             System.Windows.Forms.Button btnGenerateDocStampNo;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDocStamp));
-            System.Windows.Forms.Button btnProcess;
-            System.Windows.Forms.Button btnClear;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtBatch = new System.Windows.Forms.TextBox();
@@ -44,6 +42,8 @@ namespace CPMS_Accounting.Forms
             this.txtTotalQty = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.cboCheckBy = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,8 +55,6 @@ namespace CPMS_Accounting.Forms
             this.label5 = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
             btnGenerateDocStampNo = new System.Windows.Forms.Button();
-            btnProcess = new System.Windows.Forms.Button();
-            btnClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOutput)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -68,7 +66,7 @@ namespace CPMS_Accounting.Forms
             // btnGenerateDocStampNo
             // 
             btnGenerateDocStampNo.Image = ((System.Drawing.Image)(resources.GetObject("btnGenerateDocStampNo.Image")));
-            btnGenerateDocStampNo.Location = new System.Drawing.Point(170, 63);
+            btnGenerateDocStampNo.Location = new System.Drawing.Point(169, 64);
             btnGenerateDocStampNo.Name = "btnGenerateDocStampNo";
             btnGenerateDocStampNo.Size = new System.Drawing.Size(29, 26);
             btnGenerateDocStampNo.TabIndex = 8;
@@ -77,36 +75,12 @@ namespace CPMS_Accounting.Forms
             btnGenerateDocStampNo.UseVisualStyleBackColor = true;
             btnGenerateDocStampNo.Click += new System.EventHandler(this.btnGenerateDocStampNo_Click);
             // 
-            // btnProcess
-            // 
-            btnProcess.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            btnProcess.Location = new System.Drawing.Point(205, 59);
-            btnProcess.Name = "btnProcess";
-            btnProcess.Size = new System.Drawing.Size(73, 29);
-            btnProcess.TabIndex = 12;
-            btnProcess.Text = "Add";
-            btnProcess.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            btnProcess.UseVisualStyleBackColor = true;
-            btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
-            // 
-            // btnClear
-            // 
-            btnClear.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            btnClear.Location = new System.Drawing.Point(205, 94);
-            btnClear.Name = "btnClear";
-            btnClear.Size = new System.Drawing.Size(73, 29);
-            btnClear.TabIndex = 13;
-            btnClear.Text = "Clear";
-            btnClear.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            btnClear.UseVisualStyleBackColor = true;
-            btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
             // txtBatch
             // 
             this.txtBatch.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBatch.Location = new System.Drawing.Point(132, 22);
+            this.txtBatch.Location = new System.Drawing.Point(127, 32);
             this.txtBatch.Name = "txtBatch";
-            this.txtBatch.Size = new System.Drawing.Size(100, 25);
+            this.txtBatch.Size = new System.Drawing.Size(116, 25);
             this.txtBatch.TabIndex = 1;
             this.txtBatch.TextChanged += new System.EventHandler(this.txtBatch_TextChanged);
             // 
@@ -114,7 +88,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(15, 26);
+            this.label1.Location = new System.Drawing.Point(10, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 21);
             this.label1.TabIndex = 1;
@@ -122,7 +96,7 @@ namespace CPMS_Accounting.Forms
             // 
             // dgvOutput
             // 
-            this.dgvOutput.BackgroundColor = System.Drawing.SystemColors.ControlDark;
+            this.dgvOutput.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -132,9 +106,9 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvOutput.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOutput.Location = new System.Drawing.Point(295, 30);
+            this.dgvOutput.Location = new System.Drawing.Point(320, 30);
             this.dgvOutput.Name = "dgvOutput";
-            this.dgvOutput.Size = new System.Drawing.Size(719, 250);
+            this.dgvOutput.Size = new System.Drawing.Size(908, 250);
             this.dgvOutput.TabIndex = 5;
             // 
             // menuStrip1
@@ -144,12 +118,13 @@ namespace CPMS_Accounting.Forms
             this.generateToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1063, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1275, 28);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // generateToolStripMenuItem
             // 
+            this.generateToolStripMenuItem.Enabled = false;
             this.generateToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generateToolStripMenuItem.Name = "generateToolStripMenuItem";
             this.generateToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
@@ -160,7 +135,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.dtpDocDate.CalendarFont = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpDocDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpDocDate.Location = new System.Drawing.Point(11, 130);
+            this.dtpDocDate.Location = new System.Drawing.Point(18, 143);
             this.dtpDocDate.Name = "dtpDocDate";
             this.dtpDocDate.Size = new System.Drawing.Size(241, 22);
             this.dtpDocDate.TabIndex = 7;
@@ -169,7 +144,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.txtTotalQty.AutoSize = true;
             this.txtTotalQty.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalQty.Location = new System.Drawing.Point(158, 604);
+            this.txtTotalQty.Location = new System.Drawing.Point(157, 623);
             this.txtTotalQty.Name = "txtTotalQty";
             this.txtTotalQty.Size = new System.Drawing.Size(16, 16);
             this.txtTotalQty.TabIndex = 9;
@@ -179,7 +154,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(40, 604);
+            this.label2.Location = new System.Drawing.Point(40, 622);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(112, 16);
             this.label2.TabIndex = 8;
@@ -187,10 +162,10 @@ namespace CPMS_Accounting.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnRefresh);
+            this.groupBox1.Controls.Add(this.btnAdd);
             this.groupBox1.Controls.Add(this.cboCheckBy);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(btnClear);
-            this.groupBox1.Controls.Add(btnProcess);
             this.groupBox1.Controls.Add(btnGenerateDocStampNo);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label4);
@@ -198,18 +173,58 @@ namespace CPMS_Accounting.Forms
             this.groupBox1.Controls.Add(this.dgvOutput);
             this.groupBox1.Controls.Add(this.dtpDocDate);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(19, 347);
+            this.groupBox1.Location = new System.Drawing.Point(19, 365);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1031, 299);
+            this.groupBox1.Size = new System.Drawing.Size(1244, 299);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Document Stamp Result";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRefresh.BackgroundImage")));
+            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefresh.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnRefresh.FlatAppearance.BorderSize = 0;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnRefresh.Location = new System.Drawing.Point(202, 80);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(0);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(80, 30);
+            this.btnRefresh.TabIndex = 19;
+            this.btnRefresh.Text = "CLEAR";
+            this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAdd.BackgroundImage")));
+            this.btnAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAdd.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnAdd.FlatAppearance.BorderSize = 0;
+            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnAdd.Location = new System.Drawing.Point(202, 42);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(80, 30);
+            this.btnAdd.TabIndex = 18;
+            this.btnAdd.Text = "ADD";
+            this.btnAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAdd.UseVisualStyleBackColor = false;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // cboCheckBy
             // 
             this.cboCheckBy.FormattingEnabled = true;
-            this.cboCheckBy.Location = new System.Drawing.Point(131, 175);
+            this.cboCheckBy.Location = new System.Drawing.Point(131, 188);
             this.cboCheckBy.Name = "cboCheckBy";
             this.cboCheckBy.Size = new System.Drawing.Size(128, 28);
             this.cboCheckBy.TabIndex = 17;
@@ -218,7 +233,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(15, 177);
+            this.label6.Location = new System.Drawing.Point(15, 190);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(103, 21);
             this.label6.TabIndex = 16;
@@ -228,7 +243,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(10, 101);
+            this.label3.Location = new System.Drawing.Point(10, 115);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(132, 21);
             this.label3.TabIndex = 3;
@@ -247,7 +262,7 @@ namespace CPMS_Accounting.Forms
             // txtDocStampNo
             // 
             this.txtDocStampNo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDocStampNo.Location = new System.Drawing.Point(32, 63);
+            this.txtDocStampNo.Location = new System.Drawing.Point(32, 65);
             this.txtDocStampNo.Name = "txtDocStampNo";
             this.txtDocStampNo.Size = new System.Drawing.Size(128, 25);
             this.txtDocStampNo.TabIndex = 6;
@@ -256,7 +271,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.DgvDSalesInvoice.AllowUserToAddRows = false;
             this.DgvDSalesInvoice.AllowUserToDeleteRows = false;
-            this.DgvDSalesInvoice.BackgroundColor = System.Drawing.SystemColors.ControlDark;
+            this.DgvDSalesInvoice.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -266,11 +281,13 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.DgvDSalesInvoice.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.DgvDSalesInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvDSalesInvoice.Location = new System.Drawing.Point(17, 53);
+            this.DgvDSalesInvoice.Location = new System.Drawing.Point(105, 63);
             this.DgvDSalesInvoice.Name = "DgvDSalesInvoice";
             this.DgvDSalesInvoice.ReadOnly = true;
-            this.DgvDSalesInvoice.Size = new System.Drawing.Size(858, 177);
+            this.DgvDSalesInvoice.Size = new System.Drawing.Size(1003, 177);
             this.DgvDSalesInvoice.TabIndex = 2;
+            this.DgvDSalesInvoice.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDSalesInvoice_CellContentDoubleClick);
+            this.DgvDSalesInvoice.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvDSalesInvoice_RowHeaderMouseDoubleClick);
             // 
             // groupBox2
             // 
@@ -278,9 +295,9 @@ namespace CPMS_Accounting.Forms
             this.groupBox2.Controls.Add(this.txtBatch);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(20, 102);
+            this.groupBox2.Location = new System.Drawing.Point(30, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(890, 237);
+            this.groupBox2.Size = new System.Drawing.Size(1167, 255);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Processed Sales Invoice";
@@ -290,7 +307,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 28);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1063, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(1289, 68);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
@@ -300,7 +317,7 @@ namespace CPMS_Accounting.Forms
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(849, 4);
+            this.label5.Location = new System.Drawing.Point(1064, 4);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 21);
             this.label5.TabIndex = 13;
@@ -311,7 +328,7 @@ namespace CPMS_Accounting.Forms
             this.lblUser.AutoSize = true;
             this.lblUser.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.lblUser.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.Location = new System.Drawing.Point(977, 4);
+            this.lblUser.Location = new System.Drawing.Point(1166, 4);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(0, 21);
             this.lblUser.TabIndex = 14;
@@ -320,7 +337,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1063, 660);
+            this.ClientSize = new System.Drawing.Size(1275, 675);
             this.Controls.Add(this.lblUser);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pictureBox1);
@@ -369,5 +386,7 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblUser;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }

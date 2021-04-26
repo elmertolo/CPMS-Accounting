@@ -82,13 +82,13 @@ namespace CPMS_Accounting
             
 
             WindowState = FormWindowState.Maximized;
-            if (gClient.DataBaseName != "producers_history")
-            {
+           // if (gClient.DataBaseName != "producers_history")
+           // {
                 documentStampToolStripMenuItem.Enabled = true;
                
-            }
-            else
-                documentStampToolStripMenuItem.Enabled = false;
+            //}
+           // else
+              //  documentStampToolStripMenuItem.Enabled = false;
 
             this.Text = gClient.Description;
 
@@ -131,7 +131,11 @@ namespace CPMS_Accounting
                 p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
                 return;
             }
-            if (gClient.ShortName != "PNB")
+            if (gClient.ShortName == "PNB"  || gClient.ShortName == "RCBC")
+            {
+                
+            }
+            else
             {
                 MessageBox.Show("Purchase Order Feature is applicable on PNB transctions only for the meantime", "Ooooops..");
                 return;

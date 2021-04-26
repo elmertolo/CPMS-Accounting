@@ -299,10 +299,28 @@
     <Compile Include="Procedures\ProcessServices_Nelson.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DeliverToStickers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliverToStickers.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\DeliveryReceipt.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeliveryReceipt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PNBDocStamp.cs">
+      <DependentUpon>PNBDocStamp.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\RCBCDocStamp.cs">
+      <DependentUpon>RCBCDocStamp.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\DocStamp.cs">
@@ -310,6 +328,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DocStamp.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RCBCPackingReport.cs">
+      <DependentUpon>RCBCPackingReport.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\PackingReport.cs">
       <DependentUpon>PackingReport.rpt</DependentUpon>
@@ -351,6 +375,25 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Producers_SalesInvoice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+
+    <Compile Include="Reports\DeliveryReceiptDirect.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliveryReceiptDirect.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DeliveryReceiptProvincial.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeliveryReceiptProvincial.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RCBCDeliveryReceiptDirect.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RCBCDeliveryReceiptDirect.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\RCBC_SalesInvoice.cs">
@@ -439,13 +482,29 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Reports\DeliverToStickers.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliverToStickers.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\DeliveryReceipt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DeliveryReceipt.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PNBDocStamp.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PNBDocStamp.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RCBCDocStamp.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RCBCDocStamp.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\DocStamp.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DocStamp.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RCBCPackingReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RCBCPackingReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\PackingReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -474,6 +533,19 @@
     <EmbeddedResource Include="Reports\Producers_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Producers_SalesInvoice.cs</LastGenOutput>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Reports\DeliveryReceiptDirect.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliveryReceiptDirect.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\DeliveryReceiptProvincial.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>DeliveryReceiptProvincial.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RCBCDeliveryReceiptDirect.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RCBCDeliveryReceiptDirect.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\RCBC_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

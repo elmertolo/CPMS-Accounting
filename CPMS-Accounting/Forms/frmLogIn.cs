@@ -156,6 +156,7 @@ namespace CPMS_Accounting
                     gClient.Princes_DESC = row.Field<string>("Princes_DESC") ?? "";
                     gClient.TIN = row.Field<string>("TIN") ?? "";
                     gClient.WithholdingTaxPercentage = row.Field<decimal>("WithholdingTaxPercentage");
+                    gClient.BankCode = row.Field<string>("BankCode"); // Updated By ET for getting history data from the Ordering system March 31, 2021
 
                     //Database Global Tables
 
@@ -192,6 +193,7 @@ namespace CPMS_Accounting
 
                 }
             }
+            
 
 
         }

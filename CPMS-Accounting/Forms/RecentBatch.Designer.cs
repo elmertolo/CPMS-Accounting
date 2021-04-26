@@ -41,11 +41,11 @@ namespace CPMS_Accounting
             this.salesInvoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.packingListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvDRList = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.txtRecentBatch = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.packingListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDRList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -59,7 +59,7 @@ namespace CPMS_Accounting
             this.printDRToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(885, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(974, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -132,6 +132,13 @@ namespace CPMS_Accounting
             this.deliveryReportToolStripMenuItem.Text = "Delivery Report";
             this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
             // 
+            // packingListToolStripMenuItem
+            // 
+            this.packingListToolStripMenuItem.Name = "packingListToolStripMenuItem";
+            this.packingListToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.packingListToolStripMenuItem.Text = "Packing List";
+            this.packingListToolStripMenuItem.Click += new System.EventHandler(this.packingListToolStripMenuItem_Click);
+            // 
             // dgvDRList
             // 
             this.dgvDRList.AllowUserToAddRows = false;
@@ -157,7 +164,7 @@ namespace CPMS_Accounting
             this.dgvDRList.Location = new System.Drawing.Point(13, 145);
             this.dgvDRList.Name = "dgvDRList";
             this.dgvDRList.ReadOnly = true;
-            this.dgvDRList.Size = new System.Drawing.Size(860, 364);
+            this.dgvDRList.Size = new System.Drawing.Size(949, 364);
             this.dgvDRList.TabIndex = 1;
             this.dgvDRList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDRList_CellContentClick);
             // 
@@ -185,23 +192,16 @@ namespace CPMS_Accounting
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 29);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(912, 76);
+            this.pictureBox1.Size = new System.Drawing.Size(1011, 76);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
-            // 
-            // packingListToolStripMenuItem
-            // 
-            this.packingListToolStripMenuItem.Name = "packingListToolStripMenuItem";
-            this.packingListToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
-            this.packingListToolStripMenuItem.Text = "Packing List";
-            this.packingListToolStripMenuItem.Click += new System.EventHandler(this.packingListToolStripMenuItem_Click);
             // 
             // RecentBatch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 523);
+            this.ClientSize = new System.Drawing.Size(974, 523);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtRecentBatch);
             this.Controls.Add(this.label1);

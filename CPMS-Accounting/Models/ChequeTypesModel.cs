@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPMS_Accounting.Models
 {
-    class ChequeTypesModel
+    public  class ChequeTypesModel
     {
         public string Type { get; set; }
         public string ChequeName { get; set; }

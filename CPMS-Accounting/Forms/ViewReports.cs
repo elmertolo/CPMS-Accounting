@@ -140,12 +140,13 @@ namespace CPMS_Accounting
                 this.crystalReportViewer1.ReportSource = cryRpt;
                 this.crystalReportViewer1.RefreshReport();
             }
-            else if (DeliveryReport.report == "DR")
+            
+            else if (DeliveryReport.report == "DRP" || RecentBatch.report == "DRP")
             {
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable , process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable, process.myConnect);
 
                 adp.Fill(ds);
 
@@ -153,12 +154,27 @@ namespace CPMS_Accounting
                 cryRpt.Load(process.FillCRReportParameters());
                 cryRpt.SetDataSource(ds.Tables[0]);
                 process.DBClosed();
-              //  DeliveryReceipt crystalReport = new DeliveryReceipt();
+                //  DeliveryReceipt crystalReport = new DeliveryReceipt();
                 this.crystalReportViewer1.ReportSource = cryRpt;
                 this.crystalReportViewer1.RefreshReport();
             }
+            else if (DeliveryReport.report == "DR")
+            {
+                DataSet ds = new DataSet();
+                process.DBConnect();
 
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from " + gClient.DRTempTable, process.myConnect);
 
+                adp.Fill(ds);
+
+                ReportDocument cryRpt = new ReportDocument();
+                cryRpt.Load(process.FillCRReportParameters());
+                cryRpt.SetDataSource(ds.Tables[0]);
+                process.DBClosed();
+                //  DeliveryReceipt crystalReport = new DeliveryReceipt();
+                this.crystalReportViewer1.ReportSource = cryRpt;
+                this.crystalReportViewer1.RefreshReport();
+            }
         }
 
         private void crystalReportViewer1_KeyDown(object sender, KeyEventArgs e)

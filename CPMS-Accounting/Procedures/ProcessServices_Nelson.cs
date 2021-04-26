@@ -309,7 +309,8 @@ namespace CPMS_Accounting.Procedures
                         " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.CheckType.ToString() + "'" +
                         " and location = '" + item.Location + "'" +
-                        " and chequename = '" + item.CheckName + "';";
+                        " and chequename = '" + item.CheckName.Replace("'","''") + "';";
+
                     }
                     else
                     {
@@ -320,11 +321,14 @@ namespace CPMS_Accounting.Procedures
                         "SalesInvoice = " + gSalesInvoiceFinished.SalesInvoiceNumber + ", " +
                         "Salesinvoicedate = '" + gSalesInvoiceFinished.SalesInvoiceDateTime.ToString("yyyy-MM-dd") + "', " +
                         "SalesInvoiceGeneratedBy = '" + gSalesInvoiceFinished.GeneratedBy + "' " +
+
                         " where drnumber in(" + item.DRList.ToString() +
                         ") and batch = '" + item.BatchName + "'" +
                         " and deliverydate = '" + item.DeliveryDate.ToString("yyyy-MM-dd") + "'" +
                         " and chktype = '" + item.CheckType.ToString() + "'" +
-                        " and chequename = '" + item.CheckName + "';";
+                        " and chequename = '" + item.CheckName.Replace("'","''") + "';";
+
+
                     }
 
 
@@ -358,7 +362,7 @@ namespace CPMS_Accounting.Procedures
                     item.BatchName + "', " +
                     item.Quantity + ", '" +
                     item.UOM + "', '" +
-                    item.CheckName + "', '" +
+                    item.CheckName.Replace("'","''") + "', '" + // added Replace Method to Accept single ' for Chequename by ET March 30,2021
                     item.Location + "', '" +
                     item.DRList + "', " +
                     item.LineTotalAmount + ", " +
@@ -718,7 +722,7 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 string sql = "select clientcode, shortname, description, address1, address2, address3, attentionto, Princes_DESC, TIN, WithholdingTaxPercentage, " +
-                    "databasename from clientlist " +
+                    "databasename,BankCode from clientlist " +
                     "where description = '" + clientDescription + "' order by shortname;";
                 MySqlCommand cmd = new MySqlCommand(sql , con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -784,11 +788,11 @@ namespace CPMS_Accounting.Procedures
                 //double onhandQuantity = double.Parse(SeekReturn("select quantityonhand from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //double newItemQuantity = onhandQuantity - quantity;
 
-                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
-                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName.Replace("'","''") + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName.Replace("'", "''") + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 double newItemQuantity = onhandQuantity - processedQuantity;
 
-                MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName + "'", con);
+                MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName.Replace("'", "''") + "'", con);
                 rowNumbersAffected = cmd.ExecuteNonQuery();
                 return true;
             }

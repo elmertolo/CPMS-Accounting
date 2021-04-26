@@ -16,14 +16,14 @@ namespace CPMS_Accounting.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class PNBPackingList : ReportClass {
+    public class RCBCPackingReport : ReportClass {
         
-        public PNBPackingList() {
+        public RCBCPackingReport() {
         }
         
         public override string ResourceName {
             get {
-                return "PNBPackingList.rpt";
+                return "RCBCPackingReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CPMS_Accounting.Reports {
         
         public override string FullResourceName {
             get {
-                return "CPMS_Accounting.Reports.PNBPackingList.rpt";
+                return "CPMS_Accounting.Reports.RCBCPackingReport.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection2 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,17 +82,49 @@ namespace CPMS_Accounting.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
+            get {
+                return this.ReportDefinition.Sections[5];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+            get {
+                return this.ReportDefinition.Sections[6];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[7];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+            get {
+                return this.ReportDefinition.Sections[8];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedPNBPackingList : Component, ICachedReport {
+    public class CachedRCBCPackingReport : Component, ICachedReport {
         
-        public CachedPNBPackingList() {
+        public CachedRCBCPackingReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +161,7 @@ namespace CPMS_Accounting.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            PNBPackingList rpt = new PNBPackingList();
+            RCBCPackingReport rpt = new RCBCPackingReport();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -35,6 +35,7 @@ namespace CPMS_Accounting.Models
 
         //03192021 Enhancement - PNB Reprint
         public string SalesInvoiceFinishedDetailTable {get;set;}
+        public string BankCode { get; set; } // Updated By ET for getting history data from the Ordering system March 31, 2021
 
 
     }
