@@ -5396,6 +5396,82 @@ namespace CPMS_Accounting.Procedures
                 return _batch;
             }
         }
+        public List<PurchaseOrderModel> gListofPurchaseOrder(List<PurchaseOrderModel> _list)
+        {
+            try
+            {
+                Sql = "Select PurchaseOrderNo, PurchaseOrderDateTime, ProductCode, Quantity, ChequeName, Description, UnitPrice, DocStamp," +
+                    "CheckType, ClientCode,GeneratedBy, CheckedBy, ApprovedBy from " + gClient.PurchaseOrderFinishedTable + ";";
+                DBConnect();
+                cmd = new MySqlCommand(Sql,myConnect);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while(reader.Read())
+                {
+                    PurchaseOrderModel p = new PurchaseOrderModel
+                    {
+                        PurchaseOrderNumber  = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
+                        PurchaseOrderDateTime = !reader.IsDBNull(1) ? reader.GetDateTime(1) : DateTime.Now,
+                        ProductCode = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                        Quantity = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
+                        ChequeName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                        Description = !reader.IsDBNull(5) ? reader.GetString(5) : "",
+                        UnitPrice = !reader.IsDBNull(6) ? reader.GetDouble(6) : 0,
+                        Docstamp = !reader.IsDBNull(7) ? reader.GetDouble(7) : 0,
+                        CheckType = !reader.IsDBNull(8) ? reader.GetString(8) : "",
+                        ClientCode = !reader.IsDBNull(9) ? reader.GetString(9) : "",
+                        GeneratedBy = !reader.IsDBNull(10) ? reader.GetString(10) : "",
+                        CheckedBy = !reader.IsDBNull(11) ? reader.GetString(11) : "",
+                        ApprovedBy = !reader.IsDBNull(12) ? reader.GetString(12) : ""
+                    };
+
+                    _list.Add(p);
+                }
+                reader.Close();
+                DBClosed();
+                return _list;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Getting List of Purchase Order ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return _list;
+            }
+        }
+        public List<TempModel> sGetChequeName(List<TempModel> _temp)
+        {
+            try
+            {
+                
+                Sql = "Select A.Type,A.ChequeName,A.Description,A.CProductCode,B.ProductName from rcbc_tcheques A inner join rcbc_tchequeproducts B on " +
+                            "A.CProductCode = B.CProductCode;";
+                DBConnect();
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                
+                while(reader.Read())
+                {
+                    TempModel t = new TempModel
+                    {
+                        ChkType = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                        ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) :"",
+                        CheqDesc = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                        PCode = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
+                        ProductName = !reader.IsDBNull(4) ? reader.GetString(4) : ""
+                    };
+                    _temp.Add(t);
+                }
+                reader.Close();
+                DBClosed();
+               
+                return _temp;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Get Cheque Name ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+        }
     }
 }
     

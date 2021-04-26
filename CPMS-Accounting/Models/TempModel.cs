@@ -50,7 +50,9 @@ namespace CPMS_Accounting.Models
         public string SalesInvoiceGeneratedBy { get; set; }
         public DateTime SalesInvoiceDate { get; set; }
         public string CheckedBy { get; set; }
-
+        public string CheqDesc { get; set; }
+        public int PCode { get; set; }
+        public string ProductName { get; set; }
 
     }
 

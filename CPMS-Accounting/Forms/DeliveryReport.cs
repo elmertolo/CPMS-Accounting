@@ -29,9 +29,11 @@ namespace CPMS_Accounting
         List<OrderModel> orderList = new List<OrderModel>();
         ProcessServices proc = new ProcessServices();
         List<TempModel> tempDr = new List<TempModel>();
+        List<TempModel> tempData = new List<TempModel>();
         List<TempModel> tempSticker = new List<TempModel>();
         List<ChequeTypesModel> productList = new List<ChequeTypesModel>();
         List<PriceListModel> priceList = new List<PriceListModel>();
+        List<PurchaseOrderModel> listofPurchaseOrderNumber = new List<PurchaseOrderModel>();
         public DateTime deliveryDate;
         DateTime dateTime;
         BranchesModel branch = new BranchesModel();
@@ -322,7 +324,31 @@ namespace CPMS_Accounting
                         order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
                         order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
                         order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
-                        order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
+                        // order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
+                        tempData.ForEach(x =>
+                        {
+                            if (order.ChkType == x.ChkType && x.ChequeName.StartsWith(order.ProductName.TrimEnd()))
+                                order.ChequeName = x.ChequeName;
+                        });
+
+                        //order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+                        //order.PONumber = listofPurchaseOrderNumber
+                        //    .Where(x => x.ChequeName == order.ChequeName)
+                        //    .Select(x=>x.PurchaseOrderNumber)
+                        //    .Single();
+                        listofPurchaseOrderNumber.ForEach(x =>
+                        {
+                            if (order.ChequeName == x.ChequeName)
+                                order.PONumber = x.PurchaseOrderNumber;
+                        });
+
+                        //if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                        //{
+
+                        //    MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ", "Error!");
+                        //    errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
+                        //    break;
+                        //}
                     }
                     else
                     {
@@ -358,9 +384,9 @@ namespace CPMS_Accounting
                         errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
                         Application.Exit();
                 }
-            //var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
-            //var totalB = orderList.Where(a => a.ChkType == "B"  || a.ChkType == "D").ToList();
-            
+            //var totalA = orderList.Where(a => a.ChkType == "A").ToList();
+            //var totalB = orderList.Where(a => a.ChkType == "B").ToList();
+
 
 
             if (orderList.Count > 0)
@@ -374,9 +400,40 @@ namespace CPMS_Accounting
                 }
                 else
                 {
-                    
-                  
-                        if (errorMessage != "")
+
+                    var po = orderList.Select(x => x.PONumber).Distinct().ToList();
+                    var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
+                    po.ForEach(x =>
+                    {
+
+                        chkType.ForEach(d =>
+                        {
+                            
+
+                            if (AremainingBalance < 0)
+                            {
+                                MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
+
+                            }
+                            else if (BremainingBalance < 0)
+                            {
+                                //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
+                                MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
+
+                            }
+                            
+                        });
+                    });
+
+
+                    //AremainingBalance -= totalA.Count;
+                    //BremainingBalance -= totalB.Count;
+
+
+
+
+
+                    if (errorMessage != "")
                         {
                             ProcessServices.ErrorMessage(errorMessage);
                             MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
@@ -639,7 +696,9 @@ namespace CPMS_Accounting
 
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
-
+            proc.sGetChequeName(tempData);
+            proc.gListofPurchaseOrder(listofPurchaseOrderNumber);
+            
             isBankActive();
             //ChequeName();
             ReporStyle();
