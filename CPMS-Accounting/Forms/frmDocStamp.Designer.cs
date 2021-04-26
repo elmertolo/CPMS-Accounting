@@ -106,9 +106,9 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvOutput.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOutput.Location = new System.Drawing.Point(295, 30);
+            this.dgvOutput.Location = new System.Drawing.Point(320, 30);
             this.dgvOutput.Name = "dgvOutput";
-            this.dgvOutput.Size = new System.Drawing.Size(719, 250);
+            this.dgvOutput.Size = new System.Drawing.Size(908, 250);
             this.dgvOutput.TabIndex = 5;
             // 
             // menuStrip1
@@ -118,7 +118,7 @@ namespace CPMS_Accounting.Forms
             this.generateToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1063, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1275, 28);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -144,7 +144,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.txtTotalQty.AutoSize = true;
             this.txtTotalQty.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalQty.Location = new System.Drawing.Point(157, 605);
+            this.txtTotalQty.Location = new System.Drawing.Point(157, 623);
             this.txtTotalQty.Name = "txtTotalQty";
             this.txtTotalQty.Size = new System.Drawing.Size(16, 16);
             this.txtTotalQty.TabIndex = 9;
@@ -154,7 +154,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(40, 604);
+            this.label2.Location = new System.Drawing.Point(40, 622);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(112, 16);
             this.label2.TabIndex = 8;
@@ -173,9 +173,9 @@ namespace CPMS_Accounting.Forms
             this.groupBox1.Controls.Add(this.dgvOutput);
             this.groupBox1.Controls.Add(this.dtpDocDate);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(19, 347);
+            this.groupBox1.Location = new System.Drawing.Point(19, 365);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1031, 299);
+            this.groupBox1.Size = new System.Drawing.Size(1244, 299);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Document Stamp Result";
@@ -281,10 +281,10 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.DgvDSalesInvoice.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.DgvDSalesInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvDSalesInvoice.Location = new System.Drawing.Point(12, 63);
+            this.DgvDSalesInvoice.Location = new System.Drawing.Point(105, 63);
             this.DgvDSalesInvoice.Name = "DgvDSalesInvoice";
             this.DgvDSalesInvoice.ReadOnly = true;
-            this.DgvDSalesInvoice.Size = new System.Drawing.Size(919, 177);
+            this.DgvDSalesInvoice.Size = new System.Drawing.Size(1003, 177);
             this.DgvDSalesInvoice.TabIndex = 2;
             this.DgvDSalesInvoice.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDSalesInvoice_CellContentDoubleClick);
             this.DgvDSalesInvoice.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvDSalesInvoice_RowHeaderMouseDoubleClick);
@@ -295,9 +295,9 @@ namespace CPMS_Accounting.Forms
             this.groupBox2.Controls.Add(this.txtBatch);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(30, 84);
+            this.groupBox2.Location = new System.Drawing.Point(30, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(952, 255);
+            this.groupBox2.Size = new System.Drawing.Size(1167, 255);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Processed Sales Invoice";
@@ -307,7 +307,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 28);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1063, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(1289, 68);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
@@ -317,7 +317,7 @@ namespace CPMS_Accounting.Forms
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(874, 4);
+            this.label5.Location = new System.Drawing.Point(1064, 4);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 21);
             this.label5.TabIndex = 13;
@@ -328,7 +328,7 @@ namespace CPMS_Accounting.Forms
             this.lblUser.AutoSize = true;
             this.lblUser.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.lblUser.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.Location = new System.Drawing.Point(977, 4);
+            this.lblUser.Location = new System.Drawing.Point(1166, 4);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(0, 21);
             this.lblUser.TabIndex = 14;
@@ -337,7 +337,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1063, 660);
+            this.ClientSize = new System.Drawing.Size(1275, 675);
             this.Controls.Add(this.lblUser);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pictureBox1);

@@ -1533,7 +1533,7 @@ namespace CPMS_Accounting.Procedures
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCPackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDocStamp.rpt";
                             else if (RecentBatch.report == "DRP" || DeliveryReport.report == "DRP")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DeliveryReceiptProvincial.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
@@ -1576,7 +1576,7 @@ namespace CPMS_Accounting.Procedures
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName + "DocStamp.rpt";
 
                             else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReport.rpt";
@@ -1592,7 +1592,7 @@ namespace CPMS_Accounting.Procedures
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName+"DocStamp.rpt";
                             else if (RecentBatch.report == "DRP" || DeliveryReport.report == "DRP")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceiptProvincial.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
@@ -1604,6 +1604,8 @@ namespace CPMS_Accounting.Procedures
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\Stickers.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
+                            else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceipt.rpt";
                         }
@@ -1988,29 +1990,39 @@ namespace CPMS_Accounting.Procedures
         }
         public void UpdateDocstamp(List<DocStampModel> _docStamp)
         {
-            //try
-            //{
+            try
+            {
 
-            //_docStamp.ForEach(r =>
-            //{
-            //    DBConnect();
-            //    Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + r.DocStampPrice + ", DocStampNumber = " + r.DocStampNumber +
-            //        ", Date_DocStamp = '" + r.DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + r.PreparedBy +
-            //        "', CheckedByDS = '" + r.CheckedBy + "'  where SalesInvoice = " + r.SalesInvoiceNumber + " and ChkType = '" + r.ChkType + "' and Location ='"+r.Location+"';";
-            //    cmd = new MySqlCommand(Sql, myConnect);
-            //    cmd.ExecuteNonQuery();
-            //    DBClosed();
+                //_docStamp.ForEach(r =>
+                //{
+                //    DBConnect();
+                //    Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + r.DocStampPrice + ", DocStampNumber = " + r.DocStampNumber +
+                //        ", Date_DocStamp = '" + r.DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + r.PreparedBy +
+                //        "', CheckedByDS = '" + r.CheckedBy + "'  where SalesInvoice = " + r.SalesInvoiceNumber + " and ChkType = '" + r.ChkType + "' and Location ='"+r.Location+"';";
+                //    cmd = new MySqlCommand(Sql, myConnect);
+                //    cmd.ExecuteNonQuery();
+                //    DBClosed();
 
-            //});
+                //});
 
-            log.Info("Updating DocStamp in Database..");
+                log.Info("Updating DocStamp in Database..");
             DBConnect();
             for (int i = 0; i < _docStamp.Count; i++)
             {
-                Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
-                    ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
-                    "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber + " and ChkType = '" +
-                    _docStamp[i].ChkType + "' and Location ='" + _docStamp[i].Location + "';";
+                    if (gClient.BankCode == "008")
+                    {
+                        Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
+                            ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
+                            "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber + " and ChkType = '" +
+                            _docStamp[i].ChkType + "' and Location ='" + _docStamp[i].Location + "';";
+                    }
+                    else
+                    {
+                        Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
+                            ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
+                            "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber + " and ChkType = '" +
+                            _docStamp[i].ChkType + "';";
+                    }
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
             }
@@ -2020,12 +2032,12 @@ namespace CPMS_Accounting.Procedures
 
 
             return;
-            //}
-            //catch(Exception error)
-            //{
-            //    MessageBox.Show(error.Message, error.Source);
-            //    return;
-            //}
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message, "Updating Docstamp ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
         public string DisplayAllSalesInvoice(string _batch, List<TempModel> _temp)
         {
@@ -2036,6 +2048,12 @@ namespace CPMS_Accounting.Procedures
                 Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location,ProductCode from  " + gClient.DataBaseName +
                             " where (DocStampNumber is null or DocStampNumber = 0) and SalesInvoice != 0  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%') " +
                             "group by location,SalesInvoice, ChkType order by SalesInvoice, Batch,ChkType;";
+            }
+            else if (gClient.BankCode == "028")
+            {
+                Sql = "Select SalesInvoiceDate,SalesInvoice, Count(ChkType) as Quantity,ChkType, ChequeName, Batch,location,ProductCode from  " + gClient.DataBaseName +
+                            " where (DocStampNumber is null or DocStampNumber = 0) and SalesInvoice != 0  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%') " +
+                            "group by SalesInvoice, ChequeName,ChkType order by SalesInvoice, Batch,ChkType;";
             }
             else
             {
@@ -2125,7 +2143,7 @@ namespace CPMS_Accounting.Procedures
                 {
 
                     string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
-                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + d.BankCode + "'," + d.DocStampNumber +
+                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
                                 ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
@@ -4450,15 +4468,15 @@ namespace CPMS_Accounting.Procedures
         public  void DisableControls(ToolStripMenuItem _item)
         {
             log.Info("Disable/Enable Controls..");
-            if (gClient.DataBaseName != "producers_history")
-            {
+            //if (gClient.DataBaseName != "producers_history")
+            //{
                 _item.Enabled = true;
 
-            }
-            else
-            {
-                _item.Enabled = false;
-            }
+            //}
+            //else
+            //{
+            //    _item.Enabled = false;
+            //}
         }
         public void GetProducts(List<ProductModel> _products)
         {
@@ -5196,6 +5214,187 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(e.Message, "GetStickerDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return _temp;
+        }
+        public void GetDocStampDetailsRCBC(List<DocStampModel> _temp, int _docStampNumber)
+        {
+            log.Info("Generating Document Stamp Details..");
+            try
+            {
+
+
+                //Orginal Query
+                Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
+                      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
+                      "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate from " + gClient.DataBaseName +
+                      " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
+                      " where  DocStampNumber= " + _docStampNumber + " Group by H.ChequeName order by DocStampNumber, ChkType";
+                //_docStampNumber.ForEach(x => { 
+                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
+                //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
+                //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
+                //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
+                //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
+                DBConnect();
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    DocStampModel doc = new DocStampModel();
+
+                    doc.BankCode = !reader.IsDBNull(0) ? reader.GetString(0) : "";
+                    doc.DocStampNumber = !reader.IsDBNull(1) ? reader.GetInt32(1) : 0;
+                    doc.SalesInvoiceNumber = !reader.IsDBNull(2) ? reader.GetString(2) : "0";
+                    doc.TotalQuantity = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0;
+                    doc.ChkType = !reader.IsDBNull(4) ? reader.GetString(4) : "";
+                    doc.DocDesc = !reader.IsDBNull(5) ? reader.GetString(5) : "";
+                    //  TotalAmount = !reader.IsDBNull(5) ? reader.GetDouble(5) : 0,
+                    doc.DocStampPrice = !reader.IsDBNull(6) ? reader.GetInt32(6) : 0;
+                    doc.PreparedBy = !reader.IsDBNull(7) ? reader.GetString(7) : "";
+                    doc.CheckedBy = !reader.IsDBNull(8) ? reader.GetString(8) : "";
+                    doc.POorder = !reader.IsDBNull(9) ? reader.GetInt32(9) : 0;
+                    doc.QuantityOnHand = !reader.IsDBNull(10) ? reader.GetInt32(10) : 0;
+                    doc.batches = !reader.IsDBNull(11) ? reader.GetString(11) : "";
+                    doc.TotalAmount = !reader.IsDBNull(12) ? reader.GetDouble(12) : 0;
+                    doc.Location = !reader.IsDBNull(13) ? reader.GetString(13) : "";
+                    doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
+
+                    _temp.Add(doc);
+                }
+                reader.Close();
+                DBClosed();
+                DBConnect();
+                string Sql1 = "Delete from " + gClient.DocStampTempTable;
+                cmd = new MySqlCommand(Sql1, myConnect);
+                cmd.ExecuteNonQuery();
+                DBClosed();
+                DBConnect();
+                _temp.ForEach(d =>
+                {
+
+                    string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
+                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + gClient.Description + "'," + d.DocStampNumber +
+                                ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
+                                "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
+                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
+                    MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
+                    cmd2.ExecuteNonQuery();
+                    log.Info("Inserting to Docstamp table Done..");
+                });
+                //  });
+                DBClosed();
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "GetDocStampDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void fUpdateDocstamp(List<DocStampModel> _docStamp)
+        {
+            //try
+            //{
+
+            //_docStamp.ForEach(r =>
+            //{
+            //    DBConnect();
+            //    Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + r.DocStampPrice + ", DocStampNumber = " + r.DocStampNumber +
+            //        ", Date_DocStamp = '" + r.DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + r.PreparedBy +
+            //        "', CheckedByDS = '" + r.CheckedBy + "'  where SalesInvoice = " + r.SalesInvoiceNumber + " and ChkType = '" + r.ChkType + "' and Location ='"+r.Location+"';";
+            //    cmd = new MySqlCommand(Sql, myConnect);
+            //    cmd.ExecuteNonQuery();
+            //    DBClosed();
+
+            //});
+
+            log.Info("Updating DocStamp in Database..");
+            DBConnect();
+            for (int i = 0; i < _docStamp.Count; i++)
+            {
+                Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
+                    ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
+                    "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber;
+                cmd = new MySqlCommand(Sql, myConnect);
+                cmd.ExecuteNonQuery();
+            }
+
+            DBClosed();
+
+
+
+            return;
+            //}
+            //catch(Exception error)
+            //{
+            //    MessageBox.Show(error.Message, error.Source);
+            //    return;
+            //}
+        }
+        public string fGetDataByBatch(List<TempModel> _temp, string _batch)
+        {
+            try
+            {
+                DBConnect();
+                Sql = "Select Bank, Batch, Brstn,BranchName,BranchCode,Date,ChkType, ChequeName,AccountNo,Name1,Name2, StartingSerial, EndingSerial, SalesInvoice," +
+                    "UnitPrice,DocStamp,DeliveryDate,username,SalesInvoiceGeneratedBy,SalesInvoiceDate,location,DrNumber,PackNumber,DocStampNumber,AttentionTo," +
+                    "ProductCode,Block,Segment,ProductType,DeliveryToBrstn,DeliveryToBranch,OldBranchCode,CheckedByDS,PurchaseOrderNumber,Count(ChkType) as Quantity " +
+                    " from "  + gClient.DataBaseName + " where Batch Like '" + _batch + "%' group by Batch,ChequeName,ChkType;";
+
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TempModel t = new TempModel
+                    {
+                        BankCode = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                        Batch = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                        BRSTN = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                        BranchName = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                        BranchCode = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                        DateProcessed = !reader.IsDBNull(5) ? reader.GetDateTime(5) : DateTime.Now,
+                        ChkType = !reader.IsDBNull(6) ? reader.GetString(6) : "",
+                        ChequeName = !reader.IsDBNull(7) ? reader.GetString(7) : "",
+                        AccountNo = !reader.IsDBNull(8) ? reader.GetString(8) : "",
+                        Name1 = !reader.IsDBNull(9) ? reader.GetString(9) : "",
+                        Name2 = !reader.IsDBNull(10) ? reader.GetString(10) : "",
+                        StartingSerial = !reader.IsDBNull(11) ? reader.GetString(11) : "",
+                        EndingSerial = !reader.IsDBNull(12) ? reader.GetString(12) : "",
+                        SalesInvoice = !reader.IsDBNull(13) ? reader.GetInt32(13) : 0,
+                        UnitPrice = !reader.IsDBNull(14) ? reader.GetDouble(14) : 0,
+                        DocStampPrice = !reader.IsDBNull(15) ? reader.GetDouble(15) : 0,
+                        DeliveryDate = !reader.IsDBNull(16) ? reader.GetDateTime(16) : DateTime.Now,
+                        username = !reader.IsDBNull(17) ? reader.GetString(17) : "",
+                        SalesInvoiceGeneratedBy = !reader.IsDBNull(18) ? reader.GetString(18) : "",
+                        SalesInvoiceDate = !reader.IsDBNull(19) ? reader.GetDateTime(19) : DateTime.Now,
+                        Location = !reader.IsDBNull(20) ? reader.GetString(20) : "",
+                        DrNumber = !reader.IsDBNull(21) ? reader.GetString(21) : "",
+                        PackNumber = !reader.IsDBNull(22) ? reader.GetString(22) : "",
+                        DocStampNumber = !reader.IsDBNull(23) ? reader.GetInt32(23) : 0,
+                        AttentionTo = !reader.IsDBNull(24) ? reader.GetString(24) : "",
+                        ProductCode = !reader.IsDBNull(25) ? reader.GetString(25) : "",
+                        Block = !reader.IsDBNull(26) ? reader.GetInt32(26) : 0,
+                        Segment = !reader.IsDBNull(27) ? reader.GetInt32(27) : 0,
+                        ProducType = !reader.IsDBNull(28) ? reader.GetString(28) : "",
+                        DeliveryToBrstn = !reader.IsDBNull(29) ? reader.GetString(29) : "",
+                        DeliveryToBranch = !reader.IsDBNull(30) ? reader.GetString(30) : "",
+                        OldBranchCode = !reader.IsDBNull(31) ? reader.GetString(31) : "",
+                        CheckedBy = !reader.IsDBNull(32) ? reader.GetString(32) : "",
+                        PONumber = !reader.IsDBNull(33) ? reader.GetInt32(33) : 0, 
+                        Qty = !reader.IsDBNull(34) ? reader.GetInt32(34) : 0
+
+                       
+                    };
+                    _temp.Add(t);
+                }
+                reader.Close();
+                DBClosed();
+
+                return _batch;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Populating data from database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return _batch;
+            }
         }
     }
 }

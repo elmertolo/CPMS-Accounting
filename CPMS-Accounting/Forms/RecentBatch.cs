@@ -133,29 +133,32 @@ namespace CPMS_Accounting
         private void txtRecentBatch_TextChanged(object sender, EventArgs e)
         {
             batchTemp.Clear();
-            proc.DisplayAllBatches(txtRecentBatch.Text,batchTemp);
-            DataTable dt = new DataTable();
+            //proc.DisplayAllBatches(txtRecentBatch.Text,batchTemp);
+            proc.fGetDataByBatch(batchTemp, txtRecentBatch.Text);
+           
+                DataTable dt = new DataTable();
 
-            dt.Clear();
+                dt.Clear();
 
-            dt.Columns.Add("Batch");
-            dt.Columns.Add("Sales Invoice");
-            dt.Columns.Add("Document Stamp");
-            dt.Columns.Add("Cheque Name");
-            dt.Columns.Add("ChkType");
-            dt.Columns.Add("Delivery Date");
-            dt.Columns.Add("Quantity");
-                
+                dt.Columns.Add("Batch");
+                dt.Columns.Add("Sales Invoice");
+                dt.Columns.Add("Document Stamp");
+                dt.Columns.Add("Cheque Name");
+                dt.Columns.Add("ChkType");
+                dt.Columns.Add("Delivery Date");
+                dt.Columns.Add("Quantity");
 
-            batchTemp.ForEach(r =>
-            {
-                dt.Rows.Add(new object[] { r.Batch, r.SalesInvoice, r.DocStampNumber,r.ChequeName, r.ChkType, r.DeliveryDate.ToString("yyyy-MM-dd"), r.Qty });
-            });
-            
-            dgvDRList.DataSource = dt;
+                    
+                batchTemp.ForEach(r =>
+                {
+                    dt.Rows.Add(new object[] { r.Batch, r.SalesInvoice, r.DocStampNumber, r.ChequeName, r.ChkType, r.DeliveryDate.ToString("yyyy-MM-dd"), r.Qty });
+                });
 
-            dgvDRList.Columns[3].Width = 270;
-            dgvDRList.Columns[5].Width = 130;
+                dgvDRList.DataSource = dt;
+
+                dgvDRList.Columns[3].Width = 270;
+                dgvDRList.Columns[5].Width = 130;
+           
         }
 
         private void dgvDRList_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -203,6 +206,7 @@ namespace CPMS_Accounting
 
         private void documentStampToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             report = "DOC";
             ViewReports vp = new ViewReports();
             vp.Show();
@@ -317,31 +321,37 @@ namespace CPMS_Accounting
                 //    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
                 //    tempRecent.Clear();
                 //}
-               
-               
 
-                var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
+
+                var dBatchtemp = batchTemp.Where(x => x.Batch == txtRecentBatch.Text).ToList();
+                //var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
 
                 //if (gClient.DataBaseName != "producers_history")
                 //{
-                    foreach (string batch in dBatchtemp)
-                    {
 
-                        var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
-                        _dbatch.ForEach(f =>
-                        {
+                //foreach (string batch in dBatchtemp)
+                //{
+                //var _dbatch = batchTemp.Where(r => r.Batch == txtRecentBatch.Text).ToList();
+                //var _dbatch = batchTemp.Where(r => r.Batch == batch).ToList();
+                var dDocstamp = dBatchtemp.Select(x => x.DocStampNumber).Distinct().ToList();
+                dDocstamp.ForEach(f =>
+                {
                             //  docStampNumber.Add(f.DocStampNumber);
-                            if (flag == true)
-                            {
-                                proc.GetDocStampDetails(docTemp, f.DocStampNumber);
+                            ////if (flag == true)
+                            ////{
+                                if(gClient.BankCode == "008")
+                                    proc.GetDocStampDetails(docTemp, f);
+                                else
+                                    proc.GetDocStampDetailsRCBC(docTemp, f);
 
-                                // flag = false;
-                            }
+                                 //flag = false;
+                            //}
 
-                        });
+                });
 
 
-                    }
+               //     }
+
 
                 //}
 
