@@ -215,10 +215,10 @@ namespace CPMS_Accounting
             frm.ShowDialog();
         }
 
-
-
-
-
-
+        private void costDistributionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCostDistribution xfrm = new frmCostDistribution(this);
+            xfrm.Show();
+        }
     }
 }

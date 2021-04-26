@@ -13,6 +13,7 @@
     ],
     "TempLoc": "D:\\TEMP"
   },
+
   "Database": {
     "DailyBackupOn": false,
     "BackupPath": "D:\\",
@@ -20,9 +21,18 @@
     "ConnectionString": "Database=captive_accounting;Server=localhost;Port=3306;Uid=root;Pwd=CorpCaptive;"
     //"ConnectionString": "Database=captive_accounting;Server=192.168.0.254;Port=3306;Uid=root;Pwd=CorpCaptive;"
   },
+
   "Encryption": {
     "EncryptionOn": false,
     "EncryptionType": "SHA1"
+  },
+
+  "CostDistribution": {
+    "OutputPathFolder": "D:\\Output",
+    "OutputFileType": "xlsx"
+
   }
-  
+
+
+
 }

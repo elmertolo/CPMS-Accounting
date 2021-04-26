@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -90,11 +90,18 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.23\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySqlBackup, Version=2.3.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MySqlBackup.NET.2.3.4\lib\net452\MySqlBackup.dll</HintPath>
+    </Reference>
+    <Reference Include="NA_ExcelWriter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\NA_ExcelWriter.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -183,6 +190,12 @@
     <Compile Include="Forms\frmCorrection.Designer.cs">
       <DependentUpon>frmCorrection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmCostDistribution.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCostDistribution.Designer.cs">
+      <DependentUpon>frmCostDistribution.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmDocStamp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +279,7 @@
     <Compile Include="Models\ChequeProductModel.cs" />
     <Compile Include="Models\ChequeTypesModel.cs" />
     <Compile Include="Models\ClientList.cs" />
+    <Compile Include="Models\CostDistributionModel.cs" />
     <Compile Include="Models\DocStampModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
@@ -279,6 +293,7 @@
     <Compile Include="Models\TypeofCheckModel.cs" />
     <Compile Include="Models\UserLevelModel.cs" />
     <Compile Include="Models\UserListModel.cs" />
+    <Compile Include="Procedures\DataTableToListConverter.cs" />
     <Compile Include="Procedures\Nelson_Procedures.cs" />
     <Compile Include="Procedures\ProcessServices.cs" />
     <Compile Include="Procedures\ProcessServices_Nelson.cs" />
@@ -338,6 +353,12 @@
       <DependentUpon>Producers_SalesInvoice.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\RCBC_SalesInvoice.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RCBC_SalesInvoice.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\Robinsons_SalesInvoice.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -365,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCorrection.resx">
       <DependentUpon>frmCorrection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmCostDistribution.resx">
+      <DependentUpon>frmCostDistribution.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDocStamp.resx">
       <DependentUpon>frmDocStamp.cs</DependentUpon>
@@ -450,6 +474,10 @@
     <EmbeddedResource Include="Reports\Producers_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Producers_SalesInvoice.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RCBC_SalesInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RCBC_SalesInvoice.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Robinsons_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -550,5 +578,16 @@
     <None Update="Config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
 </Project>

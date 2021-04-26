@@ -36,5 +36,6 @@ namespace CPMS_Accounting.Models
         //03192021 Enhancement - PNB Reprint
         public string SalesInvoiceFinishedDetailTable {get;set;}
 
+
     }
 }

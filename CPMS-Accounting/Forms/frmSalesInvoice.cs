@@ -237,7 +237,6 @@ namespace CPMS_Accounting
 
             AddSelectedDRRow();
             
-
         }
 
         private void AddSelectedDRRow()
@@ -266,7 +265,6 @@ namespace CPMS_Accounting
                         return;
                     }
                     FillPriceListModel(row.Cells["Product Code"].Value.ToString());
-                   
 
 
                     //Supply values on sales invoice model list based on datagrid view values

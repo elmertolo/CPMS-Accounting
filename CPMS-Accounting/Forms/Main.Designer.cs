@@ -41,9 +41,11 @@
             this.chequesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddchequesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.chequeProductsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userMaintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userLevelAndSecurityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.costDistributionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +56,8 @@
             this.transactionsToolStripMenuItem,
             this.recentBatchToolStripMenuItem,
             this.maintenanceToolStripMenuItem,
-            this.changeBankToolStripMenuItem});
+            this.changeBankToolStripMenuItem,
+            this.reportsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1304, 28);
@@ -154,14 +157,6 @@
             this.chequeProductsToolStripMenuItem.Text = "Cheque Products";
             this.chequeProductsToolStripMenuItem.Click += new System.EventHandler(this.chequeProductsToolStripMenuItem_Click);
             // 
-            // changeBankToolStripMenuItem
-            // 
-            this.changeBankToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeBankToolStripMenuItem.Name = "changeBankToolStripMenuItem";
-            this.changeBankToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.changeBankToolStripMenuItem.Text = "Change Bank";
-            this.changeBankToolStripMenuItem.Click += new System.EventHandler(this.changeBankToolStripMenuItem_Click);
-            // 
             // userMaintenanceToolStripMenuItem
             // 
             this.userMaintenanceToolStripMenuItem.Name = "userMaintenanceToolStripMenuItem";
@@ -175,6 +170,30 @@
             this.userLevelAndSecurityToolStripMenuItem.Size = new System.Drawing.Size(237, 24);
             this.userLevelAndSecurityToolStripMenuItem.Text = "User Level and Security";
             this.userLevelAndSecurityToolStripMenuItem.Click += new System.EventHandler(this.userLevelAndSecurityToolStripMenuItem_Click);
+            // 
+            // changeBankToolStripMenuItem
+            // 
+            this.changeBankToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeBankToolStripMenuItem.Name = "changeBankToolStripMenuItem";
+            this.changeBankToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
+            this.changeBankToolStripMenuItem.Text = "Change Bank";
+            this.changeBankToolStripMenuItem.Click += new System.EventHandler(this.changeBankToolStripMenuItem_Click);
+            // 
+            // reportsToolStripMenuItem
+            // 
+            this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.costDistributionToolStripMenuItem});
+            this.reportsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.reportsToolStripMenuItem.Text = "Reports";
+            // 
+            // costDistributionToolStripMenuItem
+            // 
+            this.costDistributionToolStripMenuItem.Name = "costDistributionToolStripMenuItem";
+            this.costDistributionToolStripMenuItem.Size = new System.Drawing.Size(192, 24);
+            this.costDistributionToolStripMenuItem.Text = "Cost Distribution";
+            this.costDistributionToolStripMenuItem.Click += new System.EventHandler(this.costDistributionToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -212,6 +231,8 @@
         private System.Windows.Forms.ToolStripMenuItem chequeProductsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userMaintenanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userLevelAndSecurityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem costDistributionToolStripMenuItem;
 
         //private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         //private System.Windows.Forms.ToolStripMenuItem purchaseOrderToolStripMenuItem;

@@ -543,7 +543,6 @@ namespace CPMS_Accounting
 
             if (result == DialogResult.Yes)
             {
-
                 if (!proc.DeletePurchaseOrderRecordOnfinished(purchaseOrderNumber))
                 {
                     MessageBox.Show("Error on (proc.DeletePurchaseOrderRecordOnfinished()\r\n \r\n" + proc.errorMessage);

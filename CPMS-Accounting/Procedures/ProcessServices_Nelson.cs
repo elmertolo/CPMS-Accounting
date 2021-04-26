@@ -1203,6 +1203,54 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
+        public bool GetData(string query,ref DataTable dt)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Used for Union Bank For the meantime...
+        /// </summary>
+        /// <param name="salesInvoiceNumber"></param>
+        /// <returns></returns>
+        public bool CheckSalesInvoiceTransactionOnHistory(string salesInvoiceNumber)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                MySqlCommand cmd = new MySqlCommand("select * from " + gClient.DataBaseName + " where salesinvoice = " + salesInvoiceNumber + " limit 1;", con);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+                cmd.ExecuteNonQuery();
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+        }
+
+
+
 
     }
 }
