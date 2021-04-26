@@ -159,6 +159,20 @@ namespace CPMS_Accounting.Procedures
 
         }
 
+        public static string GetApplicationPath()
+        {
+            //Determine path when running through IDE or not
+            if (Debugger.IsAttached)
+            {
+                return Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
+            }
+            else
+            {
+                return  Directory.GetCurrentDirectory().ToString();
+
+            }
+        }
+
         public static bool BatchRecordHasDuplicate(SalesInvoiceFinishedDetailModel line, List<SalesInvoiceFinishedDetailModel> salesInvoiceList)
         {
 
@@ -330,7 +344,6 @@ namespace CPMS_Accounting.Procedures
             }
 
             var config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).AddJsonFile(filePath).Build();
-
             var sectionName = config.GetSection(section);
             var value = sectionName.GetValue<string>(key);
 
@@ -342,7 +355,79 @@ namespace CPMS_Accounting.Procedures
         }
 
 
+        /// <summary>
+        /// eliminate Numbers from a string leaving only Letters and retain their original position.
+        /// </summary>
+        /// <param name="toExtract"></param>
+        /// <returns></returns>
+        public static string ExtractLettersFromString(string toExtract)
+        {
+            string b = string.Empty;
 
+            for (int i = 0; i < toExtract.Length; i++)
+            {
+                if (!Char.IsDigit(toExtract[i]))
+                    b += toExtract[i];
+            }
+
+            if (b.Length > 0)
+                return b;
+            else
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Eliminate Letters from a string leaving only numbers and retain their original position.
+        /// </summary>
+        /// <param name="toExtract"></param>
+        /// <returns></returns>
+        public static int ExtractNumberFromString(string toExtract)
+        {
+            string b = string.Empty;
+
+            for (int i = 0; i < toExtract.Length; i++)
+            {
+                if (Char.IsDigit(toExtract[i]))
+                    b += toExtract[i];
+            }
+
+            if (b.Length > 0)
+                return int.Parse(b);
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Open file explorer at given location. just pass the file folder path. Will Return false if directory does not exist.
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <returns></returns>
+        public static bool OpenFolder(string folderPath)
+        {
+            if (Directory.Exists(folderPath))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    Arguments = folderPath,
+                    FileName = "explorer.exe"
+                };
+                Process.Start(startInfo);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //public static bool IsNullDefault()
+        //{
+
+        //}
 
 
     }

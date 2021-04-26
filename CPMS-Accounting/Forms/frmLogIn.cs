@@ -113,6 +113,10 @@ namespace CPMS_Accounting
 
             BackupDataAndApplication();
 
+            //04122021
+            //Supply Branchlist
+            //FillBranchlist(gClient.ClientCode);
+
             Main mainFrm = new Main();
             mainFrm.Show();
             this.Hide();
@@ -155,7 +159,17 @@ namespace CPMS_Accounting
                     gClient.BankCode = row.Field<string>("BankCode"); // Updated By ET for getting history data from the Ordering system March 31, 2021
 
                     //Database Global Tables
-                    gClient.DataBaseName = row.Field<string>("ShortName").ToLower() + "_history" ?? "";
+
+                    //for the time being..
+                    if (bankname.ToUpper() == "UNIONBANK OF THE PHILIPPINES")
+                    {
+                        gClient.DataBaseName = "master_database_union";
+                    }
+                    else
+                    {
+                        gClient.DataBaseName = row.Field<string>("ShortName").ToLower() + "_history" ?? "";
+                    }
+
                     gClient.SalesInvoiceTempTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_temp" ?? "";
                     gClient.SalesInvoiceFinishedTable = row.Field<string>("ShortName").ToLower() + "_salesinvoice_finished" ?? "";
                     gClient.PriceListTable = row.Field<string>("ShortName").ToLower() + "_pricelist" ?? "";
@@ -171,6 +185,10 @@ namespace CPMS_Accounting
 
                     //03192021 Enhancement - Sales Invoice Reprint
                     gClient.SalesInvoiceFinishedDetailTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_finished_detail" ?? "";
+
+                    //04122021
+                    
+
 
 
                 }
@@ -534,7 +552,13 @@ namespace CPMS_Accounting
             gBackupPath = p.ReadJsonConfigFile("Database", "BackupPath", "");
 
         }
-        
+
+        private void FillBranchlist(string clientCode)
+        {
+
+        }
+
+
 
 
 

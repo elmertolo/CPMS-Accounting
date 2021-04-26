@@ -18,5 +18,10 @@ namespace CPMS_Accounting.Models
         public string BranchCode { get; set; }
         public int OldBranchCode { get; set; }
         public int Flag { get; set; }
+        //04122021 Added new fields in replacement for cpc files.
+        public string Location { get; set; }
+        public string ContactPerson { get; set; }
+
+
     }
 }

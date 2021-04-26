@@ -83,6 +83,11 @@ namespace CPMS_Accounting.Procedures
             pTool.Value = pValue;
         }// end of function
 
+        internal static bool GetBankList(ref DataTable dt)
+        {
+            throw new NotImplementedException();
+        }
+
         //public List<OrderModel> Process(List<OrderModel> _orders, DeliveryReport _main, int DrNumber, int packNumber)
         //{
         //    TypeofCheckModel checkType = new TypeofCheckModel();
