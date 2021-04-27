@@ -9,7 +9,12 @@ namespace CPMS_Accounting.Procedures
 {
     public static class DataTableToListConverter
     {
-
+        /// <summary>
+        /// Generic DataTable to List Converter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
         public static List<T> DataTableToList<T>(this DataTable dataTable) where T : new()
         {
             var dataList = new List<T>();
