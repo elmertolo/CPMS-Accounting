@@ -721,8 +721,17 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
+
+
+                //string sql = "select clientcode, shortname, description, address1, address2, address3, attentionto, Princes_DESC, TIN, WithholdingTaxPercentage, " +
+                //    "databasename from clientlist " +
+                //    "where description = '" + clientDescription + "' order by shortname;";
+                
+                //04192021
+                //Commented out above statement. added bankcode from 
+
                 string sql = "select clientcode, shortname, description, address1, address2, address3, attentionto, Princes_DESC, TIN, WithholdingTaxPercentage, " +
-                    "databasename,BankCode from clientlist " +
+                    "databasename, BankCode from clientlist " +
                     "where description = '" + clientDescription + "' order by shortname;";
                 MySqlCommand cmd = new MySqlCommand(sql , con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -1234,7 +1243,7 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 DataTable dt = new DataTable();
-                MySqlCommand cmd = new MySqlCommand("select * from " + gClient.DataBaseName + " where salesinvoice = " + salesInvoiceNumber + " limit 1;", con);
+                MySqlCommand cmd = new MySqlCommand("select chequename from " + gClient.DataBaseName + " where salesinvoice = " + salesInvoiceNumber + " limit 1;", con);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 da.Fill(dt);
                 cmd.ExecuteNonQuery();

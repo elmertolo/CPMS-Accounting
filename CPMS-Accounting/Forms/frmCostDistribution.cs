@@ -371,8 +371,8 @@ namespace CPMS_Accounting.Forms
 
         private void btnAddRecord_Click(object sender, EventArgs e)
         {
-            
-            
+
+
             FindRecord();
 
 
@@ -388,6 +388,8 @@ namespace CPMS_Accounting.Forms
             txtSalesInvoiceNumber.Focus();
             cbCheckedBy.Text = "";
             cbApprovedBy.Text = "";
+
+            dtpInvoiceDate.Value = DateTime.Now;
 
             costDistributionList.Clear();
 
@@ -423,25 +425,24 @@ namespace CPMS_Accounting.Forms
 
             dgvDirectBranches.DataSource = clearBranchlist;
             dgvDirectBranches.ClearSelection();
-            dgvDirectBranches.DataSource = clearBranchlist;
-            dgvDirectBranches.ClearSelection();
+            dgvProvincialBranches.DataSource = clearBranchlist;
+            dgvProvincialBranches.ClearSelection();
 
             var clearChequeNames = costDistributionList
                     .Select
                     (i => new
                     {
-                        i.ProductCode,
-                        i.Quantity
+                        i.ChequeName
                     })
                     .ToList();
 
+            dgvCheckName.DataSource = clearChequeNames;
+            dgvCheckName.ClearSelection();
+
 
             tpnlBranches.Enabled = false;
-            dgvDirectBranches.ClearSelection();
-            dgvProvincialBranches.ClearSelection();
 
-
-            
+            gbDetails.Enabled = false;
 
             txtSalesInvoiceNumber.Focus();
         }
@@ -455,24 +456,34 @@ namespace CPMS_Accounting.Forms
                 DataTable dt = new DataTable();
                 string salesInvoiceNumber = txtSalesInvoiceNumber.Text;
 
+                progressBar = new frmProgress();
+                progressBar.message = "Finding Record. Please Wait.";
+                Thread checkExistingSIRecordTask = new Thread(() => progressBar.ShowDialog());
+                checkExistingSIRecordTask.Start();
+
                 if (!proc.CheckSalesInvoiceTransactionOnHistory(salesInvoiceNumber))
                 {
-                    p.MessageAndLog("No transaction found for sales invoice number.\r\n\r\n " + proc.errorMessage + "", ref log, "ERROR");
+                    checkExistingSIRecordTask.Abort();
+                    p.MessageAndLog("No transaction found for sales invoice number: " + salesInvoiceNumber + ". " + proc.errorMessage + "", ref log, "ERROR");
+                    RefreshView();
                     return;
                 }
 
+
                 log.Info("Pressed Enter Button with text on txtSalesInvoiceNumber: " + txtSalesInvoiceNumber.Text.ToString());
-                log.Info("Fetching Existing Sales Invoice Record");
+                log.Info("Retrieving Existing Record. Please Wait.");
                 //Start Progress Bar View
                 progressBar = new frmProgress();
-                progressBar.message = "Fetching Existing Record. Please Wait.";
+                progressBar.message = "Retrieving Existing Record. Please Wait.";
                 thread = new Thread(() => progressBar.ShowDialog());
                 thread.Start();
 
                 DisplayCostDistrubutionRecord(salesInvoiceNumber);
+
                 EnableControls();
 
                 thread.Abort();
+                checkExistingSIRecordTask.Abort();
             }
 
         }
@@ -504,7 +515,7 @@ namespace CPMS_Accounting.Forms
             dgvCheckName.ColumnCount = 2; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
             dgvCheckName.Columns[0].Name = "PRODUCT CODE";
-            dgvCheckName.Columns[0].Width = 150;
+            dgvCheckName.Columns[0].Width = 116;
             dgvCheckName.Columns[0].DataPropertyName = "ProductCode";
 
             dgvCheckName.Columns[1].Name = "CHECK NAME";
@@ -649,7 +660,7 @@ namespace CPMS_Accounting.Forms
         {
             //Get list first based on SalesInvoice Input.
             DataTable data = new  DataTable();
-            if (!proc.GetData("select md.BranchName, md.ChequeName, md.Unit as UOM, md.UnitPrice as PrintingCost, md.docstamp2 as DocStampCost, md.multiplier as Multiplier, md.location as Location, br.SOL from " + gClient.DataBaseName + " md" +
+            if (!proc.GetData("select md.BranchName, md.ChequeName, md.Unit as UOM, md.UnitPrice as PrintingCost, md.docstamp2 as DocStampCost, md.multiplier as Multiplier, md.location as Location, md.InvoiceDate, br.SOL from " + gClient.DataBaseName + " md" +
                 " inner join " + gClient.BranchesTable + " br" +
                 " on md.brstn = br.brstn " +
                 " where salesInvoice = " + salesInvoiceNumber + "", ref data))
@@ -658,8 +669,9 @@ namespace CPMS_Accounting.Forms
                 return;
             }
 
+            dtpInvoiceDate.Value = data.Rows[6].Field<DateTime>("InvoiceDate");
+            
             //Convert salesInvoice datatable to list.
-            //costDistributionList = ConvertDataTable<CostDistributionModel>(data);
             costDistributionList = DataTableToListConverter.DataTableToList<CostDistributionModel>(data);
 
             var checkNames = costDistributionList
@@ -720,8 +732,6 @@ namespace CPMS_Accounting.Forms
 
                 }
 
-                
-
             }
 
         }
@@ -731,68 +741,13 @@ namespace CPMS_Accounting.Forms
             this.Close();
         }
 
-        /// <summary>
-        /// Generic Datatable to List Converter.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        private List<T> ConvertDataTable<T>(DataTable dt)
-        {
-            List<T> data = new List<T>();
-            foreach (DataRow row in dt.Rows)
-            {
-                T item = GetItem<T>(row);
-                data.Add(item);
-            }
-            return data;
-        }
-        private T GetItem<T>(DataRow dr)
-        {
-            Type temp = typeof(T);
-            T obj = Activator.CreateInstance<T>();
-
-            foreach (DataColumn column in dr.Table.Columns)
-            {
-                foreach (PropertyInfo pro in temp.GetProperties())
-                {
-                    if (pro.Name == column.ColumnName)
-
-                        if (dr[column.ColumnName].ToString() == "")
-                        {
-                            if (pro.PropertyType.ToString() == "System.Double" || pro.PropertyType.ToString() == "System.Int")
-                            {
-                                
-                                double val = 0;
-                                pro.SetValue(obj, val, null);
-                                
-                            }
-                            if (pro.PropertyType.ToString() == "System.String")
-                            {
-                                string val = "";
-                                pro.SetValue(obj, val, null);
-                            }
-
-                        }
-                        else
-                        {
-                            pro.SetValue(obj, dr[column.ColumnName], null);
-
-                        }
-
-                    else
-                        continue;
-                }
-            }
-            return obj;
-        }
-
+        
 
         private void EnableControls()
         {
-            gbSearch.Enabled = true;
+            //gbSearch.Enabled = true;
             gbBatchList.Enabled = true;
-            gbDetails.Enabled = true;
+            //gbDetails.Enabled = true;
             gbBatchToProcess.Enabled = true;
             pnlActionButtons.Enabled = true;
             gbSINo.Enabled = false;
@@ -834,10 +789,9 @@ namespace CPMS_Accounting.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
+
                 FindRecord();
             }
-
-           
         }
 
         private void btnReloadDrList_Click(object sender, EventArgs e)
@@ -845,5 +799,7 @@ namespace CPMS_Accounting.Forms
             RefreshView();
            
         }
+
+       
     }
 }
