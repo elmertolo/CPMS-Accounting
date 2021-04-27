@@ -60,6 +60,10 @@
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.VSDesigner, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DataTableToList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\DataTableToList.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.6.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.6\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -293,7 +297,6 @@
     <Compile Include="Models\TypeofCheckModel.cs" />
     <Compile Include="Models\UserLevelModel.cs" />
     <Compile Include="Models\UserListModel.cs" />
-    <Compile Include="Procedures\DataTableToListConverter.cs" />
     <Compile Include="Procedures\Nelson_Procedures.cs" />
     <Compile Include="Procedures\ProcessServices.cs" />
     <Compile Include="Procedures\ProcessServices_Nelson.cs" />
@@ -377,7 +380,6 @@
       <DependentUpon>Producers_SalesInvoice.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-
     <Compile Include="Reports\DeliveryReceiptDirect.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -534,7 +536,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Producers_SalesInvoice.cs</LastGenOutput>
     </EmbeddedResource>
-
     <EmbeddedResource Include="Reports\DeliveryReceiptDirect.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DeliveryReceiptDirect.cs</LastGenOutput>
@@ -618,7 +619,9 @@
     <None Include="Resources\background-red-header.png" />
     <None Include="Resources\Header_Main.png" />
     <None Include="Resources\FormBackground.jpg" />
+    <Content Include="DLL\DataTableToList.dll" />
     <Content Include="DLL\FastMember.dll" />
+    <Content Include="DLL\NA_ExcelWriter.dll" />
     <Content Include="Image\background-red-header.png" />
     <Content Include="Image\Button_Yellow.png" />
     <Content Include="Image\Captive.ico" />
