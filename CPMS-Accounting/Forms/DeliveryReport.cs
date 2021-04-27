@@ -260,8 +260,8 @@ namespace CPMS_Accounting
             op.Filter = "dbf files (*.dbf)|*.dbf|All files (*.*)|*.*";
             op.FilterIndex = 2;
             op.RestoreDirectory = true;
-            //try
-            //{
+            try
+            {
 
                 if (op.ShowDialog().Equals(DialogResult.OK))
                 {
@@ -278,162 +278,152 @@ namespace CPMS_Accounting
                     string sql = "";
 
 
-                // Checking what table was selected to read the packing file
+                    // Checking what table was selected to read the packing file
 
 
-                //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                //         "CK_NO_B,CK_NO_E FROM " + filePath  + " where CHKTYPE = '" + z + "'";
-                if (gClient.ShortName == "RCBC")
-                {
-                    sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                    "CK_NO_B,CK_NO_E,DRBRSTN,CHKNAME,PICKBRC,DRBRC FROM " + filePath;
-                }
-                else
-                {
-                    sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                                 "CK_NO_B,CK_NO_E,DELIVERTO FROM " + filePath;
-                }
-
-
-                OleDbCommand cmd = new OleDbCommand(sql, con);
-                        con.Open();
-                        OleDbDataReader myReader = cmd.ExecuteReader();
-
-                        while (myReader.Read())
-                        {
-                     
-                            OrderModel order = new OrderModel();
-                            order.Batch = !myReader.IsDBNull(0) ? myReader.GetString(0) : "";
-                            order.BRSTN = !myReader.IsDBNull(1) ? myReader.GetString(1) : "";
-                            order.BranchName = !myReader.IsDBNull(2) ? myReader.GetString(2) : "";
-                            order.AccountNo = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
-                            
-                            order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
-                     
-                            //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                    
-
-                            order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
-                            order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
-                            order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
-                            order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
-                            order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
-                    order.DeliveryTo.Trim();
+                    //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                    //         "CK_NO_B,CK_NO_E FROM " + filePath  + " where CHKTYPE = '" + z + "'";
                     if (gClient.ShortName == "RCBC")
                     {
-                        order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
-                        order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
-                        order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
-                        // order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
-                        tempData.ForEach(x =>
+                        sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                                        "CK_NO_B,CK_NO_E,DRBRSTN,CHKNAME,PICKBRC,DRBRC FROM " + filePath;
+                    }
+                    else
+                    {
+                        sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                                     "CK_NO_B,CK_NO_E,DELIVERTO FROM " + filePath;
+                    }
+
+
+                    OleDbCommand cmd = new OleDbCommand(sql, con);
+                    con.Open();
+                    OleDbDataReader myReader = cmd.ExecuteReader();
+
+                    while (myReader.Read())
+                    {
+
+                        OrderModel order = new OrderModel();
+                        order.Batch = !myReader.IsDBNull(0) ? myReader.GetString(0) : "";
+                        order.BRSTN = !myReader.IsDBNull(1) ? myReader.GetString(1) : "";
+                        order.BranchName = !myReader.IsDBNull(2) ? myReader.GetString(2) : "";
+                        order.AccountNo = !myReader.IsDBNull(3) ? myReader.GetString(3) : "";
+
+                        order.ChkType = !myReader.IsDBNull(4) ? myReader.GetString(4) : "";
+
+                        //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
+
+
+                        order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
+                        order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
+                        order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
+                        order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
+                        order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
+                        order.DeliveryTo.Trim();
+                        if (gClient.ShortName == "RCBC")
                         {
-                            if (order.ChkType == x.ChkType && x.ChequeName.StartsWith(order.ProductName.TrimEnd()))
-                                order.ChequeName = x.ChequeName;
+                            order.ProductName = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                            order.BranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                            order.OldBranchCode = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                            // order.ChequeName = proc.GetChequeNamewithProductCode(order.ChkType, order.ProductName);
+                            tempData.ForEach(x =>
+                            {
+                                if (order.ChkType == x.ChkType && x.ChequeName.StartsWith(order.ProductName.TrimEnd()))
+                                    order.ChequeName = x.ChequeName;
+                            });
+                            //order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+                            listofPurchaseOrderNumber.ForEach(x =>
+                            {
+                                if (order.ChequeName == x.ChequeName)
+                                    order.PONumber = x.PurchaseOrderNumber;
+                            });
+                            proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
+                            order.DeliverytoBranch = branch.Address1;
+                            order.Address2 = branch.Address2.Replace("'", "''");
+                            order.Address3 = branch.Address3.Replace("'", "''");
+                            order.Address4 = branch.Address4.Replace("'", "''");
+                            order.Address5 = branch.Address5.Replace("'", "''");
+                            order.Address6 = branch.Address6.Replace("'", "''");
+
+                            if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                            {
+
+                                MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ", "Error!");
+                                errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            order.ChequeName = proc.GetChequeName(order.ChkType);
+                            order.PONumber = 0;
+                        }
+                        if (order.BRSTN.StartsWith("01"))
+                            order.Location = "Direct";
+                        else
+                            order.Location = "Provincial";
+
+
+                        // order.BranchCode = branch.BranchCode;
+                        order.Quantity = 1;
+                        proc.GetProducts(listofProducts);
+                        listofProducts.ForEach(x =>
+                        {
+                            if (order.ChkType == x.ChkType && order.Location == x.DeliveryLocation && order.ProductName.StartsWith(x.ChequeName.Substring(0, x.ChequeName.Length - 9)))
+                            {
+                                order.ProductCode = x.ProductCode;
+                            }
                         });
 
-                        //order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
-                        //order.PONumber = listofPurchaseOrderNumber
-                        //    .Where(x => x.ChequeName == order.ChequeName)
-                        //    .Select(x=>x.PurchaseOrderNumber)
-                        //    .Single();
+
+                        CountChkType(order.ChequeName);
+                        // TotalPerChecks = GetTotalChecks(order.ChequeName.Substring(0,10));
+                        orderList.Add(order);
+
+                    }
+
+                }
+                else
+                {
+                    errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
+                    Application.Exit();
+                }
+                //var totalA = orderList.Where(a => a.ChkType == "A").ToList();
+                //var totalB = orderList.Where(a => a.ChkType == "B").ToList();
+
+
+
+                if (orderList.Count > 0)
+                {
+                    if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
+                    {
+
+                        errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
+                        MessageBox.Show(errorMessage);
+
+                    }
+                    else
+                    {
+                        //   var listofPO = listofPurchaseOrderNumber.Select(x => x.PurchaseOrderNumber).Distinct().ToList();
+
                         listofPurchaseOrderNumber.ForEach(x =>
                         {
-                            if (order.ChequeName == x.ChequeName)
-                                order.PONumber = x.PurchaseOrderNumber;
-                        });
-
-                        //if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
-                        //{
-
-                        //    MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ", "Error!");
-                        //    errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
-                        //    break;
-                        //}
-                    }
-                    else
-                    {
-                        order.ChequeName = proc.GetChequeName(order.ChkType);
-                    }
-                    if (order.BRSTN.StartsWith("01"))
-                        order.Location = "Direct";
-                    else
-                        order.Location = "Provincial";
-                    proc.GetBranchLocationbyBrstn(branch, order.DeliveryTo); // Getting the Flag from bRanch Table
-                          order.DeliverytoBranch = branch.Address1;
-                           // order.BranchCode = branch.BranchCode;
-                                order.Quantity = 1;
-                                proc.GetProducts(listofProducts);
-                                listofProducts.ForEach(x =>
+                            int POBalance = proc.CheckPOQuantity(x.PurchaseOrderNumber, x.ChequeName);
+                            orderList.ForEach(j =>
+                            {
+                                if (x.PurchaseOrderNumber == j.PONumber && x.ChequeName == j.ChequeName)
                                 {
-                                    if (order.ChkType == x.ChkType && order.Location == x.DeliveryLocation  && order.ProductName.StartsWith(x.ChequeName.Substring(0,x.ChequeName.Length - 9)))
+
+                                    POBalance = POBalance - GetTotalChecks(j.ChequeName.Substring(0, j.ChequeName.Length - 7));
+                                    if (POBalance < 0)
                                     {
-                                        order.ProductCode = x.ProductCode;
+
+                                        MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x.PurchaseOrderNumber + " for Cheque Name: " + x.ChequeName.Replace("'", "''"));
                                     }
-                                });
-                    
-
-                    CountChkType(order.ChequeName);
-                 // TotalPerChecks = GetTotalChecks(order.ChequeName.Substring(0,10));
-                    orderList.Add(order);
-
-                        }
-                           
-                }
-                else
-                {
-                        errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
-                        Application.Exit();
-                }
-            //var totalA = orderList.Where(a => a.ChkType == "A").ToList();
-            //var totalB = orderList.Where(a => a.ChkType == "B").ToList();
-
-
-
-            if (orderList.Count > 0)
-              {
-                if (proc.CheckBatchifExisted(orderList[0].Batch.Trim()) == true)
-                {
-
-                    errorMessage += "\r\nBatch : " + orderList[0].Batch + " Is Already Existed!!";
-                    MessageBox.Show(errorMessage);
-
-                }
-                else
-                {
-
-                    var po = orderList.Select(x => x.PONumber).Distinct().ToList();
-                    var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
-                    po.ForEach(x =>
-                    {
-
-                        chkType.ForEach(d =>
-                        {
-                            
-
-                            if (AremainingBalance < 0)
-                            {
-                                MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
-
-                            }
-                            else if (BremainingBalance < 0)
-                            {
-                                //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
-                                MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
-
-                            }
-                            
+                                }
+                            });
                         });
-                    });
 
-
-                    //AremainingBalance -= totalA.Count;
-                    //BremainingBalance -= totalB.Count;
-
-
-
-
-
-                    if (errorMessage != "")
+                        if (errorMessage != "")
                         {
                             ProcessServices.ErrorMessage(errorMessage);
                             MessageBox.Show("Checking files done! with errors found! Check ErrorMessage.txt for references", "Error!");
@@ -441,37 +431,24 @@ namespace CPMS_Accounting
                         }
                         else
                         {
-                            
-                            
                             MessageBox.Show("Checking files done! No Errors found");
                             dataGridView1.DataSource = orderList;
-                            
                             ProcessServices.bg_dtg(dataGridView1);
-                //     TotalPerChecks =   DisplayTotal();
-                        //Totalchecks(TotalPerChecks[0].ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
-                        TotalChecks();
-                        //    MessageBox.Show(TotalPerChecks[0].ToString());
-                            //lblTotalA.Text = totalA.Count.ToString();
-                            //lblTotalB.Text = totalB.Count.ToString();
+                            //     TotalPerChecks =   DisplayTotal();
+                            //Totalchecks(TotalPerChecks[0].ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
+                            TotalChecks();
                             lblTotalChecks.Text = orderList.Count.ToString();
 
                         }
-                    
+
+                    }
+
                 }
-
             }
-
-
-            //}
-
-
-
-
-            
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, error.StackTrace);
-            //}
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message,"Get Data", MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
         }
         private void GetData2()
         {
@@ -486,111 +463,112 @@ namespace CPMS_Accounting
             op.Filter = "dbf files (*.dbf)|*.dbf|All files (*.*)|*.*";
             op.FilterIndex = 2;
             op.RestoreDirectory = true;
-            //try
-            //{
+            try
+            {
 
                 if (op.ShowDialog().Equals(DialogResult.OK))
                 {
-                string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
-                con = new OleDbConnection(ConString);
+                    string ConString = "Provider = VFPOLEDB.1; Data Source = " + op.FileName + ";";
+                    con = new OleDbConnection(ConString);
 
-                    dataGridView1.DataSource = "";
-                    orderList.Clear();
-                //Get the path of specified file
-                filePath = Path.GetFileNameWithoutExtension(op.FileName);
+                        dataGridView1.DataSource = "";
+                        orderList.Clear();
+                    //Get the path of specified file
+                    filePath = Path.GetFileNameWithoutExtension(op.FileName);
 
-                //Read the contents of the file into a stream
-                var fileStream = op.OpenFile();
-                string sql = "";
-
-
-
-                //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                //           "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
-                sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
-                           "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
+                    //Read the contents of the file into a stream
+                    var fileStream = op.OpenFile();
+                    string sql = "";
 
 
-                OleDbCommand cmd = new OleDbCommand(sql, con);
-                con.Open();
-                OleDbDataReader myReader = cmd.ExecuteReader();
 
-                while (myReader.Read())
-                {
-
-                    OrderModel order = new OrderModel();
-                    order.Batch = !myReader.IsDBNull(0) ? myReader[0].ToString() : "";
-                    order.BRSTN = !myReader.IsDBNull(1) ? myReader[1].ToString(): "";
-                    order.BranchName = !myReader.IsDBNull(2) ? myReader[2].ToString() : "";
-                    order.AccountNo = !myReader.IsDBNull(3) ? myReader[3].ToString() : "";
-
-                    order.ChkType = !myReader.IsDBNull(4) ? myReader[4].ToString() : "";
-
-                    //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
-                  
-                    //order.ChequeName.Replace("'", "''");
-                    order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
-                    order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
-                    order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
-                    order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
-                    order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
-                    order.Quantity = 1;
-                    //PNB Required fields
-            
-                        order.BranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
-                        order.OldBranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
-                        //order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
-                       //  order.Name3.Trim();
-                        order.Name2.TrimEnd();
-                        order.Name1.TrimEnd();
-                        
-                        order.Block = !myReader.IsDBNull(12) ? int.Parse(myReader[12].ToString()) : 0;
-                        
-                        order.Segment = !myReader.IsDBNull(13) ? int.Parse(myReader[13].ToString()) : 0;
-                        order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
-                        order.BranchCode.TrimEnd();
-                        proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
-                        order.ChequeName = proc.GetChequeName(order.ChkType);
-                           // order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
-                            order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
-            
-                        order.Address2 = branch.Address2.Replace("'", "''");
-                        order.Address3 = branch.Address3.Replace("'", "''");
-                        order.Address4 = branch.Address4.Replace("'", "''");
-                        order.Address5 = branch.Address5.Replace("'", "''");
-                        order.Address6 = branch.Address6.Replace("'", "''");
-                        //proc.GetPONUmber(order.ChequeName, poNumber);
-                        //poNumber.ForEach(x => { 
-
-                        //});
-                        if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
-                        {
-
-                            MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ", "Error!");
-                            errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
-                            break;
-                        }
+                    //sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                    //           "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,ACCT_NAME3,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
+                    sql = "Select BATCHNO,RT_NO,BRANCH,ACCT_NO,CHKTYPE,ACCT_NAME1,ACCT_NAME2," +
+                               "CK_NO_B,CK_NO_E,DELIVERTO,BRANCHCODE,BRANCHCD2,BLOCK,SEGMENT,PRODCODE FROM " + filePath;
 
 
-                        if (branch.Flag == 0)
-                            order.Location = "Direct";
-                        else
-                            order.Location = "Provincial";
+                    OleDbCommand cmd = new OleDbCommand(sql, con);
+                    con.Open();
+                    OleDbDataReader myReader = cmd.ExecuteReader();
 
-                    proc.GetProducts(listofProducts);
-                    listofProducts.ForEach(x =>
+                    while (myReader.Read()) // Initialization of distributing data to list
                     {
-                        if(order.ChkType == x.ChkType  && order.Location == x.DeliveryLocation)
+
+                        OrderModel order = new OrderModel();
+                        order.Batch = !myReader.IsDBNull(0) ? myReader[0].ToString() : "";
+                        order.BRSTN = !myReader.IsDBNull(1) ? myReader[1].ToString(): "";
+                        order.BranchName = !myReader.IsDBNull(2) ? myReader[2].ToString() : "";
+                        order.AccountNo = !myReader.IsDBNull(3) ? myReader[3].ToString() : "";
+
+                        order.ChkType = !myReader.IsDBNull(4) ? myReader[4].ToString() : "";
+
+                        //order.ChequeName = DynamicCheques(order.ChkType,order.BRSTN,order.BranchName);
+                  
+                        //order.ChequeName.Replace("'", "''");
+                        order.Name1 = !myReader.IsDBNull(5) ? myReader.GetString(5) : "";
+                        order.Name2 = !myReader.IsDBNull(6) ? myReader.GetString(6) : "";
+                        order.StartingSerial = !myReader.IsDBNull(7) ? myReader.GetString(7) : "";
+                        order.EndingSerial = !myReader.IsDBNull(8) ? myReader.GetString(8) : "";
+                        order.DeliveryTo = !myReader.IsDBNull(9) ? myReader.GetString(9) : "";
+                        order.Quantity = 1;
+                        //PNB Required fields
+            
+                            order.BranchCode = !myReader.IsDBNull(10) ? myReader.GetString(10) : "";
+                            order.OldBranchCode = !myReader.IsDBNull(11) ? myReader.GetString(11) : "";
+                            //order.Name3 = !myReader.IsDBNull(12) ? myReader.GetString(12) : "";
+                           //  order.Name3.Trim();
+                            order.Name2.TrimEnd();
+                            order.Name1.TrimEnd();
+                        
+                            order.Block = !myReader.IsDBNull(12) ? int.Parse(myReader[12].ToString()) : 0;
+                        
+                            order.Segment = !myReader.IsDBNull(13) ? int.Parse(myReader[13].ToString()) : 0;
+                            order.ProductType = !myReader.IsDBNull(14) ? myReader.GetString(14) : "";
+                            order.BranchCode.TrimEnd();
+                            proc.GetBranchLocation(branch, order.BranchCode); // Getting the Flag from bRanch Table
+                            order.ChequeName = proc.GetChequeName(order.ChkType);
+                               // order.ChequeName = proc.GetChequeName(order.ChkType,order.ProductName);
+                              //  order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+                            tempData.ForEach(x =>
+                            {
+                                if (order.ChkType == x.ChkType && x.ChequeName.StartsWith(order.ProductName.TrimEnd()))
+                                    order.ChequeName = x.ChequeName;
+                            });
+                            //order.PONumber = proc.GetPONUmber(order.ChequeName);//getting Purchase Order Number from the database 
+                            listofPurchaseOrderNumber.ForEach(x =>
+                            {
+                                if (order.ChequeName == x.ChequeName)
+                                    order.PONumber = x.PurchaseOrderNumber;
+                            });
+                            order.Address2 = branch.Address2.Replace("'", "''");
+                            order.Address3 = branch.Address3.Replace("'", "''");
+                            order.Address4 = branch.Address4.Replace("'", "''");
+                            order.Address5 = branch.Address5.Replace("'", "''");
+                            order.Address6 = branch.Address6.Replace("'", "''");
+    ;
+                            if (order.PONumber == 0) // Checking if there is Purchase order Number from the database
+                            {
+                                MessageBox.Show("Please add Purchase Order Number for Cheque Type " + order.ChkType + "!!! ", "Error!");
+                                errorMessage += "There is no Purchase Order for Cheque Type : " + order.ChkType;
+                                break;
+                            }
+
+                            if (branch.Flag == 0)
+                                order.Location = "Direct";
+                            else
+                                order.Location = "Provincial";
+                        proc.GetProducts(listofProducts);
+                        listofProducts.ForEach(x =>
                         {
-                            order.ProductCode = x.ProductCode;
-                        }
-                    });
-                    CountChkType(order.ChkType);
-                    orderList.Add(order);
-
-
-
-                }
+                            if(order.ChkType == x.ChkType  && order.Location == x.DeliveryLocation)
+                            {
+                                order.ProductCode = x.ProductCode;
+                            }
+                        });
+                        CountChkType(order.ChkType);
+                        orderList.Add(order);
+                    }
 
                 }
             else
@@ -598,10 +576,8 @@ namespace CPMS_Accounting
                 errorMessage += "The file :" + op.FileName + " is not a dbf file!\r\n";
                 Application.Exit();
             }
-            var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
-            var totalB = orderList.Where(a => a.ChkType == "B" || a.ChkType == "D").ToList();
-
-
+            //var totalA = orderList.Where(a => a.ChkType == "A" || a.ChkType == "C").ToList();
+            //var totalB = orderList.Where(a => a.ChkType == "B" || a.ChkType == "D").ToList();
 
             if (orderList.Count > 0)
             {
@@ -614,47 +590,24 @@ namespace CPMS_Accounting
                 }
                 else
                 {
-                        var po = orderList.Select(x => x.PONumber).Distinct().ToList();
-                        var chkType = orderList.Select(x => x.ChequeName).Distinct().ToList();
-                        po.ForEach(x =>
+
+                    listofPurchaseOrderNumber.ForEach(x =>
+                    {
+                        int POBalance = proc.CheckPOQuantity(x.PurchaseOrderNumber, x.ChequeName);
+                        orderList.ForEach(j =>
                         {
-
-                            chkType.ForEach(d =>
+                            if (x.PurchaseOrderNumber == j.PONumber && x.ChequeName == j.ChequeName)
                             {
-                                //if (d == comboBox1.Text.Substring(0,comboBox1.Text.Length - 6) +" Personal Checks" || d == "Manager's Checks")
-                                //    AremainingBalance = proc.CheckPOQuantity(x, d);
-                                //else if (d == comboBox1.Text.Substring(0, comboBox1.Text.Length - 6)+ " Personal Checks")
-                                //    BremainingBalance = proc.CheckPOQuantity(x, d);
-                                //else if (d == "C")
-                                //    AremainingBalance = proc.CheckPOQuantity(x, d);
 
-
-                                if (AremainingBalance < 0)
+                                POBalance = POBalance - GetTotalChecks(j.ChequeName.Substring(0, j.ChequeName.Length - 7));
+                                if (POBalance < 0)
                                 {
-                                    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
 
+                                    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x.PurchaseOrderNumber + " for Cheque Name: " + x.ChequeName.Replace("'", "''"));
                                 }
-                                else if (BremainingBalance < 0)
-                                {
-                                    //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
-                                    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d.Replace("'", "''"));
-
-                                }
-                                //else if (MCremainingBalance < 0)
-                                //{
-                                //    //MessageBox.Show(AremainingBalance.ToString() + " - " + BremainingBalance.ToString());
-                                //    MessageBox.Show("Insufficient Balance for Purchase Order No. :" + x + " for Cheque Name: " + d);
-
-                                //}
-                            });
+                            }
                         });
-
-
-                        AremainingBalance -= totalA.Count;
-                        BremainingBalance -= totalB.Count;
-
-
-                    
+                    });
 
                     if (errorMessage != "")
                     {
@@ -664,16 +617,11 @@ namespace CPMS_Accounting
                     }
                     else
                     {
-
-
                         MessageBox.Show("Checking files done! No Errors found");
                         dataGridView1.DataSource = orderList;
-
                         ProcessServices.bg_dtg(dataGridView1);
                         //   Totalchecks(A.ToString(), B.ToString(), C.ToString(), D.ToString(), E.ToString());
                         TotalChecks();
-                        //lblTotalA.Text = totalA.Count.ToString();
-                        //lblTotalB.Text = totalB.Count.ToString();
                         lblTotalChecks.Text = orderList.Count.ToString();
 
                     }
@@ -683,17 +631,16 @@ namespace CPMS_Accounting
             }
 
 
-            //}
-
-
-
-
-            //catch (Exception error)
-            //{
-            //    MessageBox.Show(error.Message, "Get Data For PNB" , MessageBoxButtons.OK,MessageBoxIcon.Error);
-            //}
+        }
+        catch (Exception error)
+        {
+                MessageBox.Show(error.Message, "Get Data For PNB", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+
+
+
+    }
         private void DeliveryReport_Load(object sender, EventArgs e)
         {
             proc.sGetChequeName(tempData);

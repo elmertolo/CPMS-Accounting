@@ -1787,7 +1787,7 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 
-                StreamWriter sw = new StreamWriter(Application.StartupPath + "\\ErrorMessage.txt");
+                StreamWriter sw = new StreamWriter(Application.StartupPath + "\\ErrorMessage.txt",true);
                 sw.WriteLine(_errorMessage);
                 sw.Close();
                 return _errorMessage;
@@ -4365,13 +4365,13 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank,ProductCode," +
-                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo,OldBranchCode)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
+                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo,OldBranchCode,PurchaseOrderNumber)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
                           "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
                           "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','"+ r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch +
-                          "','" + gClient.AttentionTo + "','" + r.OldBranchCode + "');";
+                          "','" + gClient.AttentionTo + "','" + r.OldBranchCode + "'," + r.PONumber + ");";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
@@ -5476,6 +5476,20 @@ namespace CPMS_Accounting.Procedures
                 return null;
             }
 
+        }
+        public void fGetBalancePO(List<int> _listofPo)
+        {
+            try
+            {
+                
+
+            }
+            catch(Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Get List of Purchase Order Balance", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+            }
         }
     }
 }
