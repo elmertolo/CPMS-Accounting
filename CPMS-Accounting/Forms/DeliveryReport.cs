@@ -1296,24 +1296,30 @@ namespace CPMS_Accounting
                 orderList.Clear();
                 proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
                 proc.GetProducts(listofProducts);
-                orderList.ForEach(x =>
+                if (orderList != null)
                 {
-                  
-
-                    if (x.BRSTN.StartsWith("01"))
-                        x.Location = "Direct";
-                    else
-                        x.Location = "Provincial";
-
-                    listofProducts.ForEach(d =>
+                    orderList.ForEach(x =>
                     {
-                        if (x.ChkType == d.ChkType)
-                        {
-                            x.ProductCode = d.ProductCode;
-                        }
-                    });
-                });
 
+
+                        if (x.BRSTN.StartsWith("01"))
+                            x.Location = "Direct";
+                        else
+                            x.Location = "Provincial";
+
+                        listofProducts.ForEach(d =>
+                        {
+                            if (x.ChkType == d.ChkType)
+                            {
+                                x.ProductCode = d.ProductCode;
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("There is no data", "Getting Data from Ordering System!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 //    dt.Clear();
                 //    dt.Columns.Clear();
                 //    dt.Columns.Add("Batch"); //0
