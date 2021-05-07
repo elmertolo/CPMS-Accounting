@@ -22,6 +22,5 @@ namespace CPMS_Accounting.Models
         public string Location { get; set; }
         public string ContactPerson { get; set; }
 
-
     }
 }

@@ -424,10 +424,25 @@ namespace CPMS_Accounting.Procedures
             }
         }
 
-        //public static bool IsNullDefault()
-        //{
+        public static bool ClientIsIntegrated(Type form)
+        {
 
-        //}
+            if (form == typeof(frmCostDistribution))
+            {
+                //Insert Allowed banks here for cost distribution feature.
+                string[] clientNames = { "UnionBank" };
+
+                foreach (string clientName in clientNames)
+                {
+                    if (gClient.ShortName.ToUpper() == clientName.ToUpper())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+
+        }
 
 
     }

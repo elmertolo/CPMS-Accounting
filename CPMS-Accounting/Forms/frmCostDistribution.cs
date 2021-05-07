@@ -450,7 +450,6 @@ namespace CPMS_Accounting.Forms
         private void FindRecord()
         {
 
-
             if (!string.IsNullOrWhiteSpace(txtSalesInvoiceNumber.Text.ToString()))
             {
                 DataTable dt = new DataTable();

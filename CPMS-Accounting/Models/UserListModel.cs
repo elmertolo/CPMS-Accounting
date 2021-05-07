@@ -59,5 +59,10 @@ namespace CPMS_Accounting.Models
         public bool IsDcEditAllowed { get; set; }
         public bool IsDcDeleteAllowed { get; set; }
 
+        public int IsAllowedOnCd { get; set; }
+        public bool IsCdCreateAllowed { get; set; }
+        public bool IsCdEditAllowed { get; set; }
+        public bool IsCdDeleteAllowed { get; set; }
+
     }
 }

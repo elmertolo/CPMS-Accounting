@@ -314,7 +314,7 @@ namespace CPMS_Accounting
                 {
                     //gUser.UserLevelCode = row.Field<string>("UserLevelCode");
                     //Commented above statement. prevoiusly declared and supplied on gSupplyGlobalUserVariables
-                    gUser.UserLevelName = "KING";
+                    gUser.UserLevelName = row.Field<string>("UserLevelName"); ;
 
                     //Delivery Report
                     gUser.IsAllowedOnDr = row.Field<sbyte>("IsAllowedOnDr");
@@ -358,6 +358,11 @@ namespace CPMS_Accounting
                     gUser.IsDcEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcEditAllowed"));
                     gUser.IsDcDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcDeleteAllowed"));
 
+                    gUser.IsAllowedOnCd = row.Field<sbyte>("IsAllowedOnCd");
+                    gUser.IsCdCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdCreateAllowed"));
+                    gUser.IsCdEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdEditAllowed"));
+                    gUser.IsCdDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdDeleteAllowed"));
+
                 }
             }
             else
@@ -396,17 +401,23 @@ namespace CPMS_Accounting
                 gUser.IsPoEditAllowed = true;
                 gUser.IsPoDeleteAllowed = true;
 
-                //Product Masbyteenance
+                //Product Maintenance
                 gUser.IsAllowedOnPm = 1;
                 gUser.IsPmCreateAllowed = true;
                 gUser.IsPmEditAllowed = true;
                 gUser.IsPmDeleteAllowed = true;
 
-                //Product Masbyteenance
+                //Data Correction
                 gUser.IsAllowedOnDc = 1;
                 gUser.IsDcCreateAllowed = true;
                 gUser.IsDcEditAllowed = true;
                 gUser.IsDcDeleteAllowed = true;
+
+                //Cost Distribution
+                gUser.IsAllowedOnCd = 1;
+                gUser.IsCdCreateAllowed = true;
+                gUser.IsCdEditAllowed = true;
+                gUser.IsCdDeleteAllowed = true;
             }
 
         }

@@ -18,7 +18,6 @@ namespace CPMS_Accounting
     public partial class Main : Form
     {
 
-
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
 
         //02152021 Log4Net
@@ -105,6 +104,14 @@ namespace CPMS_Accounting
 
         private void salesInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            if (!p.ClientIsIntegrated(typeof(frmSalesInvoice)))
+            {
+                p.MessageAndLog(gClient.Description.ToString() + " is not yet integrated\r\nwith Sales Invoice feature. " +
+                    "Please contact your system administrator.", ref log, "info");
+                return;
+            }
+
             log.Info("Mouse Click ToolStripMenuItem (Sales Invoice)");
             if (gUser.IsAllowedOnSi == 2)
             {
@@ -221,8 +228,34 @@ namespace CPMS_Accounting
 
         private void costDistributionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            if (!p.ClientIsIntegrated(typeof(frmCostDistribution)))
+            {
+
+                p.MessageAndLog( gClient.Description.ToString() + " is not yet integrated\r\nwith Cost Distribution feature. " +
+                    "Please contact your system administrator.", ref log, "info");
+                return;
+            }
+
+            log.Info("Mouse Click ToolStripMenuItem (Cost Distribution)");
+            if (gUser.IsAllowedOnCd == 2)
+            {
+                p.MessageAndLog("You do not have permission to do this operation. \r\nPlease contact Administrator for more information.", ref log, "info");
+                return;
+            }
+
             frmCostDistribution xfrm = new frmCostDistribution(this);
             xfrm.Show();
+
         }
+
+        /// <summary>
+        /// 
+        /// Check the current selected bank if allowed operatin on specified form.
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
+       
+
     }
 }

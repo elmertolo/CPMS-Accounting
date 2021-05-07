@@ -798,6 +798,63 @@ namespace CPMS_Accounting.Forms
         {
             p.MakeEnteredCharacterCapital(e);
         }
+
+        private void rdCdYes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdCdYes.Checked)
+            {
+                pnlCd.Enabled = true;
+                chkCdCreate.Checked = true;
+                chkCdEdit.Checked = true;
+                chkCdDelete.Checked = true;
+
+            }
+            else
+            {
+                pnlCd.Enabled = false;
+            }
+        }
+
+        private void rdCdNo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdCdNo.Checked)
+            {
+
+                chkCdCreate.Checked = false;
+                chkCdEdit.Checked = false;
+                chkCdDelete.Checked = false;
+                pnlCd.Enabled = false;
+
+            }
+        }
+
+        private void rdCdRead_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdCdRead.Checked)
+            {
+
+                chkCdCreate.Checked = false;
+                chkCdEdit.Checked = false;
+                chkCdDelete.Checked = false;
+                pnlCd.Enabled = false;
+
+            }
+        }
+
+        private void chkPoCreate_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkPoEdit_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkPoDelete_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
