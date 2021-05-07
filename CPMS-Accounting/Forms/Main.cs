@@ -18,7 +18,6 @@ namespace CPMS_Accounting
     public partial class Main : Form
     {
 
-
         ProcessServices_Nelson proc = new ProcessServices_Nelson();
 
         //02152021 Log4Net
@@ -247,7 +246,6 @@ namespace CPMS_Accounting
 
             frmCostDistribution xfrm = new frmCostDistribution(this);
             xfrm.Show();
-
 
         }
 
