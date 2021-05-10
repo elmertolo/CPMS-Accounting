@@ -249,13 +249,18 @@ namespace CPMS_Accounting
 
         }
 
+        private void addBankToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// 
         /// Check the current selected bank if allowed operatin on specified form.
         /// </summary>
         /// <param name="form"></param>
         /// <returns></returns>
-       
+
 
     }
 }
