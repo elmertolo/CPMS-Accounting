@@ -14,5 +14,6 @@ namespace CPMS_Accounting.Models
         public DateTime DateModified { get; set; }
         public int ProductCode { get; set; }
         public string ProductName { get; set; }
+        public int BookStyle { get; set; }
     }
 }

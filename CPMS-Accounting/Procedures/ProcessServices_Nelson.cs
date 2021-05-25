@@ -33,9 +33,15 @@ namespace CPMS_Accounting.Procedures
         MySqlConnection con;
         MySqlDataAdapter da;
 
-        public string conStr
+        public string conStr(string _system)
         {
-            get { return ConfigurationManager.AppSettings["ConnectionString"]; }
+            string conString = "";
+             if(_system == "Ordering System")
+                   conString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+             else
+                   conString = ConfigurationManager.AppSettings["ConnectionString"];
+
+            return conString;
         }
 
         public string errorMessage
@@ -44,18 +50,21 @@ namespace CPMS_Accounting.Procedures
             set { _errorMessage = value; }
         }
 
-        public ProcessServices_Nelson()
+        public ProcessServices_Nelson(string _system)
         {
 
-            OpenDB();
+            OpenDB(_system);
+
 
         }
-        private bool OpenDB()
+        private bool OpenDB(string _system)
         {
             try
             {
-                con = new MySqlConnection(conStr);
+                string conString = conStr(_system);
+                con = new MySqlConnection(conString);
                 con.Open();
+                
                 return true;
             }
             catch (Exception ex)

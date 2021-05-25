@@ -11,13 +11,14 @@ using CPMS_Accounting.Procedures;
 using static CPMS_Accounting.GlobalVariables;
 using CPMS_Accounting.Models;
 using CrystalDecisions.CrystalReports.Engine;
+using CPMS_Accounting.Forms;
 
 namespace CPMS_Accounting
 {
     public partial class frmPurchaseOrder : Form
     {
         List<PurchaseOrderModel> purchaseOrderList = new List<PurchaseOrderModel>();
-        ProcessServices_Nelson proc = new ProcessServices_Nelson();
+        ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
         Main frm;
 
         public frmPurchaseOrder(Main frm1)

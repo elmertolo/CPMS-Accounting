@@ -44,7 +44,7 @@ namespace CPMS_Accounting
             // txtUserId
             // 
             this.txtUserId.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUserId.Location = new System.Drawing.Point(98, 74);
+            this.txtUserId.Location = new System.Drawing.Point(109, 74);
             this.txtUserId.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Size = new System.Drawing.Size(177, 27);
@@ -57,7 +57,7 @@ namespace CPMS_Accounting
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label1.Location = new System.Drawing.Point(37, 81);
+            this.label1.Location = new System.Drawing.Point(44, 81);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(57, 14);
@@ -71,7 +71,7 @@ namespace CPMS_Accounting
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Cooper Black", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label2.Location = new System.Drawing.Point(23, 117);
+            this.label2.Location = new System.Drawing.Point(31, 117);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 14);
@@ -81,7 +81,7 @@ namespace CPMS_Accounting
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(98, 110);
+            this.txtPassword.Location = new System.Drawing.Point(109, 110);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
@@ -96,7 +96,7 @@ namespace CPMS_Accounting
             this.cbBankList.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbBankList.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.cbBankList.FormattingEnabled = true;
-            this.cbBankList.Location = new System.Drawing.Point(98, 146);
+            this.cbBankList.Location = new System.Drawing.Point(108, 149);
             this.cbBankList.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.cbBankList.Name = "cbBankList";
             this.cbBankList.Size = new System.Drawing.Size(291, 27);
@@ -108,7 +108,7 @@ namespace CPMS_Accounting
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Cooper Black", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.label3.Location = new System.Drawing.Point(11, 153);
+            this.label3.Location = new System.Drawing.Point(19, 156);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 14);
@@ -121,7 +121,7 @@ namespace CPMS_Accounting
             this.btnLogin.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
             this.btnLogin.Image = global::CPMS_Accounting.Properties.Resources.YellowButton4;
-            this.btnLogin.Location = new System.Drawing.Point(68, 181);
+            this.btnLogin.Location = new System.Drawing.Point(68, 184);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(122, 38);
@@ -135,7 +135,7 @@ namespace CPMS_Accounting
             this.btnCancel.Font = new System.Drawing.Font("Cooper Black", 12F);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Image = global::CPMS_Accounting.Properties.Resources.YellowButton1;
-            this.btnCancel.Location = new System.Drawing.Point(207, 181);
+            this.btnCancel.Location = new System.Drawing.Point(207, 184);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(122, 38);
@@ -161,7 +161,7 @@ namespace CPMS_Accounting
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::CPMS_Accounting.Properties.Resources.FormBackground;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(400, 232);
+            this.ClientSize = new System.Drawing.Size(414, 235);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnLogin);

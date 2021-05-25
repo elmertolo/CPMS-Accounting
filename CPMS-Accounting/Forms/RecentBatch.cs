@@ -308,7 +308,7 @@ namespace CPMS_Accounting
         }
         private void ProcessRecentBatch()
         {
-            bool flag = true;
+           // bool flag = true;
             if (txtRecentBatch.Text != "")
             {
                 tempRecent.Clear();

@@ -26,7 +26,7 @@ namespace CPMS_Accounting
 
 
         List<SalesInvoiceFinishedDetailModel> salesInvoiceList = new List<SalesInvoiceFinishedDetailModel>();
-        ProcessServices_Nelson proc = new ProcessServices_Nelson();
+        ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
         Main frm;
         frmProgress progressBar;
         Thread thread;
@@ -986,7 +986,7 @@ namespace CPMS_Accounting
                 {
                     log.Info("Selected 'Yes' on MessageBox Confirmation");
 
-                    ProcessServices_Nelson proc = new ProcessServices_Nelson();
+                    ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
 
                     if (!proc.UpdateTempTableSI(salesInvoiceList))
                     {

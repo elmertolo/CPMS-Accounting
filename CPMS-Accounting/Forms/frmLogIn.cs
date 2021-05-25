@@ -30,7 +30,7 @@ namespace CPMS_Accounting
 
         //02152021-NA Log4Net
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+       
         frmProgress progressBar;
         Thread thread;
 
@@ -43,7 +43,9 @@ namespace CPMS_Accounting
         }
 
         DataTable BankListDT = new DataTable();
-        ProcessServices_Nelson proc = new ProcessServices_Nelson();
+        
+        
+        ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
         public static string tableName = "";
         public static string tempTableName = "";
         public frmLogIn()
@@ -74,7 +76,7 @@ namespace CPMS_Accounting
 
         private void Login(string UserId, string enteredPassword)
         {
-
+            
             //02222021 Encryption
             string password = enteredPassword;
             if (gEncryptionOn)
@@ -116,11 +118,17 @@ namespace CPMS_Accounting
             //04122021
             //Supply Branchlist
             //FillBranchlist(gClient.ClientCode);
-
-            Main mainFrm = new Main();
-            mainFrm.Show();
+            if (frmProgramSelection.selectSystem != "Ordering System")
+            {
+                Main mainFrm = new Main();
+                mainFrm.Show();
+            }
+            else
+            {
+                frmOrdering f = new frmOrdering();
+                f.Show();
+            }
             this.Hide();
-
         }
 
 
@@ -200,7 +208,7 @@ namespace CPMS_Accounting
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
-           
+            MessageBox.Show(frmProgramSelection.selectSystem);
 
 
             //string line = new string('=', 100);
@@ -219,7 +227,7 @@ namespace CPMS_Accounting
             {
                 this.Text = "GOOD NIGHT!";
             }
-
+            
         }
 
         private void cbBankList_SelectedIndexChanged(object sender, EventArgs e)

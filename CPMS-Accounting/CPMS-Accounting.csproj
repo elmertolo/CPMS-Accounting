@@ -218,11 +218,23 @@
     <Compile Include="Forms\frmMessageInput.Designer.cs">
       <DependentUpon>frmMessageInput.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmOrdering.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmOrdering.designer.cs">
+      <DependentUpon>frmOrdering.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmProductPriceList.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmProductPriceList.Designer.cs">
       <DependentUpon>frmProductPriceList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProgramSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProgramSelection.Designer.cs">
+      <DependentUpon>frmProgramSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmProgress.cs">
       <SubType>Form</SubType>
@@ -285,6 +297,7 @@
     <Compile Include="Models\ClientList.cs" />
     <Compile Include="Models\CostDistributionModel.cs" />
     <Compile Include="Models\DocStampModel.cs" />
+    <Compile Include="Models\OrderingModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
@@ -444,8 +457,14 @@
     <EmbeddedResource Include="Forms\frmMessageInput.resx">
       <DependentUpon>frmMessageInput.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmOrdering.resx">
+      <DependentUpon>frmOrdering.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmProductPriceList.resx">
       <DependentUpon>frmProductPriceList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProgramSelection.resx">
+      <DependentUpon>frmProgramSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmProgress.resx">
       <DependentUpon>frmProgress.cs</DependentUpon>

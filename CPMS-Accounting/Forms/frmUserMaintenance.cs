@@ -18,7 +18,7 @@ namespace CPMS_Accounting.Forms
     public partial class frmUserMaintenance : Form
     {
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        ProcessServices_Nelson proc = new ProcessServices_Nelson();
+        ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
         frmProgress progressBar;
         Thread thread;
         Main frm;

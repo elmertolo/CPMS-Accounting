@@ -38,7 +38,17 @@ namespace CPMS_Accounting.Models
         public List<OrderModel> Online_Personal_Provincial { get; set; }
         public List<OrderModel> Customized_Direct { get; set; }
         public List<OrderModel> Customized_Provincial { get; set; }
-
+        public List<OrderingModel> Ordering_Regular_Personal { get; set; }
+        public List<OrderingModel> Ordering_Regular_Commercial { get; set; }
+        public List<OrderingModel> Ordering_DragonBlue_Personal { get; set; }
+        public List<OrderingModel> Ordering_DragonBlue_Commercial { get; set; }
+        public List<OrderingModel> Ordering_DragonYellow_Personal { get; set; }
+        public List<OrderingModel> Ordering_DragonYellow_Commercial { get; set; }
+        public List<OrderingModel> Ordering_Reca_Personal { get; set; }
+        public List<OrderingModel> Ordering_Reca_Commercial { get; set; }
+        public List<OrderingModel> Ordering_Online_Personal { get; set; }
+        public List<OrderingModel> Ordering_Online_Commercial { get; set; }
+        public List<OrderingModel> Ordering_Customized { get; set; }
 
 
     }

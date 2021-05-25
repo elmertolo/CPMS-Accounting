@@ -17,6 +17,7 @@ using CrystalDecisions.CrystalReports.Engine;
 using static CPMS_Accounting.GlobalVariables;
 using System.Drawing;
 using System.Data;
+using CPMS_Accounting.Forms;
 
 namespace CPMS_Accounting.Procedures
 {
@@ -30,6 +31,8 @@ namespace CPMS_Accounting.Procedures
         List<Int64> listofDR = new List<long>();
         MySqlCommand cmd;
         string Sql = "";
+        string ErrorText;
+        List<ChequeTypesModel> chequeTypesList = new List<ChequeTypesModel>();
         string ConString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
         MySqlConnection con;
         
@@ -40,23 +43,14 @@ namespace CPMS_Accounting.Procedures
                 log.Info("Opening Database Connections..");
                 string DBConnection = "";
 
-                //   if (frmLogIn.userName == "elmer")
-                //  {
-                DBConnection = ConfigurationManager.AppSettings["ConnectionString"];
-
-      //        DBConnection =  p.ReadJsonConfigFile("Database", "ConnectionString", "");
-                //databaseName = "captive_accounting";
-                //  MessageBox.Show(databaseName);
-                //   }
-                //else
-                //{
-                //    //  DBConnection = "";
-                //  DBConnection = "datasource=192.168.0.254;port=3306;username=root;password=CorpCaptive; convert zero datetime=True;";
-                // MessageBox.Show("HELLO");
-                //  databaseName = "captive_accounting";
-                //    // MessageBox.Show(databaseName);
-
-                //}
+                if (frmProgramSelection.selectSystem != "Ordering System")
+                {
+                    DBConnection = ConfigurationManager.AppSettings["ConnectionString"];
+                }
+                else
+                {
+                    DBConnection = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+                }
 
                 myConnect = new MySqlConnection(DBConnection);
 
@@ -785,7 +779,7 @@ namespace CPMS_Accounting.Procedures
 
         //            }
         //        }
-        //        else if(gClient.DataBaseName == "pnb_history")
+        //        else if(gClient.DataBaseName == "RCBC_history")
         //        {
         //            foreach (var check in _list)
         //            {
@@ -841,7 +835,7 @@ namespace CPMS_Accounting.Procedures
 
         //            }
         //        }
-        //        else if (gClient.DataBaseName == "pnb_history")
+        //        else if (gClient.DataBaseName == "RCBC_history")
         //        {
         //            foreach (var check in _listb)
         //            {
@@ -1346,7 +1340,7 @@ namespace CPMS_Accounting.Procedures
             }
             return _temp;
         }
-        public List<TempModel> GetStickerDetailsForPNB(List<TempModel> _temp, string _batch)
+        public List<TempModel> GetStickerDetailsForRCBC(List<TempModel> _temp, string _batch)
         {
 
             Sql = "SELECT BranchName, BRSTN, ChkType,MIN(StartingSerial), MAX(EndingSerial), Count(ChkType), Bank,Address2,Address3,Address4,Name1,Name2" +
@@ -1416,7 +1410,7 @@ namespace CPMS_Accounting.Procedures
         //            else
         //            {
 
-        //                if (gClient.DataBaseName != "pnb_history")
+        //                if (gClient.DataBaseName != "RCBC_history")
         //                {
         //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\Stickers.rpt";
@@ -1431,18 +1425,18 @@ namespace CPMS_Accounting.Procedures
         //                else 
         //                {
         //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCStickers2.rpt";
         //                    else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
-        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBPackingList.rpt";
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCPackingList.rpt";
         //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
         //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
                             
         //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
-        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReport.rpt";
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDeliveryReport.rpt";
         //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReceipt.rpt";
+        //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDeliveryReceipt.rpt";
 
         //                }
         //                //if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
@@ -1470,21 +1464,21 @@ namespace CPMS_Accounting.Procedures
         //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceipt.rpt";
         //                }
-        //                else if (gClient.DataBaseName == "pnb_history")
+        //                else if (gClient.DataBaseName == "RCBC_history")
         //                {
         //                    if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCStickers2.rpt";
         //                    else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
-        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBPackingList.rpt";
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCPackingList.rpt";
         //                    else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
         //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
                            
         //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
-        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReport.rpt";
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCDeliveryReport.rpt";
         //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReceipt.rpt";
+        //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCDeliveryReceipt.rpt";
         //                }
         //            }
 
@@ -1515,18 +1509,18 @@ namespace CPMS_Accounting.Procedures
                         if (gClient.BankCode == "008")
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBStickers2.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCStickers2.rpt";
                             else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBPackingList.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCPackingList.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
                                 reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
 
                             else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReport.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDeliveryReport.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PNBDeliveryReceipt.rpt";
+                                reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDeliveryReceipt.rpt";
 
                         }
                         else if (gClient.BankCode == "028")
@@ -1573,18 +1567,18 @@ namespace CPMS_Accounting.Procedures
                         if (gClient.BankCode == "008")
                         {
                             if (RecentBatch.report == "STICKER" || DeliveryReport.report == "STICKER")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBStickers2.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCStickers2.rpt";
                             else if (RecentBatch.report == "PackingList" || DeliveryReport.report == "PackingList")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBPackingList.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCPackingList.rpt";
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName + "DocStamp.rpt";
 
                             else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReport.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCDeliveryReport.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PNBDeliveryReceipt.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCDeliveryReceipt.rpt";
 
 
                         }
@@ -2103,7 +2097,7 @@ namespace CPMS_Accounting.Procedures
                       " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
                       " where  DocStampNumber= " + _docStampNumber + " Group by DocStampNumber,ChkType order by DocStampNumber, ChkType";
                 //_docStampNumber.ForEach(x => { 
-                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
+                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on RCBC requirements
                 //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
@@ -4582,6 +4576,36 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _cheques;
         }
+        public List<ChequeTypesModel> GetChequeTypesOrdering(List<ChequeTypesModel> _cheques)
+        {
+            log.Info("Getting List of Cheque Types..");
+            Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName,BookStyle  from " + gClient.ChequeTypeTable + " A " +
+            "inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode ;";
+            //Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName,BookStyle  from rcbc_tcheques A " +
+            //    "inner join rcbc_tchequeproducts B on A.CProductCode = B.CProductCode ;";
+            DBConnect();
+            con = new MySqlConnection(ConString);
+            cmd = new MySqlCommand(Sql, con);
+            con.Open();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ChequeTypesModel c = new ChequeTypesModel
+                {
+                    Type = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                    ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                    Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                    DateModified = !reader.IsDBNull(3) ? reader.GetDateTime(3) : DateTime.Now,
+                    ProductName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                    BookStyle = !reader.IsDBNull(5) ? reader.GetInt32(5) : 0
+                };
+                _cheques.Add(c);
+            }
+            reader.Close();
+            con.Close();
+            DBClosed();
+            return _cheques;
+        }
         public void AddChequeType(ChequeTypesModel _cheque)
         {
             log.Info("Inserting Data to ChequeType Table..");
@@ -5105,7 +5129,7 @@ namespace CPMS_Accounting.Procedures
                 //                       ascending
                 //              select c).ToList();
                 // int dataCount = 0;
-                string Type = "";
+               //s string Type = "";
                 int licnt = 1;
 
                 for (int r = 0; r < _temp.Count; r++)
@@ -5232,7 +5256,7 @@ namespace CPMS_Accounting.Procedures
                       " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
                       " where  DocStampNumber= " + _docStampNumber + " Group by H.ChequeName order by DocStampNumber, ChkType";
                 //_docStampNumber.ForEach(x => { 
-                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on pnb requirements
+                //    Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.CDescription, H.DocStamp, " + //Based on RCBC requirements
                 //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,Batch," +
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
@@ -5489,6 +5513,1386 @@ namespace CPMS_Accounting.Procedures
                 
             }
         }
+        public void CheckData(DataGridView _dgv,List<OrderingModel> _orderList,List<BranchesModel> _branches)
+        {
+            try
+            {
+                //process.DeleteSQL();
+                //process.DeleteErrorMessage(Application.StartupPath);
+                //con.GetAllBranches(branches);
+                if (Directory.GetFiles("C:\\Head\\").Length == 0) // if the path folder is empty
+                    MessageBox.Show("No files found in directory path", "***System Error***");
+                else
+                {
+                    string[] list = Directory.GetFiles( "C:\\Head\\");
+
+                    string Extension = "";
+
+                    foreach (string FileName in list)
+                    {
+                        //Get the Extension Name
+                        int LoopCount = FileName.ToString().Length - 2;
+                        while (LoopCount > 0)
+                        {
+
+                            if (FileName.ToString().Substring(LoopCount, 1) == "." && Extension == "")
+                            {
+                                Extension = FileName.ToString().Substring(LoopCount + 1, FileName.ToString().Length - LoopCount - 1).ToUpper();
+                            }
+
+                            LoopCount = LoopCount - 1;
+                        }
+
+                        //MessageBox.Show(Extension);
+                        // string Cont = "";
+                        if (Extension == "TXT")
+                        {
+                            MessageBox.Show("WTF");
+                            for (int i = 0; i < list.Length; i++)
+                            {
+                                Int64 SN = 0;
+                                Int64 EN = 0;
+                                string[] lines = File.ReadAllLines(list[i]);
+                                //string[] errors;
+
+                                // con.GetAllBranches(listofBranch);
+                                for (int b = 1; b < lines.Length; b++)
+                                {
+                                    //WriteHash(lines[b]);
+
+                                    if (lines[b].TrimEnd().Length < 20)
+                                    {
+                                        //footer = lines[b].Substring(0, 16);
+                                    }
+                                    else
+                                    {
+                                        if (lines[b].Substring(25, 3) != "PER" && lines[b].Substring(25, 3) != "COR" && lines[b].Substring(25, 3) != "EC1" &&
+                                             lines[b].Substring(25, 3) != "EP1" && lines[b].Substring(25, 3) != "MC1")
+                                        {
+                                            //ErrorText = "CheckType: " + lines[b].Substring(25, 3) + " is not valid";
+
+                                            //ErrorMessage(ErrorText);
+                                        }
+                                        else
+                                        {
+
+                                            int bkperpcs = 0;
+                                            if (lines[b].Substring(25, 3) == "PER" || lines[b].Substring(25, 3) == "EP1" || lines[b].Substring(25, 3) == "MC1")
+                                                bkperpcs = 50;
+                                            else
+                                                bkperpcs = 100;
+
+                                            int qty = int.Parse(lines[b].Substring(38, 3)) / bkperpcs;
+
+                                            //header = lines[0].Substring(0, 11);
+
+                                            SN = Int64.Parse(lines[b].Substring(28, 10)); // getting starting serial per account
+                                                                                          //for (int r = 0; r < qty; r++) //Loop for quantity of the order
+                                                                                          //{
+
+                                            OrderModel order = new OrderModel();
+                                            // initializing data to list 
+
+                                            //order.Default = lines[b].Substring(0, 3);
+                                            //order.BankCode = lines[b].Substring(3, 2);
+                                            //order.CurrencyCode = lines[b].Substring(5, 3);
+                                            //order.Filler = lines[b].Substring(8, 3);
+                                            //order.AccBranchCode = lines[b].Substring(11, 4);
+                                            //order.Filler2 = lines[b].Substring(15, 2);
+                                            //order.AccountNo = order.AccBranchCode + lines[b].Substring(17, 8);
+                                            //order.ChkType = lines[b].Substring(25, 3);
+                                            //order.tQty = lines[b].Substring(38, 3);
+                                            //order.Channel = lines[b].Substring(42, 3);
+
+                                            //var rb = branches.Find(a => a.BranchCode == order.AccBranchCode);// Checking if the branchCode does exist in the database!!
+                                            //if (rb == null)
+                                            //{
+                                            //    ErrorText = "BranchCode: " + order.AccBranchCode + " does not exist in Database";
+
+                                            //    ErrorMessage(ErrorText);
+                                            //}
+                                            //if (order.ChkType == "PER")
+                                            //{
+
+                                            //    order.PcsPerBook = 50;
+                                            //    order.ChequeName = "Personal Checks";
+                                            //    order.ChkTypeDbf = "A";
+                                            //    order.Quantity = 1;
+                                            //    order.StartingSerial = SN.ToString();
+                                            //    order.outputFolder = "RegularChecks";
+                                            //    EN = SN + 49;
+                                            //    TotalA += 1;
+
+                                            //}
+                                            //if (order.ChkType == "EP1")
+                                            //{
+                                            //    order.ChequeName = "E-Personal Checks";
+                                            //    order.PcsPerBook = 50;
+                                            //    order.ChkTypeDbf = "A";
+                                            //    order.Quantity = 1;
+                                            //    order.StartingSerial = SN.ToString();
+                                            //    EN = SN + 49;
+                                            //    order.outputFolder = "E1";
+                                            //    TotalEP += 1;
+                                            //}
+                                            //if (order.ChkType == "MC1")
+                                            //{
+                                            //    order.ChequeName = "Managers Checks";
+                                            //    order.PcsPerBook = 50;
+                                            //    order.ChkTypeDbf = "A";
+                                            //    order.Quantity = 1;
+                                            //    order.StartingSerial = SN.ToString();
+                                            //    EN = SN + 49;
+                                            //    TotalMC += 1;
+                                            //    order.outputFolder = "MC";
+                                            //}
+                                            //if (order.ChkType == "COR")
+                                            //{
+
+                                            //    order.PcsPerBook = 100;
+                                            //    order.ChequeName = "Commercial Checks";
+                                            //    order.ChkTypeDbf = "B";
+                                            //    order.Quantity = 1;
+                                            //    order.StartingSerial = SN.ToString();
+                                            //    EN = SN + 99;
+                                            //    TotalB += 1;
+                                            //    order.outputFolder = "RegularChecks";
+                                            //}
+                                            //if (order.ChkType == "EC1")
+                                            //{
+                                            //    order.PcsPerBook = 100;
+                                            //    order.ChequeName = "E-Commercial Checks";
+                                            //    order.ChkTypeDbf = "B";
+                                            //    order.Quantity = 1;
+                                            //    order.StartingSerial = SN.ToString();
+                                            //    EN = SN + 99;
+                                            //    TotalEC += 1;
+                                            //    order.outputFolder = "E1";
+                                            //}
+
+
+
+                                            //order.Flag = lines[b].Substring(41, 1);
+                                            //if (order.Flag == "Y")
+                                            //{
+                                            //    order.PrinterFileName = lines[b].Substring(90, 40).TrimEnd();
+                                            //    order.PrinterFileName2 = lines[b].Substring(130, 40).TrimEnd();
+                                            //    order.Name1 = lines[b].Substring(90, 40).TrimEnd();
+                                            //    order.Name2 = lines[b].Substring(130, 40).TrimEnd();
+                                            //}
+                                            //else
+                                            //{
+                                            //    order.PrinterFileName = "";
+                                            //    order.PrinterFileName2 = "";
+                                            //    order.Name1 = lines[b].Substring(90, 40).TrimEnd();
+                                            //    order.Name2 = lines[b].Substring(130, 40).TrimEnd();
+                                            //}
+
+                                            //order.FillerBranchName = lines[b].Substring(49, 40);
+                                            //order.BranchName = rb.Address1.Replace('Ñ', 'N');
+                                            //order.Address2 = rb.Address2.Replace('Ñ', 'N');
+                                            //order.Address3 = rb.Address3.Replace('Ñ', 'N');
+                                            //order.Address4 = rb.Address4.Replace('Ñ', 'N');
+                                            //order.Address5 = rb.Address5.Replace('Ñ', 'N');
+                                            //order.Address6 = rb.Address6.Replace('Ñ', 'N');
+                                            //order.productType = lines[b].Substring(210, 3);
+                                            //order.BRSTNFiller = lines[b].Substring(213, 9);
+                                            //order.BRSTN = rb.BRSTN;
+                                            //order.OldBranchCode = rb.OldBranchCode;
+                                            //order.EndingSerial = EN.ToString();
+                                            //orderList.Add(order); // adding data to List model
+
+                                            SN = EN + 1;
+
+                                        }
+
+                                        //for (int j= 0; j < orderList.Count; j++)
+                                        //{
+
+
+
+                                    }
+                                    //}
+                                }
+                            }
+
+                        }
+                        else if (Extension == "CSV")
+                        {
+                            DataTable dt = new DataTable();
+                            dt.Columns.Add("TYPE");
+                            dt.Columns.Add("BRSTN");
+                            dt.Columns.Add("ACCOUNT NO.");
+                            dt.Columns.Add("ACCOUNT NAME");
+                            dt.Columns.Add("ACCOUNT NAME2");
+                            dt.Columns.Add("BOOK TYPE");
+                            dt.Columns.Add("STYLE");
+                            dt.Columns.Add("QUANTITY");
+                            dt.Columns.Add("STARTING SERIAL");
+                            dt.Columns.Add("PICK_RC");
+                            dt.Columns.Add("ADDRESS");
+                            dt.Columns.Add("ADDRESS 2");
+                            dt.Columns.Add("DELIVERY_0");
+                            dt.Columns.Add("DELIVERY BRANCH");
+                            dt.Columns.Add("DELIVERY BRSTN");
+                            dt.Columns.Add("ORDER DATE");
+                            dt.Columns.Add("CHANNEL ID");
+                            
+                            StreamReader sr = new StreamReader(FileName);
+                            string[] listData = new string[File.ReadAllLines(FileName).Length];
+                            int counter = 0;
+                            listData = sr.ReadLine().Split(';'); // Skipping First Line of CSV File
+                            while(!sr.EndOfStream) //Reading all lines
+                            {
+
+                                listData = sr.ReadLine().Split(';'); //splitting record
+                            
+                                //Adding record to Datatables
+                                dt.Rows.Add(listData[counter], listData[counter + 1], listData[counter + 2],
+                                            listData[counter+3], listData[counter + 4], listData[counter + 5],
+                                            listData[counter+6], listData[counter + 7], listData[counter + 8],
+                                            listData[counter+9], listData[counter + 10], listData[counter + 11],
+                                            listData[counter +12], listData[counter + 13], listData[counter + 14],
+                                            listData[counter +15], listData[counter + 16]);
+
+                                OrderingModel order = new OrderingModel
+                                {
+                                            
+                                    ChkType =listData[counter],                     //    TYPE,BRSTN,ACCOUNT NO.,
+                                    BRSTN = listData[counter + 1],                  //    ACCOUNT NAME,ACCOUNT NAME2,BOOK TYPE,
+                                    AccountNo = listData[counter +2],               //    STYLE,QUANTITY,STARTING SERIAL,
+                                    AccountName = listData[counter + 3],            //    PICK_RC,ADDRESS,ADDRESS 2,
+                                    AccountName2 = listData[counter + 4],          //    DELIVERY_0,DELIVERY BRANCH,DELIVERY BRSTN,ORDER DATE,CHANNEL ID
+                                    BookType = listData[counter + 5],
+                                    Style = int.Parse(listData[counter + 6]),
+                                    OrdQuantiy = int.Parse(listData[counter + 7]),
+                                    StartingSerial = listData[counter + 8],
+                                    PickUpRc = listData[counter + 9],
+                                //    BranchName = listData[counter + 10],
+                                //    Address = listData[counter + 11],
+                                    Delivery0 = listData[counter + 12],
+                                //    DeliveryBranch = listData[counter + 13],
+                                    DeliveryBrstn = listData[counter + 14],
+                                    OrderDate = DateTime.Parse(listData[counter + 15]),
+                                    Channel = listData[counter + 16]
+                                    
+
+
+                                };
+                                var branches = _branches.Where(x => x.BRSTN == order.BRSTN).Distinct().ToList();
+                                order.BranchName = branches[0].Address1.Replace("'","''");
+                                order.BranchName = branches[0].Address1.Replace("Ñ", "N");
+                                order.Address = branches[0].Address2.Replace("'", "''");
+                                order.Address = branches[0].Address2.Replace("Ñ", "N");
+                                order.Address2 = branches[0].Address3.Replace("'", "''");
+                                order.Address2 = branches[0].Address3.Replace("Ñ", "N");
+                                order.Address3 = branches[0].Address4.Replace("'", "''");
+                                order.Address3 = branches[0].Address4.Replace("Ñ", "N");
+                                order.Address4 = branches[0].Address5.Replace("'", "''");
+                                order.Address4 = branches[0].Address5.Replace("Ñ", "N");
+                                order.Address5 = branches[0].Address6.Replace("'", "''");
+                                order.Address5 = branches[0].Address6.Replace("Ñ", "N");
+                                order.BranchCode = branches[0].BranchCode;
+                                var dBranches = _branches.Where(x => x.BRSTN == order.DeliveryBrstn).Distinct().ToList();
+                                order.DeliveryBranch = dBranches[0].Address1.Replace("'", "''");
+                                order.DeliveryBranch = dBranches[0].Address1.Replace("Ñ", "N");
+                                order.DeliveryBranchCode = dBranches[0].BranchCode.Replace("'", "''");
+
+                                if (order.ChkType == "A")
+                                    order.EndingSerial = (int.Parse(order.StartingSerial) + 49).ToString();
+                                else
+                                    order.EndingSerial = (int.Parse(order.StartingSerial) + 99).ToString();
+
+                                          
+                                _orderList.Add(order);
+                              
+                            }
+                       
+                            for (int i = 0; i < _orderList.Count; i++)
+                            {
+                                _orderList[i].ID = i + 1;
+                                var prodStyle = frmOrdering.productList.Select(x => x.BookStyle).Distinct().ToList();
+                                for (int x = 0; x < prodStyle.Count; x++)
+                                {
+                                    if (_orderList[i].Style == prodStyle[0] && _orderList[i].ChkType == "A")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[0].ChequeName;
+                                        _orderList[i].outputFolder = "RegularChecks";
+
+                                    }
+                                    if (_orderList[i].Style == prodStyle[0] && _orderList[i].ChkType == "B")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[1].ChequeName;
+                                        _orderList[i].outputFolder = "RegularChecks";
+
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[1])
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[2].ChequeName;
+                                        _orderList[i].outputFolder = "Reca";
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[2] && _orderList[i].ChkType == "A")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[3].ChequeName;
+                                        _orderList[i].outputFolder = "DragonBlue";
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[3] && _orderList[i].ChkType == "B")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[4].ChequeName;
+                                        _orderList[i].outputFolder = "DragonBlue";
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[4] && _orderList[i].ChkType == "A")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[5].ChequeName;
+                                        _orderList[i].outputFolder = "DragonYellow";
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[5] && _orderList[i].ChkType == "B")
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[6].ChequeName;
+                                        _orderList[i].outputFolder = "DragonYellow";
+                                    }
+                                    else if (_orderList[i].Style == prodStyle[6])
+                                    {
+                                        _orderList[i].CheckName = frmOrdering.productList[7].ChequeName;
+                                        _orderList[i].outputFolder = "Online";
+                                    }
+                                }
+                                    
+
+                                
+                            }
+                            
+                        }
+
+                        if (ErrorText == null || ErrorText == "")
+                        {
+                            
+                            _dgv.DataSource = _orderList;
+                            bg_dtg(_dgv);
+                            _dgv.Columns[0].Width = 50;
+                            MessageBox.Show("No Errors Found!!!", "Checking Data!",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please check ErrorMessage.txt for error references!!","",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                            Application.Exit();
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Check Data",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+        }
+        public void DoBlockProcess(TypeofCheckModel _orders, frmOrdering _mainForm,string outputFolder)
+        {
+            StreamWriter file;
+            //DbConServices db = new DbConServices();
+
+            if (_orders.Ordering_Regular_Personal.Count > 0)
+            {
+
+                for (int i = 0; i < _orders.Ordering_Regular_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_Regular_Personal[0].outputFolder + "\\BlockP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_Regular_Personal, "REGULAR CHECKS", "PERSONAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_Regular_Commercial.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_Regular_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_Regular_Commercial[0].outputFolder + "\\BlockC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_Regular_Commercial, "REGULAR CHECKS", "COMMERCIAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_DragonBlue_Personal.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_DragonBlue_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_DragonBlue_Personal[0].outputFolder + "\\BlockP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_DragonBlue_Personal, "DRAGON BLUE CHECKS", "PERSONAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_DragonBlue_Commercial.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_DragonBlue_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_DragonBlue_Commercial[0].outputFolder + "\\BlockC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_DragonBlue_Commercial, "DRAGON BLUE CHECKS", "COMMERCIAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_DragonYellow_Personal.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_DragonYellow_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_DragonYellow_Personal[0].outputFolder + "\\BlockP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_DragonYellow_Personal, "MANAGER'S CHECKS", "MANAGER'S", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_DragonYellow_Commercial.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_DragonYellow_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_DragonYellow_Commercial[0].outputFolder + "\\BlockC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_DragonYellow_Commercial, "MANAGER'S CHECKS", "MANAGER'S", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_Online_Commercial.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_Online_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_Online_Commercial[0].outputFolder + "\\BlockC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_Online_Commercial, "MANAGER'S CHECKS", "MANAGER'S", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_orders.Ordering_Reca_Commercial.Count > 0)
+            {
+                for (int i = 0; i < _orders.Ordering_Reca_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_Reca_Commercial[0].outputFolder + "\\BlockC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockText(_orders.Ordering_DragonYellow_Personal, "MANAGER'S CHECKS", "MANAGER'S", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+        }
+        public void PackingText(TypeofCheckModel _checksModel, frmOrdering _mainForm,string outputFolder)
+        {
+
+            StreamWriter file;
+           // DbConServices db = new DbConServices();
+
+            if (_checksModel.Ordering_Regular_Personal.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_Regular_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_Regular_Personal[0].outputFolder + "\\PackingP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_Regular_Personal, "PERSONAL", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_Regular_Commercial.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_Regular_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_Regular_Commercial[0].outputFolder + "\\PackingC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_Regular_Commercial, "COMMERCIAL", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_DragonBlue_Personal.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_DragonBlue_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_DragonBlue_Personal[0].outputFolder + "\\PackingP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_DragonBlue_Personal, "DRAGON BLUE CHECK", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_DragonBlue_Commercial.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_DragonBlue_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_DragonBlue_Commercial[0].outputFolder + "\\PackingC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_DragonBlue_Commercial, "DRAGON BLUE CHECK", _mainForm);
+                         file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_DragonYellow_Personal.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_DragonYellow_Personal.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_DragonYellow_Personal[0].outputFolder + "\\PackingA.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_DragonYellow_Personal, "DRAGON YELLOW CHECK", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_DragonYellow_Commercial.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_DragonYellow_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_DragonYellow_Commercial[0].outputFolder + "\\PackingB.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_DragonYellow_Commercial, "DRAGON YELLOW CHECK", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_Online_Commercial.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_Online_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_Online_Commercial[0].outputFolder + "\\PackingB.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_Online_Commercial, "ONLINE COMMERCIAL CHECK", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+            if (_checksModel.Ordering_Reca_Commercial.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_Reca_Commercial.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_Reca_Commercial[0].outputFolder + "\\PackingB.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingList(_checksModel.Ordering_Reca_Commercial, "RECA COMMERCIAL CHECK", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+        }// End of Function
+
+        public void PrinterFile(TypeofCheckModel _checkModel, frmOrdering _mainForm)
+        {
+
+
+            StreamWriter file;
+
+
+            if (_checkModel.Ordering_Regular_Personal.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath +"\\Output\\" + _checkModel.Ordering_Regular_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "P.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_Regular_Personal);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_Regular_Commercial.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath +"\\Output\\" + _checkModel.Ordering_Regular_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "C.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_Regular_Commercial);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_DragonBlue_Personal.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_DragonBlue_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBP.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_DragonBlue_Personal);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_DragonBlue_Commercial.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_DragonBlue_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBC.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_DragonBlue_Commercial);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_DragonYellow_Personal.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_DragonYellow_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_DragonYellow_Personal);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_DragonYellow_Personal.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_DragonYellow_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYC.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_DragonYellow_Personal);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_Online_Commercial.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_Online_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_Online_Commercial);
+
+                    file.WriteLine(output);
+                }
+            }
+            if (_checkModel.Ordering_Reca_Commercial.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_Reca_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_Reca_Commercial);
+
+                    file.WriteLine(output);
+                }
+            }
+        }
+        private static string GenerateSpace(int _noOfSpaces)
+        {
+            string output = "";
+
+            for (int x = 0; x < _noOfSpaces; x++)
+            {
+                output += " ";
+            }
+
+            return output;
+
+        }//END OF FUNCTION
+        public static string ConvertToBlockText(List<OrderingModel> _check, string _prodType, string _ChkType, string _batchNumber, DateTime _deliveryDate, string _preparedBy, frmOrdering _mainForm)
+
+        {
+
+            int page = 1, lineCount = 14, blockCounter = 1, blockContent = 1;
+            string date = DateTime.Now.ToString("MMM. dd, yyyy");
+            bool noFooter = true;
+            ///string countText = "";
+            string output = "";
+            string txtFileName = "";
+            //Sort Check List
+            var sort = (from c in _check
+                        orderby c.BRSTN
+                        ascending
+                        select c).ToList();
+
+            output += "\r\n" + GenerateSpace(8) + "Page No. " + page.ToString() + "\r\n" +
+            GenerateSpace(8) + date +
+            "\r\n";
+
+            output += GenerateSpace(27) + "SUMMARY OF BLOCK - " + _ChkType.ToUpper() + "\r\n" +
+              GenerateSpace(30) + "RCBC " + _prodType + "\r\n";
+
+            output += GenerateSpace(8) + "BLOCK RT_NO" + GenerateSpace(5) + "M ACCT_NO" + GenerateSpace(9) + "START_NO." + GenerateSpace(2) + "END_NO.\r\n\r\n";
+            //            Int64 checkTypeCount = 0;
+            foreach (var check in sort)
+            {
+
+                if (check.ChkType == "A" && check.Style == 1)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "P";
+                else if (check.ChkType == "B" && check.Style == 1)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "C";
+                else if (check.ChkType == "A" && check.Style == 9)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBP";
+                else if (check.ChkType == "B" && check.Style == 8)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBC";
+                else if (check.ChkType == "B" && check.Style == 5)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "RC";
+                else if (check.ChkType == "B" && check.Style == 10)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "OC";
+                else if (check.ChkType == "A" && check.Style == 6)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP";
+                else if (check.ChkType == "B" && check.Style == 7)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYC";
+                
+                //if (_ChkType == "PERSONAL")
+                //{
+                //    checkTypeCount = check.Quantity;
+                //    while (check.StartingSerial.Length < 7)
+                //        check.StartingSerial = "0" + check.StartingSerial;
+
+                //    while (check.EndingSerial.Length < 7)
+                //        check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                //else
+                //{
+
+                while (check.StartingSerial.Length < 10)
+                    check.StartingSerial = "0" + check.StartingSerial;
+
+                while (check.EndingSerial.Length < 10)
+                    check.EndingSerial = "0" + check.EndingSerial;
+                // }
+
+
+                if (blockContent == 1)
+                {
+                    output += "\r\n" + GenerateSpace(7) + "** BLOCK " + blockCounter.ToString() + "\r\n";
+                    lineCount += 2;
+                }
+
+                if (blockContent == 5)
+                {
+                    blockContent = 2;
+
+                    blockCounter++;
+
+                    output += "\r\n" + GenerateSpace(7) + "** BLOCK " + blockCounter.ToString() + "\r\n";
+
+                    output += GenerateSpace(12) + blockCounter.ToString() + " " + check.BRSTN + GenerateSpace(3) + check.AccountNo +
+                    GenerateSpace(4) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+                }
+                else
+                {
+                    output += GenerateSpace(12) + blockCounter.ToString() + " " + check.BRSTN + GenerateSpace(3) + check.AccountNo +
+                    GenerateSpace(4) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+
+                    lineCount += 1;
+
+                    blockContent++;
+                }
+            }
+            //if (lineCount >=61 )
+            //{
+            if (noFooter) //ADD FOOTER
+            {
+                output += "\r\n " + _batchNumber + GenerateSpace(46) + "DLVR: " + _deliveryDate.ToString("MM-dd(ddd)") + "\r\n\r\n"+
+                    //" A = " +  + GenerateSpace(20) + txtFileName + ".txt\r\n" +
+                    //" B = " +  + "\r\n\r\n" +
+
+                    GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
+                    GenerateSpace(4) + "Updated By" + GenerateSpace(4) + ": " + _preparedBy + "\r\n" +
+                    GenerateSpace(4) + "Time Start" + GenerateSpace(4) + ": " + DateTime.Now.ToShortTimeString() + "\r\n" +
+                    GenerateSpace(4) + "Time Finished :\r\n" +
+                    GenerateSpace(4) + "File rcvd" + GenerateSpace(5) + ":\r\n";
+
+                noFooter = false;
+            }
+
+            // output += Seperator();
+
+            lineCount = 1;
+            //}
+
+            return output;
+
+        }// end of function
+        public static string ConvertToPackingList(List<OrderingModel> _checks, string _checkType, frmOrdering _mainForm)
+        {
+            var listofbrstn = _checks.Select(e => e.BRSTN).Distinct().ToList();
+            int page = 1;
+            string date = DateTime.Now.ToShortDateString();
+            string output = "";
+            int i = 0;
+
+            foreach (string brstn in listofbrstn)
+            {
+
+                output += "\r\n Page No. " + page.ToString() + "\r\n " +
+                                  date + "\r\n" +
+                                  GenerateSpace(29) + "CAPTIVE PRINTING CORPORATION\r\n" +
+                                  GenerateSpace(28) + "RCBC - " + _checkType + " Checks Summary\r\n\r\n" +
+                                  GenerateSpace(2) + "ACCT_NO" + GenerateSpace(9) + "ACCOUNT NAME" + GenerateSpace(21) + "QTY CT START #" + GenerateSpace(4) + "END #\r\n\r\n\r\n";
+
+                
+                var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
+                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper() + "("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
+                output += "  ** ORDERS OF BRSTN " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName + " ("+listofchecks[0].BranchCode+")\r\n\r\n" +
+                              " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
+
+
+
+                foreach (var check in listofchecks)
+                {
+
+                    //if (_checkType == "PERSONAL")
+                    //{
+                    //    while (check.StartingSerial.Length < 7)
+                    //        check.StartingSerial = "0" + check.StartingSerial;
+
+                    //    while (check.EndingSerial.Length < 7)
+                    //        check.EndingSerial = "0" + check.EndingSerial;
+                    //}
+                    //else
+                    //{
+                    while (check.StartingSerial.Length < 10)
+                        check.StartingSerial = "0" + check.StartingSerial;
+
+                    while (check.EndingSerial.Length < 10)
+                        check.EndingSerial = "0" + check.EndingSerial;
+                    //}//END OF ADDING ZERO IN SERIES NUMBER
+
+                    output += GenerateSpace(2) + check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
+                        + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + GenerateSpace(4);
+
+                    if (check.AccountName.TrimEnd().Length < 61)
+                        output += check.AccountName.TrimEnd() + GenerateSpace(60 - check.AccountName.TrimEnd().Length);
+
+                    output += "  1 " + check.ChkType + GenerateSpace(2) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+
+                    if (check.AccountName2 != "")
+                        output += GenerateSpace(19) + check.AccountName2 + GenerateSpace(60 - check.AccountName2.TrimEnd().Length) + "\r\n";
+
+
+
+
+                }
+
+                output += "\r\n";
+                output += "  * * * Sub Total * * * " + listofchecks.Count + "\r\n\r\n";
+
+                page++;
+                i++;
+
+            }
+            output += "  * * * Grand Total * * * " + _checks.Count + "\r\n";
+            return output;
+
+        }// end of function
+
+        public static string ConvertToPrinterFile(List<OrderingModel> _checkModels)
+        {
+
+            //var listofcheck = _checkModel.Select(e => e.BRSTN).OrderBy(e => e).ToList();
+
+            string output = "";
+            var sort = (from c in _checkModels
+                        orderby c.BRSTN, c.AccountNo
+                        ascending
+                        select c).ToList();
+
+
+            foreach (var check in sort)
+            {
+                Int64 Series = 0;
+                if (check.ChkType == "B")
+                {
+                    Series = Int64.Parse(check.StartingSerial) + 100;
+                }
+                else
+                {
+                    Series = Int64.Parse(check.StartingSerial) + 50;
+                }
+                Int64 endSeries = Series - 1;
+
+                string outputStartSeries = check.StartingSerial.ToString();
+
+                string outputEndSeries = endSeries.ToString();
+
+                //   string brstnFormat = "";
+
+                string txtSeries = Series.ToString();
+
+                //if (check.ChkType == "A")
+                //{
+                //    while (check.StartingSerial.Length < 7)
+                //        check.StartingSerial = "0" + check.StartingSerial;
+
+                //    while (check.EndingSerial.Length < 7)
+                //        check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                //else
+                //{
+                while (check.StartingSerial.Length < 10)
+                    check.StartingSerial = "0" + check.StartingSerial;
+
+                while (check.EndingSerial.Length < 10)
+                    check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                output += "10\r\n" + //1 (FIXED)
+                         check.BRSTN + "\r\n" + //2  (BRSTN)                                             
+                         check.AccountNo + "\r\n" + //3 (ACCT NUMBER)                                              
+                         Series.ToString() + "\r\n" + //4 (Start Series + PCS per Book)                                                    
+                         check.ChkType + "\r\n" + //5                                             
+                         "\r\n" + //6 (BLANK)                           
+                         check.BRSTN.Substring(0, 5) + "\r\n" +//7 BRSTN FORMATTED
+                         " " + check.BRSTN.Substring(5, 4) + "\r\n" + //8 BRSTN FORMATTED                                                                    
+                         check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
+                            + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + "\r\n" + //9 (ACCT NUMBER)                
+                         //check.PrinterFileName + "\r\n" + //10 (NAME 1)           
+                         "SN\r\n" + //11 (FIXED)           
+                         "\r\n" + //12 (BLANK)                
+                         //check.PrinterFileName2 + "\r\n" + //13 (NAME 2)                
+                         "\r\n" + //14  (BLANK)   
+                         "\r\n" + //15 (BLANK)          
+                         "\r\n" + //16 (BLANK)           
+                         check.BranchName + "\r\n" + //17 (ADDRESS 1)                
+                         check.Address + "\r\n" + //18 (ADDRESS 2)  
+                         check.Address2 + "\r\n" + //19 (ADDRESS 3)                            
+                         check.Address3 + "\r\n" + //20 (ADDRESS 4)
+                         check.Address4 + "\r\n" + //21 (ADDRESS 5)
+                         check.Address5 + "\r\n" + //22 (ADDRESS 6)
+                         "PHILIPPINE NATIONAL BANK\r\n" +//23 (FIXED)
+                         "\r\n" + //24 (BLANK)//   
+                         "\r\n" + //25 (BLANK)  
+                         "\r\n" + //26 (BLANK)
+                         "\r\n" + //27 (BLANK)                         
+                         "\r\n" + //28 (BLANK)               
+                         "\r\n" + //29 (BLANK)                  
+                         "\r\n" + //30 (BLANK)                                        
+                         check.StartingSerial + "\r\n" + //31 (STARTING SERIES)               
+                         check.EndingSerial + "\r\n";  //32 (ENDING SERIES)
+
+            }
+
+            return output;
+        }//end of function
+        public bool getOrderingBranches(List<BranchesModel> _branches)
+        {
+            try
+            {
+                DBConnect();
+                Sql = "Select  BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode from " + gClient.BranchesTable;
+                cmd = new MySqlCommand(Sql, myConnect);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while(reader.Read())
+                {
+                    BranchesModel b = new BranchesModel
+                    {
+                        BRSTN = !reader.IsDBNull(0) ? reader.GetString(0) : "",
+                        Address1 = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                        Address2 = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                        Address3 = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                        Address4 = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                        Address5 = !reader.IsDBNull(5) ? reader.GetString(5) : "",
+                        Address6 = !reader.IsDBNull(6) ? reader.GetString(6) : "",
+                        BranchCode = !reader.IsDBNull(7) ? reader.GetString(7) : ""
+                        
+                        
+                    };
+
+                    _branches.Add(b);
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message,"getOrderingBranches ",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        public void Process(List<OrderingModel> _orders, frmOrdering _main,string _outputFolder)
+        {
+
+            TypeofCheckModel checkType = new TypeofCheckModel();
+            checkType.Ordering_Regular_Personal = new List<OrderingModel>();
+            checkType.Ordering_Regular_Commercial = new List<OrderingModel>();
+            checkType.Ordering_DragonBlue_Personal = new List<OrderingModel>();
+            checkType.Ordering_DragonBlue_Commercial = new List<OrderingModel>();
+            checkType.Ordering_DragonYellow_Personal = new List<OrderingModel>();
+            checkType.Ordering_DragonYellow_Commercial = new List<OrderingModel>();
+            checkType.Ordering_Online_Commercial = new List<OrderingModel>();
+            checkType.Ordering_Reca_Commercial = new List<OrderingModel>();
+            //GetChequeTypesOrdering(chequeTypesModels);
+
+
+            //for (int i = 0; i < frmOrdering.productList.Count; i++)
+            //{
+
+            _orders.ForEach(x =>
+                {
+                    if (x.ChkType == "A" &&  x.Style == 1)
+                    {
+                        checkType.Ordering_Regular_Personal.Add(x);
+                        
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "B" && x.Style == 1)
+                    {
+
+                        checkType.Ordering_Regular_Commercial.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "A" && x.Style == 9)
+                    {
+                        checkType.Ordering_DragonBlue_Personal.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "B" && x.Style == 8)
+                    {
+                        checkType.Ordering_DragonBlue_Commercial.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "A" && x.Style ==6 )
+                    {
+                        checkType.Ordering_DragonYellow_Personal.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "B" && x.Style == 7)
+                    {
+                        checkType.Ordering_DragonYellow_Commercial.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "B" && x.Style == 5)
+                    {
+                        checkType.Ordering_Reca_Commercial.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                    else if (x.ChkType == "B" && x.Style == 10)
+                    {
+                        checkType.Ordering_Online_Commercial.Add(x);
+                        DoBlockProcess(checkType, _main, _outputFolder);
+                        PackingText(checkType, _main, _outputFolder);
+                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                        PrinterFile(checkType, _main);
+                    }
+                });
+                
+            //}
+
+        }
+        public void TextFile(frmOrdering _mainForm, List<OrderingModel> _checks)
+        {
+            for (int i = 0; i < _checks.Count; i++)
+            {
+
+
+                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\Output\\" + _checks[i].outputFolder + "");
+
+                FileInfo[] files = di.GetFiles("*.txt")
+                         .Where(p => p.Extension == ".txt").ToArray();
+                foreach (FileInfo file in files)
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+            }
+        }
+       
     }
 }
     

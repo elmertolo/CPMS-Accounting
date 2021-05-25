@@ -13,7 +13,7 @@ using CrystalDecisions.Shared;
 using static CPMS_Accounting.GlobalVariables;
 using CPMS_Accounting.Models;
 using CPMS_Accounting.Procedures;
-
+using CPMS_Accounting.Forms;
 
 namespace CPMS_Accounting
 {
@@ -21,7 +21,7 @@ namespace CPMS_Accounting
     {
         //List<SalesInvoiceModel> siList = new List<SalesInvoiceModel>();
         
-        ProcessServices_Nelson proc = new ProcessServices_Nelson();
+        ProcessServices_Nelson proc = new ProcessServices_Nelson(frmProgramSelection.selectSystem);
         
 
         public frmReportViewer()
