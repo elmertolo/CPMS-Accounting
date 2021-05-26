@@ -18,6 +18,7 @@ using static CPMS_Accounting.GlobalVariables;
 using System.Drawing;
 using System.Data;
 using CPMS_Accounting.Forms;
+using System.IO.Compression;
 
 namespace CPMS_Accounting.Procedures
 {
@@ -5513,7 +5514,7 @@ namespace CPMS_Accounting.Procedures
                 
             }
         }
-        public void CheckData(DataGridView _dgv,List<OrderingModel> _orderList,List<BranchesModel> _branches)
+        public void CheckData(DataGridView _dgv,List<OrderingModel> _orderList,List<BranchesModel> _branches,string _batch,DateTime _deliveryDate)
         {
             try
             {
@@ -5779,6 +5780,8 @@ namespace CPMS_Accounting.Procedures
 
 
                                 };
+                                order.Batch = _batch;
+                                order.DeliveryDate = _deliveryDate;
                                 var branches = _branches.Where(x => x.BRSTN == order.BRSTN).Distinct().ToList();
                                 order.BranchName = branches[0].Address1.Replace("'","''");
                                 order.BranchName = branches[0].Address1.Replace("Ñ", "N");
@@ -6661,7 +6664,6 @@ namespace CPMS_Accounting.Procedures
             return output;
 
         }// end of function
-
         public static string ConvertToPrinterFile(List<OrderingModel> _checkModels)
         {
 
@@ -6734,7 +6736,7 @@ namespace CPMS_Accounting.Procedures
                          check.Address3 + "\r\n" + //20 (ADDRESS 4)
                          check.Address4 + "\r\n" + //21 (ADDRESS 5)
                          check.Address5 + "\r\n" + //22 (ADDRESS 6)
-                         "PHILIPPINE NATIONAL BANK\r\n" +//23 (FIXED)
+                         gClient.Description.ToUpper() +"\r\n" +//23 (FIXED)
                          "\r\n" + //24 (BLANK)//   
                          "\r\n" + //25 (BLANK)  
                          "\r\n" + //26 (BLANK)
@@ -6783,6 +6785,38 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(ex.Message,"getOrderingBranches ",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return false;
             }
+        }
+        public bool fAddOrUPdate(BranchesModel _branch,int _process)
+        {
+            try
+            {
+                DBConnect();
+                if(_process == 1)
+                {
+                    Sql = "Insert into " + gClient.BranchesTable + "(BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode)" +
+                            "values('" + _branch.BRSTN + "','" + _branch.Address1.Replace("'","''") + "','" + _branch.Address2.Replace("'", "''") + "'," +
+                            "'" + _branch.Address3.Replace("'", "''") + "','" + _branch.Address4.Replace("'", "''") + "','" + _branch.Address5.Replace("'", "''")+ "'," +
+                            "'" + _branch.Address6.Replace("'", "''") + "','" + _branch.BranchCode + "'); ";
+                }
+                else if(_process == 2)
+                {
+                    Sql = "Update " + gClient.BranchesTable + " set BranchName = '"+ _branch.Address1.Replace("'", "''") + "', Address = '" + _branch.Address2.Replace("'", "''") + "'," +
+                        "Address2  = '" + _branch.Address3.Replace("'", "''") + "', Address3 = '" + _branch.Address4.Replace("'", "''")+ "', Address4 = '" + _branch.Address5.Replace("'", "''") + "'," +
+                        "Address5 = '" + _branch.Address6.Replace("'", "''") + "', BranchCode = '"+ _branch.BranchCode + "'" ;
+                }
+                cmd = new MySqlCommand(Sql, myConnect);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Data has been Saved Successfully", "Add or Update Branch!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DBClosed();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Add or Update Branch!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            
+
         }
         public void Process(List<OrderingModel> _orders, frmOrdering _main,string _outputFolder)
         {
@@ -6875,7 +6909,7 @@ namespace CPMS_Accounting.Procedures
             //}
 
         }
-        public void TextFile(frmOrdering _mainForm, List<OrderingModel> _checks)
+        public void TextFile(List<OrderingModel> _checks)
         {
             for (int i = 0; i < _checks.Count; i++)
             {
@@ -6892,7 +6926,126 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }
-       
+        public void SaveData(List<OrderingModel> _orderList,string _zipFile)
+        {
+            try
+            {
+                DBConnect();
+
+                _orderList.ForEach(x =>
+                {
+                    Sql = "Insert into " + gClient.DataBaseName + "(Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
+                        "ChkType,CheckName,StartingSerial,EndingSerial,Status)values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
+                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
+                        "'" + x.EndingSerial + "',1); ";
+
+                    cmd = new MySqlCommand(Sql, myConnect);
+                    cmd.ExecuteNonQuery();
+                });
+                //DBClosed();
+                //DBConnect();
+
+                //FileStream fs = new FileStream(_zipFile, FileMode.Open, FileAccess.Read);
+                //int FileSize = (int)fs.Length;
+                //byte[] rawData  = new byte[FileSize];
+                //fs.Read(rawData, 0, FileSize);
+                //fs.Close();
+                //Sql =  "Insert into " + gClient.ZipTable + " (Batch_ID, ZipFile, DateProcessed) values ('" + _orderList[0].Batch + "','"+rawData+"','" +
+                //       DateTime.Now.ToString("yyyy-MM-dd") + "');";
+
+                //cmd = new MySqlCommand(Sql, myConnect);
+                //cmd.ExecuteNonQuery();
+                MessageBox.Show("Data has been Successfully saved!", "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DBClosed();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void OpenFile()
+        {
+            string strCmdText;
+            Process process = new Process();
+            strCmdText = "/C type C:\\Head\\*.txt > combined.txt " ;
+            process.StartInfo = new ProcessStartInfo("cmd.exe", strCmdText);
+
+            process.Start();
+            //process.WaitForExit();
+            process.Close();
+        }
+        public void CreateZipFile(string _sourcePath, string _destinationPath)
+        {
+
+            ZipFile.CreateFromDirectory(_sourcePath, _destinationPath);
+        }
+        public void ExtractZipFile(string sourcePath, string destinationPath)
+        {
+
+            ZipFile.ExtractToDirectory(sourcePath, destinationPath);
+        }
+        public string ZipFileS(string _processby, frmOrdering main,List<OrderingModel> _ordrList)
+        {
+
+            string sPath = Application.StartupPath + "\\Output\\";
+            string zPath = Application.StartupPath + "\\Test\\";
+            string dPath = Application.StartupPath + "\\AFT_" + main.batchFile + "_" + _processby + ".zip";
+            //DeleteZipFile();
+            //deleting existing file
+            if (File.Exists(dPath))
+                File.Delete(dPath);
+            //create zip file
+      
+
+            CreateZipFile(zPath, dPath);
+            
+            Ionic.Zip.ZipFile zips = new Ionic.Zip.ZipFile(dPath);
+            //Adding order file to zip file
+            zips.AddItem("C:\\Head");
+            zips.Save();
+          //  DeleteTextFileinZipFile(_ordrList);
+            var orders = _ordrList.Select(x => x.outputFolder).Distinct().ToList();
+            for (int i = 0; i < orders.Count; i++)
+            {
+                Directory.CreateDirectory(zPath+ orders[i]);
+                string[] files = Directory.GetFiles(zPath + orders[i]);
+                File.Copy(sPath +orders[i] +"\\*.txt", zPath +  orders[i]);
+                //Directory.CreateDirectory(dPath + "\\" orders[i]);
+                //zips.AddDirectory("Output//","");
+                //zips.AddFile(sPath + "\\" + orders[i], dPath);
+                //zips.AddItem(sPath + "\\" + orders[i]);
+                //zips.Save();
+            }
+
+          
+            //DeleteSQl();
+            return dPath;
+
+        }
+        public void DeleteTextFileinZipFile(List<OrderingModel> _checks,string _zip)
+        {
+            for (int i = 0; i < _checks.Count; i++)
+            {
+
+                FileStream zfile = new FileStream(_zip, FileMode.Open);
+                ZipArchive zip = new ZipArchive(zfile, ZipArchiveMode.Update);
+                foreach (var item in zip.Entries)
+                {
+                   // if(item.)
+                }
+
+                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\Output\\" + _checks[i].outputFolder + "");
+
+                FileInfo[] files = di.GetFiles("*.txt")
+                         .Where(p => p.Extension == ".txt").ToArray();
+                foreach (FileInfo file in files)
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+            }
+        }
     }
 }
     

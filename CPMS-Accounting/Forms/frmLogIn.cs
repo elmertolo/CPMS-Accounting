@@ -195,7 +195,8 @@ namespace CPMS_Accounting
                     gClient.SalesInvoiceFinishedDetailTable = row.Field<string>("ShortName").ToLower() + "_salesInvoice_finished_detail" ?? "";
 
                     //04122021
-                    
+
+                    gClient.ZipTable = row.Field<string>("ShortName").ToLower() + "_zipfile" ?? "";                    
 
 
 

@@ -9,6 +9,7 @@ namespace CPMS_Accounting.Models
     class OrderingModel
     {
         public int ID { get; set; }
+        public string Batch { get; set; }
         public string BRSTN { get; set; }
         public string AccountNo { get; set; }
         public string AccountName { get; set; }
@@ -23,6 +24,7 @@ namespace CPMS_Accounting.Models
         public string CheckName { get; set; }
         public string BookType { get; set; }
         public int Style { get; set; }
+        public DateTime DeliveryDate { get; set; }
         public string DeliveryBrstn { get; set; }
         public string DeliveryBranch { get; set; }
         public string PickUpRc { get; set; }

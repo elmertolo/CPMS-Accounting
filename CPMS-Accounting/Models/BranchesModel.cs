@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPMS_Accounting.Models
 {
-    class BranchesModel
+    public   class BranchesModel
     {
         public string BRSTN { get; set; }
         public string Address1 { get; set; }

@@ -20,14 +20,13 @@ namespace CPMS_Accounting.Forms
         public  string batchFile;
         List<OrderingModel> orderList = new List<OrderingModel>();
         ProcessServices proc = new ProcessServices();
-        List<BranchesModel> listofBranches = new List<BranchesModel>();
+        public static List<BranchesModel> listofBranches = new List<BranchesModel>();
         public static List<ChequeTypesModel> productList = new List<ChequeTypesModel>();
         public frmOrdering()
         {
             InitializeComponent();
             dateTime = dateTimePicker1.MinDate = DateTime.Now; //Disable selection of backdated dates to prevent errors  
         }
-
         private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
@@ -42,24 +41,28 @@ namespace CPMS_Accounting.Forms
                 {
                     batchFile = txtBatch.Text;
                     //if (gClient.BankCode == "028")
-                    proc.CheckData(dgvOrdering, orderList,listofBranches);
+                    proc.CheckData(dgvOrdering, orderList,listofBranches, batchFile, deliveryDate);
                     TotalChecks(orderList);
                     lblGrandTotal.Text = orderList.Count().ToString();
                 
                     generateToolStripMenuItem.Enabled = true;
                 }  
             }
-            
-
         }
-
         private void frmOrdering_Load(object sender, EventArgs e)
         {
+
+            
             WindowState = FormWindowState.Maximized;
             isBankActive();
+           // proc.OpenFile();
         }
         private void isBankActive()
         {
+            productList.Clear();
+            DataTable dt = new DataTable();
+            dt.Clear();
+            dgvTypes.DataSource = "";
             if (gClient.BankCode == "028")
                 cbDeliveryTo.Checked = true;
             else
@@ -67,7 +70,7 @@ namespace CPMS_Accounting.Forms
 
             proc.getOrderingBranches(listofBranches);
             proc.GetChequeTypesOrdering(productList);
-            DataTable dt = new DataTable();
+            
             dt.Columns.Add("Cheque Name");
             dt.Columns.Add("Quantity");
 
@@ -92,19 +95,16 @@ namespace CPMS_Accounting.Forms
             //con.DumpMySQL();
             if (orderList != null)
             {
-                proc.TextFile(this, orderList);//Deleting All Text file in designated folder in the order file
+                proc.TextFile(orderList);//Deleting All Text file in designated folder in the order file
                 proc.Process(orderList, this,Application.StartupPath+ "\\Output");//Generating TextFile and dbf file Data output
-                //proc.PrintHash(orderList, this);// generationg HashTotal output
-                for (int i = 0; i < orderList.Count; i++)
-                {
-     //               con.SavedDatatoDatabaseM(orderList[i], batchfile, deliveryDate); // saving data to database table
-                }
+               string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
+                proc.SaveData(orderList, zipFile); // Saving Data to database
 
             }
 
             
             MessageBox.Show("Data has been processed!!!!");
-            //process.ZipFileS("Elmer", this); // Zipping Folders
+         
             Environment.Exit(0);
         }
         private List<int> DisplayTotal(List<OrderingModel> _orderlist)
@@ -153,10 +153,16 @@ namespace CPMS_Accounting.Forms
             _total = list.Count();
           return _total;
         }
-
         private void frmOrdering_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void branchesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmBranches frm = new frmBranches();
+            frm.Show();
+            this.Hide();
         }
     }
 }
