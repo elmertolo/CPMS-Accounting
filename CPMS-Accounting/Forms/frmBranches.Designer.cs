@@ -29,9 +29,9 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtBrstn = new System.Windows.Forms.TextBox();
@@ -95,6 +95,7 @@ namespace CPMS_Accounting.Forms
             this.txtBrstn.Name = "txtBrstn";
             this.txtBrstn.Size = new System.Drawing.Size(157, 22);
             this.txtBrstn.TabIndex = 19;
+            this.txtBrstn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBrstn_KeyPress);
             // 
             // txtAddress1
             // 
@@ -104,6 +105,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress1.Name = "txtAddress1";
             this.txtAddress1.Size = new System.Drawing.Size(437, 22);
             this.txtAddress1.TabIndex = 21;
+            this.txtAddress1.TextChanged += new System.EventHandler(this.txtAddress1_TextChanged);
             // 
             // label1
             // 
@@ -124,6 +126,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress2.Name = "txtAddress2";
             this.txtAddress2.Size = new System.Drawing.Size(437, 22);
             this.txtAddress2.TabIndex = 23;
+            this.txtAddress2.TextChanged += new System.EventHandler(this.txtAddress2_TextChanged);
             // 
             // txtAddress3
             // 
@@ -133,6 +136,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress3.Name = "txtAddress3";
             this.txtAddress3.Size = new System.Drawing.Size(437, 22);
             this.txtAddress3.TabIndex = 25;
+            this.txtAddress3.TextChanged += new System.EventHandler(this.txtAddress3_TextChanged);
             // 
             // txtAddress4
             // 
@@ -142,6 +146,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress4.Name = "txtAddress4";
             this.txtAddress4.Size = new System.Drawing.Size(513, 22);
             this.txtAddress4.TabIndex = 27;
+            this.txtAddress4.TextChanged += new System.EventHandler(this.txtAddress4_TextChanged);
             // 
             // txtAddress5
             // 
@@ -151,6 +156,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress5.Name = "txtAddress5";
             this.txtAddress5.Size = new System.Drawing.Size(513, 22);
             this.txtAddress5.TabIndex = 29;
+            this.txtAddress5.TextChanged += new System.EventHandler(this.txtAddress5_TextChanged);
             // 
             // label2
             // 
@@ -215,6 +221,7 @@ namespace CPMS_Accounting.Forms
             this.txtAddress6.Name = "txtAddress6";
             this.txtAddress6.Size = new System.Drawing.Size(513, 22);
             this.txtAddress6.TabIndex = 34;
+            this.txtAddress6.TextChanged += new System.EventHandler(this.txtAddress6_TextChanged);
             // 
             // label8
             // 
@@ -235,36 +242,38 @@ namespace CPMS_Accounting.Forms
             this.txtBranchCode.Name = "txtBranchCode";
             this.txtBranchCode.Size = new System.Drawing.Size(105, 22);
             this.txtBranchCode.TabIndex = 36;
+            this.txtBranchCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBranchCode_KeyPress);
             // 
             // dgvBranchList
             // 
             this.dgvBranchList.AllowUserToAddRows = false;
             this.dgvBranchList.AllowUserToDeleteRows = false;
             this.dgvBranchList.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBranchList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBranchList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
             this.dgvBranchList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBranchList.Location = new System.Drawing.Point(33, 385);
             this.dgvBranchList.Name = "dgvBranchList";
             this.dgvBranchList.ReadOnly = true;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBranchList.RowHeadersDefaultCellStyle = dataGridViewCellStyle17;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvBranchList.RowsDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBranchList.RowHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvBranchList.RowsDefaultCellStyle = dataGridViewCellStyle27;
             this.dgvBranchList.Size = new System.Drawing.Size(1302, 284);
             this.dgvBranchList.TabIndex = 38;
+            this.dgvBranchList.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvBranchList_RowHeaderMouseDoubleClick);
             // 
             // groupBox1
             // 

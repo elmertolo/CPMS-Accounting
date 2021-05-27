@@ -1284,9 +1284,6 @@ namespace CPMS_Accounting
         }
         private void GetDataFromDB()
         {
-
-
-
             //if (gClient.ShortName == "Producers")
             //    bankCode = "122";
             try
@@ -1294,13 +1291,13 @@ namespace CPMS_Accounting
                 lblTotalChecks.Text = "0";
                 dataGridView1.DataSource = "";
                 orderList.Clear();
-                proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                // proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                proc.getDatafromOrdering(orderList, txtBatch.Text);
                 proc.GetProducts(listofProducts);
                 if (orderList != null)
                 {
                     orderList.ForEach(x =>
                     {
-
 
                         if (x.BRSTN.StartsWith("01"))
                             x.Location = "Direct";
@@ -1309,8 +1306,9 @@ namespace CPMS_Accounting
 
                         listofProducts.ForEach(d =>
                         {
-                            if (x.ChkType == d.ChkType)
+                            if (x.ChkType == d.ChkType  && x.ChequeName == d.ChequeName) 
                             {
+                                x.Quantity = 1;
                                 x.ProductCode = d.ProductCode;
                             }
                         });
@@ -1391,7 +1389,6 @@ namespace CPMS_Accounting
                 MessageBox.Show(ex.Message, "Get Data From Ordering Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void txtBatch_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Convert.ToInt32(e.KeyChar) == 13)

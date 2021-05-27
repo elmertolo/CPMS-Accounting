@@ -5783,18 +5783,18 @@ namespace CPMS_Accounting.Procedures
                                 order.Batch = _batch;
                                 order.DeliveryDate = _deliveryDate;
                                 var branches = _branches.Where(x => x.BRSTN == order.BRSTN).Distinct().ToList();
-                                order.BranchName = branches[0].Address1.Replace("'","''");
-                                order.BranchName = branches[0].Address1.Replace("Ñ", "N");
-                                order.Address = branches[0].Address2.Replace("'", "''");
-                                order.Address = branches[0].Address2.Replace("Ñ", "N");
-                                order.Address2 = branches[0].Address3.Replace("'", "''");
-                                order.Address2 = branches[0].Address3.Replace("Ñ", "N");
-                                order.Address3 = branches[0].Address4.Replace("'", "''");
-                                order.Address3 = branches[0].Address4.Replace("Ñ", "N");
-                                order.Address4 = branches[0].Address5.Replace("'", "''");
-                                order.Address4 = branches[0].Address5.Replace("Ñ", "N");
-                                order.Address5 = branches[0].Address6.Replace("'", "''");
-                                order.Address5 = branches[0].Address6.Replace("Ñ", "N");
+                                order.BranchName = branches[0].Address1.Replace("'","''").TrimEnd();
+                                order.BranchName = branches[0].Address1.Replace("Ñ", "N").TrimEnd();
+                                order.Address = branches[0].Address2.Replace("'", "''").TrimEnd();
+                                order.Address = branches[0].Address2.Replace("Ñ", "N").TrimEnd();
+                                order.Address2 = branches[0].Address3.Replace("'", "''").TrimEnd();
+                                order.Address2 = branches[0].Address3.Replace("Ñ", "N").TrimEnd();
+                                order.Address3 = branches[0].Address4.Replace("'", "''").TrimEnd();
+                                order.Address3 = branches[0].Address4.Replace("Ñ", "N").TrimEnd();
+                                order.Address4 = branches[0].Address5.Replace("'", "''").TrimEnd();
+                                order.Address4 = branches[0].Address5.Replace("Ñ", "N").TrimEnd();
+                                order.Address5 = branches[0].Address6.Replace("'", "''").TrimEnd();
+                                order.Address5 = branches[0].Address6.Replace("Ñ", "N").TrimEnd();
                                 order.BranchCode = branches[0].BranchCode;
                                 var dBranches = _branches.Where(x => x.BRSTN == order.DeliveryBrstn).Distinct().ToList();
                                 order.DeliveryBranch = dBranches[0].Address1.Replace("'", "''");
@@ -6302,7 +6302,6 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }// End of Function
-
         public void PrinterFile(TypeofCheckModel _checkModel, frmOrdering _mainForm)
         {
 
@@ -6571,11 +6570,20 @@ namespace CPMS_Accounting.Procedures
             //{
             if (noFooter) //ADD FOOTER
             {
-                output += "\r\n " + _batchNumber + GenerateSpace(46) + "DLVR: " + _deliveryDate.ToString("MM-dd(ddd)") + "\r\n\r\n"+
-                    //" A = " +  + GenerateSpace(20) + txtFileName + ".txt\r\n" +
-                    //" B = " +  + "\r\n\r\n" +
+                output += "\r\n " + _batchNumber + GenerateSpace(46) + "DLVR: " + _deliveryDate.ToString("MM-dd(ddd)") + "\r\n\r\n";
+                if (_ChkType == "PERSONAL")
+                {
+                    var chk = _check.Where(x => x.ChkType == "A").ToList();
+                    output += "  A = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
+                    
+                }
+                else
+                {
+                    var chk = _check.Where(x => x.ChkType == "B").ToList();
+                    output += "  B = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
+                }
 
-                    GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
+                 output +=   GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
                     GenerateSpace(4) + "Updated By" + GenerateSpace(4) + ": " + _preparedBy + "\r\n" +
                     GenerateSpace(4) + "Time Start" + GenerateSpace(4) + ": " + DateTime.Now.ToShortTimeString() + "\r\n" +
                     GenerateSpace(4) + "Time Finished :\r\n" +
@@ -6611,8 +6619,8 @@ namespace CPMS_Accounting.Procedures
 
                 
                 var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
-                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper() + "("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
-                output += "  ** ORDERS OF BRSTN " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName + " ("+listofchecks[0].BranchCode+")\r\n\r\n" +
+                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " ("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
+                output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " ("+listofchecks[0].BranchCode+")\r\n\r\n" +
                               " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
 
 
@@ -6802,7 +6810,7 @@ namespace CPMS_Accounting.Procedures
                 {
                     Sql = "Update " + gClient.BranchesTable + " set BranchName = '"+ _branch.Address1.Replace("'", "''") + "', Address = '" + _branch.Address2.Replace("'", "''") + "'," +
                         "Address2  = '" + _branch.Address3.Replace("'", "''") + "', Address3 = '" + _branch.Address4.Replace("'", "''")+ "', Address4 = '" + _branch.Address5.Replace("'", "''") + "'," +
-                        "Address5 = '" + _branch.Address6.Replace("'", "''") + "', BranchCode = '"+ _branch.BranchCode + "'" ;
+                        "Address5 = '" + _branch.Address6.Replace("'", "''") + "', BranchCode = '"+ _branch.BranchCode + "' where BRSTN = '" + _branch.BRSTN + "';" ;
                 }
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
@@ -6909,13 +6917,13 @@ namespace CPMS_Accounting.Procedures
             //}
 
         }
-        public void TextFile(List<OrderingModel> _checks)
+        public void DeleteTextFile(List<OrderingModel> _checks,string _tempPath)
         {
             for (int i = 0; i < _checks.Count; i++)
             {
 
 
-                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\Output\\" + _checks[i].outputFolder + "");
+                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\"+_tempPath+"\\" + _checks[i].outputFolder + "");
 
                 FileInfo[] files = di.GetFiles("*.txt")
                          .Where(p => p.Extension == ".txt").ToArray();
@@ -6926,19 +6934,34 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }
+        public void DeleteZipFile()
+        {
+       
+
+                DirectoryInfo di = new DirectoryInfo(Application.StartupPath);
+
+                FileInfo[] files = di.GetFiles("*.zip")
+                         .Where(p => p.Extension == ".zip").ToArray();
+                foreach (FileInfo file in files)
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+            
+        }
         public void SaveData(List<OrderingModel> _orderList,string _zipFile)
         {
             try
             {
                 DBConnect();
-
                 _orderList.ForEach(x =>
                 {
                     Sql = "Insert into " + gClient.DataBaseName + "(Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
-                        "ChkType,CheckName,StartingSerial,EndingSerial,Status)values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
+                        "ChkType,CheckName,StartingSerial,EndingSerial,DeliveryBrstn,DeliveryBranch,DeliveryBranchCode,Status)" +
+                        "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
                         "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
-                        "'" + x.EndingSerial + "',1); ";
+                        "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch +"','" + x.DeliveryBranchCode + "',1); ";
 
                     cmd = new MySqlCommand(Sql, myConnect);
                     cmd.ExecuteNonQuery();
@@ -6987,7 +7010,7 @@ namespace CPMS_Accounting.Procedures
         }
         public string ZipFileS(string _processby, frmOrdering main,List<OrderingModel> _ordrList)
         {
-
+            DeleteZipFile();
             string sPath = Application.StartupPath + "\\Output\\";
             string zPath = Application.StartupPath + "\\Test\\";
             string dPath = Application.StartupPath + "\\AFT_" + main.batchFile + "_" + _processby + ".zip";
@@ -6996,29 +7019,40 @@ namespace CPMS_Accounting.Procedures
             if (File.Exists(dPath))
                 File.Delete(dPath);
             //create zip file
-      
 
+
+
+            //  DeleteTextFileinZipFile(_ordrList);
+            DeleteTextFile(_ordrList, "Test");
+            var orders = _ordrList.Select(x => x.outputFolder).Distinct().ToList();
+            for (int i = 0; i < orders.Count; i++)
+            {
+                
+                if (Directory.Exists(zPath + orders[i]))
+                    Directory.Delete(zPath + orders[i]);
+
+
+                Directory.CreateDirectory(zPath + orders[i]);
+                // Get the subdirectories for the specified directory.
+                DirectoryInfo dir = new DirectoryInfo(sPath+ orders[i]);
+                DirectoryInfo[] dirs = dir.GetDirectories();
+             
+                FileInfo[] files = dir.GetFiles();
+                foreach(FileInfo zfileitem in files)
+                {
+                    string tempPath = Path.Combine(zPath + orders[i], zfileitem.Name);
+                    zfileitem.CopyTo(tempPath, false);
+                }
+                
+                
+            }
             CreateZipFile(zPath, dPath);
-            
+
             Ionic.Zip.ZipFile zips = new Ionic.Zip.ZipFile(dPath);
             //Adding order file to zip file
             zips.AddItem("C:\\Head");
             zips.Save();
-          //  DeleteTextFileinZipFile(_ordrList);
-            var orders = _ordrList.Select(x => x.outputFolder).Distinct().ToList();
-            for (int i = 0; i < orders.Count; i++)
-            {
-                Directory.CreateDirectory(zPath+ orders[i]);
-                string[] files = Directory.GetFiles(zPath + orders[i]);
-                File.Copy(sPath +orders[i] +"\\*.txt", zPath +  orders[i]);
-                //Directory.CreateDirectory(dPath + "\\" orders[i]);
-                //zips.AddDirectory("Output//","");
-                //zips.AddFile(sPath + "\\" + orders[i], dPath);
-                //zips.AddItem(sPath + "\\" + orders[i]);
-                //zips.Save();
-            }
 
-          
             //DeleteSQl();
             return dPath;
 
@@ -7044,6 +7078,54 @@ namespace CPMS_Accounting.Procedures
                     file.Attributes = FileAttributes.Normal;
                     File.Delete(file.FullName);
                 }
+            }
+        }
+        public bool getDatafromOrdering(List<OrderModel> _tempList, string _batch)
+        {
+            try
+            {
+                con = new MySqlConnection(ConString);
+                Sql = "Select Batch,DeliveryDate,H.BRSTN,AccountNo,AccountName,AccountName2,ChkType,CheckName,StartingSerial,EndingSerial" +
+                    ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode " +
+                    "  from " +gClient.DataBaseName + " as H  inner join "+gClient.BranchesTable + " as B on H.BRSTN = B.BRSTN  where Batch ='" + _batch+"'";
+                con.Open();
+                cmd = new MySqlCommand(Sql, con);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while(reader.Read())
+                {
+                    OrderModel order = new OrderModel
+                    {
+                        Batch = !reader.IsDBNull(0) ? reader.GetString(0): "",
+                        DeliveryDate = !reader.IsDBNull(1) ? reader.GetDateTime(1) : DateTime.Now,
+                        BRSTN = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                        AccountNo = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                        Name1 = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                        Name2 = !reader.IsDBNull(5) ? reader.GetString(5) : "",
+                        ChkType = !reader.IsDBNull(6) ? reader.GetString(6) : "",
+                        ChequeName = !reader.IsDBNull(7) ? reader.GetString(7): "",
+                        StartingSerial =!reader.IsDBNull(8) ? reader.GetString(8) : "",
+                        EndingSerial = !reader.IsDBNull(9) ? reader.GetString(9) : "",
+                        DeliveryTo = !reader.IsDBNull(10) ? reader.GetString(10) : "",
+                        DeliverytoBranch = !reader.IsDBNull(11) ? reader.GetString(11) : "",
+                        BranchName = !reader.IsDBNull(12) ? reader.GetString(12) : "",
+                        Address2 = !reader.IsDBNull(13) ? reader.GetString(13) : "",
+                        Address3 = !reader.IsDBNull(14) ? reader.GetString(14) : "",
+                        Address4 = !reader.IsDBNull(15) ? reader.GetString(15) : "",
+                        Address5 = !reader.IsDBNull(16) ? reader.GetString(16) : "",
+                        Address6 = !reader.IsDBNull(17) ? reader.GetString(17) : "",
+                        BranchCode = !reader.IsDBNull(18) ? reader.GetString(18) : ""
+                    };
+
+                    _tempList.Add(order);
+                }
+                reader.Close();
+                con.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }

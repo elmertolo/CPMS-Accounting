@@ -95,7 +95,7 @@ namespace CPMS_Accounting.Forms
             //con.DumpMySQL();
             if (orderList != null)
             {
-                proc.TextFile(orderList);//Deleting All Text file in designated folder in the order file
+                proc.DeleteTextFile(orderList,"Output");//Deleting All Text file in designated folder in the order file
                 proc.Process(orderList, this,Application.StartupPath+ "\\Output");//Generating TextFile and dbf file Data output
                string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
                 proc.SaveData(orderList, zipFile); // Saving Data to database
