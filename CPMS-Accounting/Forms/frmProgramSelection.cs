@@ -45,6 +45,13 @@ namespace CPMS_Accounting.Forms
             {
                 e.Handled = true;
             }
+            if (Convert.ToInt32(e.KeyChar) == 13)
+            {
+                selectSystem = cmbProgram.Text;
+                frmLogIn frm = new frmLogIn();
+                frm.Show();
+                this.Hide();
+            }
         }
     }
 }

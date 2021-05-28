@@ -6104,6 +6104,40 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }
+        public void DoBlockProcessManual(TypeofCheckModel _orders, frmManualEncode _mainForm, string outputFolder)
+        {
+            StreamWriter file;
+            //DbConServices db = new DbConServices();
+
+            if (_orders.Ordering_Customized.Count > 0)
+            {
+
+                for (int i = 0; i < _orders.Ordering_Customized.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _orders.Ordering_Customized[0].outputFolder + "\\BlockP.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checks.Where(a => a.ChkType == _checks[i].ChkType).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        //for (int i = 0; i < check; i++)
+                        //{
+
+                        string output = ConvertToBlockTextManual(_orders.Ordering_Customized,"CUSTOMIZED ", "COMMERCIAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        //  }
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+           
+        }
         public void PackingText(TypeofCheckModel _checksModel, frmOrdering _mainForm,string outputFolder)
         {
 
@@ -6302,6 +6336,38 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }// End of Function
+        public void PackingTextManual(TypeofCheckModel _checksModel, frmManualEncode _mainForm, string outputFolder)
+        {
+
+            StreamWriter file;
+            // DbConServices db = new DbConServices();
+
+            if (_checksModel.Ordering_Customized.Count > 0)
+            {
+
+                for (int i = 0; i < _checksModel.Ordering_Customized.Count; i++)
+                {
+
+
+
+                    string packkingListPath = outputFolder + "\\" + _checksModel.Ordering_Customized[0].outputFolder + "\\PackingC.txt";
+                    if (File.Exists(packkingListPath))
+                        File.Delete(packkingListPath);
+                    // var checks = _checksModel.Where(a => a.ChkType == Scheck).Distinct().ToList();
+                    file = File.CreateText(packkingListPath);
+                    file.Close();
+
+                    using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
+                    {
+                        string output = ConvertToPackingListManual(_checksModel.Ordering_Customized, "COMMERCIAL", _mainForm);
+
+                        file.WriteLine(output);
+                    }
+
+                }
+            }
+    
+        }// End of Function
         public void PrinterFile(TypeofCheckModel _checkModel, frmOrdering _mainForm)
         {
 
@@ -6462,6 +6528,33 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }
+        public void PrinterFileManual(TypeofCheckModel _checkModel, frmManualEncode _mainForm)
+        {
+
+
+            StreamWriter file;
+
+
+            if (_checkModel.Ordering_Customized.Count > 0)
+            {
+
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_Customized[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "P.txt";
+
+
+                if (File.Exists(printerFilePathA))
+                    File.Delete(printerFilePathA);
+
+                file = File.CreateText(printerFilePathA);
+                file.Close();
+
+                using (file = new StreamWriter(File.Open(printerFilePathA, FileMode.Append)))
+                {
+                    string output = ConvertToPrinterFile(_checkModel.Ordering_Customized);
+
+                    file.WriteLine(output);
+                }
+            }
+        }
         private static string GenerateSpace(int _noOfSpaces)
         {
             string output = "";
@@ -6600,6 +6693,132 @@ namespace CPMS_Accounting.Procedures
             return output;
 
         }// end of function
+        public static string ConvertToBlockTextManual(List<OrderingModel> _check, string _prodType, string _ChkType, string _batchNumber, DateTime _deliveryDate, string _preparedBy, frmManualEncode _mainForm)
+
+        {
+
+            int page = 1, lineCount = 14, blockCounter = 1, blockContent = 1;
+            string date = DateTime.Now.ToString("MMM. dd, yyyy");
+            bool noFooter = true;
+            ///string countText = "";
+            string output = "";
+            string txtFileName = "";
+            //Sort Check List
+            var sort = (from c in _check
+                        orderby c.BRSTN
+                        ascending
+                        select c).ToList();
+
+            output += "\r\n" + GenerateSpace(8) + "Page No. " + page.ToString() + "\r\n" +
+            GenerateSpace(8) + date +
+            "\r\n";
+
+            output += GenerateSpace(27) + "SUMMARY OF BLOCK - " + _ChkType.ToUpper() + "\r\n" +
+              GenerateSpace(30) + "RCBC " + _prodType + "\r\n";
+
+            output += GenerateSpace(8) + "BLOCK RT_NO" + GenerateSpace(5) + "M ACCT_NO" + GenerateSpace(9) + "START_NO." + GenerateSpace(2) + "END_NO.\r\n\r\n";
+            //            Int64 checkTypeCount = 0;
+            foreach (var check in sort)
+            {
+
+                if (check.ChkType == "A" && check.Style == 1)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "P";
+                else if (check.ChkType == "B" && check.Style == 1)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "C";
+                else if (check.ChkType == "A" && check.Style == 9)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBP";
+                else if (check.ChkType == "B" && check.Style == 8)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DBC";
+                else if (check.ChkType == "B" && check.Style == 5)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "RC";
+                else if (check.ChkType == "B" && check.Style == 10)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "OC";
+                else if (check.ChkType == "A" && check.Style == 6)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP";
+                else if (check.ChkType == "B" && check.Style == 7)
+                    txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYC";
+
+                //if (_ChkType == "PERSONAL")
+                //{
+                //    checkTypeCount = check.Quantity;
+                //    while (check.StartingSerial.Length < 7)
+                //        check.StartingSerial = "0" + check.StartingSerial;
+
+                //    while (check.EndingSerial.Length < 7)
+                //        check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                //else
+                //{
+
+                while (check.StartingSerial.Length < 10)
+                    check.StartingSerial = "0" + check.StartingSerial;
+
+                while (check.EndingSerial.Length < 10)
+                    check.EndingSerial = "0" + check.EndingSerial;
+                // }
+
+
+                if (blockContent == 1)
+                {
+                    output += "\r\n" + GenerateSpace(7) + "** BLOCK " + blockCounter.ToString() + "\r\n";
+                    lineCount += 2;
+                }
+
+                if (blockContent == 5)
+                {
+                    blockContent = 2;
+
+                    blockCounter++;
+
+                    output += "\r\n" + GenerateSpace(7) + "** BLOCK " + blockCounter.ToString() + "\r\n";
+
+                    output += GenerateSpace(12) + blockCounter.ToString() + " " + check.BRSTN + GenerateSpace(3) + check.AccountNo +
+                    GenerateSpace(4) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+                }
+                else
+                {
+                    output += GenerateSpace(12) + blockCounter.ToString() + " " + check.BRSTN + GenerateSpace(3) + check.AccountNo +
+                    GenerateSpace(4) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+
+                    lineCount += 1;
+
+                    blockContent++;
+                }
+            }
+            //if (lineCount >=61 )
+            //{
+            if (noFooter) //ADD FOOTER
+            {
+                output += "\r\n " + _batchNumber + GenerateSpace(46) + "DLVR: " + _deliveryDate.ToString("MM-dd(ddd)") + "\r\n\r\n";
+                if (_ChkType == "PERSONAL")
+                {
+                    var chk = _check.Where(x => x.ChkType == "A").ToList();
+                    output += "  A = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
+
+                }
+                else
+                {
+                    var chk = _check.Where(x => x.ChkType == "B").ToList();
+                    output += "  B = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
+                }
+
+                output += GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
+                   GenerateSpace(4) + "Updated By" + GenerateSpace(4) + ": " + _preparedBy + "\r\n" +
+                   GenerateSpace(4) + "Time Start" + GenerateSpace(4) + ": " + DateTime.Now.ToShortTimeString() + "\r\n" +
+                   GenerateSpace(4) + "Time Finished :\r\n" +
+                   GenerateSpace(4) + "File rcvd" + GenerateSpace(5) + ":\r\n";
+
+                noFooter = false;
+            }
+
+            // output += Seperator();
+
+            lineCount = 1;
+            //}
+
+            return output;
+
+        }// end of function
         public static string ConvertToPackingList(List<OrderingModel> _checks, string _checkType, frmOrdering _mainForm)
         {
             var listofbrstn = _checks.Select(e => e.BRSTN).Distinct().ToList();
@@ -6621,6 +6840,78 @@ namespace CPMS_Accounting.Procedures
                 var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
                 output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " ("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
                 output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " ("+listofchecks[0].BranchCode+")\r\n\r\n" +
+                              " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
+
+
+
+                foreach (var check in listofchecks)
+                {
+
+                    //if (_checkType == "PERSONAL")
+                    //{
+                    //    while (check.StartingSerial.Length < 7)
+                    //        check.StartingSerial = "0" + check.StartingSerial;
+
+                    //    while (check.EndingSerial.Length < 7)
+                    //        check.EndingSerial = "0" + check.EndingSerial;
+                    //}
+                    //else
+                    //{
+                    while (check.StartingSerial.Length < 10)
+                        check.StartingSerial = "0" + check.StartingSerial;
+
+                    while (check.EndingSerial.Length < 10)
+                        check.EndingSerial = "0" + check.EndingSerial;
+                    //}//END OF ADDING ZERO IN SERIES NUMBER
+
+                    output += GenerateSpace(2) + check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
+                        + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + GenerateSpace(4);
+
+                    if (check.AccountName.TrimEnd().Length < 61)
+                        output += check.AccountName.TrimEnd() + GenerateSpace(60 - check.AccountName.TrimEnd().Length);
+
+                    output += "  1 " + check.ChkType + GenerateSpace(2) + check.StartingSerial + GenerateSpace(4) + check.EndingSerial + "\r\n";
+
+                    if (check.AccountName2 != "")
+                        output += GenerateSpace(19) + check.AccountName2 + GenerateSpace(60 - check.AccountName2.TrimEnd().Length) + "\r\n";
+
+
+
+
+                }
+
+                output += "\r\n";
+                output += "  * * * Sub Total * * * " + listofchecks.Count + "\r\n\r\n";
+
+                page++;
+                i++;
+
+            }
+            output += "  * * * Grand Total * * * " + _checks.Count + "\r\n";
+            return output;
+
+        }// end of function
+        public static string ConvertToPackingListManual(List<OrderingModel> _checks, string _checkType, frmManualEncode _mainForm)
+        {
+            var listofbrstn = _checks.Select(e => e.BRSTN).Distinct().ToList();
+            int page = 1;
+            string date = DateTime.Now.ToShortDateString();
+            string output = "";
+            int i = 0;
+
+            foreach (string brstn in listofbrstn)
+            {
+
+                output += "\r\n Page No. " + page.ToString() + "\r\n " +
+                                  date + "\r\n" +
+                                  GenerateSpace(29) + "CAPTIVE PRINTING CORPORATION\r\n" +
+                                  GenerateSpace(28) + "RCBC - " + _checkType + " Checks Summary\r\n\r\n" +
+                                  GenerateSpace(2) + "ACCT_NO" + GenerateSpace(9) + "ACCOUNT NAME" + GenerateSpace(21) + "QTY CT START #" + GenerateSpace(4) + "END #\r\n\r\n\r\n";
+
+
+                var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
+                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " (" + listofchecks[0].DeliveryBranchCode + ")\r\n\r\n";
+                output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " (" + listofchecks[0].BranchCode + ")\r\n\r\n" +
                               " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
 
 
@@ -6759,6 +7050,93 @@ namespace CPMS_Accounting.Procedures
 
             return output;
         }//end of function
+        public static string ConvertToPrinterFileManual(List<OrderingModel> _checkModels)
+        {
+
+            //var listofcheck = _checkModel.Select(e => e.BRSTN).OrderBy(e => e).ToList();
+
+            string output = "";
+            var sort = (from c in _checkModels
+                        orderby c.BRSTN, c.AccountNo
+                        ascending
+                        select c).ToList();
+
+
+            foreach (var check in sort)
+            {
+                Int64 Series = 0;
+                if (check.ChkType == "B")
+                {
+                    Series = Int64.Parse(check.StartingSerial) + 100;
+                }
+                else
+                {
+                    Series = Int64.Parse(check.StartingSerial) + 50;
+                }
+                Int64 endSeries = Series - 1;
+
+                string outputStartSeries = check.StartingSerial.ToString();
+
+                string outputEndSeries = endSeries.ToString();
+
+                //   string brstnFormat = "";
+
+                string txtSeries = Series.ToString();
+
+                //if (check.ChkType == "A")
+                //{
+                //    while (check.StartingSerial.Length < 7)
+                //        check.StartingSerial = "0" + check.StartingSerial;
+
+                //    while (check.EndingSerial.Length < 7)
+                //        check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                //else
+                //{
+                while (check.StartingSerial.Length < 10)
+                    check.StartingSerial = "0" + check.StartingSerial;
+
+                while (check.EndingSerial.Length < 10)
+                    check.EndingSerial = "0" + check.EndingSerial;
+                //}
+                output += "10\r\n" + //1 (FIXED)
+                         check.BRSTN + "\r\n" + //2  (BRSTN)                                             
+                         check.AccountNo + "\r\n" + //3 (ACCT NUMBER)                                              
+                         Series.ToString() + "\r\n" + //4 (Start Series + PCS per Book)                                                    
+                         check.ChkType + "\r\n" + //5                                             
+                         "\r\n" + //6 (BLANK)                           
+                         check.BRSTN.Substring(0, 5) + "\r\n" +//7 BRSTN FORMATTED
+                         " " + check.BRSTN.Substring(5, 4) + "\r\n" + //8 BRSTN FORMATTED                                                                    
+                         check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
+                            + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + "\r\n" + //9 (ACCT NUMBER)                
+                                                                                                                 //check.PrinterFileName + "\r\n" + //10 (NAME 1)           
+                         "SN\r\n" + //11 (FIXED)           
+                         "\r\n" + //12 (BLANK)                
+                                  //check.PrinterFileName2 + "\r\n" + //13 (NAME 2)                
+                         "\r\n" + //14  (BLANK)   
+                         "\r\n" + //15 (BLANK)          
+                         "\r\n" + //16 (BLANK)           
+                         check.BranchName + "\r\n" + //17 (ADDRESS 1)                
+                         check.Address + "\r\n" + //18 (ADDRESS 2)  
+                         check.Address2 + "\r\n" + //19 (ADDRESS 3)                            
+                         check.Address3 + "\r\n" + //20 (ADDRESS 4)
+                         check.Address4 + "\r\n" + //21 (ADDRESS 5)
+                         check.Address5 + "\r\n" + //22 (ADDRESS 6)
+                         gClient.Description.ToUpper() + "\r\n" +//23 (FIXED)
+                         "\r\n" + //24 (BLANK)//   
+                         "\r\n" + //25 (BLANK)  
+                         "\r\n" + //26 (BLANK)
+                         "\r\n" + //27 (BLANK)                         
+                         "\r\n" + //28 (BLANK)               
+                         "\r\n" + //29 (BLANK)                  
+                         "\r\n" + //30 (BLANK)                                        
+                         check.StartingSerial + "\r\n" + //31 (STARTING SERIES)               
+                         check.EndingSerial + "\r\n";  //32 (ENDING SERIES)
+
+            }
+
+            return output;
+        }//end of function
         public bool getOrderingBranches(List<BranchesModel> _branches)
         {
             try
@@ -6838,12 +7216,8 @@ namespace CPMS_Accounting.Procedures
             checkType.Ordering_DragonYellow_Commercial = new List<OrderingModel>();
             checkType.Ordering_Online_Commercial = new List<OrderingModel>();
             checkType.Ordering_Reca_Commercial = new List<OrderingModel>();
-            //GetChequeTypesOrdering(chequeTypesModels);
-
-
-            //for (int i = 0; i < frmOrdering.productList.Count; i++)
-            //{
-
+            
+        
             _orders.ForEach(x =>
                 {
                     if (x.ChkType == "A" &&  x.Style == 1)
@@ -6912,10 +7286,10 @@ namespace CPMS_Accounting.Procedures
                         //SaveToPackingDBF(checkType, _main.batchfile, _main);
                         PrinterFile(checkType, _main);
                     }
-                });
+                   
+                    
+            });
                 
-            //}
-
         }
         public void DeleteTextFile(List<OrderingModel> _checks,string _tempPath)
         {
@@ -7127,6 +7501,20 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+        }
+
+        public void ManualProcess(List<OrderingModel> _orders, frmManualEncode _main, string _outputFolder)
+        {
+            TypeofCheckModel checkType = new TypeofCheckModel();
+
+            _orders.ForEach(x =>
+            {
+                checkType.Ordering_Customized.Add(x);
+                DoBlockProcessManual(checkType, _main, _outputFolder);
+                PackingTextManual(checkType, _main, _outputFolder);
+                //SaveToPackingDBF(checkType, _main.batchfile, _main);
+                PrinterFileManual(checkType, _main);
+            });
         }
     }
 }

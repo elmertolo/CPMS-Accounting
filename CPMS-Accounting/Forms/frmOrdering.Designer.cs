@@ -29,9 +29,9 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbDeliveryTo = new System.Windows.Forms.CheckBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -51,6 +51,7 @@ namespace CPMS_Accounting.Forms
             this.label5 = new System.Windows.Forms.Label();
             this.lblGrandTotal = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.manualEncodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdering)).BeginInit();
@@ -91,7 +92,7 @@ namespace CPMS_Accounting.Forms
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Location = new System.Drawing.Point(316, 66);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(250, 22);
+            this.dateTimePicker1.Size = new System.Drawing.Size(261, 22);
             this.dateTimePicker1.TabIndex = 4;
             // 
             // label1
@@ -128,7 +129,8 @@ namespace CPMS_Accounting.Forms
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateToolStripMenuItem,
             this.reportsToolStripMenuItem,
-            this.maintenanceToolStripMenuItem});
+            this.maintenanceToolStripMenuItem,
+            this.manualEncodeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1345, 28);
@@ -168,7 +170,7 @@ namespace CPMS_Accounting.Forms
             // branchesToolStripMenuItem
             // 
             this.branchesToolStripMenuItem.Name = "branchesToolStripMenuItem";
-            this.branchesToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.branchesToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
             this.branchesToolStripMenuItem.Text = "Branches";
             this.branchesToolStripMenuItem.Click += new System.EventHandler(this.branchesToolStripMenuItem_Click);
             // 
@@ -222,20 +224,20 @@ namespace CPMS_Accounting.Forms
             // 
             this.dgvTypes.AllowUserToAddRows = false;
             this.dgvTypes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Transparent;
-            this.dgvTypes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Transparent;
+            this.dgvTypes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvTypes.BackgroundColor = System.Drawing.Color.White;
             this.dgvTypes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTypes.ColumnHeadersVisible = false;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTypes.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTypes.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvTypes.Enabled = false;
             this.dgvTypes.GridColor = System.Drawing.Color.White;
             this.dgvTypes.Location = new System.Drawing.Point(23, 169);
@@ -243,9 +245,9 @@ namespace CPMS_Accounting.Forms
             this.dgvTypes.ReadOnly = true;
             this.dgvTypes.RowHeadersVisible = false;
             this.dgvTypes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            this.dgvTypes.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            this.dgvTypes.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvTypes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvTypes.Size = new System.Drawing.Size(345, 413);
             this.dgvTypes.TabIndex = 17;
@@ -282,6 +284,15 @@ namespace CPMS_Accounting.Forms
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Types";
+            // 
+            // manualEncodeToolStripMenuItem
+            // 
+            this.manualEncodeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.manualEncodeToolStripMenuItem.Name = "manualEncodeToolStripMenuItem";
+            this.manualEncodeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.manualEncodeToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.manualEncodeToolStripMenuItem.Text = "Manual Encode [F6]";
+            this.manualEncodeToolStripMenuItem.Click += new System.EventHandler(this.manualEncodeToolStripMenuItem_Click);
             // 
             // frmOrdering
             // 
@@ -339,5 +350,6 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem branchesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manualEncodeToolStripMenuItem;
     }
 }

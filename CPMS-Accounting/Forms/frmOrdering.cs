@@ -164,5 +164,12 @@ namespace CPMS_Accounting.Forms
             frm.Show();
             this.Hide();
         }
+
+        private void manualEncodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmManualEncode frm = new frmManualEncode();
+            frm.Show();
+            this.Hide();
+        }
     }
 }

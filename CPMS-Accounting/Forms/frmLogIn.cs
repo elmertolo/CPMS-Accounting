@@ -209,7 +209,7 @@ namespace CPMS_Accounting
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
-            MessageBox.Show(frmProgramSelection.selectSystem);
+            //MessageBox.Show(frmProgramSelection.selectSystem);
 
 
             //string line = new string('=', 100);

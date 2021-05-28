@@ -223,6 +223,12 @@
     <Compile Include="Forms\frmLogIn.Designer.cs">
       <DependentUpon>frmLogIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmManualEncode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmManualEncode.Designer.cs">
+      <DependentUpon>frmManualEncode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmMessageInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -467,6 +473,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmLogIn.resx">
       <DependentUpon>frmLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmManualEncode.resx">
+      <DependentUpon>frmManualEncode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMessageInput.resx">
       <DependentUpon>frmMessageInput.cs</DependentUpon>
