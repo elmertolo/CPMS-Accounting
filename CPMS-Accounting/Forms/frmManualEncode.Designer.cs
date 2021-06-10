@@ -39,6 +39,8 @@ namespace CPMS_Accounting.Forms
             this.txtAccName = new System.Windows.Forms.TextBox();
             this.txtAccountNo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbProductType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtStartingSerial = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -52,8 +54,6 @@ namespace CPMS_Accounting.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvOutput = new System.Windows.Forms.DataGridView();
-            this.cbProductType = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -183,6 +183,27 @@ namespace CPMS_Accounting.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Order Information";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(63, 146);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(109, 16);
+            this.label9.TabIndex = 41;
+            this.label9.Text = "Product Type :";
+            // 
+            // cbProductType
+            // 
+            this.cbProductType.FormattingEnabled = true;
+            this.cbProductType.Location = new System.Drawing.Point(174, 143);
+            this.cbProductType.Name = "cbProductType";
+            this.cbProductType.Size = new System.Drawing.Size(264, 24);
+            this.cbProductType.TabIndex = 40;
+            this.cbProductType.SelectedIndexChanged += new System.EventHandler(this.cbProductType_SelectedIndexChanged);
+            this.cbProductType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbProductType_KeyPress);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -306,30 +327,12 @@ namespace CPMS_Accounting.Forms
             // 
             // dgvOutput
             // 
+            this.dgvOutput.BackgroundColor = System.Drawing.Color.White;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOutput.Location = new System.Drawing.Point(25, 34);
+            this.dgvOutput.Location = new System.Drawing.Point(15, 29);
             this.dgvOutput.Name = "dgvOutput";
-            this.dgvOutput.Size = new System.Drawing.Size(946, 306);
+            this.dgvOutput.Size = new System.Drawing.Size(964, 268);
             this.dgvOutput.TabIndex = 0;
-            // 
-            // cbProductType
-            // 
-            this.cbProductType.FormattingEnabled = true;
-            this.cbProductType.Location = new System.Drawing.Point(174, 143);
-            this.cbProductType.Name = "cbProductType";
-            this.cbProductType.Size = new System.Drawing.Size(264, 24);
-            this.cbProductType.TabIndex = 40;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(63, 146);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(109, 16);
-            this.label9.TabIndex = 41;
-            this.label9.Text = "Product Type :";
             // 
             // frmManualEncode
             // 
@@ -345,6 +348,7 @@ namespace CPMS_Accounting.Forms
             this.Name = "frmManualEncode";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmManualEncode";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmManualEncode_FormClosing);
             this.Load += new System.EventHandler(this.frmManualEncode_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

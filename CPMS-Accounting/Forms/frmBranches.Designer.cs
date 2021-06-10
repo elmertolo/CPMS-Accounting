@@ -29,9 +29,9 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtBrstn = new System.Windows.Forms.TextBox();
@@ -59,8 +59,13 @@ namespace CPMS_Accounting.Forms
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtLastSeries = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBranchList)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -114,9 +119,9 @@ namespace CPMS_Accounting.Forms
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(46, 206);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 16);
+            this.label1.Size = new System.Drawing.Size(82, 16);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Address1:";
+            this.label1.Text = "Address1 :";
             // 
             // txtAddress2
             // 
@@ -165,9 +170,9 @@ namespace CPMS_Accounting.Forms
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(46, 240);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 16);
+            this.label2.Size = new System.Drawing.Size(82, 16);
             this.label2.TabIndex = 30;
-            this.label2.Text = "Address2:";
+            this.label2.Text = "Address2 :";
             // 
             // label4
             // 
@@ -176,9 +181,9 @@ namespace CPMS_Accounting.Forms
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(46, 276);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 16);
+            this.label4.Size = new System.Drawing.Size(82, 16);
             this.label4.TabIndex = 31;
-            this.label4.Text = "Address3:";
+            this.label4.Text = "Address3 :";
             // 
             // label5
             // 
@@ -187,9 +192,9 @@ namespace CPMS_Accounting.Forms
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(636, 169);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 16);
+            this.label5.Size = new System.Drawing.Size(82, 16);
             this.label5.TabIndex = 32;
-            this.label5.Text = "Address4:";
+            this.label5.Text = "Address4 :";
             // 
             // label6
             // 
@@ -198,9 +203,9 @@ namespace CPMS_Accounting.Forms
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(636, 206);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(78, 16);
+            this.label6.Size = new System.Drawing.Size(82, 16);
             this.label6.TabIndex = 33;
-            this.label6.Text = "Address5:";
+            this.label6.Text = "Address5 :";
             // 
             // label7
             // 
@@ -209,9 +214,9 @@ namespace CPMS_Accounting.Forms
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(636, 242);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 16);
+            this.label7.Size = new System.Drawing.Size(82, 16);
             this.label7.TabIndex = 35;
-            this.label7.Text = "Address6:";
+            this.label7.Text = "Address6 :";
             // 
             // txtAddress6
             // 
@@ -228,7 +233,7 @@ namespace CPMS_Accounting.Forms
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(613, 277);
+            this.label8.Location = new System.Drawing.Point(295, 32);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(101, 16);
             this.label8.TabIndex = 37;
@@ -238,7 +243,7 @@ namespace CPMS_Accounting.Forms
             // 
             this.txtBranchCode.Enabled = false;
             this.txtBranchCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBranchCode.Location = new System.Drawing.Point(722, 275);
+            this.txtBranchCode.Location = new System.Drawing.Point(404, 30);
             this.txtBranchCode.Name = "txtBranchCode";
             this.txtBranchCode.Size = new System.Drawing.Size(105, 22);
             this.txtBranchCode.TabIndex = 36;
@@ -249,28 +254,28 @@ namespace CPMS_Accounting.Forms
             this.dgvBranchList.AllowUserToAddRows = false;
             this.dgvBranchList.AllowUserToDeleteRows = false;
             this.dgvBranchList.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBranchList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBranchList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvBranchList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBranchList.Location = new System.Drawing.Point(33, 385);
             this.dgvBranchList.Name = "dgvBranchList";
             this.dgvBranchList.ReadOnly = true;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBranchList.RowHeadersDefaultCellStyle = dataGridViewCellStyle26;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvBranchList.RowsDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBranchList.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvBranchList.RowsDefaultCellStyle = dataGridViewCellStyle15;
             this.dgvBranchList.Size = new System.Drawing.Size(1302, 284);
             this.dgvBranchList.TabIndex = 38;
             this.dgvBranchList.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvBranchList_RowHeaderMouseDoubleClick);
@@ -278,6 +283,12 @@ namespace CPMS_Accounting.Forms
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.txtLastSeries);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtBranchCode);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(13, 139);
             this.groupBox1.Name = "groupBox1";
@@ -372,6 +383,46 @@ namespace CPMS_Accounting.Forms
             this.cancelToolStripMenuItem.Text = "Cancel [F4]";
             this.cancelToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(597, 137);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(108, 16);
+            this.label10.TabIndex = 39;
+            this.label10.Text = "Last Series A :";
+            // 
+            // txtLastSeries
+            // 
+            this.txtLastSeries.Enabled = false;
+            this.txtLastSeries.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLastSeries.Location = new System.Drawing.Point(709, 134);
+            this.txtLastSeries.Name = "txtLastSeries";
+            this.txtLastSeries.Size = new System.Drawing.Size(150, 22);
+            this.txtLastSeries.TabIndex = 38;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(904, 137);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(108, 16);
+            this.label11.TabIndex = 41;
+            this.label11.Text = "Last Series B :";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(1016, 134);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(144, 22);
+            this.textBox1.TabIndex = 40;
+            // 
             // frmBranches
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,8 +432,6 @@ namespace CPMS_Accounting.Forms
             this.ClientSize = new System.Drawing.Size(1367, 699);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dgvBranchList);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtBranchCode);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAddress6);
             this.Controls.Add(this.label6);
@@ -406,6 +455,8 @@ namespace CPMS_Accounting.Forms
             this.Load += new System.EventHandler(this.frmBranches_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBranchList)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -444,5 +495,9 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripMenuItem cancelToolStripMenuItem;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtLastSeries;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

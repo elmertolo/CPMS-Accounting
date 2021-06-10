@@ -21,6 +21,8 @@ namespace CPMS_Accounting.Models
         //04122021 Added new fields in replacement for cpc files.
         public string Location { get; set; }
         public string ContactPerson { get; set; }
+        public string LastSeriesA { get; set; }
+        public string LastSeriesB { get; set; }
 
     }
 }

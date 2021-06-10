@@ -6910,7 +6910,7 @@ namespace CPMS_Accounting.Procedures
 
 
                 var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
-                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " (" + listofchecks[0].DeliveryBranchCode + ")\r\n\r\n";
+                //output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " (" + listofchecks[0].DeliveryBranchCode + ")\r\n\r\n";
                 output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " (" + listofchecks[0].BranchCode + ")\r\n\r\n" +
                               " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
 
@@ -7142,7 +7142,7 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 DBConnect();
-                Sql = "Select  BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode from " + gClient.BranchesTable;
+                Sql = "Select  BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode,LastSeriesA,LastSeriesB from " + gClient.BranchesTable;
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while(reader.Read())
@@ -7156,9 +7156,9 @@ namespace CPMS_Accounting.Procedures
                         Address4 = !reader.IsDBNull(4) ? reader.GetString(4) : "",
                         Address5 = !reader.IsDBNull(5) ? reader.GetString(5) : "",
                         Address6 = !reader.IsDBNull(6) ? reader.GetString(6) : "",
-                        BranchCode = !reader.IsDBNull(7) ? reader.GetString(7) : ""
-                        
-                        
+                        BranchCode = !reader.IsDBNull(7) ? reader.GetString(7) : "",
+                        LastSeriesA = !reader.IsDBNull(8) ? reader.GetString(8) : "",
+                        LastSeriesB = !reader.IsDBNull(9) ? reader.GetString(9) : ""
                     };
 
                     _branches.Add(b);
@@ -7335,11 +7335,13 @@ namespace CPMS_Accounting.Procedures
                         "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
                         "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
-                        "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch +"','" + x.DeliveryBranchCode + "',1); ";
+                        "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch + "','" + x.DeliveryBranchCode + "',1);";
+                        
 
                     cmd = new MySqlCommand(Sql, myConnect);
                     cmd.ExecuteNonQuery();
                 });
+
                 //DBClosed();
                 //DBConnect();
 
@@ -7357,6 +7359,59 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
             }
             catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void SaveDataManual(List<OrderingModel> _orderList, string _zipFile)
+        {
+            try
+            {
+                DBConnect();
+                _orderList.ForEach(x =>
+                {
+                    Sql = "Insert into " + gClient.DataBaseName + "(Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
+                        "ChkType,CheckName,StartingSerial,EndingSerial,Status)" +
+                        "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
+                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
+                        "'" + x.EndingSerial + "',1); ";
+
+                    if (x.CheckName.Contains("TRUBANK"))
+                    {
+                        if (x.ChkType == "A")
+                        {
+                            Sql += " Update " + gClient.BranchesTable + " set LastSeriesA = '" + x.EndingSerial + "' where BRSTN = '" + x.BRSTN + "'";
+                        }
+                        else
+                        {
+                            Sql += " Update " + gClient.BranchesTable + " set LastSeriesB = '" + x.EndingSerial + "' where BRSTN = '" + x.BRSTN + "'";
+                        }
+                    }
+
+                    cmd = new MySqlCommand(Sql, myConnect);
+                    cmd.ExecuteNonQuery();
+
+                    
+                });
+
+                //DBClosed();
+                //DBConnect();
+
+                //FileStream fs = new FileStream(_zipFile, FileMode.Open, FileAccess.Read);
+                //int FileSize = (int)fs.Length;
+                //byte[] rawData  = new byte[FileSize];
+                //fs.Read(rawData, 0, FileSize);
+                //fs.Close();
+                //Sql =  "Insert into " + gClient.ZipTable + " (Batch_ID, ZipFile, DateProcessed) values ('" + _orderList[0].Batch + "','"+rawData+"','" +
+                //       DateTime.Now.ToString("yyyy-MM-dd") + "');";
+
+                //cmd = new MySqlCommand(Sql, myConnect);
+                //cmd.ExecuteNonQuery();
+                MessageBox.Show("Data has been Successfully saved!", "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DBClosed();
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -7502,11 +7557,10 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
         }
-
         public void ManualProcess(List<OrderingModel> _orders, frmManualEncode _main, string _outputFolder)
         {
             TypeofCheckModel checkType = new TypeofCheckModel();
-
+            checkType.Ordering_Customized = new List<OrderingModel>();
             _orders.ForEach(x =>
             {
                 checkType.Ordering_Customized.Add(x);
@@ -7516,6 +7570,7 @@ namespace CPMS_Accounting.Procedures
                 PrinterFileManual(checkType, _main);
             });
         }
+
     }
 }
     

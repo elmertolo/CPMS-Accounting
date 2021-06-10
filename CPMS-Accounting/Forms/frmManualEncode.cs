@@ -25,21 +25,21 @@ namespace CPMS_Accounting.Forms
             InitializeComponent();
             dateTime = dateTimePicker1.MinDate = DateTime.Now; //Disable selection of backdated dates to prevent errors  
         }
-
         
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             deliveryDate = dateTimePicker1.Value;
-            if (deliveryDate == dateTime)
+            if(deliveryDate == dateTime)
                 MessageBox.Show("Please select Delivery date!!");
             else
             {
-                if (txtBatch.Text == "")
+                if(txtBatch.Text == "")
                     MessageBox.Show("Please Enter Batch name!!");
                 else
                 {
                     batchFile = txtBatch.Text;
                     GenerateData();
+                    ClearTools(true);
                 }
             }
         }
@@ -55,8 +55,8 @@ namespace CPMS_Accounting.Forms
                 else
                 {
                     proc.ManualProcess(orderList, this, Application.StartupPath + "\\Output");
-
-                    MessageBox.Show("Data has been processed!", "Generating Manual Data!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    proc.SaveDataManual(orderList, Application.StartupPath + "\\Output");
+                    MessageBox.Show("Data has been processed!", "Generating Manual Data!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
                 }
             }
@@ -76,6 +76,8 @@ namespace CPMS_Accounting.Forms
 
             Oquantity = int.Parse(txtQuantity.Text);
             SN = int.Parse(txtStartingSerial.Text);
+            var branchDetails = frmOrdering.listofBranches.Where(x => x.BRSTN == txtBrstn.Text).ToList();
+
             for (int i = 0; i < Oquantity; i++)
             {
                 OrderingModel order = new OrderingModel();
@@ -86,9 +88,9 @@ namespace CPMS_Accounting.Forms
                 order.outputFolder = "Customized";
                 order.OrdQuantiy = 1;
                 order.StartingSerial = SN.ToString();
-                
                 order.Batch = txtBatch.Text;
                 order.CheckName = cbProductType.Text;
+
                 if (cbProductType.SelectedIndex == 0)
                 {
                     order.ChkType = "A";
@@ -99,12 +101,25 @@ namespace CPMS_Accounting.Forms
                     order.ChkType = "B";
                     order.EndingSerial = (SN + 99).ToString();
                 }
+                branchDetails.ForEach(x => { 
+                    //order.BranchName = x.Address1.Replace("'", "''").TrimEnd();
+                    order.BranchName = x.Address1.Replace("Ñ", "N").TrimEnd();
+                    order.Address = x.Address2.Replace("Ñ", "N").TrimEnd();
+                    order.Address2 = x.Address3.Replace("Ñ", "N").TrimEnd();
+                    order.Address3 = x.Address4.Replace("Ñ", "N").TrimEnd();
+                    order.Address4 = x.Address5.Replace("Ñ", "N").TrimEnd();
+                    order.Address5 = x.Address6.Replace("Ñ", "N").TrimEnd();
+                    order.BranchCode = x.BranchCode;
+                });
+
                 orderList.Add(order);
                 SN = int.Parse(order.EndingSerial) + 1;
 
             }
 
             DisplayData(orderList);
+            ClearTools(false);
+            generateToolStripMenuItem.Enabled = true;
         }
         private void DisplayData(List<OrderingModel> _orderList)
         {
@@ -134,10 +149,10 @@ namespace CPMS_Accounting.Forms
         private void DataGridDesign()
         {
             
-            dgvOutput.Columns[0].Width = 80;
-            dgvOutput.Columns[1].Width = 100;
-            dgvOutput.Columns[2].Width = 220;
-            dgvOutput.Columns[3].Width = 220;
+            dgvOutput.Columns[0].Width = 100;
+            dgvOutput.Columns[1].Width = 120;
+            dgvOutput.Columns[2].Width = 200;
+            dgvOutput.Columns[3].Width = 210;
             dgvOutput.Columns[4].Width = 90;
             dgvOutput.Columns[5].Width = 90;
             dgvOutput.Columns[6].Width = 100;
@@ -180,7 +195,7 @@ namespace CPMS_Accounting.Forms
                 e.Handled = true;
             }
         }
-
+ 
         private void txtAccName_TextChanged(object sender, EventArgs e)
         {
             txtAccName.CharacterCasing = CharacterCasing.Upper;
@@ -205,7 +220,76 @@ namespace CPMS_Accounting.Forms
             cbProductType.Items.Add("TRUBANK COMMERCIAL");
             cbProductType.Items.Add("VOUCHER CHECKS");
             cbProductType.Items.Add("CUSTOMIZED CHECKS");
-            cbProductType.SelectedIndex = 0;
+            cbProductType.SelectedIndex = 3;
         }
+
+        private void cbProductType_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+        private void cbProductType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            if(cbProductType.SelectedIndex == 0 || cbProductType.SelectedIndex == 1)
+            {
+                
+                txtStartingSerial.Enabled = false;
+                var branchSeries = frmOrdering.listofBranches.Where(x => x.BRSTN == txtBrstn.Text).ToList();
+                branchSeries.ForEach(x => {
+
+                    if (x.BRSTN == txtBrstn.Text && cbProductType.SelectedIndex == 0)
+                    {
+                        int series = int.Parse(x.LastSeriesA);
+                        txtStartingSerial.Text = (series + 1).ToString();
+                    }
+                    else
+                    {
+                        int series = int.Parse(x.LastSeriesB);
+                        txtStartingSerial.Text = (series + 1).ToString();
+                    }
+                });
+            }
+            else
+            {
+                txtStartingSerial.Text = "";
+                txtStartingSerial.Enabled = true;
+            }
+        }
+        private bool ClearTools(bool _isActive)
+        {
+            
+            if(!_isActive)
+            {
+                txtBatch.Enabled = false;
+            }
+            else
+            {
+                _isActive = true;
+                txtBatch.Text = "";
+                txtBatch.Enabled = true;
+                dgvOutput.DataSource = "";
+            }
+            txtAccName.Text = "";
+            txtAccName2.Text = "";
+            txtBrstn.Text = "";
+            txtQuantity.Text = "";
+            txtStartingSerial.Text = "";
+            txtAccountNo.Text = "";
+
+            return _isActive;
+
+        }
+        private void frmManualEncode_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+            frmOrdering frm = new frmOrdering();
+            frm.Show();
+            this.Hide();
+        }
+
+
     }
 }
