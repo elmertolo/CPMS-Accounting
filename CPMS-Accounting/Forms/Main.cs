@@ -105,12 +105,12 @@ namespace CPMS_Accounting
         private void salesInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            if (!p.ClientIsIntegrated(typeof(frmSalesInvoice)))
-            {
-                p.MessageAndLog(gClient.Description.ToString() + " is not yet integrated\r\nwith Sales Invoice feature. " +
-                    "Please contact your system administrator.", ref log, "info");
-                return;
-            }
+            //if (!p.ClientIsIntegrated(typeof(frmSalesInvoice)))
+            //{
+            //    p.MessageAndLog(gClient.Description.ToString() + " is not yet integrated\r\nwith Sales Invoice feature. " +
+            //        "Please contact your system administrator.", ref log, "info");
+            //    return;
+            //}
 
             log.Info("Mouse Click ToolStripMenuItem (Sales Invoice)");
             if (gUser.IsAllowedOnSi == 2)

@@ -430,7 +430,7 @@ namespace CPMS_Accounting.Procedures
             if (form == typeof(frmCostDistribution))
             {
                 //Insert Allowed banks here for cost distribution feature.
-                string[] clientNames = { "UnionBank" };
+                string[] clientNames = { "UnionBank","RCBC" };
 
                 foreach (string clientName in clientNames)
                 {

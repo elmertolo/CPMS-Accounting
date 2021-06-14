@@ -50,7 +50,7 @@ namespace CPMS_Accounting.Procedures
                 }
                 else
                 {
-                    DBConnection = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+                    DBConnection = ConfigurationManager.AppSettings["ConnectionStringOrdering1"];
                 }
 
                 myConnect = new MySqlConnection(DBConnection);
@@ -4585,9 +4585,9 @@ namespace CPMS_Accounting.Procedures
             //Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName,BookStyle  from rcbc_tcheques A " +
             //    "inner join rcbc_tchequeproducts B on A.CProductCode = B.CProductCode ;";
             DBConnect();
-            con = new MySqlConnection(ConString);
-            cmd = new MySqlCommand(Sql, con);
-            con.Open();
+            //con = new MySqlConnection(ConString);
+            cmd = new MySqlCommand(Sql, myConnect);
+          //  con.Open();
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -4603,7 +4603,7 @@ namespace CPMS_Accounting.Procedures
                 _cheques.Add(c);
             }
             reader.Close();
-            con.Close();
+          //  con.Close();
             DBClosed();
             return _cheques;
         }

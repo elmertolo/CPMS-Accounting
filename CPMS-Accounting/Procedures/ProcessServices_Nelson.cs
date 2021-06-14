@@ -37,7 +37,7 @@ namespace CPMS_Accounting.Procedures
         {
             string conString = "";
              if(_system == "Ordering System")
-                   conString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+                   conString = ConfigurationManager.AppSettings["ConnectionStringOrdering1"];
              else
                    conString = ConfigurationManager.AppSettings["ConnectionString"];
 

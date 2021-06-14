@@ -46,7 +46,6 @@
             this.changeBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.costDistributionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,8 +116,7 @@
             this.AddchequesToolStripMenuItem1,
             this.chequeProductsToolStripMenuItem,
             this.userMaintenanceToolStripMenuItem,
-            this.userLevelAndSecurityToolStripMenuItem,
-            this.addBankToolStripMenuItem});
+            this.userLevelAndSecurityToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
@@ -197,13 +195,6 @@
             this.costDistributionToolStripMenuItem.Text = "Cost Distribution";
             this.costDistributionToolStripMenuItem.Click += new System.EventHandler(this.costDistributionToolStripMenuItem_Click);
             // 
-            // addBankToolStripMenuItem
-            // 
-            this.addBankToolStripMenuItem.Name = "addBankToolStripMenuItem";
-            this.addBankToolStripMenuItem.Size = new System.Drawing.Size(237, 24);
-            this.addBankToolStripMenuItem.Text = "Add Bank";
-            this.addBankToolStripMenuItem.Click += new System.EventHandler(this.addBankToolStripMenuItem_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,7 +233,6 @@
         private System.Windows.Forms.ToolStripMenuItem userLevelAndSecurityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem costDistributionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addBankToolStripMenuItem;
 
         //private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         //private System.Windows.Forms.ToolStripMenuItem purchaseOrderToolStripMenuItem;
