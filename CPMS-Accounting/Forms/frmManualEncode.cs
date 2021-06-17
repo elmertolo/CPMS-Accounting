@@ -15,8 +15,8 @@ namespace CPMS_Accounting.Forms
     public partial class frmManualEncode : Form
     {
         ProcessServices proc = new ProcessServices();
-        
-        List<OrderingModel> orderList = new List<OrderingModel>();   
+
+        List<OrderingModel> orderList = new List<OrderingModel>();
         public string batchFile = "";
         public DateTime deliveryDate;
         DateTime dateTime;
@@ -25,15 +25,15 @@ namespace CPMS_Accounting.Forms
             InitializeComponent();
             dateTime = dateTimePicker1.MinDate = DateTime.Now; //Disable selection of backdated dates to prevent errors  
         }
-        
+
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             deliveryDate = dateTimePicker1.Value;
-            if(deliveryDate == dateTime)
+            if (deliveryDate == dateTime)
                 MessageBox.Show("Please select Delivery date!!");
             else
             {
-                if(txtBatch.Text == "")
+                if (txtBatch.Text == "")
                     MessageBox.Show("Please Enter Batch name!!");
                 else
                 {
@@ -60,66 +60,70 @@ namespace CPMS_Accounting.Forms
                     return true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Generating Manual Data!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            
+
         }
 
         private void addDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
             int Oquantity;
             int SN;
 
             Oquantity = int.Parse(txtQuantity.Text);
             SN = int.Parse(txtStartingSerial.Text);
-            var branchDetails = frmOrdering.listofBranches.Where(x => x.BRSTN == txtBrstn.Text).ToList();
-
-            for (int i = 0; i < Oquantity; i++)
+            var branchDetails = frmOrdering.listofBranches.SingleOrDefault(x => x.BRSTN == txtBrstn.Text);
+            if (branchDetails != null)
             {
-                OrderingModel order = new OrderingModel();
-                order.BRSTN = txtBrstn.Text;
-                order.AccountNo = txtAccountNo.Text;
-                order.AccountName = txtAccName.Text;
-                order.AccountName2 = txtAccName2.Text;
-                order.outputFolder = "Customized";
-                order.OrdQuantiy = 1;
-                order.StartingSerial = SN.ToString();
-                order.Batch = txtBatch.Text;
-                order.CheckName = cbProductType.Text;
+                for (int i = 0; i < Oquantity; i++)
+                {
+                    OrderingModel order = new OrderingModel();
+                    order.BRSTN = txtBrstn.Text;
+                    order.AccountNo = txtAccountNo.Text;
+                    order.AccountName = txtAccName.Text;
+                    order.AccountName2 = txtAccName2.Text;
+                    order.outputFolder = "Customized";
+                    order.OrdQuantiy = 1;
+                    order.StartingSerial = SN.ToString();
+                    order.Batch = txtBatch.Text;
+                    order.CheckName = cbProductType.Text;
 
-                if (cbProductType.SelectedIndex == 0)
-                {
-                    order.ChkType = "A";
-                    order.EndingSerial = (SN + 49).ToString();
-                }
-                else
-                {
-                    order.ChkType = "B";
-                    order.EndingSerial = (SN + 99).ToString();
-                }
-                branchDetails.ForEach(x => { 
+                    if (cbProductType.SelectedIndex == 0)
+                    {
+                        order.ChkType = "A";
+                        order.EndingSerial = (SN + 49).ToString();
+                    }
+                    else
+                    {
+                        order.ChkType = "B";
+                        order.EndingSerial = (SN + 99).ToString();
+                    }
+
                     //order.BranchName = x.Address1.Replace("'", "''").TrimEnd();
-                    order.BranchName = x.Address1.Replace("Ñ", "N").TrimEnd();
-                    order.Address = x.Address2.Replace("Ñ", "N").TrimEnd();
-                    order.Address2 = x.Address3.Replace("Ñ", "N").TrimEnd();
-                    order.Address3 = x.Address4.Replace("Ñ", "N").TrimEnd();
-                    order.Address4 = x.Address5.Replace("Ñ", "N").TrimEnd();
-                    order.Address5 = x.Address6.Replace("Ñ", "N").TrimEnd();
-                    order.BranchCode = x.BranchCode;
-                });
+                    order.BranchName = branchDetails.Address1.Replace("Ñ", "N").TrimEnd();
+                    order.Address = branchDetails.Address2.Replace("Ñ", "N").TrimEnd();
+                    order.Address2 = branchDetails.Address3.Replace("Ñ", "N").TrimEnd();
+                    order.Address3 = branchDetails.Address4.Replace("Ñ", "N").TrimEnd();
+                    order.Address4 = branchDetails.Address5.Replace("Ñ", "N").TrimEnd();
+                    order.Address5 = branchDetails.Address6.Replace("Ñ", "N").TrimEnd();
+                    order.BranchCode = branchDetails.BranchCode;
 
-                orderList.Add(order);
-                SN = int.Parse(order.EndingSerial) + 1;
 
+                    orderList.Add(order);
+                    SN = int.Parse(order.EndingSerial) + 1;
+
+                }
+
+                DisplayData(orderList);
+                ClearTools(false);
+                generateToolStripMenuItem.Enabled = true;
             }
-
-            DisplayData(orderList);
-            ClearTools(false);
-            generateToolStripMenuItem.Enabled = true;
+            else
+                MessageBox.Show("BRSTN :" + branchDetails.BRSTN + " does not exist in the Database! ");
         }
         private void DisplayData(List<OrderingModel> _orderList)
         {
@@ -127,9 +131,10 @@ namespace CPMS_Accounting.Forms
             DataTable dt = new DataTable();
             DtableColumns(dt);
 
-            _orderList.ForEach(x => {
+            _orderList.ForEach(x =>
+            {
 
-                dt.Rows.Add(new object[] { x.BRSTN, x.AccountNo, x.AccountName, x.AccountName2,x.StartingSerial, x.EndingSerial, x.Batch });
+                dt.Rows.Add(new object[] { x.BRSTN, x.AccountNo, x.AccountName, x.AccountName2, x.StartingSerial, x.EndingSerial, x.Batch });
             });
 
             dgvOutput.DataSource = dt;
@@ -148,7 +153,7 @@ namespace CPMS_Accounting.Forms
         }
         private void DataGridDesign()
         {
-            
+
             dgvOutput.Columns[0].Width = 100;
             dgvOutput.Columns[1].Width = 120;
             dgvOutput.Columns[2].Width = 200;
@@ -161,7 +166,7 @@ namespace CPMS_Accounting.Forms
 
         private void txtBatch_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
+
         }
 
         private void txtBrstn_KeyPress(object sender, KeyPressEventArgs e)
@@ -195,7 +200,7 @@ namespace CPMS_Accounting.Forms
                 e.Handled = true;
             }
         }
- 
+
         private void txtAccName_TextChanged(object sender, EventArgs e)
         {
             txtAccName.CharacterCasing = CharacterCasing.Upper;
@@ -232,13 +237,14 @@ namespace CPMS_Accounting.Forms
         }
         private void cbProductType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            if(cbProductType.SelectedIndex == 0 || cbProductType.SelectedIndex == 1)
+
+            if (cbProductType.SelectedIndex == 0 || cbProductType.SelectedIndex == 1)
             {
-                
-                txtStartingSerial.Enabled = false;
+
+                //txtStartingSerial.Enabled = false;
                 var branchSeries = frmOrdering.listofBranches.Where(x => x.BRSTN == txtBrstn.Text).ToList();
-                branchSeries.ForEach(x => {
+                branchSeries.ForEach(x =>
+                {
 
                     if (x.BRSTN == txtBrstn.Text && cbProductType.SelectedIndex == 0)
                     {
@@ -255,13 +261,13 @@ namespace CPMS_Accounting.Forms
             else
             {
                 txtStartingSerial.Text = "";
-                txtStartingSerial.Enabled = true;
+              //  txtStartingSerial.Enabled = true;
             }
         }
         private bool ClearTools(bool _isActive)
         {
-            
-            if(!_isActive)
+
+            if (!_isActive)
             {
                 txtBatch.Enabled = false;
             }
@@ -284,7 +290,7 @@ namespace CPMS_Accounting.Forms
         }
         private void frmManualEncode_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
+
             frmOrdering frm = new frmOrdering();
             frm.Show();
             this.Hide();

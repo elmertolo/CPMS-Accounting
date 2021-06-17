@@ -210,6 +210,7 @@ namespace CPMS_Accounting
             {
                 cbDirect.SelectedIndex = 5;
                 cbProvincial.SelectedIndex = 4;
+                
             }
             else
             {
@@ -645,7 +646,9 @@ namespace CPMS_Accounting
         {
             proc.sGetChequeName(tempData);
             proc.gListofPurchaseOrder(listofPurchaseOrderNumber);
-            
+            if(gClient.BankCode == "028")
+                cbDeliveryTo.Checked = true;
+
             isBankActive();
             //ChequeName();
             ReporStyle();

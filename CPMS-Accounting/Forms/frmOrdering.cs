@@ -46,6 +46,7 @@ namespace CPMS_Accounting.Forms
                     lblGrandTotal.Text = orderList.Count().ToString();
                 
                     generateToolStripMenuItem.Enabled = true;
+                    reportsToolStripMenuItem.Enabled = false;
                 }  
             }
         }

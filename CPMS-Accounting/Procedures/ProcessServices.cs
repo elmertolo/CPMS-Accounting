@@ -5889,6 +5889,10 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(e.Message, "Check Data",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
+        private static string Seperator()
+        {
+            return "";
+        }
         public void DoBlockProcess(TypeofCheckModel _orders, frmOrdering _mainForm,string outputFolder)
         {
             StreamWriter file;
@@ -6685,7 +6689,7 @@ namespace CPMS_Accounting.Procedures
                 noFooter = false;
             }
 
-            // output += Seperator();
+             output += Seperator();
 
             lineCount = 1;
             //}
@@ -6811,7 +6815,7 @@ namespace CPMS_Accounting.Procedures
                 noFooter = false;
             }
 
-            // output += Seperator();
+             output += Seperator();
 
             lineCount = 1;
             //}
@@ -6827,8 +6831,12 @@ namespace CPMS_Accounting.Procedures
             string output = "";
             int i = 0;
 
-            foreach (string brstn in listofbrstn)
+            for (int x = 0; x < listofbrstn.Count; x++)
             {
+
+            
+                //foreach (string brstn in listofbrstn)
+           // {
 
                 output += "\r\n Page No. " + page.ToString() + "\r\n " +
                                   date + "\r\n" +
@@ -6837,16 +6845,20 @@ namespace CPMS_Accounting.Procedures
                                   GenerateSpace(2) + "ACCT_NO" + GenerateSpace(9) + "ACCOUNT NAME" + GenerateSpace(21) + "QTY CT START #" + GenerateSpace(4) + "END #\r\n\r\n\r\n";
 
                 
-                var listofchecks = _checks.Where(e => e.BRSTN == brstn).ToList();
+                var listofchecks = _checks.Where(e => e.BRSTN == listofbrstn[x]).ToList();
+                
                 output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " ("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
-                output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " ("+listofchecks[0].BranchCode+")\r\n\r\n" +
-                              " * BATCH #: " + _mainForm.batchFile + "\r\n\r\n";
-
+                output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " (" + listofchecks[0].BranchCode + ")\r\n\r\n";
+                
+                if(listofchecks[0].StartingSerial.Substring(4,6) == "000001")
+                output += " *  BATCH #: " + _mainForm.batchFile  + "_Pre-Encoded" + "\r\n\r\n";
+                else
+                    output += " * Re-Order BATCH #: " + _mainForm.batchFile + "_Re-Order" + "\r\n\r\n";
 
 
                 foreach (var check in listofchecks)
                 {
-
+                    i++;
                     //if (_checkType == "PERSONAL")
                     //{
                     //    while (check.StartingSerial.Length < 7)
@@ -6876,17 +6888,26 @@ namespace CPMS_Accounting.Procedures
                         output += GenerateSpace(19) + check.AccountName2 + GenerateSpace(60 - check.AccountName2.TrimEnd().Length) + "\r\n";
 
 
-
+                    if (i >= 50)
+                    {
+                        output += Seperator();
+                        i = 0;
+                    }
 
                 }
 
                 output += "\r\n";
                 output += "  * * * Sub Total * * * " + listofchecks.Count + "\r\n\r\n";
 
-                page++;
-                i++;
+                if(x < (listofbrstn.Count - 1))
+                output += Seperator();
 
+                page++;
+                //i++;
+               
             }
+            
+
             output += "  * * * Grand Total * * * " + _checks.Count + "\r\n";
             return output;
 
@@ -6959,6 +6980,7 @@ namespace CPMS_Accounting.Procedures
                 i++;
 
             }
+            output += Seperator();
             output += "  * * * Grand Total * * * " + _checks.Count + "\r\n";
             return output;
 
@@ -6991,6 +7013,7 @@ namespace CPMS_Accounting.Procedures
                 string outputStartSeries = check.StartingSerial.ToString();
 
                 string outputEndSeries = endSeries.ToString();
+                string Sseries = Series.ToString();
 
                 //   string brstnFormat = "";
 
@@ -6999,33 +7022,42 @@ namespace CPMS_Accounting.Procedures
                 //if (check.ChkType == "A")
                 //{
                 //    while (check.StartingSerial.Length < 7)
+                //    {
                 //        check.StartingSerial = "0" + check.StartingSerial;
-
+                //        Sseries = "0" + Sseries;
+                //    }
                 //    while (check.EndingSerial.Length < 7)
                 //        check.EndingSerial = "0" + check.EndingSerial;
                 //}
                 //else
                 //{
-                while (check.StartingSerial.Length < 10)
-                    check.StartingSerial = "0" + check.StartingSerial;
-
-                while (check.EndingSerial.Length < 10)
+                    while (check.StartingSerial.Length < 10)
+                    {
+                        check.StartingSerial = "0" + check.StartingSerial;
+                        Sseries = "0" + Sseries;
+                    }
+                    while (check.EndingSerial.Length < 10)
                     check.EndingSerial = "0" + check.EndingSerial;
-                //}
+                //   }
+                while (Sseries.Length <10)
+                {
+                    Sseries = "0" + Sseries;
+                }
+
                 output += "10\r\n" + //1 (FIXED)
                          check.BRSTN + "\r\n" + //2  (BRSTN)                                             
                          check.AccountNo + "\r\n" + //3 (ACCT NUMBER)                                              
-                         Series.ToString() + "\r\n" + //4 (Start Series + PCS per Book)                                                    
+                         Sseries + "\r\n" + //4 (Start Series + PCS per Book)                                                    
                          check.ChkType + "\r\n" + //5                                             
                          "\r\n" + //6 (BLANK)                           
                          check.BRSTN.Substring(0, 5) + "\r\n" +//7 BRSTN FORMATTED
                          " " + check.BRSTN.Substring(5, 4) + "\r\n" + //8 BRSTN FORMATTED                                                                    
                          check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
                             + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + "\r\n" + //9 (ACCT NUMBER)                
-                         //check.PrinterFileName + "\r\n" + //10 (NAME 1)           
+                         check.AccountName + "\r\n" + //10 (NAME 1)           
                          "SN\r\n" + //11 (FIXED)           
                          "\r\n" + //12 (BLANK)                
-                         //check.PrinterFileName2 + "\r\n" + //13 (NAME 2)                
+                         check.AccountName2 + "\r\n" + //13 (NAME 2)                
                          "\r\n" + //14  (BLANK)   
                          "\r\n" + //15 (BLANK)          
                          "\r\n" + //16 (BLANK)           
@@ -7099,20 +7131,24 @@ namespace CPMS_Accounting.Procedures
                 while (check.EndingSerial.Length < 10)
                     check.EndingSerial = "0" + check.EndingSerial;
                 //}
+                while (txtSeries.Length < 10)
+                {
+                    txtSeries = "0" + txtSeries;
+                }
                 output += "10\r\n" + //1 (FIXED)
                          check.BRSTN + "\r\n" + //2  (BRSTN)                                             
                          check.AccountNo + "\r\n" + //3 (ACCT NUMBER)                                              
-                         Series.ToString() + "\r\n" + //4 (Start Series + PCS per Book)                                                    
+                         txtSeries + "\r\n" + //4 (Start Series + PCS per Book)                                                    
                          check.ChkType + "\r\n" + //5                                             
                          "\r\n" + //6 (BLANK)                           
                          check.BRSTN.Substring(0, 5) + "\r\n" +//7 BRSTN FORMATTED
                          " " + check.BRSTN.Substring(5, 4) + "\r\n" + //8 BRSTN FORMATTED                                                                    
                          check.AccountNo.Substring(0, 1) + "-" + check.AccountNo.Substring(1, 3) + "-"
                             + check.AccountNo.Substring(4, 5) + "-" + check.AccountNo.Substring(9, 1) + "\r\n" + //9 (ACCT NUMBER)                
-                                                                                                                 //check.PrinterFileName + "\r\n" + //10 (NAME 1)           
+                         check.AccountName + "\r\n" + //10 (NAME 1)           
                          "SN\r\n" + //11 (FIXED)           
                          "\r\n" + //12 (BLANK)                
-                                  //check.PrinterFileName2 + "\r\n" + //13 (NAME 2)                
+                         check.AccountName2 + "\r\n" + //13 (NAME 2)                
                          "\r\n" + //14  (BLANK)   
                          "\r\n" + //15 (BLANK)          
                          "\r\n" + //16 (BLANK)           

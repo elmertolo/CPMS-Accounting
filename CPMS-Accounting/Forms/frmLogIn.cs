@@ -367,10 +367,10 @@ namespace CPMS_Accounting
                     gUser.IsDcEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcEditAllowed"));
                     gUser.IsDcDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsDcDeleteAllowed"));
 
-                    gUser.IsAllowedOnCd = row.Field<sbyte>("IsAllowedOnCd");
-                    gUser.IsCdCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdCreateAllowed"));
-                    gUser.IsCdEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdEditAllowed"));
-                    gUser.IsCdDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdDeleteAllowed"));
+                    //gUser.IsAllowedOnCd = row.Field<sbyte>("IsAllowedOnCd");
+                    //gUser.IsCdCreateAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdCreateAllowed"));
+                    //gUser.IsCdEditAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdEditAllowed"));
+                    //gUser.IsCdDeleteAllowed = Convert.ToBoolean(row.Field<sbyte>("IsCdDeleteAllowed"));
 
                 }
             }
