@@ -4334,6 +4334,26 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _poNumber;
         }
+        public int GetPONUmberforSearchingforRCBC(string _chkType)
+        {
+            log.Info("Searchig Purchase order Number in Database..");
+            int _poNumber = 0;
+
+            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName like '%" + _chkType.Replace("|", "''") + "%' ";
+            DBConnect();
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+
+                _poNumber = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
+
+                //  _poNumber.Add(po);
+            }
+            reader.Close();
+            DBClosed();
+            return _poNumber;
+        }
         private void Script(string _table ,OrderModel r,int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
             log.Info("Inserting Data into Database...");
@@ -7547,8 +7567,8 @@ namespace CPMS_Accounting.Procedures
         }
         public bool getDatafromOrdering(List<OrderModel> _tempList, string _batch)
         {
-            try
-            {
+            //try
+            //{
                 con = new MySqlConnection(ConString);
                 Sql = "Select Batch,DeliveryDate,H.BRSTN,AccountNo,AccountName,AccountName2,ChkType,CheckName,StartingSerial,EndingSerial" +
                     ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode " +
@@ -7586,12 +7606,12 @@ namespace CPMS_Accounting.Procedures
                 reader.Close();
                 con.Close();
                 return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return false;
+            //}
         }
         public void ManualProcess(List<OrderingModel> _orders, frmManualEncode _main, string _outputFolder)
         {

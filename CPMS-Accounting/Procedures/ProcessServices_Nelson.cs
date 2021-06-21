@@ -124,6 +124,25 @@ namespace CPMS_Accounting.Procedures
             }
 
         }
+        public bool LoadPriceListData2(ref DataTable dt)
+        {
+            try
+            {
+                string sql = "select bankcode, chequeName, description from " + gClient.PriceListTable + " group by ChequeName";
+                //string sql = "select count(*) as count from producers_history";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                da = new MySqlDataAdapter(cmd);
+                cmd.ExecuteNonQuery();
+                da.Fill(dt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+
+        }
 
         public bool LoadSearchedItem(string inputText ,ref DataTable dt)
         {

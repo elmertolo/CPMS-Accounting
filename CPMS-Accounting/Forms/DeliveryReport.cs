@@ -1135,7 +1135,9 @@ namespace CPMS_Accounting
                 lblTotalChecks.Text = "0";
                 dataGridView1.DataSource = "";
                 orderList.Clear();
-                proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
+                proc.getDatafromOrdering(orderList, txtBatch.Text);
+
+                //proc.GetProcessedDataFromDB(orderList, gClient.BankCode, txtBatch.Text);
                 listofProducts.Clear();
                 proc.GetProducts(listofProducts);
                 
@@ -1149,13 +1151,15 @@ namespace CPMS_Accounting
                     else
                         x.Location = "Provincial";
 
-                    listofProducts.ForEach(d =>
-                    {
-                        if (x.ChkType == d.ChkType && x.Location == d.DeliveryLocation)
-                        {
-                            x.ProductCode = d.ProductCode;
-                        }
-                    });
+                    var getProductCode = listofProducts.SingleOrDefault(d => d.ChkType == x.ChkType && x.Location ==d.DeliveryLocation);
+                    x.ProductCode = getProductCode.ProductCode;
+                    //listofProducts.ForEach(d =>
+                    //{
+                    //    if (x.ChkType == d.ChkType && x.Location == d.DeliveryLocation)
+                    //    {
+                    //        x.ProductCode = d.ProductCode;
+                    //    }
+                    //});
                     proc.GetBranchLocation(branch, x.BranchCode);
                     x.Address2 = branch.Address2.Replace("'", "''").TrimEnd();
                     x.Address3 = branch.Address3.Replace("'", "''").TrimEnd();
@@ -1301,15 +1305,21 @@ namespace CPMS_Accounting
                 {
                     orderList.ForEach(x =>
                     {
-
+                        if(gClient.BankCode == "028")
+                        {
+                            x.PONumber = proc.GetPONUmberforSearchingforRCBC(x.ChequeName);
+                        }
                         if (x.BRSTN.StartsWith("01"))
                             x.Location = "Direct";
                         else
                             x.Location = "Provincial";
 
+
+                        //var getproductcode = listofproducts.singleordefault(d => d.chktype == x.chktype && x.location == d.deliverylocation);
+                        //x.productcode = getproductcode.productcode;
                         listofProducts.ForEach(d =>
                         {
-                            if (x.ChkType == d.ChkType  && x.ChequeName == d.ChequeName) 
+                            if (x.ChkType == d.ChkType && x.ChequeName == d.ChequeName && x.Location == d.DeliveryLocation)
                             {
                                 x.Quantity = 1;
                                 x.ProductCode = d.ProductCode;

@@ -1017,7 +1017,7 @@ namespace CPMS_Accounting
                     }
 
                     //Update Quantity On hand for PNB
-                    if (gClient.ShortName == "PNB")
+                    if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                     {
                         foreach (var item in sortedList)
                         {

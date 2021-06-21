@@ -55,8 +55,10 @@ namespace CPMS_Accounting
             dgvItemList.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvItemList.ColumnCount = 5; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
 
-            //Column names and width setup
-            dgvItemList.Columns[0].Name = "PRODUCT CODE";
+            if (gClient.BankCode == "008")
+            {
+                //Column names and width setup
+                dgvItemList.Columns[0].Name = "PRODUCT CODE";
             dgvItemList.Columns[0].Width = 150;
             dgvItemList.Columns[0].DataPropertyName = "ProductCode";
 
@@ -64,18 +66,30 @@ namespace CPMS_Accounting
             dgvItemList.Columns[1].Width = 300;
             dgvItemList.Columns[1].DataPropertyName = "ChequeName"; //this must be the actual table name in sql
 
-            dgvItemList.Columns[2].Name = "UNIT PRICE";
-            dgvItemList.Columns[2].Width = 100;
-            dgvItemList.Columns[2].DataPropertyName = "unitprice";
+            
+                dgvItemList.Columns[2].Name = "UNIT PRICE";
+                dgvItemList.Columns[2].Width = 100;
+                dgvItemList.Columns[2].DataPropertyName = "unitprice";
 
-            dgvItemList.Columns[3].Name = "DOCSTAMP";
-            dgvItemList.Columns[3].Width = 1000;
-            dgvItemList.Columns[3].DataPropertyName = "docstamp";
+                dgvItemList.Columns[3].Name = "DOCSTAMP";
+                dgvItemList.Columns[3].Width = 1000;
+                dgvItemList.Columns[3].DataPropertyName = "docstamp";
 
-            dgvItemList.Columns[4].Name = "DESCRIPTION";
-            dgvItemList.Columns[4].Width = 50;
-            dgvItemList.Columns[4].DataPropertyName = "Description";
+                dgvItemList.Columns[4].Name = "DESCRIPTION";
+                dgvItemList.Columns[4].Width = 50;
+                dgvItemList.Columns[4].DataPropertyName = "Description";
+            }
+            else
+            {
 
+                dgvItemList.Columns[0].Name = "CHECK NAME";
+                dgvItemList.Columns[0].Width = 300;
+                dgvItemList.Columns[0].DataPropertyName = "ChequeName"; //this must be the actual table name in sql
+
+                dgvItemList.Columns[1].Name = "DESCRIPTION";
+                dgvItemList.Columns[1].Width = 300;
+                dgvItemList.Columns[1].DataPropertyName = "Description";
+            }
     
 
             //GRID 2
@@ -98,27 +112,46 @@ namespace CPMS_Accounting
             dgvListToProcess.Columns[0].Name = "QUANTITY";
             dgvListToProcess.Columns[0].Width = 100;
             //dgvListToProcess.Columns[0].DataPropertyName = "Quantity";
+            if (gClient.BankCode == "008")
+            {
+                dgvListToProcess.Columns[1].Name = "PRODUCT CODE";
+                dgvListToProcess.Columns[1].Width = 120;
+                dgvListToProcess.Columns[1].DataPropertyName = "ProductCode"; //this must be the actual table name in sql
 
-            dgvListToProcess.Columns[1].Name = "PRODUCT CODE";
-            dgvListToProcess.Columns[1].Width = 120;
-            dgvListToProcess.Columns[1].DataPropertyName = "ProductCode"; //this must be the actual table name in sql
+                dgvListToProcess.Columns[2].Name = "CHECK NAME";
+                dgvListToProcess.Columns[2].Width = 400;
+                dgvListToProcess.Columns[2].DataPropertyName = "ChequeName";
 
-            dgvListToProcess.Columns[2].Name = "CHECK NAME";
-            dgvListToProcess.Columns[2].Width = 400;
-            dgvListToProcess.Columns[2].DataPropertyName = "ChequeName";
+                dgvListToProcess.Columns[3].Name = "UNIT PRICE";
+                dgvListToProcess.Columns[3].Width = 100;
+                dgvListToProcess.Columns[3].DataPropertyName = "UnitPrice";
 
-            dgvListToProcess.Columns[3].Name = "UNIT PRICE";
-            dgvListToProcess.Columns[3].Width = 100;
-            dgvListToProcess.Columns[3].DataPropertyName = "UnitPrice";
+                dgvListToProcess.Columns[4].Name = "DOCSTAMP";
+                dgvListToProcess.Columns[4].Width = 1000;
+                dgvListToProcess.Columns[4].DataPropertyName = "Docstamp";
 
-            dgvListToProcess.Columns[4].Name = "DOCSTAMP";
-            dgvListToProcess.Columns[4].Width = 1000;
-            dgvListToProcess.Columns[4].DataPropertyName = "Docstamp";
+                dgvListToProcess.Columns[5].Name = "DESCRIPTION";
+                dgvListToProcess.Columns[5].Width = 1000;
+                dgvListToProcess.Columns[5].DataPropertyName = "Description";
+            }
+            else
+            {
+                dgvListToProcess.Columns[1].Name = "CHECK NAME";
+                dgvListToProcess.Columns[1].Width = 400;
+                dgvListToProcess.Columns[1].DataPropertyName = "ChequeName";
 
-            dgvListToProcess.Columns[5].Name = "DESCRIPTION";
-            dgvListToProcess.Columns[5].Width = 1000;
-            dgvListToProcess.Columns[5].DataPropertyName = "Description";
+                //dgvListToProcess.Columns[2].Name = "UNIT PRICE";
+                //dgvListToProcess.Columns[2].Width = 100;
+                //dgvListToProcess.Columns[2].DataPropertyName = "UnitPrice";
 
+                //dgvListToProcess.Columns[3].Name = "DOCSTAMP";
+                //dgvListToProcess.Columns[3].Width = 1000;
+                //dgvListToProcess.Columns[3].DataPropertyName = "Docstamp";
+
+                dgvListToProcess.Columns[2].Name = "DESCRIPTION";
+                dgvListToProcess.Columns[2].Width = 1000;
+                dgvListToProcess.Columns[2].DataPropertyName = "Description";
+            }
 
         }
 
@@ -159,17 +192,32 @@ namespace CPMS_Accounting
 
                 foreach (DataGridViewRow row in dgvItemList.SelectedRows)
                 {
-                    //insert record to Items to process in datagrid
-                    dgvListToProcess.Rows.Add
-                    (
-                    0, 
-                    row.Cells["Product Code"].Value.ToString(), 
-                    row.Cells["Check Name"].Value.ToString(),
-                    string.Format("{0,12:#.00}", row.Cells["Unit Price"].Value), 
-                    string.Format("{0,12:#.00}", row.Cells["DocStamp"].Value),
-                    row.Cells["Description"].Value.ToString()
-                    );
-
+                    if (gClient.BankCode == "028")
+                    {
+                        //insert record to Items to process in datagrid
+                        dgvListToProcess.Rows.Add
+                        (
+                        0,
+                        //row.Cells["Product Code"].Value.ToString(),
+                        row.Cells["Check Name"].Value.ToString(),
+                        //string.Format("{0,12:#.00}", row.Cells["Unit Price"].Value),
+                        //string.Format("{0,12:#.00}", row.Cells["DocStamp"].Value),
+                        row.Cells["Description"].Value.ToString()
+                        );
+                    }
+                    else
+                    {
+                        //insert record to Items to process in datagrid
+                        dgvListToProcess.Rows.Add
+                        (
+                        0,
+                        row.Cells["Product Code"].Value.ToString(),
+                        row.Cells["Check Name"].Value.ToString(),
+                        string.Format("{0,12:#.00}", row.Cells["Unit Price"].Value),
+                        string.Format("{0,12:#.00}", row.Cells["DocStamp"].Value),
+                        row.Cells["Description"].Value.ToString()
+                        );
+                    }
                 }
 
                 dgvListToProcess.ReadOnly = false;
@@ -244,12 +292,23 @@ namespace CPMS_Accounting
                         line.PurchaseOrderNumber = int.Parse(txtPONumber.Text.ToString());
                         line.PurchaseOrderDateTime = DateTime.Parse(dtpPODate.Value.ToString());
                         line.ClientCode = gClient.ClientCode;
-                        line.ProductCode = row.Cells["Product Code"].Value.ToString();
-                        line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
-                        line.ChequeName = row.Cells["Check Name"].Value.ToString();
-                        line.Description = row.Cells["Description"].Value.ToString();
-                        line.UnitPrice = double.Parse(row.Cells["Unit Price"].Value.ToString());
-                        line.Docstamp = double.Parse(row.Cells["DocStamp"].Value.ToString());
+                        if (gClient.BankCode == "008")
+                        {
+                            line.ProductCode = row.Cells["Product Code"].Value.ToString();
+                            line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                            line.ChequeName = row.Cells["Check Name"].Value.ToString();
+                            line.Description = row.Cells["Description"].Value.ToString();
+                            line.UnitPrice = double.Parse(row.Cells["Unit Price"].Value.ToString());
+                            line.Docstamp = double.Parse(row.Cells["DocStamp"].Value.ToString());
+                        }
+                        else
+                        {
+                            line.Quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                            line.ChequeName = row.Cells["Check Name"].Value.ToString();
+                            line.Description = row.Cells["Description"].Value.ToString();
+                            //line.UnitPrice = double.Parse(row.Cells["Unit Price"].Value.ToString());
+                            //line.Docstamp = double.Parse(row.Cells["DocStamp"].Value.ToString());
+                        }
                         line.GeneratedBy = lblUserName.Text.ToString();
                         line.CheckedBy = cbCheckedBy.Text.ToString();
                         line.ApprovedBy = cbApprovedBy.Text.ToString();
@@ -367,13 +426,25 @@ namespace CPMS_Accounting
             
 
             DataTable dt = new DataTable();
-            if (!proc.LoadPriceListData(ref dt))
+            if (gClient.BankCode == "028")
             {
-                MessageBox.Show("Server Connection Error (LoadPriceListData) \r\n" + proc.errorMessage);
-                RefreshView();
-                return;
+                if (!proc.LoadPriceListData2(ref dt))
+                {
+                    MessageBox.Show("Server Connection Error (LoadPriceListData) \r\n" + proc.errorMessage);
+                    RefreshView();
+                    return;
+                }
+                
             }
-
+            else
+            {
+                if (!proc.LoadPriceListData(ref dt))
+                {
+                    MessageBox.Show("Server Connection Error (LoadPriceListData) \r\n" + proc.errorMessage);
+                    RefreshView();
+                    return;
+                }
+            }
             dgvItemList.DataSource = dt;
             dgvItemList.ClearSelection(); // remove first highlighted row in datagrid
             btnAddRecord.Focus();
