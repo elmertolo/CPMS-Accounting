@@ -2103,6 +2103,7 @@ namespace CPMS_Accounting.Procedures
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
                 //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
+                
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -2128,14 +2129,45 @@ namespace CPMS_Accounting.Procedures
                     doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
 
                     _temp.Add(doc);
+                
                 }
                 reader.Close();
                 DBClosed();
+
+
+                string Sql3 = "Select Distinct(Batch) from " + gClient.DataBaseName + " where DocStampNumber = '"+_docStampNumber+"';";
                 DBConnect();
+                MySqlCommand cmd3 = new MySqlCommand(Sql3, myConnect);
+                cmd3.ExecuteNonQuery();
+                string batches = "";
+                
+                MySqlDataReader reader2 = cmd3.ExecuteReader();
+              //  int counter = 0;
+                while (reader2.Read())
+                {
+                    batches += !reader2.IsDBNull(0) ? reader2.GetString(0) : "";
+                    if(reader2.HasRows)
+                    {
+                        batches += ",";
+                    }
+                    
+                    
+
+                    //counter++;
+                }
+                reader2.Close();
+                DBClosed();
+
+
+
+                DBConnect(); 
                 string Sql1 = "Delete from " + gClient.DocStampTempTable;
                 cmd = new MySqlCommand(Sql1, myConnect);
                 cmd.ExecuteNonQuery();
                 DBClosed();
+
+
+
                 DBConnect();
                 _temp.ForEach(d =>
                 {
@@ -2144,7 +2176,7 @@ namespace CPMS_Accounting.Procedures
                                 "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
+                                ",'" + batches.Substring(0,batches.Length -1) + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting to Docstamp table Done..");
@@ -5268,6 +5300,7 @@ namespace CPMS_Accounting.Procedures
             log.Info("Generating Document Stamp Details..");
             try
             {
+                
 
 
                 //Orginal Query
@@ -5282,6 +5315,7 @@ namespace CPMS_Accounting.Procedures
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
                 //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
+                string batches = "";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -5305,8 +5339,10 @@ namespace CPMS_Accounting.Procedures
                     doc.TotalAmount = !reader.IsDBNull(12) ? reader.GetDouble(12) : 0;
                     doc.Location = !reader.IsDBNull(13) ? reader.GetString(13) : "";
                     doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
-
+                    batches = doc.batches;
+                    batches += ",";
                     _temp.Add(doc);
+                   
                 }
                 reader.Close();
                 DBClosed();
@@ -5315,6 +5351,10 @@ namespace CPMS_Accounting.Procedures
                 cmd = new MySqlCommand(Sql1, myConnect);
                 cmd.ExecuteNonQuery();
                 DBClosed();
+
+
+                //Sql = "Select Distinct(Batch) as Batches from " + gClient.DataBaseName + " where DocStampNumber = '"+ _docStampNumber + "'" ;
+
                 DBConnect();
                 _temp.ForEach(d =>
                 {
@@ -5323,7 +5363,7 @@ namespace CPMS_Accounting.Procedures
                                 "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + d.batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
+                                ",'" + batches + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting to Docstamp table Done..");
@@ -5385,8 +5425,9 @@ namespace CPMS_Accounting.Procedures
                 Sql = "Select Bank, Batch, Brstn,BranchName,BranchCode,Date,ChkType, ChequeName,AccountNo,Name1,Name2, StartingSerial, EndingSerial, SalesInvoice," +
                     "UnitPrice,DocStamp,DeliveryDate,username,SalesInvoiceGeneratedBy,SalesInvoiceDate,location,DrNumber,PackNumber,DocStampNumber,AttentionTo," +
                     "ProductCode,Block,Segment,ProductType,DeliveryToBrstn,DeliveryToBranch,OldBranchCode,CheckedByDS,PurchaseOrderNumber,Count(ChkType) as Quantity " +
-                    " from "  + gClient.DataBaseName + " where Batch Like '" + _batch + "%' group by Batch,ChequeName,ChkType;";
-
+                    " from " + gClient.DataBaseName + " where Batch Like '" + _batch + "%'  group by Batch,ChequeName,ChkType;";
+                //" from "  + gClient.DataBaseName + " where Batch Like '" + _batch + "%' or (DocStampNumber Like '%"+_batch+"%') group by Batch,ChequeName,ChkType;";
+                //Added or (DocStampNumber ='"+_batch+"%')
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -7626,7 +7667,49 @@ namespace CPMS_Accounting.Procedures
                 PrinterFileManual(checkType, _main);
             });
         }
+        public void SaveDataToAccounting(List<OrderingModel> _orderList, string _zipFile)
+        {
+            try
+            {
+                MySqlConnection con;
+                string conString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
+                con = new MySqlConnection(conString);
+                con.Open();
+                _orderList.ForEach(x =>
+                {
+                    Sql = "Insert into  (Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
+                        "ChkType,CheckName,StartingSerial,EndingSerial,DeliveryBrstn,DeliveryBranch,DeliveryBranchCode,Status)" +
+                        "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
+                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
+                        "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch + "','" + x.DeliveryBranchCode + "',1);";
 
+
+                    cmd = new MySqlCommand(Sql, con);
+                    cmd.ExecuteNonQuery();
+                });
+                con.Close();
+                //DBClosed();
+                //DBConnect();
+
+                //FileStream fs = new FileStream(_zipFile, FileMode.Open, FileAccess.Read);
+                //int FileSize = (int)fs.Length;
+                //byte[] rawData  = new byte[FileSize];
+                //fs.Read(rawData, 0, FileSize);
+                //fs.Close();
+                //Sql =  "Insert into " + gClient.ZipTable + " (Batch_ID, ZipFile, DateProcessed) values ('" + _orderList[0].Batch + "','"+rawData+"','" +
+                //       DateTime.Now.ToString("yyyy-MM-dd") + "');";
+
+                //cmd = new MySqlCommand(Sql, myConnect);
+                //cmd.ExecuteNonQuery();
+                MessageBox.Show("Data has been Successfully saved!", "Saving Data to Accounting Database ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
     

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CPMS_Accounting.Procedures;
+//Added for RCBC
+using static CPMS_Accounting.GlobalVariables;
 
 namespace CPMS_Accounting
 {
@@ -27,6 +29,7 @@ namespace CPMS_Accounting
             InitializeComponent();
             lblMessage2.Text = labelMessage2;
             lblMessage2.Visible = false;
+
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -36,6 +39,7 @@ namespace CPMS_Accounting
                 MessageBox.Show("Please input Sales Invoice Number.");
                 return;
             }
+            
             userInput = txtInput.Text.ToString();
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -73,7 +77,9 @@ namespace CPMS_Accounting
             lblMessage1.Text = labelMessage1;
             lblMessage2.Text = labelMessage2;
             txtInput.SelectAll();
+            txtInput.Text = userInput;
             txtInput.Focus();
+
             log.Info("frmMessage Loaded. " + lblMessage1.Text.Replace(':', ' '));
 
         }

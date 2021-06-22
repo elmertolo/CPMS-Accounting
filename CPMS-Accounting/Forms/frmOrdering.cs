@@ -100,7 +100,7 @@ namespace CPMS_Accounting.Forms
                 proc.Process(orderList, this,Application.StartupPath+ "\\Output");//Generating TextFile and dbf file Data output
                string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
                 proc.SaveData(orderList, zipFile); // Saving Data to database
-
+                proc.SaveDataToAccounting(orderList, zipFile); // Saving Data to database
             }
 
             

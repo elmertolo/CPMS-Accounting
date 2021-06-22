@@ -323,7 +323,7 @@ namespace CPMS_Accounting.Procedures
                     string updateHistory;
                     string updateFinishedDetails;
                     //PNB Update. Added Purchase Order Field upon updating
-                    if (gClient.ShortName == "PNB")
+                    if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                     {
                         //Update History Table
                         updateHistory = "update " + gClient.DataBaseName + " set " +
@@ -804,6 +804,45 @@ namespace CPMS_Accounting.Procedures
                 if (remainingQuantity < 0)
                 {
                    
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
+        }
+        public bool IsQuantityOnHandSufficientforRCBC(SalesInvoiceFinishedDetailModel siDetails, ref int remainingQuantity, ref List<SalesInvoiceFinishedDetailModel> salesInvoiceList)
+        {
+
+            try
+            {
+
+                //Check Onhand quantity first. cancel update if onhand quantity is insufficient
+                //double onhandQuantity = double.Parse(SeekReturn("select (quantityonhand) from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
+                //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
+                int onhandQuantity = Convert.ToInt32(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where purchaseorderno = " + siDetails.PurchaseOrderNumber + "", 0));
+                int processedQuantity = Convert.ToInt32(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where purchaseordernumber = " + siDetails.PurchaseOrderNumber + "", 0));
+                int totalPunchedItemQuantity = 0;
+
+                //Check and add Punched Item on grid
+
+                foreach (var item in salesInvoiceList)
+                {
+                    if (item.PurchaseOrderNumber == siDetails.PurchaseOrderNumber)
+                    {
+                        totalPunchedItemQuantity += item.Quantity;
+                    }
+                }
+
+                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - siDetails.Quantity;
+
+                if (remainingQuantity < 0)
+                {
+
                     return false;
                 }
 

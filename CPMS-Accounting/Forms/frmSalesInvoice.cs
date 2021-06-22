@@ -299,15 +299,21 @@ namespace CPMS_Accounting
                     }
 
                     //(Validation) Checing of Onhand quantity for PNB
-                    if (gClient.ShortName == "PNB")
+                    if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                     {
                        
                         frmMessageInput xfrm = new frmMessageInput();
                         xfrm.Text = "PO NUMBER REQUIRED.";
                         xfrm.labelMessage1 = "Input Purchase Order Number For Product Code:\r\n";
                         xfrm.labelMessage2 = "'" + siFinishedDetailLine.ProductCode + "' with Batch Name '" + siFinishedDetailLine.BatchName + "'.";
+                        if (gClient.BankCode == "028")
+                        {
+                            siFinishedDetailLine.PurchaseOrderNumber = Convert.ToInt32(proc.SeekReturn("select purchaseorderno from " + gClient.PurchaseOrderFinishedTable + "  where chequeName = '" + siFinishedDetailLine.CheckName + "'",0));
+                            xfrm.userInput = siFinishedDetailLine.PurchaseOrderNumber.ToString();
+                        }
                         DialogResult result = xfrm.ShowDialog();
-                        
+                       
+
                         if (result == DialogResult.OK)
                         {
                             log.Info("Pressed 'OK' with purchase order number: " + xfrm.userInput.ToString());
@@ -318,17 +324,39 @@ namespace CPMS_Accounting
                             //thread = new Thread(() => progressBar.ShowDialog());
                             //thread.Start();
 
-                            siFinishedDetailLine.PurchaseOrderNumber = int.Parse(xfrm.userInput);
+                            // added for RCBC
+                            //if (gClient.BankCode == "028")
+                            //{
+                            //    siFinishedDetailLine.PurchaseOrderNumber = Convert.ToInt32(proc.SeekReturn("select purchaseordernumber from " + gClient.DataBaseName + "  where chequeName = " + siFinishedDetailLine.CheckName + "", 0));
+                            //    xfrm.userInput =  siFinishedDetailLine.PurchaseOrderNumber.ToString();
+                            //}
+                            //else
+                            //{
+                                siFinishedDetailLine.PurchaseOrderNumber = int.Parse(xfrm.userInput);
+                            //}
                             int remainingQuantity = 0;
 
                             //Check if quantity is sufficient
                             //if (!proc.IsQuantityOnHandSufficient(siFinishedDetailLine.Quantity, siFinishedDetailLine.ProductCode, siFinishedDetailLine.PurchaseOrderNumber, ref remainingQuantity, ref salesInvoiceList))
-                            if (!proc.IsQuantityOnHandSufficient(siFinishedDetailLine,ref remainingQuantity, ref salesInvoiceList))
+                            if (gClient.BankCode == "028")
                             {
-                                //thread.Abort();
-                                //MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
-                                p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
-                                return;
+                                if (!proc.IsQuantityOnHandSufficientforRCBC(siFinishedDetailLine, ref remainingQuantity, ref salesInvoiceList))
+                                {
+                                    //thread.Abort();
+                                    //MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
+                                    p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (!proc.IsQuantityOnHandSufficient(siFinishedDetailLine, ref remainingQuantity, ref salesInvoiceList))
+                                {
+                                    //thread.Abort();
+                                    //MessageBox.Show("Error on (Procedure ChequeQuantityIsSufficient) \r\n \r\n" + proc.errorMessage);
+                                    p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
+                                    return;
+                                }
                             }
                             siFinishedDetailLine.PurchaseOrderBalance = remainingQuantity;
 

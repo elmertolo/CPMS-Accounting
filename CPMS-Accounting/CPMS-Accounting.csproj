@@ -433,10 +433,10 @@
       <DependentUpon>RCBCDeliveryReceiptDirect.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\1RCBC_SalesInvoice.cs">
+    <Compile Include="Reports\RCBC_SalesInvoice.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>1RCBC_SalesInvoice.rpt</DependentUpon>
+      <DependentUpon>RCBC_SalesInvoice.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\Robinsons_SalesInvoice.cs">
@@ -594,10 +594,6 @@
     <EmbeddedResource Include="Reports\RCBCDeliveryReceiptDirect.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>RCBCDeliveryReceiptDirect.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\1RCBC_SalesInvoice.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>1RCBC_SalesInvoice.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\RCBC_SalesInvoice.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
