@@ -7612,8 +7612,8 @@ namespace CPMS_Accounting.Procedures
         }
         public bool getDatafromOrdering(List<OrderModel> _tempList, string _batch)
         {
-            //try
-            //{
+            try
+            {
                 con = new MySqlConnection(ConString);
                 Sql = "Select Batch,DeliveryDate,H.BRSTN,AccountNo,AccountName,AccountName2,ChkType,CheckName,StartingSerial,EndingSerial" +
                     ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode,DeliveryBranchCode " +
@@ -7651,14 +7651,18 @@ namespace CPMS_Accounting.Procedures
                 }
                 reader.Close();
                 con.Close();
+                if(_tempList.Count > 0)
+
                 return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return false;
-            //}
-        }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+}
         public void ManualProcess(List<OrderingModel> _orders, frmManualEncode _main, string _outputFolder)
         {
             TypeofCheckModel checkType = new TypeofCheckModel();
