@@ -85,7 +85,7 @@ namespace CPMS_Accounting.Forms
                         docstamp.ForEach(x =>
                         {
 
-                            proc.GetDocStampDetails(tempdocstamp, x.DocStampNumber);
+                            proc.GetDocStampDetailsRCBC(tempdocstamp, x.DocStampNumber);
 
                         });
                     //}
@@ -218,7 +218,7 @@ namespace CPMS_Accounting.Forms
                             doc.TotalQuantity = int.Parse(row.Cells["Quantity"].Value.ToString());
                             doc.TotalAmount = doc.TotalQuantity * doc.DocStampPrice;
                             // doc.PreparedBy = 
-
+                            doc.ChequeName = row.Cells["Cheque Name"].Value.ToString();
 
                             docstamp.Add(doc);
                            //if (gClient.BankCode == "008")

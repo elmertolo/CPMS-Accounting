@@ -14,6 +14,7 @@ namespace CPMS_Accounting.Models
         public DateTime DocStampDate { get; set; }
         public int TotalQuantity { get; set; }
         public string DocDesc { get; set; }
+        public string ChequeName { get; set; }
         public string ChkType { get; set; }
         public int POorder { get; set; }
         public double DocStampPrice { get; set; }

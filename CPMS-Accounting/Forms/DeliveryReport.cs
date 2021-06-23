@@ -1505,8 +1505,8 @@ namespace CPMS_Accounting
                         vpDrP.Show();
                         vpDrP.Text = "Delivery Receipt Provincial Branches";
 
-                        tempDr.Clear();
-                        proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
+                        //tempDr.Clear();
+                        //proc.GetPackingListwithSticker(orderList[0].Batch, tempDr);
 
                         //if (gClient.ShortName == "PNB")
                         //    proc.GetStickerDetailsForPNB(tempSticker, orderList[0].Batch);

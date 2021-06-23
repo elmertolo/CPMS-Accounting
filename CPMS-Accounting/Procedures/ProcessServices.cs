@@ -2019,7 +2019,7 @@ namespace CPMS_Accounting.Procedures
                         Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
                             ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
                             "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber + " and ChkType = '" +
-                            _docStamp[i].ChkType + "';";
+                            _docStamp[i].ChkType + "' and ChequeName = '" +_docStamp[i].ChequeName + "';";
                     }
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
@@ -2818,7 +2818,8 @@ namespace CPMS_Accounting.Procedures
             bool isInsertData = false;
             DBConnect();
             int counter = 0;
-            //_checks.Regular_Personal_Direct.OrderBy(e => e.Location).ToList();
+
+            
             //_checks.Regular_Commercial_Direct.OrderBy(e => e.Location).ToList();
             //_checks.Regular_Commercial_Provincial.OrderBy(e => e.Location).ToList();
             //_checks.Regular_Personal_Provincial.OrderBy(e => e.Location).ToList();
@@ -3151,7 +3152,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 // END with deliveryTO
             }
-
+            isInsertData = false;
             if (_checks.Reca_Commercial_Direct.Count > 0)
             {
                 // generating DR number per Branches with ChkType B in Direct Branches
@@ -3175,6 +3176,7 @@ namespace CPMS_Accounting.Procedures
                 //END Without DeliveryTo
                 // with deliveryTO
                 // generating DR number per Branches with ChkType B in Direct Branches
+                isInsertData = false;
                 var dBranch2 = _checks.Reca_Commercial_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
                 {
@@ -3325,7 +3327,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 //End Without DeliveryTo
                 
-                _DrNumber++;
+             //   _DrNumber++;
                 // with deliveryTO
                 var dBranch2 = _checks.Customized_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
@@ -3386,6 +3388,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 //END Without DeliveryTo
                 // with deliveryTO
+                isInsertData = true;
                 dBranch.ForEach(y =>
                 {
 
@@ -3507,13 +3510,13 @@ namespace CPMS_Accounting.Procedures
             //{
             //    var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
             //    // isInsertData = true;
-               
+
             //}
             //------------------------------------------ END of Regular Cheques Provincial Branches ---------------------------------//
-
+            isInsertData = false;
             if (_checks.DragonBlue_Personal_Provincial.Count > 0)
             {
-                 _DrNumber++;
+                 //_DrNumber++;
                 //counter = 10;
                 //isInsertData = true;
                 //if (isInsertData)
@@ -3590,11 +3593,12 @@ namespace CPMS_Accounting.Procedures
 
             }
 
+            isInsertData = false;
             if (_checks.DragonBlue_Commercial_Provicial.Count > 0)
             {
                 //counter = 10;
                 //isInsertData = true;
-                _DrNumber++;
+                //_DrNumber++;
                 ////Generating DR per CheckType in Provincial Branches
                 ////Without DeliveryTo
                 //if (isInsertData)
@@ -3691,7 +3695,7 @@ namespace CPMS_Accounting.Procedures
                 //    }
                 //}
 
-                _DrNumber++;
+                //_DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 var dBranch = _checks.DragonYellow_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 //Without DeliveryTo
@@ -7612,7 +7616,7 @@ namespace CPMS_Accounting.Procedures
             //{
                 con = new MySqlConnection(ConString);
                 Sql = "Select Batch,DeliveryDate,H.BRSTN,AccountNo,AccountName,AccountName2,ChkType,CheckName,StartingSerial,EndingSerial" +
-                    ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode " +
+                    ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode,DeliveryBranchCode " +
                     "  from " +gClient.DataBaseName + " as H  inner join "+gClient.BranchesTable + " as B on H.BRSTN = B.BRSTN  where Batch ='" + _batch+"'";
                 con.Open();
                 cmd = new MySqlCommand(Sql, con);
@@ -7639,7 +7643,8 @@ namespace CPMS_Accounting.Procedures
                         Address4 = !reader.IsDBNull(15) ? reader.GetString(15) : "",
                         Address5 = !reader.IsDBNull(16) ? reader.GetString(16) : "",
                         Address6 = !reader.IsDBNull(17) ? reader.GetString(17) : "",
-                        BranchCode = !reader.IsDBNull(18) ? reader.GetString(18) : ""
+                        BranchCode = !reader.IsDBNull(18) ? reader.GetString(18) : "",
+                        OldBranchCode = !reader.IsDBNull(19) ? reader.GetString(19): "" 
                     };
 
                     _tempList.Add(order);
