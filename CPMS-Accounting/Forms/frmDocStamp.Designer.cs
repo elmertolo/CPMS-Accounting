@@ -281,7 +281,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.DgvDSalesInvoice.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.DgvDSalesInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvDSalesInvoice.Location = new System.Drawing.Point(105, 63);
+            this.DgvDSalesInvoice.Location = new System.Drawing.Point(21, 65);
             this.DgvDSalesInvoice.Name = "DgvDSalesInvoice";
             this.DgvDSalesInvoice.ReadOnly = true;
             this.DgvDSalesInvoice.Size = new System.Drawing.Size(1003, 177);
@@ -297,7 +297,7 @@ namespace CPMS_Accounting.Forms
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(30, 102);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1167, 255);
+            this.groupBox2.Size = new System.Drawing.Size(1042, 255);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Processed Sales Invoice";

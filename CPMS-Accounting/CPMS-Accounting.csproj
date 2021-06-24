@@ -355,17 +355,17 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Reports\RCBCDocStamp.cs">
-      <DependentUpon>RCBCDocStamp.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Reports\DocStamp.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DocStamp.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RCBCDocStamp.cs">
+      <DependentUpon>RCBCDocStamp.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\RCBCPackingReport.cs">
       <DependentUpon>RCBCPackingReport.rpt</DependentUpon>
@@ -543,13 +543,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PNBDocStamp.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\RCBCDocStamp.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>RCBCDocStamp.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\DocStamp.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>DocStamp.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RCBCDocStamp.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RCBCDocStamp.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\RCBCPackingReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

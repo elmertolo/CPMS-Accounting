@@ -54,8 +54,8 @@ namespace CPMS_Accounting.Forms
 
             dgvView.DataSource = dt;
             ProcessServices.bg_dtg(dgvView);
-            dgvView.Columns[0].Width = 70;
-            dgvView.Columns[3].Width = 60;
+            dgvView.Columns[0].Width = 90;
+            dgvView.Columns[3].Width = 52;
         }
 
         private void dgvView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -84,13 +84,14 @@ namespace CPMS_Accounting.Forms
             dt2.Columns.Add("Quantity");
             dt2.Columns.Add("Delivery Date");
             dt2.Columns.Add("Date Processed");
+            dt2.Columns.Add("PrimaryKey");
 
 
-      
+
             tempData.ForEach(r =>
             {
                 dt2.Rows.Add(new object[] { r.Batch,r.DrNumber,r.SalesInvoice,r.DocStampNumber,r.ChkType,r.ChequeName,
-                    r.Qty ,r.DeliveryDate.ToString("yyyy-MM-dd"), r.DateProcessed.ToString("yyyy-MM-dd") 
+                    r.Qty ,r.DeliveryDate.ToString("yyyy-MM-dd"), r.DateProcessed.ToString("yyyy-MM-dd") ,r.PrimaryKey
                 });
             });
             chk.Name = "Chk";
@@ -131,6 +132,7 @@ namespace CPMS_Accounting.Forms
             dgvData.Columns[7].Width = 70;
             dgvData.Columns[8].Width = 70;
             dgvData.Columns[9].Width = 70;
+            dgvData.Columns[10].Visible = false;
         }
 
         private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -188,31 +190,38 @@ namespace CPMS_Accounting.Forms
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-            TempModel tempModel = new TempModel();
+            
             //if (dgvData.SelectedRows != null && dgvData.SelectedRows.Count > 0)
             //{
-            string val = txtNewDr.Text;
-            
+          //  string val = txtNewDr.Text;
+            temp.Clear();
                 foreach (DataGridViewRow row in dgvData.Rows)
                 {
                     bool isSelected = Convert.ToBoolean(row.Cells["Chk"].Value);
                     if(isSelected)
                     {
+                        TempModel tempModel = new TempModel();
                         tempModel.DrNumber = row.Cells["Delivery Receipt No."].Value.ToString();
                         tempModel.Qty = int.Parse(row.Cells["Quantity"].Value.ToString());
-                    //  MessageBox.Show(tempModel.DrNumber);
-                        
+                        tempModel.SalesInvoice = int.Parse(row.Cells["Sales Invoice No."].Value.ToString());
+                        tempModel.DocStampNumber = int.Parse(row.Cells["Document Stamp No."].Value.ToString());
+                       //tempModel.BRSTN = row.Cells["BRSTN"].Value.ToString();
+                        tempModel.ChkType = row.Cells["Cheque Type"].Value.ToString();
+                        tempModel.DeliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
+                        tempModel.PrimaryKey = int.Parse(row.Cells["PrimaryKey"].Value.ToString());
+
+                        temp.Add(tempModel);
                     }
                 }
             // 
-            if (txtNewDr.Text != "")
+            if (temp.Count > 0)
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure ?", "Delivery Receipt Number Update", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     //do something
                
-                 proc.UpdateItem(tempModel, val);
+                 proc.UpdateItem(temp);
                 
                 MessageBox.Show("Data has been Updated!!");
                 ClearTools();
@@ -229,7 +238,7 @@ namespace CPMS_Accounting.Forms
         }
         private void ClearTools()
         {
-            txtNewDr.Text = "";
+          //  txtNewDr.Text = "";
             temp.Clear();
             tempData.Clear();
             dgvData.Refresh();

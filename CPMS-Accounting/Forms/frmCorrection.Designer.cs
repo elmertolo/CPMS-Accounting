@@ -44,8 +44,6 @@ namespace CPMS_Accounting.Forms
             this.cbHeader = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnModify = new System.Windows.Forms.Button();
-            this.txtNewDr = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
@@ -56,7 +54,7 @@ namespace CPMS_Accounting.Forms
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, -2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1279, 80);
+            this.pictureBox1.Size = new System.Drawing.Size(1328, 80);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -91,7 +89,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvView.Size = new System.Drawing.Size(407, 409);
+            this.dgvView.Size = new System.Drawing.Size(385, 409);
             this.dgvView.TabIndex = 1;
             this.dgvView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvView_CellClick);
             // 
@@ -137,7 +135,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvData.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvData.Location = new System.Drawing.Point(444, 127);
+            this.dgvData.Location = new System.Drawing.Point(431, 127);
             this.dgvData.Name = "dgvData";
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
@@ -147,7 +145,7 @@ namespace CPMS_Accounting.Forms
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvData.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvData.Size = new System.Drawing.Size(801, 409);
+            this.dgvData.Size = new System.Drawing.Size(846, 409);
             this.dgvData.TabIndex = 6;
             this.dgvData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellClick);
             // 
@@ -172,7 +170,7 @@ namespace CPMS_Accounting.Forms
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnDelete.Location = new System.Drawing.Point(1033, 81);
+            this.btnDelete.Location = new System.Drawing.Point(1068, 81);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(0);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(95, 43);
@@ -192,7 +190,7 @@ namespace CPMS_Accounting.Forms
             this.btnModify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModify.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModify.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnModify.Location = new System.Drawing.Point(1142, 81);
+            this.btnModify.Location = new System.Drawing.Point(1177, 81);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(95, 43);
             this.btnModify.TabIndex = 9;
@@ -200,32 +198,11 @@ namespace CPMS_Accounting.Forms
             this.btnModify.UseVisualStyleBackColor = false;
             this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
-            // txtNewDr
-            // 
-            this.txtNewDr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNewDr.Location = new System.Drawing.Point(578, 94);
-            this.txtNewDr.Name = "txtNewDr";
-            this.txtNewDr.Size = new System.Drawing.Size(134, 22);
-            this.txtNewDr.TabIndex = 10;
-            this.txtNewDr.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNewDr_KeyPress);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(444, 97);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(130, 16);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "New DR Number :";
-            // 
             // frmCorrection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1269, 548);
-            this.Controls.Add(this.txtNewDr);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(1300, 548);
             this.Controls.Add(this.btnModify);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.cbHeader);
@@ -256,7 +233,5 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.CheckBox cbHeader;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnModify;
-        private System.Windows.Forms.TextBox txtNewDr;
-        private System.Windows.Forms.Label label2;
     }
 }

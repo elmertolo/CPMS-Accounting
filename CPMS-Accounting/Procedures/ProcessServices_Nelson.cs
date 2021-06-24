@@ -81,7 +81,7 @@ namespace CPMS_Accounting.Procedures
             {
                 string sql;
 
-                if (gClient.ShortName == "PNB")
+                if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                 {
                     sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity, ProductCode, location from " + gClient.DataBaseName + " where salesinvoice is null group by batch, chequename, ChkType, location";
                 }
@@ -838,7 +838,9 @@ namespace CPMS_Accounting.Procedures
                     }
                 }
 
-                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - siDetails.Quantity;
+                //remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - siDetails.Quantity;
+                //update for RCBC 
+                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity;
 
                 if (remainingQuantity < 0)
                 {
@@ -1265,7 +1267,7 @@ namespace CPMS_Accounting.Procedures
                         gClient.PurchaseOrderFinishedTable,
                         gClient.DocStampTempTable,
                         gClient.BranchesTable,
-                        gClient.CancelledTable,
+                        gClient.UpdateTable,
                         gClient.ChequeTypeTable,
                         gClient.ProductTable,
                         gClient.StickerTable

@@ -102,7 +102,7 @@ namespace CPMS_Accounting
             dgvDRList.EditMode = DataGridViewEditMode.EditProgrammatically;
 
             //Added location field if PNB
-            if (gClient.ShortName == "PNB")
+            if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
             {
                 //Column names and width setup
                 dgvDRList.ColumnCount = 7; //COUNT OF COLUMNS THAT WILL DISPLAY IN GRID
@@ -166,7 +166,7 @@ namespace CPMS_Accounting
                 dgvDRList.Columns[5].Width = 500;
                 dgvDRList.Columns[5].DataPropertyName = "deliverydate";
 
-
+              
             }
 
 
@@ -279,7 +279,7 @@ namespace CPMS_Accounting
                     siFinishedDetailLine.UOM = "BKT";
 
                     //Include Location field if PNB
-                    if (gClient.ShortName == "PNB")
+                    if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                     {
                         siFinishedDetailLine.Location = row.Cells["location"].Value.ToString();
                     }
@@ -347,6 +347,7 @@ namespace CPMS_Accounting
                                     p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
                                     return;
                                 }
+                                siFinishedDetailLine.PurchaseOrderBalance = remainingQuantity;
                             }
                             else
                             {
@@ -357,8 +358,9 @@ namespace CPMS_Accounting
                                     p.MessageAndLog("Insufficient quantity for " + siFinishedDetailLine.CheckName + "", ref log, "warn");
                                     return;
                                 }
+                                siFinishedDetailLine.PurchaseOrderBalance = remainingQuantity;
                             }
-                            siFinishedDetailLine.PurchaseOrderBalance = remainingQuantity;
+                            
 
                         }
                         else if (result == DialogResult.Cancel)
