@@ -216,6 +216,12 @@
     <Compile Include="Forms\frmCostDistribution.Designer.cs">
       <DependentUpon>frmCostDistribution.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDetails.Designer.cs">
+      <DependentUpon>frmDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmDocStamp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -472,6 +478,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCostDistribution.resx">
       <DependentUpon>frmCostDistribution.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDetails.resx">
+      <DependentUpon>frmDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDocStamp.resx">
       <DependentUpon>frmDocStamp.cs</DependentUpon>

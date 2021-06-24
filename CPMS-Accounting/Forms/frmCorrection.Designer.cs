@@ -148,6 +148,8 @@ namespace CPMS_Accounting.Forms
             this.dgvData.Size = new System.Drawing.Size(846, 409);
             this.dgvData.TabIndex = 6;
             this.dgvData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellClick);
+            this.dgvData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellContentClick);
+            this.dgvData.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellContentDoubleClick);
             // 
             // cbHeader
             // 

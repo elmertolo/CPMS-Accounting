@@ -89,7 +89,7 @@ namespace CPMS_Accounting
                 DataSet ds = new DataSet();
                 process.DBConnect();
 
-                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from "  +gClient.DocStampTempTable, process.myConnect);
+                MySqlDataAdapter adp = new MySqlDataAdapter("Select * from "  +gClient.DocStampTempTable , process.myConnect);
 
                 adp.Fill(ds);
 
@@ -100,6 +100,7 @@ namespace CPMS_Accounting
                 this.crystalReportViewer1.ReportSource = cryRpt;
                 this.crystalReportViewer1.RefreshReport();
             }
+           
             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
             {
                 DataSet ds = new DataSet();

@@ -26,5 +26,6 @@ namespace CPMS_Accounting.Models
         public int QuantityOnHand { get; set; }
 
         public string Location { get; set; }
+        public int isCancelled { get; set; }
     }
 }

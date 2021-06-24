@@ -26,7 +26,7 @@ namespace CPMS_Accounting.Forms
         List<TempModel> tempData = new List<TempModel>();
         List<TempModel> selectedData = new List<TempModel>();
         DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
-       
+        public static string selectedDR;
         private void frmCorrection_Load(object sender, EventArgs e)
         {
 
@@ -133,6 +133,7 @@ namespace CPMS_Accounting.Forms
             dgvData.Columns[8].Width = 70;
             dgvData.Columns[9].Width = 70;
             dgvData.Columns[10].Visible = false;
+           
         }
 
         private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -202,6 +203,7 @@ namespace CPMS_Accounting.Forms
                     {
                         TempModel tempModel = new TempModel();
                         tempModel.DrNumber = row.Cells["Delivery Receipt No."].Value.ToString();
+                    
                         tempModel.Qty = int.Parse(row.Cells["Quantity"].Value.ToString());
                         tempModel.SalesInvoice = int.Parse(row.Cells["Sales Invoice No."].Value.ToString());
                         tempModel.DocStampNumber = int.Parse(row.Cells["Document Stamp No."].Value.ToString());
@@ -209,8 +211,9 @@ namespace CPMS_Accounting.Forms
                         tempModel.ChkType = row.Cells["Cheque Type"].Value.ToString();
                         tempModel.DeliveryDate = DateTime.Parse(row.Cells["Delivery Date"].Value.ToString());
                         tempModel.PrimaryKey = int.Parse(row.Cells["PrimaryKey"].Value.ToString());
-
+                    
                         temp.Add(tempModel);
+                        
                     }
                 }
             // 
@@ -255,6 +258,26 @@ namespace CPMS_Accounting.Forms
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void dgvData_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Form frm = new frmDetails();
+            frm.Show();
+           // this.Hide();
+
+        }
+
+        private void dgvData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvData.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["Chk"].Value);
+                if (isSelected)
+                {
+                   selectedDR =  row.Cells["Delivery Receipt No."].Value.ToString();
+                }
             }
         }
     }

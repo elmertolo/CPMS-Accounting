@@ -637,7 +637,7 @@ namespace CPMS_Accounting.Procedures
             {
                 string sql;
                 
-                if (gClient.ShortName == "PNB")
+                if (gClient.ShortName == "PNB" || gClient.BankCode == "028")
                 {
                     //sql =
                     //"select count(ChkType) as Quantity, batch, chequename as CheckName, group_concat(distinct(drnumber) separator ', ') as DRList , " +
@@ -825,22 +825,24 @@ namespace CPMS_Accounting.Procedures
                 //double onhandQuantity = double.Parse(SeekReturn("select (quantityonhand) from " + gClient.PriceListTable + " where chequename = '" + chequeName + "'").ToString() ?? "");
                 //NA_01252021 Revision from above statement. changed target field when checking onhand quantity of chequename
                 int onhandQuantity = Convert.ToInt32(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where purchaseorderno = " + siDetails.PurchaseOrderNumber + "", 0));
-                int processedQuantity = Convert.ToInt32(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where purchaseordernumber = " + siDetails.PurchaseOrderNumber + "", 0));
-                int totalPunchedItemQuantity = 0;
+                //int processedQuantity = Convert.ToInt32(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where purchaseordernumber = " + siDetails.PurchaseOrderNumber + "", 0));
+                int processedQuantity = Convert.ToInt32(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + siDetails.CheckName.Replace("'", "''") + 
+                            "' and isCancelled = 0 and salesinvoice is not null and purchaseordernumber = " + siDetails.PurchaseOrderNumber + "", 0));                
+                //int totalPunchedItemQuantity = 0;
 
                 //Check and add Punched Item on grid
 
-                foreach (var item in salesInvoiceList)
-                {
-                    if (item.PurchaseOrderNumber == siDetails.PurchaseOrderNumber)
-                    {
-                        totalPunchedItemQuantity += item.Quantity;
-                    }
-                }
+                //foreach (var item in salesInvoiceList)
+                //{
+                //    if (item.PurchaseOrderNumber == siDetails.PurchaseOrderNumber)
+                //    {
+                //        totalPunchedItemQuantity += item.Quantity;
+                //    }
+                //}
 
                 //remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity - siDetails.Quantity;
                 //update for RCBC 
-                remainingQuantity = onhandQuantity - processedQuantity - totalPunchedItemQuantity;
+                remainingQuantity = onhandQuantity - processedQuantity - siDetails.Quantity;
 
                 if (remainingQuantity < 0)
                 {
@@ -867,7 +869,9 @@ namespace CPMS_Accounting.Procedures
                 //double newItemQuantity = onhandQuantity - quantity;
 
                 double onhandQuantity = Convert.ToDouble(SeekReturn("select quantity from " + gClient.PurchaseOrderFinishedTable + " where chequename = '" + chequeName.Replace("'","''") + "' and purchaseorderno = " + purchaseOrderNumber + "", 0));
-                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName.Replace("'", "''") + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                //double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName.Replace("'", "''") + "' and purchaseordernumber = " + purchaseOrderNumber + "", 0));
+                double processedQuantity = Convert.ToDouble(SeekReturn("select count(chequename) as quantity from " + gClient.DataBaseName + " where chequename = '" + chequeName.Replace("'", "''") + "' and isCancelled = 0 and salesinvoice is not null and " +
+                    " purchaseordernumber = " + purchaseOrderNumber + "", 0));
                 double newItemQuantity = onhandQuantity - processedQuantity;
 
                 MySqlCommand cmd = new MySqlCommand("Update " + gClient.PriceListTable + " set quantityonhand = " + newItemQuantity + " where chequeName = '" + chequeName.Replace("'", "''") + "'", con);
@@ -889,6 +893,10 @@ namespace CPMS_Accounting.Procedures
                 if (gClient.ShortName == "PNB")
                 {
                     sql = "update " + gClient.DataBaseName + " set salesinvoice = null, purchaseordernumber = null where salesinvoice = " + salesInvoiceNumber + "";
+                }
+                else if (gClient.BankCode == "028")
+                {
+                    sql = "update " + gClient.DataBaseName + " set salesinvoice = null, purchaseordernumber = null, isCancelled = 1 where salesinvoice = " + salesInvoiceNumber + "";
                 }
                 else
                 {

@@ -53,6 +53,7 @@ namespace CPMS_Accounting.Models
         public string CheqDesc { get; set; }
         public int PCode { get; set; }
         public string ProductName { get; set; }
+        public int isCancelled { get; set; }
 
     }
 

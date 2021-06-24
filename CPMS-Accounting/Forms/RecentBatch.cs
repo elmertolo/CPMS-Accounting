@@ -321,7 +321,8 @@ namespace CPMS_Accounting
                 //    proc.GetPackingListwithSticker(txtRecentBatch.Text, tempRecent);
                 //    tempRecent.Clear();
                 //}
-
+           
+                
 
                 var dBatchtemp = batchTemp.Where(x => x.Batch == txtRecentBatch.Text).ToList();
                 //var dBatchtemp = batchTemp.Select(d => d.Batch).Distinct().ToList();
@@ -336,16 +337,20 @@ namespace CPMS_Accounting
                 var dDocstamp = dBatchtemp.Select(x => x.DocStampNumber).Distinct().ToList();
                 dDocstamp.ForEach(f =>
                 {
-                            //  docStampNumber.Add(f.DocStampNumber);
-                            ////if (flag == true)
-                            ////{
-                                if(gClient.BankCode == "008")
-                                    proc.GetDocStampDetails(docTemp, f);
-                                else
-                                    proc.GetDocStampDetailsRCBC(docTemp, f);
+                    //  docStampNumber.Add(f.DocStampNumber);
+                    ////if (flag == true)
+                    ////{
 
-                                 //flag = false;
-                            //}
+                    if (f != 0)
+                    {
+                        if (gClient.BankCode == "008")
+                            proc.GetDocStampDetails(docTemp, f);
+                        else
+                            proc.GetDocStampDetailsRCBC(docTemp, f);
+
+                        //flag = false;
+                        //}
+                    }
 
                 });
 
