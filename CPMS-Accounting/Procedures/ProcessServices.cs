@@ -4719,6 +4719,7 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _cheques;
         }
+
         public void AddChequeType(ChequeTypesModel _cheque)
         {
             log.Info("Inserting Data to ChequeType Table..");
@@ -5406,25 +5407,6 @@ namespace CPMS_Accounting.Procedures
                 }
                 reader.Close();
                 DBClosed();
-                //DBConnect();
-
-                //string Sql4 = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
-                //      "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
-                //      "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate from cancelled_transaction " +
-                //      " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
-                //      " where  DocStampNumber= " + _docStampNumber + " Group by H.ChequeName order by DocStampNumber, ChkType ";
-
-                //MySqlCommand cmd4 = new MySqlCommand(Sql4, myConnect);
-                //cmd4.ExecuteNonQuery();
-                //MySqlDataReader reader3 = cmd4.ExecuteReader();
-                //while(reader3.Read())
-                //{
-
-                //}
-                //reader3.Close();
-                //DBClosed();
-
-
 
                 DBConnect();
                 string Sql1 = "Delete from " + gClient.DocStampTempTable;
@@ -5455,29 +5437,30 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
 
                 List<DocStampModel> cancelledTemp = new List<DocStampModel>();
-                string[] batch = batches2.Split(',');
-                for (int i = 0; i < batch.Length; i++)
-                {
-                    if (GetCancelledTrancsaction(cancelledTemp, _temp[i].DocStampNumber))
-                    {
-                        if(cancelledTemp.Count > 0)
-                        _temp.Add(cancelledTemp[i]);
-                    }
-                }
-
-
-                DBConnect();
+                int qtycancelled = 0;
+                    double totalamountcancelled = 0;
+              
                 _temp.ForEach(d =>
                 {
+                    
+                    if (GetCancelledTrancsaction(d.batches, cancelledTemp))
+                    {
+                         qtycancelled = cancelledTemp[0].CancelledQuantity;
+                         totalamountcancelled = cancelledTemp[0].CancelledTotalAmount;
+                    }
 
                     string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
-                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate,isCancelled)Values('" + gClient.Description + "'," + d.DocStampNumber +
+                                "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate,isCancelled,TotalQuantityCancelled,TotalAmountCancelled)" +
+                                "Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + batches2 + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "'," + d.isCancelled + ")";
+                                ",'" + batches2 + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "'," + d.isCancelled + 
+                                "," + qtycancelled + ","  + totalamountcancelled + ")";
+                    DBConnect();
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting to Docstamp table Done..");
+                    cancelledTemp.Clear();
                 });
                 //  });
                 DBClosed();
@@ -7826,43 +7809,31 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public bool GetCancelledTrancsaction(List<DocStampModel> _temp,int _docStampNumber)
+        public bool GetCancelledTrancsaction(string batch, List<DocStampModel> _temp)
         {
             log.Info("Getting Cancelled Trancsaction per batch....");
             try
             {
+             
+                Sql = "Select count(ChkType) as Quantity,(Count(ChkType) * H.DocStamp) as TotamAmountCancelled from " 
+                    + gClient.DataBaseName + " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
+                    "  where H.Batch = '" + batch+ "' and isCancelled = 1";
+                //Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
+                //     "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
+                //     "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate,isCancelled from " + gClient.DataBaseName +
+                //     " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
+                //     " where  DocStampNumber= " + _docStampNumber + " and isCancelled = 1  Group by H.ChequeName order by DocStampNumber, ChkType";
                 DBConnect();
-                Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
-                     "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
-                     "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate,isCancelled from " + gClient.DataBaseName +
-                     " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
-                     " where  DocStampNumber= " + _docStampNumber + " and isCancelled = 1  Group by H.ChequeName order by DocStampNumber, ChkType";
-                //Sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity,SalesInvoice,DocStampNumber from  " + gClient.DataBaseName +
-                //          " where DrNumber is not null  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%' OR DocStampNumber Like '%" + _batch + "%' )" +
-                //          " and isCancelled = 1 group by location,batch, chequename, ChkType";
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     DocStampModel doc = new DocStampModel();
 
-                    doc.BankCode = !reader.IsDBNull(0) ? reader.GetString(0) : "";
-                    doc.DocStampNumber = !reader.IsDBNull(1) ? reader.GetInt32(1) : 0;
-                    doc.SalesInvoiceNumber = !reader.IsDBNull(2) ? reader.GetString(2) : "0";
-                    doc.TotalQuantity = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0;
-                    doc.ChkType = !reader.IsDBNull(4) ? reader.GetString(4) : "";
-                    doc.DocDesc = !reader.IsDBNull(5) ? reader.GetString(5) : "";
-                    //  TotalAmount = !reader.IsDBNull(5) ? reader.GetDouble(5) : 0,
-                    doc.DocStampPrice = !reader.IsDBNull(6) ? reader.GetInt32(6) : 0;
-                    doc.PreparedBy = !reader.IsDBNull(7) ? reader.GetString(7) : "";
-                    doc.CheckedBy = !reader.IsDBNull(8) ? reader.GetString(8) : "";
-                    doc.POorder = !reader.IsDBNull(9) ? reader.GetInt32(9) : 0;
-                    doc.QuantityOnHand = !reader.IsDBNull(10) ? reader.GetInt32(10) : 0;
-                    doc.batches = !reader.IsDBNull(11) ? reader.GetString(11) : "";
-                    doc.TotalAmount = !reader.IsDBNull(12) ? reader.GetDouble(12) : 0;
-                    doc.Location = !reader.IsDBNull(13) ? reader.GetString(13) : "";
-                    doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
-                    doc.isCancelled = !reader.IsDBNull(15) ? reader.GetInt32(15) : 0;
+                    
+                    doc.CancelledQuantity = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
+                    doc.CancelledTotalAmount = !reader.IsDBNull(1) ? reader.GetDouble(1) : 0;
+                    
                     _temp.Add(doc);
                 }
                 reader.Close();

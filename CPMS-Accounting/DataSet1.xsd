@@ -129,6 +129,8 @@
               <xs:element name="Batch" msprop:Generator_ColumnVarNameInTable="columnBatch" msprop:Generator_ColumnPropNameInRow="Batch" msprop:Generator_ColumnPropNameInTable="BatchColumn" msprop:Generator_UserColumnName="Batch" type="xs:string" minOccurs="0" />
               <xs:element name="Location" msprop:Generator_ColumnVarNameInTable="columnLocation" msprop:Generator_ColumnPropNameInRow="Location" msprop:Generator_ColumnPropNameInTable="LocationColumn" msprop:Generator_UserColumnName="Location" type="xs:string" minOccurs="0" />
               <xs:element name="isCancelled" msprop:Generator_ColumnVarNameInTable="columnisCancelled" msprop:Generator_ColumnPropNameInRow="isCancelled" msprop:Generator_ColumnPropNameInTable="isCancelledColumn" msprop:Generator_UserColumnName="isCancelled" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalQuantityCancelled" msprop:Generator_ColumnVarNameInTable="columnTotalQuantityCancelled" msprop:Generator_ColumnPropNameInRow="TotalQuantityCancelled" msprop:Generator_ColumnPropNameInTable="TotalQuantityCancelledColumn" msprop:Generator_UserColumnName="TotalQuantityCancelled" type="xs:int" minOccurs="0" />
+              <xs:element name="TotalAmountCancelled" msprop:Generator_ColumnVarNameInTable="columnTotalAmountCancelled" msprop:Generator_ColumnPropNameInRow="TotalAmountCancelled" msprop:Generator_ColumnPropNameInTable="TotalAmountCancelledColumn" msprop:Generator_UserColumnName="TotalAmountCancelled" type="xs:double" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

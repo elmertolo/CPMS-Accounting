@@ -2172,6 +2172,10 @@ namespace CPMS_Accounting {
             
             private global::System.Data.DataColumn columnisCancelled;
             
+            private global::System.Data.DataColumn columnTotalQuantityCancelled;
+            
+            private global::System.Data.DataColumn columnTotalAmountCancelled;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public DocStampDataTable() {
@@ -2335,6 +2339,22 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TotalQuantityCancelledColumn {
+                get {
+                    return this.columnTotalQuantityCancelled;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn TotalAmountCancelledColumn {
+                get {
+                    return this.columnTotalAmountCancelled;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2386,7 +2406,9 @@ namespace CPMS_Accounting {
                         double BalanceOrder, 
                         string Batch, 
                         string Location, 
-                        string isCancelled) {
+                        string isCancelled, 
+                        int TotalQuantityCancelled, 
+                        double TotalAmountCancelled) {
                 DocStampRow rowDocStampRow = ((DocStampRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Bank,
@@ -2404,7 +2426,9 @@ namespace CPMS_Accounting {
                         BalanceOrder,
                         Batch,
                         Location,
-                        isCancelled};
+                        isCancelled,
+                        TotalQuantityCancelled,
+                        TotalAmountCancelled};
                 rowDocStampRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDocStampRow);
                 return rowDocStampRow;
@@ -2443,6 +2467,8 @@ namespace CPMS_Accounting {
                 this.columnBatch = base.Columns["Batch"];
                 this.columnLocation = base.Columns["Location"];
                 this.columnisCancelled = base.Columns["isCancelled"];
+                this.columnTotalQuantityCancelled = base.Columns["TotalQuantityCancelled"];
+                this.columnTotalAmountCancelled = base.Columns["TotalAmountCancelled"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2480,6 +2506,10 @@ namespace CPMS_Accounting {
                 base.Columns.Add(this.columnLocation);
                 this.columnisCancelled = new global::System.Data.DataColumn("isCancelled", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnisCancelled);
+                this.columnTotalQuantityCancelled = new global::System.Data.DataColumn("TotalQuantityCancelled", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalQuantityCancelled);
+                this.columnTotalAmountCancelled = new global::System.Data.DataColumn("TotalAmountCancelled", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalAmountCancelled);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5789,6 +5819,38 @@ namespace CPMS_Accounting {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public int TotalQuantityCancelled {
+                get {
+                    try {
+                        return ((int)(this[this.tableDocStamp.TotalQuantityCancelledColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalQuantityCancelled\' in table \'DocStamp\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDocStamp.TotalQuantityCancelledColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public double TotalAmountCancelled {
+                get {
+                    try {
+                        return ((double)(this[this.tableDocStamp.TotalAmountCancelledColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalAmountCancelled\' in table \'DocStamp\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDocStamp.TotalAmountCancelledColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsBankNull() {
                 return this.IsNull(this.tableDocStamp.BankColumn);
             }
@@ -5977,6 +6039,30 @@ namespace CPMS_Accounting {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetisCancelledNull() {
                 this[this.tableDocStamp.isCancelledColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTotalQuantityCancelledNull() {
+                return this.IsNull(this.tableDocStamp.TotalQuantityCancelledColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTotalQuantityCancelledNull() {
+                this[this.tableDocStamp.TotalQuantityCancelledColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsTotalAmountCancelledNull() {
+                return this.IsNull(this.tableDocStamp.TotalAmountCancelledColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetTotalAmountCancelledNull() {
+                this[this.tableDocStamp.TotalAmountCancelledColumn] = global::System.Convert.DBNull;
             }
         }
         

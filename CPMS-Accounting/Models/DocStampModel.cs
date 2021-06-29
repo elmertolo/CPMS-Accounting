@@ -27,5 +27,7 @@ namespace CPMS_Accounting.Models
 
         public string Location { get; set; }
         public int isCancelled { get; set; }
+        public int CancelledQuantity { get; set; }
+        public double CancelledTotalAmount { get; set; }
     }
 }
