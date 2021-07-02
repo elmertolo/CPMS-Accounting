@@ -44,7 +44,7 @@ namespace CPMS_Accounting.Forms
                     proc.CheckData(dgvOrdering, orderList,listofBranches, batchFile, deliveryDate);
                     TotalChecks(orderList);
                     lblGrandTotal.Text = orderList.Count().ToString();
-                
+                    
                     generateToolStripMenuItem.Enabled = true;
                     reportsToolStripMenuItem.Enabled = false;
                 }  
@@ -93,19 +93,23 @@ namespace CPMS_Accounting.Forms
         }
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //con.DumpMySQL();
+            proc.DeleteFile("zip", Application.StartupPath);
+            proc.DumpMySQL();
             if (orderList != null)
             {
                 proc.DeleteTextFile(orderList,"Output");//Deleting All Text file in designated folder in the order file
                 proc.Process(orderList, this,Application.StartupPath+ "\\Output");//Generating TextFile and dbf file Data output
-               string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
+                proc.SaveToPackingDBF(orderList, batchFile, this);
+                string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
                 proc.SaveData(orderList, zipFile); // Saving Data to database
                // proc.SaveDataToAccounting(orderList, zipFile); // Saving Data to database
             }
 
             
             MessageBox.Show("Data has been processed!!!!");
-         
+
+            proc.DeleteFile("SQL", @"C:\Head");
+            proc.DeleteFile("csv", @"C:\Head");
             Environment.Exit(0);
         }
         private List<int> DisplayTotal(List<OrderingModel> _orderlist)
@@ -172,5 +176,6 @@ namespace CPMS_Accounting.Forms
             frm.Show();
             this.Hide();
         }
+
     }
 }

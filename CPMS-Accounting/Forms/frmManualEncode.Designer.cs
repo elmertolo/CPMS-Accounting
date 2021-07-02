@@ -54,6 +54,7 @@ namespace CPMS_Accounting.Forms
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvOutput = new System.Windows.Forms.DataGridView();
+            this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -66,7 +67,8 @@ namespace CPMS_Accounting.Forms
             this.menuStrip1.BackColor = System.Drawing.Color.SteelBlue;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateToolStripMenuItem,
-            this.addDataToolStripMenuItem});
+            this.addDataToolStripMenuItem,
+            this.cancelToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1010, 28);
@@ -327,12 +329,25 @@ namespace CPMS_Accounting.Forms
             // 
             // dgvOutput
             // 
+            this.dgvOutput.AllowUserToAddRows = false;
+            this.dgvOutput.AllowUserToDeleteRows = false;
             this.dgvOutput.BackgroundColor = System.Drawing.Color.White;
             this.dgvOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOutput.Location = new System.Drawing.Point(15, 29);
             this.dgvOutput.Name = "dgvOutput";
+            this.dgvOutput.ReadOnly = true;
             this.dgvOutput.Size = new System.Drawing.Size(964, 268);
             this.dgvOutput.TabIndex = 0;
+            this.dgvOutput.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOutput_CellContentDoubleClick);
+            this.dgvOutput.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOutput_RowHeaderMouseDoubleClick);
+            // 
+            // cancelToolStripMenuItem
+            // 
+            this.cancelToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.cancelToolStripMenuItem.Name = "cancelToolStripMenuItem";
+            this.cancelToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
+            this.cancelToolStripMenuItem.Text = "Cancel";
+            this.cancelToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);
             // 
             // frmManualEncode
             // 
@@ -347,7 +362,7 @@ namespace CPMS_Accounting.Forms
             this.Controls.Add(this.groupBox2);
             this.Name = "frmManualEncode";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmManualEncode";
+            this.Text = "Captive Printing Management System  Manual Encode";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmManualEncode_FormClosing);
             this.Load += new System.EventHandler(this.frmManualEncode_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -389,5 +404,6 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.DataGridView dgvOutput;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cbProductType;
+        private System.Windows.Forms.ToolStripMenuItem cancelToolStripMenuItem;
     }
 }

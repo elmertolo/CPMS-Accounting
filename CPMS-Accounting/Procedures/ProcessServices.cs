@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Data;
 using CPMS_Accounting.Forms;
 using System.IO.Compression;
+using System.Data.OleDb;
 
 namespace CPMS_Accounting.Procedures
 {
@@ -36,7 +37,7 @@ namespace CPMS_Accounting.Procedures
         List<ChequeTypesModel> chequeTypesList = new List<ChequeTypesModel>();
         string ConString = ConfigurationManager.AppSettings["ConnectionStringOrdering"];
         MySqlConnection con;
-        
+
         public void DBConnect()
         {
             try
@@ -116,7 +117,7 @@ namespace CPMS_Accounting.Procedures
 
         //    return _orders;
         //}
-        public List<OrderModel> Process2(List<OrderModel> _orders, DeliveryReport _main, int DrNumber, int packNumber,int _dReportStyle, int _pReportStyle, int _withDeliveryTo)
+        public List<OrderModel> Process2(List<OrderModel> _orders, DeliveryReport _main, int DrNumber, int packNumber, int _dReportStyle, int _pReportStyle, int _withDeliveryTo)
         {
 
             TypeofCheckModel checkType = new TypeofCheckModel();
@@ -161,10 +162,10 @@ namespace CPMS_Accounting.Procedures
                 {
                     //foreach (var t in type)
                     //{
-                    if(gClient.BankCode == "008")
-                    { 
+                    if (gClient.BankCode == "008")
+                    {
                         log.Info("Separating Data by Checktype and Location ");
-                        log.Info("Adding Data into a List"); 
+                        log.Info("Adding Data into a List");
 
                         if (_check.ChkType == "A" && _check.Location == "Direct")
                         {
@@ -194,7 +195,7 @@ namespace CPMS_Accounting.Procedures
                         {
                             checkType.ExecutiveOnline_Direct.Add(_check);
                         }
-                        if (_check.ChkType =="D" && _check.Location == "Provincial")
+                        if (_check.ChkType == "D" && _check.Location == "Provincial")
                         {
                             checkType.ExecutiveOnline_Provincial.Add(_check);
                         }
@@ -217,7 +218,7 @@ namespace CPMS_Accounting.Procedures
 
                             if (_check.ChkType == _listofCheques[i].ChkType && _check.Location == "Direct" && _check.ProductCode == _listofCheques[i].ProductCode)
                             {
-                                if(_check.ProductCode == _listofCheques[0].ProductCode)
+                                if (_check.ProductCode == _listofCheques[0].ProductCode)
                                     checkType.Regular_Personal_Direct.Add(_check);
                                 else if (_check.ProductCode == _listofCheques[2].ProductCode)
                                     checkType.Regular_Commercial_Direct.Add(_check);
@@ -443,31 +444,31 @@ namespace CPMS_Accounting.Procedures
                         //    checkType.ManagersCheck_Provincial.Add(_check);
                         //}
                     }
-//                    }
+                    //                    }
                 }
-                
+
                 else
                 {
                     //foreach (var t in type)
                     //{
 
-                    log.Info("Separating Data by Checktype"); 
-                        if (_check.ChkType == "A")
-                        {
-                            checkType.Regular_Personal.Add(_check);
-                        }
-                        if (_check.ChkType == "B")
-                        {
-                            checkType.Regular_Commercial.Add(_check);
-                        }
-                        if (_check.ChkType == "C")
-                        {
-                            checkType.ManagersCheck.Add(_check);
+                    log.Info("Separating Data by Checktype");
+                    if (_check.ChkType == "A")
+                    {
+                        checkType.Regular_Personal.Add(_check);
+                    }
+                    if (_check.ChkType == "B")
+                    {
+                        checkType.Regular_Commercial.Add(_check);
+                    }
+                    if (_check.ChkType == "C")
+                    {
+                        checkType.ManagersCheck.Add(_check);
 
-                        }
+                    }
                     //}
                 }
-                
+
             }
             checkType.Regular_Personal.OrderBy(r => r.BranchName).ToList();
             checkType.Regular_Commercial.OrderBy(r => r.BranchName).ToList();
@@ -499,9 +500,9 @@ namespace CPMS_Accounting.Procedures
             checkType.ExecutiveOnline_Direct.OrderBy(r => r.BranchName).ToList();
             checkType.ExecutiveOnline_Provincial.OrderBy(r => r.BranchName).ToList();
             //  if (gClient.DataBaseName != "producers_history")
-            GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.Id, packNumber, _dReportStyle,_pReportStyle, _withDeliveryTo);
-          //  else
-          //      Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
+            GenerateData2(checkType, DrNumber, _main.deliveryDate, gUser.Id, packNumber, _dReportStyle, _pReportStyle, _withDeliveryTo);
+            //  else
+            //      Generate(checkType, DrNumber, _main.deliveryDate, gUser.UserName, packNumber);
             // Generate(checkType, DrNumber, _main.deliveryDate, "ELMER", packNumber);
 
             return _orders;
@@ -511,7 +512,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             int counter = 0;
             var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
-            if (Personal.Count > 0 )
+            if (Personal.Count > 0)
             {
                 //counter++;
                 //_checks.Regular_Personal.ForEach(r =>
@@ -531,20 +532,20 @@ namespace CPMS_Accounting.Procedures
 
                     foreach (var r in _model)
                     {
-                        
 
-                            Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                                  "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
-                                  "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'","''") +
-                                  "','" + r.Name2.Replace("'","''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                                  "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                                  r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                                  "','" + r.Location + "');";
-                            cmd = new MySqlCommand(Sql, myConnect);
-                            cmd.ExecuteNonQuery();
-                      
-                         
-                       
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "','" + r.Location + "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
+
+
                     }
                     counter++;
                     _packNumber++;
@@ -576,17 +577,17 @@ namespace CPMS_Accounting.Procedures
                     foreach (var r in _model)
                     {
 
-                     
-                            Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
-                                  "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time )" +
-                                  "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'","''") +
-                                  "','" + r.Name2.Replace("'","''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
-                                  "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
-                                  r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                                  "');";
-                            cmd = new MySqlCommand(Sql, myConnect);
-                            cmd.ExecuteNonQuery();
-                      
+
+                        Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                              "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time )" +
+                              "VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
+                              "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                              "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
+                              r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
+                              "');";
+                        cmd = new MySqlCommand(Sql, myConnect);
+                        cmd.ExecuteNonQuery();
+
 
                     }
                     counter++;
@@ -601,12 +602,12 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return;
         }
-        public void GenerateData2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber,int _dReportStyle,int _pReportStyle, int _withDeliveryTo)
+        public void GenerateData2(TypeofCheckModel _checks, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber, int _dReportStyle, int _pReportStyle, int _withDeliveryTo)
         {
             log.Info("Generating Data by Style of Report");
             if (_dReportStyle == 0 && _pReportStyle == 0)
             {
-             
+
                 ByChequetType(_checks, _DrNumber, _deliveryDate, _username, _packNumber); //Default Report for All Banks
 
 
@@ -960,11 +961,11 @@ namespace CPMS_Accounting.Procedures
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    
+
                     string concat = "";
                     if (list[i].ChkType == "A" && list[i].Location == "Direct")
                     {
-                         concat = ConcatDRNumbers(list[i].Batch, list[i].ChkType, list[i].Location);
+                        concat = ConcatDRNumbers(list[i].Batch, list[i].ChkType, list[i].Location);
                     }
                     else if (list[i].ChkType == "B" && list[i].Location == "Direct")
                     {
@@ -1021,9 +1022,9 @@ namespace CPMS_Accounting.Procedures
                                   ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
                                   list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
                                   list[i].Location + "'," + list[i].PONumber + ",'" + concat + "','" + list[i].BankCode + "','" + list[i].Address2.Replace("'", "''") +
-                                  "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") + 
+                                  "','" + list[i].Address3.Replace("'", "''") + "','" + list[i].Address4.Replace("'", "''") + "','" + list[i].Name1.Replace("'", "''") +
                                   "','" + list[i].Name2.Replace("'", "''") + "','" + list[i].AccountNo + "','" + TotalA.Count() + "','" + TotalB.Count() +
-                                  "','" + gClient.Description.ToUpper().Replace("'","''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'","''").TrimEnd() + 
+                                  "','" + gClient.Description.ToUpper().Replace("'", "''").TrimEnd() + "','" + list[i].AttentionTo.Replace("'", "''").TrimEnd() +
                                   "','" + gClient.TIN + "','" + list[i].DeliveryToBranch + "','" + list[i].DeliveryToBrstn + "');";
                     MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                     cmd2.ExecuteNonQuery();
@@ -1033,7 +1034,7 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return _batch;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "GetDrDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
@@ -1156,26 +1157,26 @@ namespace CPMS_Accounting.Procedures
         }
         public Int32 GetMaxPackNumber2()
         {
-  //          GetBankTables();
+            //          GetBankTables();
             //InsertToMaxTB();
             DBConnect();
-//            List<Int32> pack = new List<Int32>();
+            //            List<Int32> pack = new List<Int32>();
             Int32 dr = 0;
-         
 
-                Sql = "Select PackNumber from " + gClient.DataBaseName + " where Date >= '2020-12-01' order by PackNumber desc Limit 1";
 
-                cmd = new MySqlCommand(Sql, myConnect);
-                MySqlDataReader read = cmd.ExecuteReader();
+            Sql = "Select PackNumber from " + gClient.DataBaseName + " where Date >= '2020-12-01' order by PackNumber desc Limit 1";
 
-                    while (read.Read())
-                    {
-                        dr = !read.IsDBNull(0) ? read.GetInt32(0) : 0;
-                    }
+            cmd = new MySqlCommand(Sql, myConnect);
+            MySqlDataReader read = cmd.ExecuteReader();
 
-                read.Close();
-                DBClosed();
-                return dr;
+            while (read.Read())
+            {
+                dr = !read.IsDBNull(0) ? read.GetInt32(0) : 0;
+            }
+
+            read.Close();
+            DBClosed();
+            return dr;
         }
 
         public List<TempModel> GetStickerDetails(List<TempModel> _temp, string _batch)
@@ -1206,7 +1207,7 @@ namespace CPMS_Accounting.Procedures
                         Address4 = !myReader.IsDBNull(9) ? myReader.GetString(9) : "",
                         Block = !myReader.IsDBNull(10) ? myReader.GetInt32(10) : 0,
                         Segment = !myReader.IsDBNull(11) ? myReader.GetInt32(11) : 0,
-                        ProducType = !myReader.IsDBNull(12) ? myReader.GetString(12): "",
+                        ProducType = !myReader.IsDBNull(12) ? myReader.GetString(12) : "",
                         DeliveryToBranch = !myReader.IsDBNull(13) ? myReader.GetString(13) : ""
 
                         //ChequeName = !myReader.IsDBNull(6) ? myReader.GetString(6): ""
@@ -1245,10 +1246,10 @@ namespace CPMS_Accounting.Procedures
                         string sql2 = "Insert into " + gClient.StickerTable + "(Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial," +
                                       "Bank,Address2,Address3,Address4,Block,Segment,ProductType,DeliveryToBranch)" +
                                       "values('" + _batch + "','" + _temp[r].BRSTN + "','" + _temp[r].BranchName + "'," + _temp[r].Qty + ",'" + _temp[r].ChkType +
-                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'","''")
+                                      "','" + Type + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'", "''")
                                       + "','" + _temp[r].Address2.Replace("'", "''") +
                                       "', '" + _temp[r].Address3.Replace("'", "''") + "','" + _temp[r].Address4.Replace("'", "''") + "'," + _temp[r].Block + "," +
-                                      _temp[r].Segment + ",'" + _temp[r].ProducType +"','" + _temp[r].DeliveryToBranch + "' ); ";
+                                      _temp[r].Segment + ",'" + _temp[r].ProducType + "','" + _temp[r].DeliveryToBranch + "' ); ";
 
 
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
@@ -1257,14 +1258,14 @@ namespace CPMS_Accounting.Procedures
                     }
                     else if (licnt == 2)
                     {
-                        string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName.Replace("'","''") +
-                                    "',Qty2 = " + _temp[r].Qty +",ChkType2 = '" + _temp[r].ChkType + "', ChequeName2 = '" + Type + "',StartingSerial2 = '" + _temp[r].StartingSerial +
+                        string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName.Replace("'", "''") +
+                                    "',Qty2 = " + _temp[r].Qty + ",ChkType2 = '" + _temp[r].ChkType + "', ChequeName2 = '" + Type + "',StartingSerial2 = '" + _temp[r].StartingSerial +
                                       "',EndingSerial2 = '" + _temp[r].EndingSerial + "',Address22 ='" + _temp[r].Address2.Replace("'", "''") +
-                                      "', Address32 ='" + _temp[r].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r].Address4.Replace("'", "''") + 
-                                      "', Block2 = " + _temp[r].Block + ", Segment2 = " + _temp[r].Segment  + ",ProductType2 = '" + _temp[r].ProducType + "' " +
+                                      "', Address32 ='" + _temp[r].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r].Address4.Replace("'", "''") +
+                                      "', Block2 = " + _temp[r].Block + ", Segment2 = " + _temp[r].Segment + ",ProductType2 = '" + _temp[r].ProducType + "' " +
                                       ", DeliveryToBranch1 = '" + _temp[r].DeliveryToBranch + "' " +
                                       "where BRSTN = '" + _temp[r - 1].BRSTN + "' and ChkType = '" + _temp[r - 1].ChkType + "';";
-                                      
+
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
                         cmd2.ExecuteNonQuery();
                         licnt++;
@@ -1337,7 +1338,7 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message,"GetStickerDetails",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "GetStickerDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return _temp;
         }
@@ -1368,9 +1369,9 @@ namespace CPMS_Accounting.Procedures
                     Name1 = !myReader.IsDBNull(10) ? myReader.GetString(10) : "",
                     Name2 = !myReader.IsDBNull(11) ? myReader.GetString(11) : "",
                     ChequeName = !myReader.IsDBNull(12) ? myReader.GetString(12) : "",
-                    BranchCode  = !myReader.IsDBNull(13) ? myReader.GetString(13) : "",
+                    BranchCode = !myReader.IsDBNull(13) ? myReader.GetString(13) : "",
                     AccountNo = !myReader.IsDBNull(14) ? myReader.GetString(14) : ""
-                    
+
 
 
                 };
@@ -1384,13 +1385,14 @@ namespace CPMS_Accounting.Procedures
 
             DBClosed();
             DBConnect();
-            _temp.ForEach(r => { 
-            Sql = "Insert into " + gClient.StickerTable + " (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,Bank,Address2,Address3,Address4" +
-                ",Name1,Name2,BranchCode,AccountNo) values('" + _batch + "','" + r.BRSTN + "','" + r.BranchName + "'," + r.Qty + ",'" + r.ChkType +
-                                      "','" +r.ChequeName.Substring(0,r.ChequeName.Length - 6)+ "','" + r.StartingSerial + "','" + r.EndingSerial + "','" +
-                                      r.BankCode + "','" + r.Address2.Replace("'", "''") + "', '" + r.Address3.Replace("'", "''") + "','" +
-                                      r.Address4.Replace("'", "''") + "','" + r.Name1.Replace("'","''") + "','" +r.Name2.Replace("'","''") +"','" + r.BranchCode +"','" +
-                                      r.AccountNo + "'); ";
+            _temp.ForEach(r =>
+            {
+                Sql = "Insert into " + gClient.StickerTable + " (Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial,Bank,Address2,Address3,Address4" +
+                    ",Name1,Name2,BranchCode,AccountNo) values('" + _batch + "','" + r.BRSTN + "','" + r.BranchName + "'," + r.Qty + ",'" + r.ChkType +
+                                          "','" + r.ChequeName.Substring(0, r.ChequeName.Length - 6) + "','" + r.StartingSerial + "','" + r.EndingSerial + "','" +
+                                          r.BankCode + "','" + r.Address2.Replace("'", "''") + "', '" + r.Address3.Replace("'", "''") + "','" +
+                                          r.Address4.Replace("'", "''") + "','" + r.Name1.Replace("'", "''") + "','" + r.Name2.Replace("'", "''") + "','" + r.BranchCode + "','" +
+                                          r.AccountNo + "'); ";
 
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
@@ -1403,7 +1405,7 @@ namespace CPMS_Accounting.Procedures
         //    string reportPath = "";
         //    try
         //    {
-                
+
         //        if (Debugger.IsAttached)
         //        {
         //            if (gClient.DataBaseName == "")
@@ -1433,7 +1435,7 @@ namespace CPMS_Accounting.Procedures
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\PackingReport.rpt";
         //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\DocStamp.rpt";
-                            
+
         //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
         //                        reportPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\Reports\RCBCDeliveryReport.rpt";
         //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
@@ -1475,7 +1477,7 @@ namespace CPMS_Accounting.Procedures
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
         //                    else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DocStamp.rpt";
-                           
+
         //                    else if (RecentBatch.report == "DRR" || DeliveryReport.report == "DRR")
         //                        reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\RCBCDeliveryReport.rpt";
         //                    else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
@@ -1590,7 +1592,7 @@ namespace CPMS_Accounting.Procedures
                             else if (RecentBatch.report == "Packing" || DeliveryReport.report == "Packing")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\PackingReport.rpt";
                             else if (RecentBatch.report == "DOC" || DeliveryReport.report == "DOC")
-                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName+"DocStamp.rpt";
+                                reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\" + gClient.ShortName + "DocStamp.rpt";
                             else if (RecentBatch.report == "DRP" || DeliveryReport.report == "DRP")
                                 reportPath = Directory.GetCurrentDirectory().ToString() + @"\Reports\DeliveryReceiptProvincial.rpt";
                             else if (RecentBatch.report == "DR" || DeliveryReport.report == "DR")
@@ -1631,7 +1633,7 @@ namespace CPMS_Accounting.Procedures
                     Sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity,SalesInvoice,DocStampNumber from  " + gClient.DataBaseName +
                           " where DrNumber is not null  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%' OR DocStampNumber Like '%" + _batch + "%' )" +
                           " and isCancelled = 0 group by location,batch, chequename, ChkType";
-                   
+
                 }
                 else
                 {
@@ -1662,10 +1664,10 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, "DisplayAllBatches",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(error.Message, "DisplayAllBatches", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return _batch;
             }
-            
+
         }
         public string DisplayAllBatches2(string _batch, List<TempModel> _temp)
         {
@@ -1673,11 +1675,11 @@ namespace CPMS_Accounting.Procedures
             {
                 log.Info("Getting Data from database..");
                 DBConnect();
-               
-                    Sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity,SalesInvoice,DocStampNumber,Date from  " + gClient.DataBaseName +
-                           " where DrNumber is not null  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%' OR DocStampNumber Like '%" + _batch + "%' )" +
-                           " and isCancelled = 0 group by batch order by Date desc";
-                
+
+                Sql = "select batch, chequename, ChkType, deliverydate, count(ChkType) as Quantity,SalesInvoice,DocStampNumber,Date from  " + gClient.DataBaseName +
+                       " where DrNumber is not null  and (Batch Like '%" + _batch + "%' OR SalesInvoice Like '%" + _batch + "%' OR DocStampNumber Like '%" + _batch + "%' )" +
+                       " and isCancelled = 0 group by batch order by Date desc";
+
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -1747,7 +1749,7 @@ namespace CPMS_Accounting.Procedures
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message, "DisplayAllBatchData",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(error.Message, "DisplayAllBatchData", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
             }
 
@@ -1779,8 +1781,8 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                
-                StreamWriter sw = new StreamWriter(Application.StartupPath + "\\ErrorMessage.txt",true);
+
+                StreamWriter sw = new StreamWriter(Application.StartupPath + "\\ErrorMessage.txt", true);
                 sw.WriteLine(_errorMessage);
                 sw.Close();
                 return _errorMessage;
@@ -1820,7 +1822,7 @@ namespace CPMS_Accounting.Procedures
         public void DeleteDetailedItems(List<TempModel> _temp)
         {
             log.Info("Deleting Data from Database..");
-            
+
             for (int i = 0; i < _temp.Count; i++)
             {
                 Sql = "Update " + gClient.DataBaseName + " set isCancelled = 1 where PrimaryKey = " + _temp[i].PrimaryKey + ";";
@@ -1840,7 +1842,7 @@ namespace CPMS_Accounting.Procedures
 
 
                 Sql = "insert into " + gClient.UpdateTable + "(Batch,DRNumber,salesinvoice,DocstampNumber,DeliveryDate,AccountNo,ChkType,Brstn)" +
-                    " Select Batch,DRNumber,Salesinvoice,DocstampNumber,DeliveryDate,AccountNo,ChkType,Brstn from " + gClient.DataBaseName+
+                    " Select Batch,DRNumber,Salesinvoice,DocstampNumber,DeliveryDate,AccountNo,ChkType,Brstn from " + gClient.DataBaseName +
                     " where DRNumber = " + _temp[i].DrNumber + ";";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
@@ -1871,9 +1873,9 @@ namespace CPMS_Accounting.Procedures
                 cmd.ExecuteNonQuery();
                 DBClosed();
                 Sql = "Update " + gClient.DataBaseName + " set DRNumber = '" + _temp[i].DrNumber + " ', AccountNo = '" + _temp[i].AccountNo + "' " +
-                    " , salesinvoice = " + _temp[i].SalesInvoice + " , docstampnumber = " + _temp[i].DocStampNumber + ", Chktype = '" + _temp[i].ChkType + 
-                    "', DeliveryDate = '" + _temp[i].DeliveryDate.ToString("yyyy-MM-dd") + "' ,Brstn = '"+_temp[i].BRSTN+"', StartingSerial = '"+ _temp[i].StartingSerial +"'," +
-                    " EndingSerial ='"+_temp[i].EndingSerial+"',Location = '"+ _temp[i].Location+"', Name1 ='"+_temp[i].Name1.Replace("'","''")+ "'" +
+                    " , salesinvoice = " + _temp[i].SalesInvoice + " , docstampnumber = " + _temp[i].DocStampNumber + ", Chktype = '" + _temp[i].ChkType +
+                    "', DeliveryDate = '" + _temp[i].DeliveryDate.ToString("yyyy-MM-dd") + "' ,Brstn = '" + _temp[i].BRSTN + "', StartingSerial = '" + _temp[i].StartingSerial + "'," +
+                    " EndingSerial ='" + _temp[i].EndingSerial + "',Location = '" + _temp[i].Location + "', Name1 ='" + _temp[i].Name1.Replace("'", "''") + "'" +
                     ", Name2 ='" + _temp[i].Name2.Replace("'", "''") + "'  where Primarykey = " + _temp[i].PrimaryKey;
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
@@ -1970,7 +1972,7 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _SI;
         }
-        public string ContcatSalesInvoice(string batch, string checktype, string _location,DateTime salesinvoicedate)
+        public string ContcatSalesInvoice(string batch, string checktype, string _location, DateTime salesinvoicedate)
         {
 
             DataTable dt = new DataTable();
@@ -1979,7 +1981,7 @@ namespace CPMS_Accounting.Procedures
            "WHERE salesinvoice is not null " +
            "and batch = '" + batch + "' " +
            "and chktype = '" + checktype + "'" +
-           "and Location = '" + _location +"'; ";
+           "and Location = '" + _location + "'; ";
             //"and salesinvoicedate = '" + salesinvoicedate.ToString("yyyy-MM-dd") + "';";
             DBConnect();
             MySqlCommand cmd = new MySqlCommand(Sql, myConnect);
@@ -2013,12 +2015,12 @@ namespace CPMS_Accounting.Procedures
 
 
         //}
-        public PriceListModel GetPriceList(PriceListModel price, string chkType,string _cProductCode)
+        public PriceListModel GetPriceList(PriceListModel price, string chkType, string _cProductCode)
         {
             try
             {
                 log.Info("Getting Price list data from database..");
-                Sql = "Select BankCode, Description, Docstamp from " + gClient.PriceListTable + " where FinalChkType ='" + chkType + "' and ProductCode = '"+_cProductCode+"'; ";
+                Sql = "Select BankCode, Description, Docstamp from " + gClient.PriceListTable + " where FinalChkType ='" + chkType + "' and ProductCode = '" + _cProductCode + "'; ";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -2036,9 +2038,9 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return price;
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                MessageBox.Show(error.Message, "Get Pricelist Data ", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(error.Message, "Get Pricelist Data ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return price;
             }
         }
@@ -2060,9 +2062,9 @@ namespace CPMS_Accounting.Procedures
                 //});
 
                 log.Info("Updating DocStamp in Database..");
-            DBConnect();
-            for (int i = 0; i < _docStamp.Count; i++)
-            {
+                DBConnect();
+                for (int i = 0; i < _docStamp.Count; i++)
+                {
                     if (gClient.BankCode == "008")
                     {
                         Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
@@ -2075,17 +2077,17 @@ namespace CPMS_Accounting.Procedures
                         Sql = "Update " + gClient.DataBaseName + " set DocStamp = " + _docStamp[i].DocStampPrice + ", DocStampNumber = " + _docStamp[i].DocStampNumber +
                             ", Date_DocStamp = '" + _docStamp[i].DocStampDate.ToString("yyyy-MM-dd") + "',Username_DocStamp ='" + _docStamp[i].PreparedBy +
                             "', CheckedByDS = '" + _docStamp[i].CheckedBy + "'  where SalesInvoice = " + _docStamp[i].SalesInvoiceNumber + " and ChkType = '" +
-                            _docStamp[i].ChkType + "' and ChequeName = '" +_docStamp[i].ChequeName + "';";
+                            _docStamp[i].ChkType + "' and ChequeName = '" + _docStamp[i].ChequeName + "';";
                     }
-                cmd = new MySqlCommand(Sql, myConnect);
-                cmd.ExecuteNonQuery();
-            }
-                
+                    cmd = new MySqlCommand(Sql, myConnect);
+                    cmd.ExecuteNonQuery();
+                }
+
                 DBClosed();
 
 
 
-            return;
+                return;
             }
             catch (Exception error)
             {
@@ -2127,8 +2129,8 @@ namespace CPMS_Accounting.Procedures
                     ChkType = !reader.IsDBNull(3) ? reader.GetString(3) : "",
                     ChequeName = !reader.IsDBNull(4) ? reader.GetString(4) : "",
                     Batch = !reader.IsDBNull(5) ? reader.GetString(5) : "",
-                    Location = !reader.IsDBNull(6) ? reader.GetString(6):"",
-                    ProductCode = !reader.IsDBNull(7) ? reader.GetString(7): ""
+                    Location = !reader.IsDBNull(6) ? reader.GetString(6) : "",
+                    ProductCode = !reader.IsDBNull(7) ? reader.GetString(7) : ""
 
                 };
                 _temp.Add(t);
@@ -2141,7 +2143,7 @@ namespace CPMS_Accounting.Procedures
         //public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
         //{
         public void GetDocStampDetails(List<DocStampModel> _temp, int _docStampNumber)
-         {
+        {
             log.Info("Generating Document Stamp Details..");
             try
             {
@@ -2159,7 +2161,7 @@ namespace CPMS_Accounting.Procedures
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
                 //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
-                
+
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -2185,29 +2187,29 @@ namespace CPMS_Accounting.Procedures
                     doc.DocStampDate = !reader.IsDBNull(14) ? reader.GetDateTime(14) : DateTime.Now;
 
                     _temp.Add(doc);
-                
+
                 }
                 reader.Close();
                 DBClosed();
 
 
-                string Sql3 = "Select Distinct(Batch) from " + gClient.DataBaseName + " where DocStampNumber = '"+_docStampNumber+"';";
+                string Sql3 = "Select Distinct(Batch) from " + gClient.DataBaseName + " where DocStampNumber = '" + _docStampNumber + "';";
                 DBConnect();
                 MySqlCommand cmd3 = new MySqlCommand(Sql3, myConnect);
                 cmd3.ExecuteNonQuery();
                 string batches = "";
-                
+
                 MySqlDataReader reader2 = cmd3.ExecuteReader();
-              //  int counter = 0;
+                //  int counter = 0;
                 while (reader2.Read())
                 {
                     batches += !reader2.IsDBNull(0) ? reader2.GetString(0) : "";
-                    if(reader2.HasRows)
+                    if (reader2.HasRows)
                     {
                         batches += ",";
                     }
-                    
-                    
+
+
 
                     //counter++;
                 }
@@ -2216,7 +2218,7 @@ namespace CPMS_Accounting.Procedures
 
 
 
-                DBConnect(); 
+                DBConnect();
                 string Sql1 = "Delete from " + gClient.DocStampTempTable;
                 cmd = new MySqlCommand(Sql1, myConnect);
                 cmd.ExecuteNonQuery();
@@ -2232,7 +2234,7 @@ namespace CPMS_Accounting.Procedures
                                 "PreparedBy, CheckedBy, PONumber,BalanceOrder,Batch,TotalAmount,Location,DocStampDate)Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + batches.Substring(0,batches.Length -1) + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
+                                ",'" + batches.Substring(0, batches.Length - 1) + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "')";
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
                     log.Info("Inserting to Docstamp table Done..");
@@ -2241,7 +2243,7 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "GetDocStampDetails", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -2253,7 +2255,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 UserListModel user = new UserListModel
                 {
@@ -2296,7 +2298,7 @@ namespace CPMS_Accounting.Procedures
 
             return pack;
         }
-        public void GetBranchLocation(BranchesModel _branches , string _branchCode)
+        public void GetBranchLocation(BranchesModel _branches, string _branchCode)
         {
             log.Info("Getting Branch Details..");
             try
@@ -2318,10 +2320,10 @@ namespace CPMS_Accounting.Procedures
                 reader.Close();
                 DBClosed();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message, "GetBranchLocation", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
             }
         }
         public void GetBranchLocationbyBrstn(BranchesModel _branches, string _brstn)
@@ -2370,7 +2372,7 @@ namespace CPMS_Accounting.Procedures
                     var dRecord = _checks.Regular_Personal_Direct.Where(g => g.BRSTN == y).ToList();
                     dRecord.ForEach(r =>
                     {
-                        Script(gClient.DataBaseName, r,_DrNumber,_deliveryDate,_username,_packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         //Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                         //"ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
                         //"VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
@@ -2404,7 +2406,7 @@ namespace CPMS_Accounting.Procedures
                     var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y).ToList();
                     dRecord.ForEach(r =>
                     {
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                         //Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                         //"ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
@@ -2437,7 +2439,7 @@ namespace CPMS_Accounting.Procedures
                     var dRecord = _checks.Regular_Commercial_Direct.Where(g => g.BRSTN == y).ToList();
                     dRecord.ForEach(r =>
                     {
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         //Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                         //"ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
                         //"VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
@@ -2472,7 +2474,7 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         //Sql = "Insert into " + gClient.DataBaseName + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                         //"ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode )" +
                         //"VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
@@ -2515,9 +2517,9 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                     });
-                     counter++;
+                    counter++;
                     _packNumber++;
                     if (counter == 10)
                     {
@@ -2540,16 +2542,16 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     });
                     //counter++;
                     _packNumber++;
-                   // if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
-                   // {
-                        _DrNumber++;
-                     //   counter = 0;
-                   // }
+                    // if (counter == 10) // Increment DrNumber when the number of data in 1 (one) DrNumber reach 10 rows 
+                    // {
+                    _DrNumber++;
+                    //   counter = 0;
+                    // }
                 });
 
             }
@@ -2564,7 +2566,7 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     });
                     counter++;
@@ -2590,15 +2592,15 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     });
                     //counter++;
                     _packNumber++;
                     //if (counter == 10)
                     //{
-                        _DrNumber++;
-                      //  counter = 0;
+                    _DrNumber++;
+                    //  counter = 0;
                     //}
 
 
@@ -2624,13 +2626,13 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
-                        
+
 
                     });
-                    
+
                     _packNumber++;
                     _DrNumber++;
-                    
+
                 });
 
             }
@@ -2667,11 +2669,11 @@ namespace CPMS_Accounting.Procedures
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
-            
+
                     });
                     _packNumber++;
                     _DrNumber++;
-                    
+
 
 
                 });
@@ -2705,7 +2707,7 @@ namespace CPMS_Accounting.Procedures
 
             if (_checks.ManagersCheck_Direct.Count > 0)
             {
-                
+
                 var dBranch = _checks.ManagersCheck_Direct.Select(a => a.BranchCode).Distinct().ToList();
                 dBranch.ForEach(y =>
                 {
@@ -2716,9 +2718,9 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     });
-                   
+
                     _packNumber++;
-                   
+
                     _DrNumber++;
 
                 });
@@ -2735,11 +2737,11 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     });
-                    
+
                     _packNumber++;
                     if (counter == 10)
                     {
-                    _DrNumber++;
+                        _DrNumber++;
                         counter = 0;
                     }
 
@@ -2801,9 +2803,9 @@ namespace CPMS_Accounting.Procedures
             var Personal = _checks.Regular_Personal.OrderBy(t => t.BranchName).ToList();
             if (Personal.Count > 0)
             {
-                
+
                 var _list = Personal.Select(r => r.BRSTN).Distinct().ToList();
-             
+
 
                 //Working Proccess Jan. 27 2021
                 foreach (string Brstn in _list)
@@ -2814,13 +2816,13 @@ namespace CPMS_Accounting.Procedures
                     {
 
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
 
                     }
                     _packNumber++;
                     counter++;
-                    
+
                     if (counter == 10)
                     {
                         _DrNumber++;
@@ -2851,10 +2853,10 @@ namespace CPMS_Accounting.Procedures
                     {
 
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
                     }
-                    
+
                     _packNumber++;
                     counter++;
                     if (counter == 10)
@@ -2875,7 +2877,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             int counter = 0;
 
-            
+
             //_checks.Regular_Commercial_Direct.OrderBy(e => e.Location).ToList();
             //_checks.Regular_Commercial_Provincial.OrderBy(e => e.Location).ToList();
             //_checks.Regular_Personal_Provincial.OrderBy(e => e.Location).ToList();
@@ -2901,7 +2903,7 @@ namespace CPMS_Accounting.Procedures
                     }
                     isInsertData = false;
 
-                    
+
                 });
                 // END without deliveryTO
                 // with deliveryTO
@@ -2965,7 +2967,7 @@ namespace CPMS_Accounting.Procedures
                         _DrNumber++;
                     }
 
-                       isInsertData = false;
+                    isInsertData = false;
 
                 });
                 //END with deliveryTO
@@ -3193,7 +3195,7 @@ namespace CPMS_Accounting.Procedures
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
                         isInsertData = true;
                     });
-                    
+
                     if (isInsertData)
                     {
                         _packNumber++;
@@ -3382,8 +3384,8 @@ namespace CPMS_Accounting.Procedures
                     isInsertData = false;
                 });
                 //End Without DeliveryTo
-                
-             //   _DrNumber++;
+
+                //   _DrNumber++;
                 // with deliveryTO
                 var dBranch2 = _checks.Customized_Direct.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
@@ -3410,7 +3412,7 @@ namespace CPMS_Accounting.Procedures
 
 
             // ------------------------------------------------ Start of Process for Provincial Branches --------------------------------------- //
-            
+
             if (_checks.Regular_Personal_Provincial.Count > 0)
             {
 
@@ -3421,10 +3423,10 @@ namespace CPMS_Accounting.Procedures
 
                 dBranch.ForEach(y =>
                 {
-                  
-                    
+
+
                     var dRecord = _checks.Regular_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
-                  
+
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
@@ -3458,7 +3460,7 @@ namespace CPMS_Accounting.Procedures
                             _DrNumber++;
                         }
                     }
-                    
+
                     dRecord.ForEach(r =>
                     {
                         Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
@@ -3481,7 +3483,7 @@ namespace CPMS_Accounting.Procedures
             isInsertData = false;
             if (_checks.Regular_Commercial_Provincial.Count > 0)
             {
-               // _DrNumber++;
+                // _DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 //Without DeliveryTo
                 //counter = 10;
@@ -3499,7 +3501,7 @@ namespace CPMS_Accounting.Procedures
                 var dBranch = _checks.Regular_Commercial_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch.ForEach(y =>
                 {
-                //    isInsertData = false;
+                    //    isInsertData = false;
                     var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
                     //if (dRecord != null)
                     //    _DrNumber++;
@@ -3513,8 +3515,8 @@ namespace CPMS_Accounting.Procedures
                     });
                     if (isInsertData)
                     {
-                         counter++;
-                           _packNumber++;
+                        counter++;
+                        _packNumber++;
                         if (counter == 10)
                         {
                             _DrNumber++;
@@ -3527,7 +3529,7 @@ namespace CPMS_Accounting.Procedures
                 //Generating DR per CheckType in Provincial Branches
                 //_DrNumber++;
                 // with deliveryTO
-                
+
                 dBranch.ForEach(y =>
                 {
                     var dRecord = _checks.Regular_Commercial_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() != g.BRSTN).ToList();
@@ -3542,7 +3544,7 @@ namespace CPMS_Accounting.Procedures
                         }
 
                     }
-                    
+
 
                     dRecord.ForEach(r =>
                     {
@@ -3572,7 +3574,7 @@ namespace CPMS_Accounting.Procedures
             isInsertData = false;
             if (_checks.DragonBlue_Personal_Provincial.Count > 0)
             {
-                 //_DrNumber++;
+                //_DrNumber++;
                 //counter = 10;
                 //isInsertData = true;
                 //if (isInsertData)
@@ -3590,8 +3592,8 @@ namespace CPMS_Accounting.Procedures
                 //Without DeliveryTo
                 dBranch.ForEach(y =>
                 {
-                   
-                //    isInsertData = false;
+
+                    //    isInsertData = false;
                     var dRecord = _checks.DragonBlue_Personal_Provincial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
                     dRecord.ForEach(r =>
                     {
@@ -3610,8 +3612,8 @@ namespace CPMS_Accounting.Procedures
                     }
 
                     isInsertData = false;
-                    
-                    
+
+
                 });
                 //END Without DeliveryTo
                 // with deliveryTO
@@ -3674,7 +3676,7 @@ namespace CPMS_Accounting.Procedures
                     var dRecord = _checks.DragonBlue_Commercial_Provicial.Where(g => g.BRSTN == y && g.DeliveryTo.Trim() == g.BRSTN).ToList();
                     //if (dRecord != null)
                     //    _DrNumber++;
-                //    isInsertData = false;
+                    //    isInsertData = false;
                     dRecord.ForEach(r =>
                     {
 
@@ -3811,7 +3813,7 @@ namespace CPMS_Accounting.Procedures
 
 
             }
-           
+
 
             if (_checks.DragonYellow_Commercial_Provincial.Count > 0)
             {
@@ -3892,7 +3894,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 // end with deliveryTO
             }
-            
+
             //------------------------------------------ END of Dragon Yellow Cheques Provincial Branches ---------------------------------//
 
             if (_checks.Reca_Personal_Provincial.Count > 0)
@@ -3909,7 +3911,7 @@ namespace CPMS_Accounting.Procedures
                 //        counter = 0;
                 //    }
                 //}
-                  _DrNumber++;
+                _DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 var dBranch = _checks.Reca_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 //Without DeliveryTo
@@ -3968,7 +3970,7 @@ namespace CPMS_Accounting.Procedures
                 //ENd with deliveryTO
 
             }
-            
+
             if (_checks.Reca_Commercial_Provincial.Count > 0)
             {
                 //counter = 10;
@@ -4014,7 +4016,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 //End Without DeliveryTo
                 //Generating DR per CheckType in Provincial Branches
-             //   _DrNumber++;
+                //   _DrNumber++;
                 // with deliveryTO
                 dBranch.ForEach(y =>
                 {
@@ -4046,7 +4048,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 // end with deliveryTO
             }
-            
+
             //------------------------------------------ END of Reca Cheques Provincial Branches ---------------------------------//
 
             if (_checks.Online_Personal_Provincial.Count > 0)
@@ -4063,7 +4065,7 @@ namespace CPMS_Accounting.Procedures
                 //        counter = 0;
                 //    }
                 //}
-                  _DrNumber++;
+                _DrNumber++;
                 //Generating DR per CheckType in Provincial Branches
                 var dBranch = _checks.Online_Personal_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 //Without DeliveryTo
@@ -4122,7 +4124,7 @@ namespace CPMS_Accounting.Procedures
                 //ENd with deliveryTO
 
             }
-            
+
             if (_checks.Online_Commercial_Provincial.Count > 0)
             {
                 //counter = 10;
@@ -4200,7 +4202,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 // end with deliveryTO
             }
-            
+
             //------------------------------------------ END of Online Cheques Provincial Branches ---------------------------------//
             if (_checks.Customized_Provincial.Count > 0)
             {
@@ -4247,7 +4249,7 @@ namespace CPMS_Accounting.Procedures
                 });
                 //End Without DeliveryTo
                 //Generating DR per CheckType in Provincial Branches
-            //    _DrNumber++;
+                //    _DrNumber++;
                 // with deliveryTO
                 var dBranch2 = _checks.Customized_Provincial.Select(a => a.BRSTN).Distinct().ToList();
                 dBranch2.ForEach(y =>
@@ -4269,7 +4271,7 @@ namespace CPMS_Accounting.Procedures
 
                         isInsertData = true;
                     });
-    
+
                     isInsertData = false;
                 });
                 // end with deliveryTO
@@ -4290,13 +4292,15 @@ namespace CPMS_Accounting.Procedures
             var CommercialP = _checks.Regular_Commercial_Provincial.OrderBy(t => t.BranchName).ToList();
             if (PersonalD.Count > 0 || CommercialD.Count > 0)
             {
-                
+
                 List<OrderModel> listofChecks = new List<OrderModel>();
-                PersonalD.ForEach(x => {
+                PersonalD.ForEach(x =>
+                {
                     listofChecks.Add(x);
                 });
-                CommercialD.ForEach(x => { 
-                    listofChecks.Add(x); 
+                CommercialD.ForEach(x =>
+                {
+                    listofChecks.Add(x);
                 });
                 var _list = listofChecks.Select(r => r.BRSTN).Distinct().ToList();
                 //Working Proccess Jan. 27 2021
@@ -4308,7 +4312,7 @@ namespace CPMS_Accounting.Procedures
                     {
 
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
 
 
@@ -4331,10 +4335,12 @@ namespace CPMS_Accounting.Procedures
             {
 
                 List<OrderModel> listofChecks = new List<OrderModel>();
-                PersonalP.ForEach(x => {
+                PersonalP.ForEach(x =>
+                {
                     listofChecks.Add(x);
                 });
-                CommercialP.ForEach(x => {
+                CommercialP.ForEach(x =>
+                {
                     listofChecks.Add(x);
                 });
                 var _list = listofChecks.Select(r => r.BRSTN).Distinct().ToList();
@@ -4347,7 +4353,7 @@ namespace CPMS_Accounting.Procedures
                     {
 
 
-                        Script(gClient.DataBaseName,r, _DrNumber, _deliveryDate, _username, _packNumber);
+                        Script(gClient.DataBaseName, r, _DrNumber, _deliveryDate, _username, _packNumber);
 
 
 
@@ -4364,14 +4370,14 @@ namespace CPMS_Accounting.Procedures
                 }
 
             }
-           
-           
+
+
             DBClosed();
             return;
         }
         //public List<int> GetPONUmber(string _chkType, List<int> _poNumber)
         //{
-            
+
         //    Sql = "Select PurchaseOrderNo from " +gClient.PurchaseOrderFinishedTable+" where ChequeName = '"+_chkType + "'";
         //    DBConnect();
         //    cmd = new MySqlCommand(Sql, myConnect);
@@ -4391,7 +4397,7 @@ namespace CPMS_Accounting.Procedures
         {
             log.Info("Getting Purchase Order Number from Database per Cheque Name..");
             int _poNumber = 0;
-            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName = '" + _chkType.Replace("'","''") + "'";
+            Sql = "Select PurchaseOrderNo from " + gClient.PurchaseOrderFinishedTable + " where ChequeName = '" + _chkType.Replace("'", "''") + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -4400,7 +4406,7 @@ namespace CPMS_Accounting.Procedures
 
                 _poNumber = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
 
-              //  _poNumber.Add(po);
+                //  _poNumber.Add(po);
             }
             reader.Close();
             DBClosed();
@@ -4446,22 +4452,22 @@ namespace CPMS_Accounting.Procedures
             DBClosed();
             return _poNumber;
         }
-        private void Script(string _table ,OrderModel r,int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
+        private void Script(string _table, OrderModel r, int _DrNumber, DateTime _deliveryDate, string _username, int _packNumber)
         {
             log.Info("Inserting Data into Database...");
             if (gClient.BankCode == "008")
             {
-                Sql = "Insert into " +_table+ " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
+                Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location, BranchCode,OldBranchCode,PurchaseOrderNumber,Bank" +
                           ",Address2,Address3,Address4,Address5,Address6,ProductCode,Block,Segment,ProductType,AttentionTo)" +
                           "VALUES('" + r.BRSTN + "','" + r.BranchName.Replace("'", "''") + "','" + r.AccountNo + "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
-                          "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName.Replace("'","''") + "','" + r.StartingSerial + "','" + r.EndingSerial +
+                          "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName.Replace("'", "''") + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                          "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "',"+r.PONumber+",'" + gClient.ShortName + "'," +
-                          "'" + r.Address2.Replace("'","''") + "','" + r.Address3.Replace("'", "''") + "','" + r.Address4.Replace("'", "''") + "','" + r.Address5.Replace("'", "''") +
+                          "','" + r.Location + "','" + r.BranchCode + "','" + r.OldBranchCode + "'," + r.PONumber + ",'" + gClient.ShortName + "'," +
+                          "'" + r.Address2.Replace("'", "''") + "','" + r.Address3.Replace("'", "''") + "','" + r.Address4.Replace("'", "''") + "','" + r.Address5.Replace("'", "''") +
                           "','" + r.Address6.Replace("'", "''") + "','" + r.ProductCode +
-                          "'," + r.Block  + "," + r.Segment+",'" + r.ProductType +"','" + gClient.AttentionTo + "');";
+                          "'," + r.Block + "," + r.Segment + ",'" + r.ProductType + "','" + gClient.AttentionTo + "');";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
@@ -4470,29 +4476,29 @@ namespace CPMS_Accounting.Procedures
             {
                 Sql = "Insert into " + _table + " (BRSTN,BranchName,AccountNo,AcctNoWithHyphen,Name1,Name2,ChkType," +
                           "ChequeName,StartingSerial,EndingSerial,DRNumber,DeliveryDate,username,batch,PackNumber,Date,Time,location,Bank,ProductCode," +
-                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo,OldBranchCode,PurchaseOrderNumber,isCancelled)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo + 
+                          "BranchCode,DeliveryToBrstn,DeliveryToBranch,AttentionTo,OldBranchCode,PurchaseOrderNumber,isCancelled)VALUES('" + r.BRSTN + "','" + r.BranchName + "','" + r.AccountNo +
                           "','" + r.AccountNoWithHypen + "','" + r.Name1.Replace("'", "''") +
                           "','" + r.Name2.Replace("'", "''") + "','" + r.ChkType + "','" + r.ChequeName + "','" + r.StartingSerial + "','" + r.EndingSerial +
                           "','" + _DrNumber + "','" + _deliveryDate.ToString("yyyy-MM-dd") + "','" + _username + "','" +
                           r.Batch.TrimEnd() + "','" + _packNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + DateTime.Now.ToString("hh:mm:ss") +
-                          "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','"+ r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch +
+                          "','" + r.Location + "','" + gClient.ShortName + "','" + r.ProductCode + "','" + r.BranchCode + "','" + r.DeliveryTo + "','" + r.DeliverytoBranch +
                           "','" + gClient.AttentionTo + "','" + r.OldBranchCode + "'," + r.PONumber + ",0);";
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
                 log.Info("Inserting data in Database done..");
             }
         }
-        public int CheckPOQuantity(int _PO, string _chkType )
+        public int CheckPOQuantity(int _PO, string _chkType)
         {
             log.Info("Checking Balance Quantity of Purchage Order Number per Cheque Type..");
             int _remainingbalance = 0;
             int IniatailBalance = 0;
             int ProcessedQuantity = 0;
-            Sql = "Select Quantity  from "+gClient.PurchaseOrderFinishedTable +" where PurchaseOrderNo = " + _PO + " and ChequeName = '" + _chkType.Replace("'","''") + "';";
+            Sql = "Select Quantity  from " + gClient.PurchaseOrderFinishedTable + " where PurchaseOrderNo = " + _PO + " and ChequeName = '" + _chkType.Replace("'", "''") + "';";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 IniatailBalance = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
             }
@@ -4502,7 +4508,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             cmd = new MySqlCommand(Sql2, myConnect);
             MySqlDataReader reader2 = cmd.ExecuteReader();
-            while(reader2.Read())
+            while (reader2.Read())
             {
                 ProcessedQuantity = !reader2.IsDBNull(0) ? reader2.GetInt32(0) : 0;
             }
@@ -4512,7 +4518,7 @@ namespace CPMS_Accounting.Procedures
             _remainingbalance = IniatailBalance - ProcessedQuantity;
 
             return _remainingbalance;
-        }
+        } 
         public string ConcatDRNumbers(string _batch, string _chkType, string _location)
         {
 
@@ -4569,18 +4575,18 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return _dr;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Concat DR Numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
             }
         }
-        public  void DisableControls(ToolStripMenuItem _item)
+        public void DisableControls(ToolStripMenuItem _item)
         {
             log.Info("Disable/Enable Controls..");
             //if (gClient.DataBaseName != "producers_history")
             //{
-                _item.Enabled = true;
+            _item.Enabled = true;
 
             //}
             //else
@@ -4597,7 +4603,7 @@ namespace CPMS_Accounting.Procedures
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 ProductModel product = new ProductModel
                 {
@@ -4611,7 +4617,7 @@ namespace CPMS_Accounting.Procedures
                     DateModified = !reader.IsDBNull(7) ? reader.GetDateTime(7) : DateTime.Now,
                     Unit = !reader.IsDBNull(8) ? reader.GetString(8) : "",
                     BalanceQuantity = !reader.IsDBNull(9) ? reader.GetInt32(9) : 0,
-                    DeliveryLocation = !reader.IsDBNull(10) ? reader.GetString(10): ""
+                    DeliveryLocation = !reader.IsDBNull(10) ? reader.GetString(10) : ""
                 };
                 _products.Add(product);
             }
@@ -4622,21 +4628,21 @@ namespace CPMS_Accounting.Procedures
         {
             log.Info("Inserting Data in Product Table..");
             Sql = "Insert into " + gClient.PriceListTable + " (ProductCode,BankCode, ChequeName,Description,FinalChkType,Docstamp,UnitPrice,DatetimeModified,Unit,Location)" +
-                    "Values('" +_product.ProductCode + "','" + _product.BankCode + "', '"+ _product.ChequeName.Replace("'","''") +"','"+_product.Description.Replace("'","''")+
-                    "','"+_product.ChkType+"',"+_product.DocStampPrice+"," + _product.UnitPrice+",'" +
-                    _product.DateModified.ToString("yyyy-MM-dd")+"','"+_product.Unit+"','"+_product.DeliveryLocation + "');";
+                    "Values('" + _product.ProductCode + "','" + _product.BankCode + "', '" + _product.ChequeName.Replace("'", "''") + "','" + _product.Description.Replace("'", "''") +
+                    "','" + _product.ChkType + "'," + _product.DocStampPrice + "," + _product.UnitPrice + ",'" +
+                    _product.DateModified.ToString("yyyy-MM-dd") + "','" + _product.Unit + "','" + _product.DeliveryLocation + "');";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
             DBClosed();
-        }
+        } 
         public void ModifyProductsPrice(ProductModel _product)
         {
             log.Info("Updating Product Price ..");
-            Sql = "Update " + gClient.PriceListTable + " set BankCode = '"+_product.BankCode+"'," +
-                " ChequeName = '"+_product.ChequeName.Replace("'","''")+"', Description = '"+_product.Description.Replace("'","''")+ "' ,FinalChkType = '" +_product.ChkType+"'" +
-                ",Docstamp = "+_product.DocStampPrice + ",UnitPrice = " +_product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss")+
-                "',Unit = '"+_product.Unit+ "', Location = '"+_product.DeliveryLocation+ "' where ProductCode ='" + _product.ProductCode + "'";
+            Sql = "Update " + gClient.PriceListTable + " set BankCode = '" + _product.BankCode + "'," +
+                " ChequeName = '" + _product.ChequeName.Replace("'", "''") + "', Description = '" + _product.Description.Replace("'", "''") + "' ,FinalChkType = '" + _product.ChkType + "'" +
+                ",Docstamp = " + _product.DocStampPrice + ",UnitPrice = " + _product.UnitPrice + " ,DatetimeModified = '" + _product.DateModified.ToString("yyyy-MM-dd hh:mm:ss") +
+                "',Unit = '" + _product.Unit + "', Location = '" + _product.DeliveryLocation + "' where ProductCode ='" + _product.ProductCode + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -4668,12 +4674,12 @@ namespace CPMS_Accounting.Procedures
         public List<ChequeTypesModel> GetChequeTypes(List<ChequeTypesModel> _cheques)
         {
             log.Info("Getting List of Cheque Types..");
-            Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName  from " + gClient.ChequeTypeTable  + " A " +
-                "inner join "  + gClient.ProductTable + " B on A.CProductCode = B.CProductCode ;";
+            Sql = "Select Type, ChequeName, Description, A.DateTimeModified,ProductName  from " + gClient.ChequeTypeTable + " A " +
+                "inner join " + gClient.ProductTable + " B on A.CProductCode = B.CProductCode ;";
             DBConnect();
-            cmd = new MySqlCommand(Sql,myConnect);
+            cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 ChequeTypesModel c = new ChequeTypesModel
                 {
@@ -4699,7 +4705,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             //con = new MySqlConnection(ConString);
             cmd = new MySqlCommand(Sql, myConnect);
-          //  con.Open();
+            //  con.Open();
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -4715,7 +4721,7 @@ namespace CPMS_Accounting.Procedures
                 _cheques.Add(c);
             }
             reader.Close();
-          //  con.Close();
+            //  con.Close();
             DBClosed();
             return _cheques;
         }
@@ -4725,7 +4731,7 @@ namespace CPMS_Accounting.Procedures
             log.Info("Inserting Data to ChequeType Table..");
             Sql = "Insert into " + gClient.ChequeTypeTable + " (Type,ChequeName,Description,DatetimeModified,CProductCode)" +
                     "Values('" + _cheque.Type + "', '" + _cheque.ChequeName.Replace("'", "''") + "','" + _cheque.Description.Replace("'", "''") +
-                     "','"+ _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "'," + _cheque.ProductCode + ");";
+                     "','" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "'," + _cheque.ProductCode + ");";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -4736,7 +4742,7 @@ namespace CPMS_Accounting.Procedures
             log.Info("Updating Data in ChequeType Table..");
             Sql = "Update " + gClient.ChequeTypeTable + " set  ChequeName = '" + _cheque.ChequeName.Replace("'", "''") + "', Description = '" +
                 _cheque.Description.Replace("'", "''") + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "'" +
-                " where CProductCode = " + _cheque.ProductCode + " and Type = '" + _cheque.Type + "'" ;
+                " where CProductCode = " + _cheque.ProductCode + " and Type = '" + _cheque.Type + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -4767,7 +4773,7 @@ namespace CPMS_Accounting.Procedures
         {
             log.Info("Inserting Data to Products Table..");
             Sql = "Insert into " + gClient.ProductTable + " (CProductCode,ProductName,DatetimeModified)" +
-                    "Values('" + _cheque.ProductCode + "', '" + _cheque.ProductName.Replace("'", "''")  +
+                    "Values('" + _cheque.ProductCode + "', '" + _cheque.ProductName.Replace("'", "''") +
                      "','" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "');";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
@@ -4777,8 +4783,8 @@ namespace CPMS_Accounting.Procedures
         public void ModifyProduct(ChequeProductModel _cheque)
         {
             log.Info("Updating Data from Product Table..");
-            Sql = "Update " + gClient.ProductTable + " set  ProductName = '" + _cheque.ProductName.Replace("'", "''") 
-                 + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "' where CProductCode = '"+_cheque.ProductCode+"'";
+            Sql = "Update " + gClient.ProductTable + " set  ProductName = '" + _cheque.ProductName.Replace("'", "''")
+                 + "' ,DatetimeModified = '" + _cheque.DateModified.ToString("yyyy-MM-dd hh:mm:ss") + "' where CProductCode = '" + _cheque.ProductCode + "'";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             cmd.ExecuteNonQuery();
@@ -4787,8 +4793,8 @@ namespace CPMS_Accounting.Procedures
         public List<ChequeTypesModel> fChequeTypes(List<ChequeTypesModel> _cheques)
         {
             log.Info("Getting List of Cheque Types..");
-            Sql = "SELECT C.Type, C.ChequeName, C.Description, P.CProductCode, P.ProductName FROM "+gClient.ChequeTypeTable+ " C" +
-                    " inner join "+ gClient.ProductTable+ " P on C.CProductCode = P.CProductCode; ";
+            Sql = "SELECT C.Type, C.ChequeName, C.Description, P.CProductCode, P.ProductName FROM " + gClient.ChequeTypeTable + " C" +
+                    " inner join " + gClient.ProductTable + " P on C.CProductCode = P.CProductCode; ";
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -4800,7 +4806,7 @@ namespace CPMS_Accounting.Procedures
                     ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
                     Description = !reader.IsDBNull(2) ? reader.GetString(2) : "",
                     ProductCode = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
-                    ProductName = !reader.IsDBNull(4) ? reader.GetString(4) :""
+                    ProductName = !reader.IsDBNull(4) ? reader.GetString(4) : ""
 
                 };
                 _cheques.Add(c);
@@ -4808,7 +4814,7 @@ namespace CPMS_Accounting.Procedures
             return _cheques;
         }
         public string GetLastProductCode()
-         {
+        {
             log.Info("Getting Last Product Code from database..");
             string _pCode = "";
             Sql = "Select CProductCode from " + gClient.ProductTable + " order by CProductCode desc Limit 1";
@@ -4816,7 +4822,7 @@ namespace CPMS_Accounting.Procedures
             DBConnect();
             cmd = new MySqlCommand(Sql, myConnect);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 _pCode = !reader.IsDBNull(0) ? reader.GetInt32(0).ToString() : "";
             }
@@ -4934,10 +4940,10 @@ namespace CPMS_Accounting.Procedures
                     else if (licnt == 2)
                     {
                         string sql2 = "Update " + gClient.PackingList + " set BRSTN2 = '" + list[i].BRSTN + "',BranchName2 = '" + list[i].BranchName.Replace("'", "''") +
-                                    "',Qty2 = " + list[i].Qty + ",ChkType2 = '" + list[i].ChkType + "', ChequeName2 = '" + list[i].ChequeName.Replace("'","''") + "',StartingSerial2 = '" + list[i].StartingSerial +
+                                    "',Qty2 = " + list[i].Qty + ",ChkType2 = '" + list[i].ChkType + "', ChequeName2 = '" + list[i].ChequeName.Replace("'", "''") + "',StartingSerial2 = '" + list[i].StartingSerial +
                                       "',EndingSerial2 = '" + list[i].EndingSerial + "',Address22 ='" + list[i].Address2.Replace("'", "''") +
                                       "', Address32 ='" + list[i].Address3.Replace("'", "''") + "',Address42 ='" + list[i].Address4.Replace("'", "''") +
-                                       "' , BranchCode2 = '"+ list[i].BranchCode+ "'" +
+                                       "' , BranchCode2 = '" + list[i].BranchCode + "'" +
                                       "where BRSTN = '" + list[i - 1].BRSTN + "' and ChkType = '" + list[i - 1].ChkType + "';";
 
                         MySqlCommand cmd2 = new MySqlCommand(sql2, myConnect);
@@ -4949,7 +4955,7 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return _batch;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "GetPackingListwithSticker", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
@@ -4998,7 +5004,7 @@ namespace CPMS_Accounting.Procedures
             reader.Close();
             con.Close();
             return _tempList;
-        } 
+        }
         public int fGetTotalChecks(string _chkName, List<OrderModel> _list)
         {
             log.Info(" Data from database..");
@@ -5071,7 +5077,7 @@ namespace CPMS_Accounting.Procedures
                 comdel.ExecuteNonQuery();
 
                 DBClosed();
-                
+
                 var TotalA = list.Where(x => x.ChkType == "A");
                 var TotalB = list.Where(x => x.ChkType == "B");
                 var TotalC = list.Where(x => x.ChkType == "C");
@@ -5083,7 +5089,7 @@ namespace CPMS_Accounting.Procedures
                                   "EndingSerial,ChequeName,Batch,username,BranchCode,OldBranchCode,Location,PONumber,ConcatinatedDRA," +
                                   "Bank,Address2,Address3,Address4,Name1,Name2,AccountNo,TotalA,TotalB,BankName,AttentionTo,TIN,DeliveryToBranch,DeliveryToBrstn)" +
                                   " Values('" + list[i].DrNumber + "','" + list[i].PackNumber +
-                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName.TrimEnd()  + " (" + list[i].BranchCode + ")'," + list[i].Qty +
+                                  "','" + list[i].BRSTN + "','" + list[i].ChkType + "','" + list[i].BranchName.TrimEnd() + " (" + list[i].BranchCode + ")'," + list[i].Qty +
                                   ",'" + list[i].StartingSerial + "','" + list[i].EndingSerial + "','" + list[i].ChequeName.Replace("'", "''") + "','" +
                                   list[i].Batch + "','" + list[i].username + "','" + list[i].BranchCode + "','" + list[i].OldBranchCode + "','" +
                                   list[i].Location + "'," + list[i].PONumber + ",'','" + gClient.Description.ToUpper() + "','" + list[i].Address2.Replace("'", "''") +
@@ -5157,7 +5163,7 @@ namespace CPMS_Accounting.Procedures
                 comdel.ExecuteNonQuery();
 
                 DBClosed();
-                
+
                 var TotalA = list.Where(x => x.ChkType == "A");
                 var TotalB = list.Where(x => x.ChkType == "B");
                 var TotalC = list.Where(x => x.ChkType == "C");
@@ -5223,7 +5229,7 @@ namespace CPMS_Accounting.Procedures
                         Segment = !myReader.IsDBNull(11) ? myReader.GetInt32(11) : 0,
                         ProducType = !myReader.IsDBNull(12) ? myReader.GetString(12) : "",
                         DeliveryToBranch = !myReader.IsDBNull(13) ? myReader.GetString(13) : "",
-                        ChequeName = !myReader.IsDBNull(14) ? myReader.GetString(14): ""
+                        ChequeName = !myReader.IsDBNull(14) ? myReader.GetString(14) : ""
 
 
                     };
@@ -5243,7 +5249,7 @@ namespace CPMS_Accounting.Procedures
                 //                       ascending
                 //              select c).ToList();
                 // int dataCount = 0;
-               //s string Type = "";
+                //s string Type = "";
                 int licnt = 1;
 
                 for (int r = 0; r < _temp.Count; r++)
@@ -5259,7 +5265,7 @@ namespace CPMS_Accounting.Procedures
                         string sql2 = "Insert into " + gClient.StickerTable + "(Batch,BRSTN,BranchName,Qty,ChkType,ChequeName,StartingSerial,EndingSerial," +
                                       "Bank,Address2,Address3,Address4,Block,Segment,ProductType,DeliveryToBranch)" +
                                       "values('" + _batch + "','" + _temp[r].BRSTN + "','" + _temp[r].BranchName + "'," + _temp[r].Qty + ",'" + _temp[r].ChkType +
-                                      "','" + _temp[r].ChequeName.Substring(0,_temp[r].ChequeName.Length - 6) +   "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'", "''")
+                                      "','" + _temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) + "','" + _temp[r].StartingSerial + "','" + _temp[r].EndingSerial + "','" + gClient.Description.ToUpper().Replace("'", "''")
                                       + "','" + _temp[r].Address2.Replace("'", "''") +
                                       "', '" + _temp[r].Address3.Replace("'", "''") + "','" + _temp[r].Address4.Replace("'", "''") + "'," + _temp[r].Block + "," +
                                       _temp[r].Segment + ",'" + _temp[r].ProducType + "','" + _temp[r].DeliveryToBranch + "' ); ";
@@ -5272,7 +5278,7 @@ namespace CPMS_Accounting.Procedures
                     else if (licnt == 2)
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN2 = '" + _temp[r].BRSTN + "',BranchName2 = '" + _temp[r].BranchName.Replace("'", "''") +
-                                    "',Qty2 = " + _temp[r].Qty + ",ChkType2 = '" + _temp[r].ChkType + "', ChequeName2 = '"+_temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) +  
+                                    "',Qty2 = " + _temp[r].Qty + ",ChkType2 = '" + _temp[r].ChkType + "', ChequeName2 = '" + _temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) +
                                     "',StartingSerial2 = '" + _temp[r].StartingSerial +
                                       "',EndingSerial2 = '" + _temp[r].EndingSerial + "',Address22 ='" + _temp[r].Address2.Replace("'", "''") +
                                       "', Address32 ='" + _temp[r].Address3.Replace("'", "''") + "',Address42 ='" + _temp[r].Address4.Replace("'", "''") +
@@ -5287,7 +5293,7 @@ namespace CPMS_Accounting.Procedures
                     else if (licnt == 3)
                     {
                         string sql2 = "Update " + gClient.StickerTable + " set BRSTN3 = '" + _temp[r].BRSTN + "',BranchName3 = '" + _temp[r].BranchName + "',Qty3 = " + _temp[r].Qty +
-                                      ",ChkType3 = '" + _temp[r].ChkType + "',ChequeName3 = '"+ _temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) + "',StartingSerial3 = '" + _temp[r].StartingSerial +
+                                      ",ChkType3 = '" + _temp[r].ChkType + "',ChequeName3 = '" + _temp[r].ChequeName.Substring(0, _temp[r].ChequeName.Length - 6) + "',StartingSerial3 = '" + _temp[r].StartingSerial +
                                       "',EndingSerial3 = '" + _temp[r].EndingSerial + "',Address23  = '" + _temp[r].Address2.Replace("'", "''") + "'" +
                                       ",Address33 = '" + _temp[r].Address3.Replace("'", "''") + "',Address43 = '" + _temp[r].Address4.Replace("'", "''") +
                                       "',Block3 = " + _temp[r].Block + ", Segment3 = " + _temp[r].Segment + ",ProductType3 = '" + _temp[r].ProducType +
@@ -5361,7 +5367,7 @@ namespace CPMS_Accounting.Procedures
             log.Info("Generating Document Stamp Details..");
             try
             {
-                
+
 
 
                 //Orginal Query
@@ -5376,7 +5382,7 @@ namespace CPMS_Accounting.Procedures
                 //      "(Count(ChkType) * H.DocStamp) as TotalAmount,location from " + gClient.DataBaseName +
                 //      " H left join " + gClient.PriceListTable + "  P on H.Bank = P.BankCode and H.ChkType = P.FinalChkType" +
                 //      " where  DocStampNumber= " + x + " Group by DocStampNumber,location,ChkType order by DocStampNumber, ChkType";
-               
+
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -5403,7 +5409,7 @@ namespace CPMS_Accounting.Procedures
                     doc.isCancelled = !reader.IsDBNull(15) ? reader.GetInt32(15) : 0;
 
                     _temp.Add(doc);
-                   
+
                 }
                 reader.Close();
                 DBClosed();
@@ -5438,15 +5444,15 @@ namespace CPMS_Accounting.Procedures
 
                 List<DocStampModel> cancelledTemp = new List<DocStampModel>();
                 int qtycancelled = 0;
-                    double totalamountcancelled = 0;
-              
+                double totalamountcancelled = 0;
+
                 _temp.ForEach(d =>
                 {
-                    
+
                     if (GetCancelledTrancsaction(d.batches, cancelledTemp))
                     {
-                         qtycancelled = cancelledTemp[0].CancelledQuantity;
-                         totalamountcancelled = cancelledTemp[0].CancelledTotalAmount;
+                        qtycancelled = cancelledTemp[0].CancelledQuantity;
+                        totalamountcancelled = cancelledTemp[0].CancelledTotalAmount;
                     }
 
                     string Sql2 = "Insert into " + gClient.DocStampTempTable + "(Bank, DocStampNumber,SalesInvoice,Quantity,ChkType, ChequeDesc, DocStampPrice, " +
@@ -5454,8 +5460,8 @@ namespace CPMS_Accounting.Procedures
                                 "Values('" + gClient.Description + "'," + d.DocStampNumber +
                                 ", " + d.SalesInvoiceNumber + "," + d.TotalQuantity + ",'" + d.ChkType + "','" + d.DocDesc.Replace("'", "''") +
                                 "'," + d.DocStampPrice + ",'" + d.PreparedBy + "','" + d.CheckedBy + "'," + d.POorder + "," + d.QuantityOnHand +
-                                ",'" + batches2 + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "'," + d.isCancelled + 
-                                "," + qtycancelled + ","  + totalamountcancelled + ")";
+                                ",'" + batches2 + "'," + d.TotalAmount + ",'" + d.Location + "','" + d.DocStampDate.ToString("yyyy-MM-dd") + "'," + d.isCancelled +
+                                "," + qtycancelled + "," + totalamountcancelled + ")";
                     DBConnect();
                     MySqlCommand cmd2 = new MySqlCommand(Sql2, myConnect);
                     cmd2.ExecuteNonQuery();
@@ -5561,10 +5567,10 @@ namespace CPMS_Accounting.Procedures
                         DeliveryToBranch = !reader.IsDBNull(30) ? reader.GetString(30) : "",
                         OldBranchCode = !reader.IsDBNull(31) ? reader.GetString(31) : "",
                         CheckedBy = !reader.IsDBNull(32) ? reader.GetString(32) : "",
-                        PONumber = !reader.IsDBNull(33) ? reader.GetInt32(33) : 0, 
+                        PONumber = !reader.IsDBNull(33) ? reader.GetInt32(33) : 0,
                         Qty = !reader.IsDBNull(34) ? reader.GetInt32(34) : 0
 
-                       
+
                     };
                     _temp.Add(t);
                 }
@@ -5573,7 +5579,7 @@ namespace CPMS_Accounting.Procedures
 
                 return _batch;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Populating data from database", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return _batch;
@@ -5586,14 +5592,14 @@ namespace CPMS_Accounting.Procedures
                 Sql = "Select PurchaseOrderNo, PurchaseOrderDateTime, ProductCode, Quantity, ChequeName, Description, UnitPrice, DocStamp," +
                     "CheckType, ClientCode,GeneratedBy, CheckedBy, ApprovedBy from " + gClient.PurchaseOrderFinishedTable + ";";
                 DBConnect();
-                cmd = new MySqlCommand(Sql,myConnect);
+                cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
 
-                while(reader.Read())
+                while (reader.Read())
                 {
                     PurchaseOrderModel p = new PurchaseOrderModel
                     {
-                        PurchaseOrderNumber  = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
+                        PurchaseOrderNumber = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0,
                         PurchaseOrderDateTime = !reader.IsDBNull(1) ? reader.GetDateTime(1) : DateTime.Now,
                         ProductCode = !reader.IsDBNull(2) ? reader.GetString(2) : "",
                         Quantity = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
@@ -5624,19 +5630,19 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                
+
                 Sql = "Select A.Type,A.ChequeName,A.Description,A.CProductCode,B.ProductName from rcbc_tcheques A inner join rcbc_tchequeproducts B on " +
                             "A.CProductCode = B.CProductCode;";
                 DBConnect();
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                
-                while(reader.Read())
+
+                while (reader.Read())
                 {
                     TempModel t = new TempModel
                     {
                         ChkType = !reader.IsDBNull(0) ? reader.GetString(0) : "",
-                        ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) :"",
+                        ChequeName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
                         CheqDesc = !reader.IsDBNull(2) ? reader.GetString(2) : "",
                         PCode = !reader.IsDBNull(3) ? reader.GetInt32(3) : 0,
                         ProductName = !reader.IsDBNull(4) ? reader.GetString(4) : ""
@@ -5645,10 +5651,10 @@ namespace CPMS_Accounting.Procedures
                 }
                 reader.Close();
                 DBClosed();
-               
+
                 return _temp;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Get Cheque Name ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
@@ -5659,17 +5665,17 @@ namespace CPMS_Accounting.Procedures
         {
             try
             {
-                
+
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message, "Get List of Purchase Order Balance", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
             }
         }
-        public void CheckData(DataGridView _dgv,List<OrderingModel> _orderList,List<BranchesModel> _branches,string _batch,DateTime _deliveryDate)
+        public void CheckData(DataGridView _dgv, List<OrderingModel> _orderList, List<BranchesModel> _branches, string _batch, DateTime _deliveryDate)
         {
             try
             {
@@ -5680,7 +5686,7 @@ namespace CPMS_Accounting.Procedures
                     MessageBox.Show("No files found in directory path", "***System Error***");
                 else
                 {
-                    string[] list = Directory.GetFiles( "C:\\Head\\");
+                    string[] list = Directory.GetFiles("C:\\Head\\");
 
                     string Extension = "";
 
@@ -5893,30 +5899,30 @@ namespace CPMS_Accounting.Procedures
                             dt.Columns.Add("DELIVERY BRSTN");
                             dt.Columns.Add("ORDER DATE");
                             dt.Columns.Add("CHANNEL ID");
-                            
+
                             StreamReader sr = new StreamReader(FileName);
                             string[] listData = new string[File.ReadAllLines(FileName).Length];
                             int counter = 0;
                             listData = sr.ReadLine().Split(';'); // Skipping First Line of CSV File
-                            while(!sr.EndOfStream) //Reading all lines
+                            while (!sr.EndOfStream) //Reading all lines
                             {
 
                                 listData = sr.ReadLine().Split(';'); //splitting record
-                            
+
                                 //Adding record to Datatables
                                 dt.Rows.Add(listData[counter], listData[counter + 1], listData[counter + 2],
-                                            listData[counter+3], listData[counter + 4], listData[counter + 5],
-                                            listData[counter+6], listData[counter + 7], listData[counter + 8],
-                                            listData[counter+9], listData[counter + 10], listData[counter + 11],
-                                            listData[counter +12], listData[counter + 13], listData[counter + 14],
-                                            listData[counter +15], listData[counter + 16]);
+                                            listData[counter + 3], listData[counter + 4], listData[counter + 5],
+                                            listData[counter + 6], listData[counter + 7], listData[counter + 8],
+                                            listData[counter + 9], listData[counter + 10], listData[counter + 11],
+                                            listData[counter + 12], listData[counter + 13], listData[counter + 14],
+                                            listData[counter + 15], listData[counter + 16]);
 
                                 OrderingModel order = new OrderingModel
                                 {
-                                            
-                                    ChkType =listData[counter],                     //    TYPE,BRSTN,ACCOUNT NO.,
+
+                                    ChkType = listData[counter],                     //    TYPE,BRSTN,ACCOUNT NO.,
                                     BRSTN = listData[counter + 1],                  //    ACCOUNT NAME,ACCOUNT NAME2,BOOK TYPE,
-                                    AccountNo = listData[counter +2],               //    STYLE,QUANTITY,STARTING SERIAL,
+                                    AccountNo = listData[counter + 2],               //    STYLE,QUANTITY,STARTING SERIAL,
                                     AccountName = listData[counter + 3],            //    PICK_RC,ADDRESS,ADDRESS 2,
                                     AccountName2 = listData[counter + 4],          //    DELIVERY_0,DELIVERY BRANCH,DELIVERY BRSTN,ORDER DATE,CHANNEL ID
                                     BookType = listData[counter + 5],
@@ -5924,21 +5930,21 @@ namespace CPMS_Accounting.Procedures
                                     OrdQuantiy = int.Parse(listData[counter + 7]),
                                     StartingSerial = listData[counter + 8],
                                     PickUpRc = listData[counter + 9],
-                                //    BranchName = listData[counter + 10],
-                                //    Address = listData[counter + 11],
+                                    //    BranchName = listData[counter + 10],
+                                    //    Address = listData[counter + 11],
                                     Delivery0 = listData[counter + 12],
-                                //    DeliveryBranch = listData[counter + 13],
+                                    //    DeliveryBranch = listData[counter + 13],
                                     DeliveryBrstn = listData[counter + 14],
                                     OrderDate = DateTime.Parse(listData[counter + 15]),
                                     Channel = listData[counter + 16]
-                                    
+
 
 
                                 };
                                 order.Batch = _batch;
                                 order.DeliveryDate = _deliveryDate;
                                 var branches = _branches.Where(x => x.BRSTN == order.BRSTN).Distinct().ToList();
-                                order.BranchName = branches[0].Address1.Replace("'","''").TrimEnd();
+                                order.BranchName = branches[0].Address1.Replace("'", "''").TrimEnd();
                                 order.BranchName = branches[0].Address1.Replace("Ñ", "N").TrimEnd();
                                 order.Address = branches[0].Address2.Replace("'", "''").TrimEnd();
                                 order.Address = branches[0].Address2.Replace("Ñ", "N").TrimEnd();
@@ -5961,11 +5967,11 @@ namespace CPMS_Accounting.Procedures
                                 else
                                     order.EndingSerial = (int.Parse(order.StartingSerial) + 99).ToString();
 
-                                          
+
                                 _orderList.Add(order);
-                              
+
                             }
-                       
+
                             for (int i = 0; i < _orderList.Count; i++)
                             {
                                 _orderList[i].ID = i + 1;
@@ -6015,40 +6021,43 @@ namespace CPMS_Accounting.Procedures
                                         _orderList[i].outputFolder = "Online";
                                     }
                                 }
-                                    
 
-                                
+
+
                             }
-                            
+
                         }
 
                         if (ErrorText == null || ErrorText == "")
                         {
-                            
+
                             _dgv.DataSource = _orderList;
                             bg_dtg(_dgv);
                             _dgv.Columns[0].Width = 50;
-                            MessageBox.Show("No Errors Found!!!", "Checking Data!",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                            MessageBox.Show("No Errors Found!!!", "Checking Data!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
-                            MessageBox.Show("Please check ErrorMessage.txt for error references!!","",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                            MessageBox.Show("Please check ErrorMessage.txt for error references!!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             Application.Exit();
                         }
+
+                        KillOrderFile(Path.GetFileName(FileName));
                     }
 
                 }
+
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Check Data",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "Check Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private static string Seperator()
         {
             return "";
         }
-        public void DoBlockProcess(TypeofCheckModel _orders, frmOrdering _mainForm,string outputFolder)
+        public void DoBlockProcess(TypeofCheckModel _orders, frmOrdering _mainForm, string outputFolder)
         {
             StreamWriter file;
             //DbConServices db = new DbConServices();
@@ -6288,20 +6297,20 @@ namespace CPMS_Accounting.Procedures
                         //for (int i = 0; i < check; i++)
                         //{
 
-                        string output = ConvertToBlockTextManual(_orders.Ordering_Customized,"CUSTOMIZED ", "COMMERCIAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
+                        string output = ConvertToBlockTextManual(_orders.Ordering_Customized, "CUSTOMIZED ", "COMMERCIAL", _mainForm.batchFile, _mainForm.deliveryDate, gUser.FirstName, _mainForm);
                         //  }
                         file.WriteLine(output);
                     }
 
                 }
             }
-           
+
         }
-        public void PackingText(TypeofCheckModel _checksModel, frmOrdering _mainForm,string outputFolder)
+        public void PackingText(TypeofCheckModel _checksModel, frmOrdering _mainForm, string outputFolder)
         {
 
             StreamWriter file;
-           // DbConServices db = new DbConServices();
+            // DbConServices db = new DbConServices();
 
             if (_checksModel.Ordering_Regular_Personal.Count > 0)
             {
@@ -6393,7 +6402,7 @@ namespace CPMS_Accounting.Procedures
                     using (file = new StreamWriter(File.Open(packkingListPath, FileMode.Append)))
                     {
                         string output = ConvertToPackingList(_checksModel.Ordering_DragonBlue_Commercial, "DRAGON BLUE CHECK", _mainForm);
-                         file.WriteLine(output);
+                        file.WriteLine(output);
                     }
 
                 }
@@ -6525,7 +6534,7 @@ namespace CPMS_Accounting.Procedures
 
                 }
             }
-    
+
         }// End of Function
         public void PrinterFile(TypeofCheckModel _checkModel, frmOrdering _mainForm)
         {
@@ -6537,7 +6546,7 @@ namespace CPMS_Accounting.Procedures
             if (_checkModel.Ordering_Regular_Personal.Count > 0)
             {
 
-                string printerFilePathA = Application.StartupPath +"\\Output\\" + _checkModel.Ordering_Regular_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "P.txt";
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_Regular_Personal[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "P.txt";
 
 
                 if (File.Exists(printerFilePathA))
@@ -6556,7 +6565,7 @@ namespace CPMS_Accounting.Procedures
             if (_checkModel.Ordering_Regular_Commercial.Count > 0)
             {
 
-                string printerFilePathA = Application.StartupPath +"\\Output\\" + _checkModel.Ordering_Regular_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "C.txt";
+                string printerFilePathA = Application.StartupPath + "\\Output\\" + _checkModel.Ordering_Regular_Commercial[0].outputFolder + "\\RCBC" + _mainForm.batchFile.Substring(0, 4) + "C.txt";
 
 
                 if (File.Exists(printerFilePathA))
@@ -6770,7 +6779,7 @@ namespace CPMS_Accounting.Procedures
                     txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYP";
                 else if (check.ChkType == "B" && check.Style == 7)
                     txtFileName = "RCBC" + _mainForm.batchFile.Substring(0, 4) + "DYC";
-                
+
                 //if (_ChkType == "PERSONAL")
                 //{
                 //    checkTypeCount = check.Quantity;
@@ -6827,7 +6836,7 @@ namespace CPMS_Accounting.Procedures
                 {
                     var chk = _check.Where(x => x.ChkType == "A").ToList();
                     output += "  A = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
-                    
+
                 }
                 else
                 {
@@ -6835,16 +6844,16 @@ namespace CPMS_Accounting.Procedures
                     output += "  B = " + chk.Count() + GenerateSpace(20) + txtFileName + ".txt\r\n";
                 }
 
-                 output +=   GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
-                    GenerateSpace(4) + "Updated By" + GenerateSpace(4) + ": " + _preparedBy + "\r\n" +
-                    GenerateSpace(4) + "Time Start" + GenerateSpace(4) + ": " + DateTime.Now.ToShortTimeString() + "\r\n" +
-                    GenerateSpace(4) + "Time Finished :\r\n" +
-                    GenerateSpace(4) + "File rcvd" + GenerateSpace(5) + ":\r\n";
+                output += GenerateSpace(4) + "Prepared By" + GenerateSpace(3) + ": " + _preparedBy + "\t\t\t\t RECHECKED BY:\r\n" +
+                   GenerateSpace(4) + "Updated By" + GenerateSpace(4) + ": " + _preparedBy + "\r\n" +
+                   GenerateSpace(4) + "Time Start" + GenerateSpace(4) + ": " + DateTime.Now.ToShortTimeString() + "\r\n" +
+                   GenerateSpace(4) + "Time Finished :\r\n" +
+                   GenerateSpace(4) + "File rcvd" + GenerateSpace(5) + ":\r\n";
 
                 noFooter = false;
             }
 
-             output += Seperator();
+            output += Seperator();
 
             lineCount = 1;
             //}
@@ -6970,7 +6979,7 @@ namespace CPMS_Accounting.Procedures
                 noFooter = false;
             }
 
-             output += Seperator();
+            output += Seperator();
 
             lineCount = 1;
             //}
@@ -6989,9 +6998,9 @@ namespace CPMS_Accounting.Procedures
             for (int x = 0; x < listofbrstn.Count; x++)
             {
 
-            
+
                 //foreach (string brstn in listofbrstn)
-           // {
+                // {
 
                 output += "\r\n Page No. " + page.ToString() + "\r\n " +
                                   date + "\r\n" +
@@ -6999,14 +7008,14 @@ namespace CPMS_Accounting.Procedures
                                   GenerateSpace(28) + "RCBC - " + _checkType + " Checks Summary\r\n\r\n" +
                                   GenerateSpace(2) + "ACCT_NO" + GenerateSpace(9) + "ACCOUNT NAME" + GenerateSpace(21) + "QTY CT START #" + GenerateSpace(4) + "END #\r\n\r\n\r\n";
 
-                
+
                 var listofchecks = _checks.Where(e => e.BRSTN == listofbrstn[x]).ToList();
-                
-                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " ("+listofchecks[0].DeliveryBranchCode+")\r\n\r\n";
+
+                output += "  ** DELIVERY TO: " + listofchecks[0].DeliveryBrstn + " " + listofchecks[0].DeliveryBranch.ToUpper().TrimEnd() + " (" + listofchecks[0].DeliveryBranchCode + ")\r\n\r\n";
                 output += "  ** ORDERS OF BRSTN: " + listofchecks[0].BRSTN + " " + listofchecks[0].BranchName.TrimEnd() + " (" + listofchecks[0].BranchCode + ")\r\n\r\n";
-                
-                if(listofchecks[0].StartingSerial.Substring(4,6) == "000001")
-                output += " *  BATCH #: " + _mainForm.batchFile  + "_Pre-Encoded" + "\r\n\r\n";
+
+                if (listofchecks[0].StartingSerial.Substring(4, 6) == "000001")
+                    output += " *  BATCH #: " + _mainForm.batchFile + "_Pre-Encoded" + "\r\n\r\n";
                 else
                     output += " * Re-Order BATCH #: " + _mainForm.batchFile + "_Re-Order" + "\r\n\r\n";
 
@@ -7054,14 +7063,14 @@ namespace CPMS_Accounting.Procedures
                 output += "\r\n";
                 output += "  * * * Sub Total * * * " + listofchecks.Count + "\r\n\r\n";
 
-                if(x < (listofbrstn.Count - 1))
-                output += Seperator();
+                if (x < (listofbrstn.Count - 1))
+                    output += Seperator();
 
                 page++;
                 //i++;
-               
+
             }
-            
+
 
             output += "  * * * Grand Total * * * " + _checks.Count + "\r\n";
             return output;
@@ -7186,15 +7195,15 @@ namespace CPMS_Accounting.Procedures
                 //}
                 //else
                 //{
-                    while (check.StartingSerial.Length < 10)
-                    {
-                        check.StartingSerial = "0" + check.StartingSerial;
-                        Sseries = "0" + Sseries;
-                    }
-                    while (check.EndingSerial.Length < 10)
+                while (check.StartingSerial.Length < 10)
+                {
+                    check.StartingSerial = "0" + check.StartingSerial;
+                    Sseries = "0" + Sseries;
+                }
+                while (check.EndingSerial.Length < 10)
                     check.EndingSerial = "0" + check.EndingSerial;
                 //   }
-                while (Sseries.Length <10)
+                while (Sseries.Length < 10)
                 {
                     Sseries = "0" + Sseries;
                 }
@@ -7222,7 +7231,7 @@ namespace CPMS_Accounting.Procedures
                          check.Address3 + "\r\n" + //20 (ADDRESS 4)
                          check.Address4 + "\r\n" + //21 (ADDRESS 5)
                          check.Address5 + "\r\n" + //22 (ADDRESS 6)
-                         gClient.Description.ToUpper() +"\r\n" +//23 (FIXED)
+                         gClient.Description.ToUpper() + "\r\n" +//23 (FIXED)
                          "\r\n" + //24 (BLANK)//   
                          "\r\n" + //25 (BLANK)  
                          "\r\n" + //26 (BLANK)
@@ -7336,7 +7345,7 @@ namespace CPMS_Accounting.Procedures
                 Sql = "Select  BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode,LastSeriesA,LastSeriesB from " + gClient.BranchesTable;
                 cmd = new MySqlCommand(Sql, myConnect);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                while(reader.Read())
+                while (reader.Read())
                 {
                     BranchesModel b = new BranchesModel
                     {
@@ -7357,29 +7366,29 @@ namespace CPMS_Accounting.Procedures
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"getOrderingBranches ",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "getOrderingBranches ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
-        public bool fAddOrUPdate(BranchesModel _branch,int _process)
+        public bool fAddOrUPdate(BranchesModel _branch, int _process)
         {
             try
             {
                 DBConnect();
-                if(_process == 1)
+                if (_process == 1)
                 {
                     Sql = "Insert into " + gClient.BranchesTable + "(BRSTN,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode)" +
-                            "values('" + _branch.BRSTN + "','" + _branch.Address1.Replace("'","''") + "','" + _branch.Address2.Replace("'", "''") + "'," +
-                            "'" + _branch.Address3.Replace("'", "''") + "','" + _branch.Address4.Replace("'", "''") + "','" + _branch.Address5.Replace("'", "''")+ "'," +
+                            "values('" + _branch.BRSTN + "','" + _branch.Address1.Replace("'", "''") + "','" + _branch.Address2.Replace("'", "''") + "'," +
+                            "'" + _branch.Address3.Replace("'", "''") + "','" + _branch.Address4.Replace("'", "''") + "','" + _branch.Address5.Replace("'", "''") + "'," +
                             "'" + _branch.Address6.Replace("'", "''") + "','" + _branch.BranchCode + "'); ";
                 }
-                else if(_process == 2)
+                else if (_process == 2)
                 {
-                    Sql = "Update " + gClient.BranchesTable + " set BranchName = '"+ _branch.Address1.Replace("'", "''") + "', Address = '" + _branch.Address2.Replace("'", "''") + "'," +
-                        "Address2  = '" + _branch.Address3.Replace("'", "''") + "', Address3 = '" + _branch.Address4.Replace("'", "''")+ "', Address4 = '" + _branch.Address5.Replace("'", "''") + "'," +
-                        "Address5 = '" + _branch.Address6.Replace("'", "''") + "', BranchCode = '"+ _branch.BranchCode + "' where BRSTN = '" + _branch.BRSTN + "';" ;
+                    Sql = "Update " + gClient.BranchesTable + " set BranchName = '" + _branch.Address1.Replace("'", "''") + "', Address = '" + _branch.Address2.Replace("'", "''") + "'," +
+                        "Address2  = '" + _branch.Address3.Replace("'", "''") + "', Address3 = '" + _branch.Address4.Replace("'", "''") + "', Address4 = '" + _branch.Address5.Replace("'", "''") + "'," +
+                        "Address5 = '" + _branch.Address6.Replace("'", "''") + "', BranchCode = '" + _branch.BranchCode + "' where BRSTN = '" + _branch.BRSTN + "';";
                 }
                 cmd = new MySqlCommand(Sql, myConnect);
                 cmd.ExecuteNonQuery();
@@ -7387,15 +7396,15 @@ namespace CPMS_Accounting.Procedures
                 DBClosed();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Add or Update Branch!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            
+
 
         }
-        public void Process(List<OrderingModel> _orders, frmOrdering _main,string _outputFolder)
+        public void Process(List<OrderingModel> _orders, frmOrdering _main, string _outputFolder)
         {
 
             TypeofCheckModel checkType = new TypeofCheckModel();
@@ -7407,88 +7416,88 @@ namespace CPMS_Accounting.Procedures
             checkType.Ordering_DragonYellow_Commercial = new List<OrderingModel>();
             checkType.Ordering_Online_Commercial = new List<OrderingModel>();
             checkType.Ordering_Reca_Commercial = new List<OrderingModel>();
-            
-        
-            _orders.ForEach(x =>
-                {
-                    if (x.ChkType == "A" &&  x.Style == 1)
-                    {
-                        checkType.Ordering_Regular_Personal.Add(x);
-                        
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "B" && x.Style == 1)
-                    {
 
-                        checkType.Ordering_Regular_Commercial.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "A" && x.Style == 9)
-                    {
-                        checkType.Ordering_DragonBlue_Personal.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "B" && x.Style == 8)
-                    {
-                        checkType.Ordering_DragonBlue_Commercial.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "A" && x.Style ==6 )
-                    {
-                        checkType.Ordering_DragonYellow_Personal.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "B" && x.Style == 7)
-                    {
-                        checkType.Ordering_DragonYellow_Commercial.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "B" && x.Style == 5)
-                    {
-                        checkType.Ordering_Reca_Commercial.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                    else if (x.ChkType == "B" && x.Style == 10)
-                    {
-                        checkType.Ordering_Online_Commercial.Add(x);
-                        DoBlockProcess(checkType, _main, _outputFolder);
-                        PackingText(checkType, _main, _outputFolder);
-                        //SaveToPackingDBF(checkType, _main.batchfile, _main);
-                        PrinterFile(checkType, _main);
-                    }
-                   
-                    
+
+            _orders.ForEach(x =>
+            {
+                if (x.ChkType == "A" && x.Style == 1)
+                {
+                    checkType.Ordering_Regular_Personal.Add(x);
+
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //   SaveToPackingDBF(checkType.Ordering_Regular_Personal, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "B" && x.Style == 1)
+                {
+
+                    checkType.Ordering_Regular_Commercial.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType.Ordering_Regular_Commercial, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "A" && x.Style == 9)
+                {
+                    checkType.Ordering_DragonBlue_Personal.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    // SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "B" && x.Style == 8)
+                {
+                    checkType.Ordering_DragonBlue_Commercial.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "A" && x.Style == 6)
+                {
+                    checkType.Ordering_DragonYellow_Personal.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "B" && x.Style == 7)
+                {
+                    checkType.Ordering_DragonYellow_Commercial.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "B" && x.Style == 5)
+                {
+                    checkType.Ordering_Reca_Commercial.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+                else if (x.ChkType == "B" && x.Style == 10)
+                {
+                    checkType.Ordering_Online_Commercial.Add(x);
+                    DoBlockProcess(checkType, _main, _outputFolder);
+                    PackingText(checkType, _main, _outputFolder);
+                    //SaveToPackingDBF(checkType, _main.batchFile, _main);
+                    PrinterFile(checkType, _main);
+                }
+
+
             });
-                
+
         }
-        public void DeleteTextFile(List<OrderingModel> _checks,string _tempPath)
+        public void DeleteTextFile(List<OrderingModel> _checks, string _tempPath)
         {
             for (int i = 0; i < _checks.Count; i++)
             {
 
 
-                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\"+_tempPath+"\\" + _checks[i].outputFolder + "");
+                DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\" + _tempPath + "\\" + _checks[i].outputFolder + "");
 
                 FileInfo[] files = di.GetFiles("*.txt")
                          .Where(p => p.Extension == ".txt").ToArray();
@@ -7499,22 +7508,23 @@ namespace CPMS_Accounting.Procedures
                 }
             }
         }
-        public void DeleteZipFile()
+        public void DeleteFile(string _ext, string path)
         {
-       
 
-                DirectoryInfo di = new DirectoryInfo(Application.StartupPath);
 
-                FileInfo[] files = di.GetFiles("*.zip")
-                         .Where(p => p.Extension == ".zip").ToArray();
-                foreach (FileInfo file in files)
-                {
-                    file.Attributes = FileAttributes.Normal;
-                    File.Delete(file.FullName);
-                }
-            
+            DirectoryInfo di = new DirectoryInfo(path);
+
+            FileInfo[] files = di.GetFiles("*." + _ext)
+                     .Where(p => p.Extension == "." + _ext).ToArray();
+            foreach (FileInfo file in files)
+            {
+                file.Attributes = FileAttributes.Normal;
+                File.Delete(file.FullName);
+            }
+
         }
-        public void SaveData(List<OrderingModel> _orderList,string _zipFile)
+
+        public void SaveData(List<OrderingModel> _orderList, string _zipFile)
         {
             try
             {
@@ -7527,7 +7537,7 @@ namespace CPMS_Accounting.Procedures
                         "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
                         "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch + "','" + x.DeliveryBranchCode + "',1);";
-                        
+
 
                     cmd = new MySqlCommand(Sql, myConnect);
                     cmd.ExecuteNonQuery();
@@ -7549,7 +7559,7 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show("Data has been Successfully saved!", "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DBClosed();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Saving Data to Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -7583,7 +7593,7 @@ namespace CPMS_Accounting.Procedures
                     cmd = new MySqlCommand(Sql, myConnect);
                     cmd.ExecuteNonQuery();
 
-                    
+
                 });
 
                 //DBClosed();
@@ -7611,7 +7621,7 @@ namespace CPMS_Accounting.Procedures
         {
             string strCmdText;
             Process process = new Process();
-            strCmdText = "/C type C:\\Head\\*.txt > combined.txt " ;
+            strCmdText = "/C type C:\\Head\\*.txt > combined.txt ";
             process.StartInfo = new ProcessStartInfo("cmd.exe", strCmdText);
 
             process.Start();
@@ -7628,9 +7638,9 @@ namespace CPMS_Accounting.Procedures
 
             ZipFile.ExtractToDirectory(sourcePath, destinationPath);
         }
-        public string ZipFileS(string _processby, frmOrdering main,List<OrderingModel> _ordrList)
+        public string ZipFileS(string _processby, frmOrdering main, List<OrderingModel> _ordrList)
         {
-            DeleteZipFile();
+            //DeleteZipFile();
             string sPath = Application.StartupPath + "\\Output\\";
             string zPath = Application.StartupPath + "\\Test\\";
             string dPath = Application.StartupPath + "\\AFT_" + main.batchFile + "_" + _processby + ".zip";
@@ -7647,24 +7657,24 @@ namespace CPMS_Accounting.Procedures
             var orders = _ordrList.Select(x => x.outputFolder).Distinct().ToList();
             for (int i = 0; i < orders.Count; i++)
             {
-                
+
                 if (Directory.Exists(zPath + orders[i]))
                     Directory.Delete(zPath + orders[i]);
 
 
                 Directory.CreateDirectory(zPath + orders[i]);
                 // Get the subdirectories for the specified directory.
-                DirectoryInfo dir = new DirectoryInfo(sPath+ orders[i]);
+                DirectoryInfo dir = new DirectoryInfo(sPath + orders[i]);
                 DirectoryInfo[] dirs = dir.GetDirectories();
-             
+
                 FileInfo[] files = dir.GetFiles();
-                foreach(FileInfo zfileitem in files)
+                foreach (FileInfo zfileitem in files)
                 {
                     string tempPath = Path.Combine(zPath + orders[i], zfileitem.Name);
                     zfileitem.CopyTo(tempPath, false);
                 }
-                
-                
+
+
             }
             CreateZipFile(zPath, dPath);
 
@@ -7677,7 +7687,7 @@ namespace CPMS_Accounting.Procedures
             return dPath;
 
         }
-        public void DeleteTextFileinZipFile(List<OrderingModel> _checks,string _zip)
+        public void DeleteTextFileinZipFile(List<OrderingModel> _checks, string _zip)
         {
             for (int i = 0; i < _checks.Count; i++)
             {
@@ -7686,7 +7696,7 @@ namespace CPMS_Accounting.Procedures
                 ZipArchive zip = new ZipArchive(zfile, ZipArchiveMode.Update);
                 foreach (var item in zip.Entries)
                 {
-                   // if(item.)
+                    // if(item.)
                 }
 
                 DirectoryInfo di = new DirectoryInfo(Application.StartupPath + "\\Output\\" + _checks[i].outputFolder + "");
@@ -7707,23 +7717,23 @@ namespace CPMS_Accounting.Procedures
                 con = new MySqlConnection(ConString);
                 Sql = "Select Batch,DeliveryDate,H.BRSTN,AccountNo,AccountName,AccountName2,ChkType,CheckName,StartingSerial,EndingSerial" +
                     ",DeliveryBrstn,DeliveryBranch,BranchName,Address,Address2,Address3,Address4,Address5,BranchCode,DeliveryBranchCode " +
-                    "  from " +gClient.DataBaseName + " as H  inner join "+gClient.BranchesTable + " as B on H.BRSTN = B.BRSTN  where Batch ='" + _batch+"'";
+                    "  from " + gClient.DataBaseName + " as H  inner join " + gClient.BranchesTable + " as B on H.BRSTN = B.BRSTN  where Batch ='" + _batch + "'";
                 con.Open();
                 cmd = new MySqlCommand(Sql, con);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                while(reader.Read())
+                while (reader.Read())
                 {
                     OrderModel order = new OrderModel
                     {
-                        Batch = !reader.IsDBNull(0) ? reader.GetString(0): "",
+                        Batch = !reader.IsDBNull(0) ? reader.GetString(0) : "",
                         DeliveryDate = !reader.IsDBNull(1) ? reader.GetDateTime(1) : DateTime.Now,
                         BRSTN = !reader.IsDBNull(2) ? reader.GetString(2) : "",
                         AccountNo = !reader.IsDBNull(3) ? reader.GetString(3) : "",
                         Name1 = !reader.IsDBNull(4) ? reader.GetString(4) : "",
                         Name2 = !reader.IsDBNull(5) ? reader.GetString(5) : "",
                         ChkType = !reader.IsDBNull(6) ? reader.GetString(6) : "",
-                        ChequeName = !reader.IsDBNull(7) ? reader.GetString(7): "",
-                        StartingSerial =!reader.IsDBNull(8) ? reader.GetString(8) : "",
+                        ChequeName = !reader.IsDBNull(7) ? reader.GetString(7) : "",
+                        StartingSerial = !reader.IsDBNull(8) ? reader.GetString(8) : "",
                         EndingSerial = !reader.IsDBNull(9) ? reader.GetString(9) : "",
                         DeliveryTo = !reader.IsDBNull(10) ? reader.GetString(10) : "",
                         DeliverytoBranch = !reader.IsDBNull(11) ? reader.GetString(11) : "",
@@ -7734,16 +7744,16 @@ namespace CPMS_Accounting.Procedures
                         Address5 = !reader.IsDBNull(16) ? reader.GetString(16) : "",
                         Address6 = !reader.IsDBNull(17) ? reader.GetString(17) : "",
                         BranchCode = !reader.IsDBNull(18) ? reader.GetString(18) : "",
-                        OldBranchCode = !reader.IsDBNull(19) ? reader.GetString(19): "" 
+                        OldBranchCode = !reader.IsDBNull(19) ? reader.GetString(19) : ""
                     };
 
                     _tempList.Add(order);
                 }
                 reader.Close();
                 con.Close();
-                if(_tempList.Count > 0)
+                if (_tempList.Count > 0)
 
-                return true;
+                    return true;
                 else
                     return false;
             }
@@ -7752,7 +7762,7 @@ namespace CPMS_Accounting.Procedures
                 MessageBox.Show(ex.Message, "getDatafromOrdering ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-}
+        }
         public void ManualProcess(List<OrderingModel> _orders, frmManualEncode _main, string _outputFolder)
         {
             TypeofCheckModel checkType = new TypeofCheckModel();
@@ -7802,7 +7812,7 @@ namespace CPMS_Accounting.Procedures
                 //cmd = new MySqlCommand(Sql, myConnect);
                 //cmd.ExecuteNonQuery();
                 MessageBox.Show("Data has been Successfully saved!", "Saving Data to Accounting Database ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
             }
             catch (Exception ex)
             {
@@ -7814,10 +7824,9 @@ namespace CPMS_Accounting.Procedures
             log.Info("Getting Cancelled Trancsaction per batch....");
             try
             {
-             
-                Sql = "Select count(ChkType) as Quantity,(Count(ChkType) * H.DocStamp) as TotamAmountCancelled from " 
+                Sql = "Select count(ChkType) as Quantity,(Count(ChkType) * H.DocStamp) as TotamAmountCancelled from "
                     + gClient.DataBaseName + " H left join " + gClient.PriceListTable + "  P on H.ChkType = P.FinalChkType and H.ProductCode = P.ProductCode" +
-                    "  where H.Batch = '" + batch+ "' and isCancelled = 1";
+                    "  where H.Batch = '" + batch + "' and isCancelled = 1";
                 //Sql = "Select P.BankCode, DocStampNumber,SalesInvoice,Count(ChkType) as Quantity,ChkType, P.Description, H.DocStamp, " +
                 //     "Username_DocStamp, CheckedByDS,PurchaseOrderNumber,P.QuantityOnHand,H.Batch," +
                 //     "(Count(ChkType) * H.DocStamp) as TotalAmount,H.location,SalesInvoiceDate,isCancelled from " + gClient.DataBaseName +
@@ -7830,24 +7839,24 @@ namespace CPMS_Accounting.Procedures
                 {
                     DocStampModel doc = new DocStampModel();
 
-                    
+
                     doc.CancelledQuantity = !reader.IsDBNull(0) ? reader.GetInt32(0) : 0;
                     doc.CancelledTotalAmount = !reader.IsDBNull(1) ? reader.GetDouble(1) : 0;
-                    
+
                     _temp.Add(doc);
                 }
                 reader.Close();
 
                 DBClosed();
-                
+
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "GetCancelledTrancsaction", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;   
+                return false;
             }
-            
+
         }
         public bool GetDetailedperDr(List<TempModel> _temp, string _DrNumber)
         {
@@ -7903,8 +7912,333 @@ namespace CPMS_Accounting.Procedures
                 return false;
             }
 
-            
+
+        }
+        public void DumpMySQL()
+        {
+            string dbname = gClient.BranchesTable;
+            string outputFolder = @"C:\Head";
+            Process proc = new Process();
+
+            proc.StartInfo.FileName = "cmd.exe";
+
+            proc.StartInfo.UseShellExecute = false;
+
+            proc.StartInfo.WorkingDirectory = GetMySqlPath().ToUpper().Replace("MYSQLDUMP.EXE", "");
+
+            proc.StartInfo.RedirectStandardInput = true;
+
+            proc.StartInfo.RedirectStandardOutput = true;
+
+            proc.Start();
+
+            StreamWriter myStreamWriter = proc.StandardInput;
+
+            string temp = "mysqldump.exe --user=root --password=CorpCaptive --host=localhost cpc " + dbname + " > " +
+                outputFolder + "\\" + DateTime.Today.ToShortDateString().Replace("/", ".") + "-" + dbname + ".SQL";
+
+            myStreamWriter.WriteLine(temp);
+
+            dbname = gClient.DataBaseName;
+
+            temp = "mysqldump.exe --user=root --password=CorpCaptive --host=localhost cpc " + dbname + " > " +
+                 outputFolder + "\\" + DateTime.Today.ToShortDateString().Replace("/", ".") + "-" + dbname + ".SQL";
+
+            myStreamWriter.WriteLine(temp);
+
+
+            myStreamWriter.Close();
+
+            proc.WaitForExit();
+
+            proc.Close();
+        }//end of Function
+        public void KillOrderFile(string _filName)
+        {
+            Process proc = new Process();
+
+            proc.StartInfo.FileName = "cmd.exe";
+
+            proc.StartInfo.UseShellExecute = false;
+
+            proc.StartInfo.RedirectStandardInput = true;
+
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.Start();
+            StreamWriter sr = proc.StandardInput;
+            string temp = "taskkill /f /im " + _filName;
+
+            sr.WriteLine(temp);
+            sr.Close();
+            proc.WaitForExit();
+            proc.Close();
+
+        }
+        public string GetMySqlPath()
+        {
+            var mySQLocator = GetMySQLLocations();
+
+            foreach (var loc in mySQLocator)
+            {
+                if (File.Exists(loc.Location))
+                    return loc.Location;
+            }
+
+            return "";
+        } //end of Function
+        public List<MySqlLocatorModel> GetMySQLLocations()
+        {
+            //MySqlConnection connect = new MySqlConnection("datasource=192.168.0.254 ;port=3306;username=root;password=CorpCaptive");
+            MySqlConnection connect = new MySqlConnection("datasource=localhost ;port=3306;username=root;password=CorpCaptive");
+
+            connect.Open();
+            MySqlCommand myCommand = new MySqlCommand("SELECT * FROM cpc.mysqldump_location", connect);
+            //MySqlCommand myCommand = new MySqlCommand("SELECT * FROM captive_database.mysqldump_location", connect);
+
+            MySqlDataReader myReader = myCommand.ExecuteReader();
+
+            List<MySqlLocatorModel> sqlLocator = new List<MySqlLocatorModel>();
+
+            while (myReader.Read())
+            {
+                MySqlLocatorModel myLocator = new MySqlLocatorModel
+                {
+                    PrimaryKey = myReader.GetInt32(0),
+                    Location = myReader.GetString(1)
+                };
+
+                sqlLocator.Add(myLocator);
+            }
+
+            connect.Close();
+
+            return sqlLocator;
+        }//end of Function
+        public void SaveToPackingDBF(List<OrderingModel> _checks, string _batchNumber, frmOrdering _mainForm)
+        {
+            string dbConnection;
+            string tempCheckType = "";
+            int blockNo = 0, blockCounter = 0;
+            _checks.OrderBy(x => x.BranchName);
+            //   db.GetAllData(_checks, _mainForm._batchfile);
+
+            //   var listofchecks = _checks.Select(e => e.ChkType).Distinct().ToList();
+
+            //var listofChequeProduct = frmOrdering.productList.Select(x => new { x.BookStyle, x.ChequeName });
+
+
+            //if (_checks.Regular_Commercial.Count > 0 || _checks.Regular_Personal.Count > 0)
+            //{
+
+
+
+            // if (_checks.Ordering_Regular_Personal.Count > 0)
+            InsertoDBFFile(_checks, _batchNumber, blockNo, tempCheckType, blockCounter);
+            //  if (_checks.Ordering_Regular_Commercial.Count > 0)
+            //  InsertoDBFFile(_checks, _batchNumber, blockNo,  tempCheckType, blockCounter);
+            // if (_checks.Ordering_DragonBlue_Personal.Count > 0)
+            //      InsertoDBFFile(_checks.Ordering_DragonBlue_Personal, _batchNumber, blockNo,tempCheckType, blockCounter);
+            //  if (_checks.Ordering_DragonBlue_Commercial.Count > 0)
+            //     InsertoDBFFile(_checks.Ordering_DragonBlue_Commercial, _batchNumber, blockNo, tempCheckType, blockCounter);
+            //foreach (var check in _checks.Regular_Personal)
+            //    {
+
+            //        if (tempCheckType != check.ChkType)
+            //            blockNo = 1;
+
+            //        tempCheckType = check.ChkType;
+
+            //        if (blockCounter < 4)
+            //            blockCounter++;
+            //        else
+            //        {
+            //            blockCounter = 1;
+            //            blockNo++;
+            //        }
+
+            //        string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+            //         "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE,DELIVERTO) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
+            //         "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkType + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
+            //        check.StartingSerial + "','" + check.EndingSerial + "','" + check.BranchCode + "','" + check.OldBranchCode + "','" + check.DeliveryTo + "')";
+
+            //        oCommand = new OleDbCommand(sql, oConnect);
+
+            //        oCommand.ExecuteNonQuery();
+            //    }
+            //    foreach (var check in _checks.Regular_Commercial)
+            //    {
+            //        if (tempCheckType != check.ChkType)
+            //            blockNo = 1;
+
+            //        tempCheckType = check.ChkType;
+
+            //        if (blockCounter < 4)
+            //            blockCounter++;
+            //        else
+            //        {
+            //            blockCounter = 1;
+            //            blockNo++;
+            //        }
+
+            //        string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+            //          "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
+            //          "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkType + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
+            //         check.StartingSerial + "','" + check.EndingSerial + "','" + check.BranchCode + "','" + check.OldBranchCode + "')";
+
+            //        oCommand = new OleDbCommand(sql, oConnect);
+
+            //        oCommand.ExecuteNonQuery();
+            //    }
+
+            // oConnect.Close();
+            //}
+            //    if (_checks.EC1.Count > 0 || _checks.EP1.Count > 0)
+            //    {
+            //        dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\" + _checks.EP1[0].outputFolder + "\\Packing.dbf" + "; Mode=ReadWrite;";
+
+            //        OleDbConnection oConnect = new OleDbConnection(dbConnection);
+            //        OleDbCommand oCommand;
+            //        oConnect.Open();
+            //        oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
+            //        oCommand.ExecuteNonQuery();
+            //        foreach (var check in _checks.EP1)
+            //        {
+            //            if (tempCheckType != check.ChkType)
+            //                blockNo = 1;
+
+            //            tempCheckType = check.ChkType;
+
+            //            if (blockCounter < 4)
+            //                blockCounter++;
+            //            else
+            //            {
+            //                blockCounter = 1;
+            //                blockNo++;
+            //            }
+
+            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+            //              "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
+            //              "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
+            //             check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
+
+            //            oCommand = new OleDbCommand(sql, oConnect);
+
+            //            oCommand.ExecuteNonQuery();
+            //        }
+            //        foreach (var check in _checks.EC1)
+            //        {
+            //            if (tempCheckType != check.ChkType)
+            //                blockNo = 1;
+
+            //            tempCheckType = check.ChkType;
+
+            //            if (blockCounter < 4)
+            //                blockCounter++;
+            //            else
+            //            {
+            //                blockCounter = 1;
+            //                blockNo++;
+            //            }
+
+            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+            //              "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
+            //              "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
+            //             check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
+
+            //            oCommand = new OleDbCommand(sql, oConnect);
+
+            //            oCommand.ExecuteNonQuery();
+            //        }
+            //        oConnect.Close();
+            //    }
+            //    if (_checks.MC.Count > 0)
+            //    {
+            //        dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\" + _checks.MC[0].outputFolder + "\\Packing.dbf" + "; Mode=ReadWrite;";
+
+            //        OleDbConnection oConnect = new OleDbConnection(dbConnection);
+            //        OleDbCommand oCommand;
+            //        oConnect.Open();
+            //        oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
+            //        oCommand.ExecuteNonQuery();
+            //        foreach (var check in _checks.EP1)
+            //        {
+            //            if (tempCheckType != check.ChkType)
+            //                blockNo = 1;
+
+            //            tempCheckType = check.ChkType;
+
+            //            if (blockCounter < 4)
+            //                blockCounter++;
+            //            else
+            //            {
+            //                blockCounter = 1;
+            //                blockNo++;
+            //            }
+
+            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+            //             "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
+            //             "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
+            //            check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
+
+            //            oCommand = new OleDbCommand(sql, oConnect);
+
+            //            oCommand.ExecuteNonQuery();
+            //        }
+            //        oConnect.Close();
+            //    }
+
+        }
+        private void InsertoDBFFile(List<OrderingModel> _orders, string _batchNumber, int blockNo, string tempCheckType, int blockCounter)
+        {
+            try
+            {
+                string dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\Packing.dbf" + "; Mode=ReadWrite;";
+
+
+                OleDbConnection oConnect = new OleDbConnection(dbConnection);
+                OleDbCommand oCommand;
+                oConnect.Open();
+                oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
+                oCommand.ExecuteNonQuery();
+                //_orders.OrderBy(x => new {x.BranchName,x.ChkType });
+                //_orders = _orders.OrderBy(x => new { x.CheckName,x.BranchName}).ToList();
+                var sortedList = from o in _orders
+                                 orderby o.BranchName, o.ChkType, o.CheckName
+                                 select o;
+                foreach (var item in sortedList)
+                {
+
+                    if (tempCheckType != item.ChkType)
+                        blockNo = 1;
+
+                    tempCheckType = item.ChkType;
+
+                    if (blockCounter < 4)
+                        blockCounter++;
+                    else
+                    {
+                        blockCounter = 1;
+                        blockNo++;
+                    }
+
+                    string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+                      "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE,DELIVERTO,CHECKNAME) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + item.BRSTN + "','" + item.BranchName +
+                      "','" + item.AccountNo + "','" + item.AccountNo + "','" + item.ChkType + "','" + item.AccountName.Replace("'", "''") + "','" + item.AccountName2.Replace("'", "''") + "',1,'" +
+                    item.StartingSerial + "','" + item.EndingSerial + "','" + item.BranchCode + "','" + item.DeliveryBranchCode + "','" + item.DeliveryBrstn + "','" + item.CheckName + "')";
+
+                    oCommand = new OleDbCommand(sql, oConnect);
+
+                    oCommand.ExecuteNonQuery();
+                }
+                oConnect.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "InsertoDBFFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }
-    

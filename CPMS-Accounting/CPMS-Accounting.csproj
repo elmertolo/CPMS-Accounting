@@ -325,6 +325,7 @@
     <Compile Include="Models\ClientList.cs" />
     <Compile Include="Models\CostDistributionModel.cs" />
     <Compile Include="Models\DocStampModel.cs" />
+    <Compile Include="Models\MySqlLocatorModel.cs" />
     <Compile Include="Models\OrderingModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PriceListModel.cs" />
@@ -678,6 +679,7 @@
     <Content Include="DLL\DataTableToList.dll" />
     <Content Include="DLL\FastMember.dll" />
     <Content Include="DLL\NA_ExcelWriter.dll" />
+    <Content Include="DLL\vfpoledb.dll" />
     <Content Include="Image\background-red-header.png" />
     <Content Include="Image\Button_Yellow.png" />
     <Content Include="Image\Captive.ico" />

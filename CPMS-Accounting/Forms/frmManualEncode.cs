@@ -74,56 +74,63 @@ namespace CPMS_Accounting.Forms
             int Oquantity;
             int SN;
 
-            Oquantity = int.Parse(txtQuantity.Text);
-            SN = int.Parse(txtStartingSerial.Text);
-            var branchDetails = frmOrdering.listofBranches.SingleOrDefault(x => x.BRSTN == txtBrstn.Text);
-            if (branchDetails != null)
+            if (txtQuantity.Text == "" || txtQuantity.Text == null)
             {
-                for (int i = 0; i < Oquantity; i++)
-                {
-                    OrderingModel order = new OrderingModel();
-                    order.BRSTN = txtBrstn.Text;
-                    order.AccountNo = txtAccountNo.Text;
-                    order.AccountName = txtAccName.Text;
-                    order.AccountName2 = txtAccName2.Text;
-                    order.outputFolder = "Customized";
-                    order.OrdQuantiy = 1;
-                    order.StartingSerial = SN.ToString();
-                    order.Batch = txtBatch.Text;
-                    order.CheckName = cbProductType.Text;
-
-                    if (cbProductType.SelectedIndex == 0)
-                    {
-                        order.ChkType = "A";
-                        order.EndingSerial = (SN + 49).ToString();
-                    }
-                    else
-                    {
-                        order.ChkType = "B";
-                        order.EndingSerial = (SN + 99).ToString();
-                    }
-
-                    //order.BranchName = x.Address1.Replace("'", "''").TrimEnd();
-                    order.BranchName = branchDetails.Address1.Replace("Ñ", "N").TrimEnd();
-                    order.Address = branchDetails.Address2.Replace("Ñ", "N").TrimEnd();
-                    order.Address2 = branchDetails.Address3.Replace("Ñ", "N").TrimEnd();
-                    order.Address3 = branchDetails.Address4.Replace("Ñ", "N").TrimEnd();
-                    order.Address4 = branchDetails.Address5.Replace("Ñ", "N").TrimEnd();
-                    order.Address5 = branchDetails.Address6.Replace("Ñ", "N").TrimEnd();
-                    order.BranchCode = branchDetails.BranchCode;
-
-
-                    orderList.Add(order);
-                    SN = int.Parse(order.EndingSerial) + 1;
-
-                }
-
-                DisplayData(orderList);
-                ClearTools(false);
-                generateToolStripMenuItem.Enabled = true;
+                MessageBox.Show("Please enter the quantity of your Order!", "Encoding Data", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
-                MessageBox.Show("BRSTN :" + branchDetails.BRSTN + " does not exist in the Database! ");
+            {
+                Oquantity = int.Parse(txtQuantity.Text);
+                SN = int.Parse(txtStartingSerial.Text); 
+                var branchDetails = frmOrdering.listofBranches.SingleOrDefault(x => x.BRSTN == txtBrstn.Text);
+                if (branchDetails != null)
+                {
+                    for (int i = 0; i < Oquantity; i++)
+                    {
+                        OrderingModel order = new OrderingModel();
+                        order.BRSTN = txtBrstn.Text;
+                        order.AccountNo = txtAccountNo.Text;
+                        order.AccountName = txtAccName.Text;
+                        order.AccountName2 = txtAccName2.Text;
+                        order.outputFolder = "Customized";
+                        order.OrdQuantiy = 1;
+                        order.StartingSerial = SN.ToString();
+                        order.Batch = txtBatch.Text;
+                        order.CheckName = cbProductType.Text;
+
+                        if (cbProductType.SelectedIndex == 0)
+                        {
+                            order.ChkType = "A";
+                            order.EndingSerial = (SN + 49).ToString();
+                        }
+                        else
+                        {
+                            order.ChkType = "B";
+                            order.EndingSerial = (SN + 99).ToString();
+                        }
+
+                        //order.BranchName = x.Address1.Replace("'", "''").TrimEnd();
+                        order.BranchName = branchDetails.Address1.Replace("Ñ", "N").TrimEnd();
+                        order.Address = branchDetails.Address2.Replace("Ñ", "N").TrimEnd();
+                        order.Address2 = branchDetails.Address3.Replace("Ñ", "N").TrimEnd();
+                        order.Address3 = branchDetails.Address4.Replace("Ñ", "N").TrimEnd();
+                        order.Address4 = branchDetails.Address5.Replace("Ñ", "N").TrimEnd();
+                        order.Address5 = branchDetails.Address6.Replace("Ñ", "N").TrimEnd();
+                        order.BranchCode = branchDetails.BranchCode;
+
+
+                        orderList.Add(order);
+                        SN = int.Parse(order.EndingSerial) + 1;
+
+                    }
+
+                    DisplayData(orderList);
+                    ClearTools(false);
+                    generateToolStripMenuItem.Enabled = true;
+                }
+                else
+                    MessageBox.Show("BRSTN :" + branchDetails.BRSTN + " does not exist in the Database! ");
+            }
         }
         private void DisplayData(List<OrderingModel> _orderList)
         {
@@ -296,6 +303,38 @@ namespace CPMS_Accounting.Forms
             this.Hide();
         }
 
+        private void dgvOutput_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DeleteDataRow();
+        }
 
+        private void dgvOutput_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DeleteDataRow();
+        }
+        private void DeleteDataRow()
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this data?", "Deleting Data in a Row", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //do something
+                int rowindex = dgvOutput.CurrentCell.RowIndex;
+                int columnindex = dgvOutput.CurrentCell.ColumnIndex;
+                dgvOutput.Rows.RemoveAt(rowindex);
+                //proc.DeleteItems(selectedData);
+                MessageBox.Show("Data has succesfully deleted!!");
+                //ClearTools();
+            }
+            else
+                MessageBox.Show("Deletion has been cancelled!!!");
+        }
+
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearTools(false);
+            
+        }
+
+        
     }
 }

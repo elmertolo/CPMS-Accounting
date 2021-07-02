@@ -59,7 +59,7 @@ namespace CPMS_Accounting
         {
             log.Info("Login Button Click");
             Login(txtUserId.Text.ToString(), txtPassword.Text.ToString());
-
+            
             //MessageBox.Show(gClient.DocStampTempTable.ToString());
         }
 
@@ -72,6 +72,7 @@ namespace CPMS_Accounting
             }
             cbBankList.DisplayMember = "description";
             cbBankList.DataSource = BankListDT;
+            cbBankList.SelectedIndex = 22;
         }
 
         private void Login(string UserId, string enteredPassword)
