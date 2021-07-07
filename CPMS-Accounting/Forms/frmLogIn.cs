@@ -80,11 +80,11 @@ namespace CPMS_Accounting
             
             //02222021 Encryption
             string password = enteredPassword;
-            if (gEncryptionOn)
-            {
-                byte[] hashedPassword = GetSHA1(UserId, enteredPassword);
-                password = Convert.ToBase64String(hashedPassword);
-            }
+            //if (gEncryptionOn)
+            //{
+            //    byte[] hashedPassword = GetSHA1(UserId, enteredPassword);
+            //    password = Convert.ToBase64String(hashedPassword);
+            //}
 
             //Identify if admin login or standard login
             DataTable dt = new DataTable();
@@ -100,6 +100,7 @@ namespace CPMS_Accounting
                     return;
                 }
                 SupplyGlobalUserVariables(ref dt);
+                if(frmProgramSelection.selectSystem != "Ordering System")
                 SupplyGlobalUserPermissionsVariables(gUser.UserLevelCode);
             }
 
@@ -280,6 +281,7 @@ namespace CPMS_Accounting
             }
 
         }
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

@@ -41,7 +41,7 @@ namespace CPMS_Accounting.Forms
                 {
                     batchFile = txtBatch.Text;
                     //if (gClient.BankCode == "028")
-                    proc.CheckData(dgvOrdering, orderList,listofBranches, batchFile, deliveryDate);
+                    proc.CheckData(dgvOrdering, orderList,listofBranches, batchFile, deliveryDate.ToString("yyyy-MM-dd"));
                     TotalChecks(orderList);
                     lblGrandTotal.Text = orderList.Count().ToString();
                     
@@ -177,5 +177,11 @@ namespace CPMS_Accounting.Forms
             this.Hide();
         }
 
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new frmOrderingUserMaintenance();
+            frm.Show();
+            this.Hide();
+        }
     }
 }

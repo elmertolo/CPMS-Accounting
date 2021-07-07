@@ -5675,7 +5675,7 @@ namespace CPMS_Accounting.Procedures
 
             }
         }
-        public void CheckData(DataGridView _dgv, List<OrderingModel> _orderList, List<BranchesModel> _branches, string _batch, DateTime _deliveryDate)
+        public void CheckData(DataGridView _dgv, List<OrderingModel> _orderList, List<BranchesModel> _branches, string _batch, string _deliveryDate)
         {
             try
             {
@@ -5909,6 +5909,7 @@ namespace CPMS_Accounting.Procedures
 
                                 listData = sr.ReadLine().Split(';'); //splitting record
 
+
                                 //Adding record to Datatables
                                 dt.Rows.Add(listData[counter], listData[counter + 1], listData[counter + 2],
                                             listData[counter + 3], listData[counter + 4], listData[counter + 5],
@@ -5935,7 +5936,7 @@ namespace CPMS_Accounting.Procedures
                                     Delivery0 = listData[counter + 12],
                                     //    DeliveryBranch = listData[counter + 13],
                                     DeliveryBrstn = listData[counter + 14],
-                                    OrderDate = DateTime.Parse(listData[counter + 15]),
+                                    OrderDate = listData[counter + 15],
                                     Channel = listData[counter + 16]
 
 
@@ -7534,7 +7535,7 @@ namespace CPMS_Accounting.Procedures
                     Sql = "Insert into " + gClient.DataBaseName + "(Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
                         "ChkType,CheckName,StartingSerial,EndingSerial,DeliveryBrstn,DeliveryBranch,DeliveryBranchCode,Status)" +
                         "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "'" + x.DeliveryDate + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
                         "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch + "','" + x.DeliveryBranchCode + "',1);";
 
@@ -7574,7 +7575,7 @@ namespace CPMS_Accounting.Procedures
                     Sql = "Insert into " + gClient.DataBaseName + "(Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
                         "ChkType,CheckName,StartingSerial,EndingSerial,Status)" +
                         "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "'" + x.DeliveryDate + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
                         "'" + x.EndingSerial + "',1); ";
 
@@ -7789,7 +7790,7 @@ namespace CPMS_Accounting.Procedures
                     Sql = "Insert into  (Batch,DateProccessed,DeliveryDate,BRSTN,AccountNo,AccountName,AccountName2," +
                         "ChkType,CheckName,StartingSerial,EndingSerial,DeliveryBrstn,DeliveryBranch,DeliveryBranchCode,Status)" +
                         "values('" + x.Batch + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
-                        "'" + x.DeliveryDate.ToString("yyyy-MM-dd") + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
+                        "'" + x.DeliveryDate + "','" + x.BRSTN + "','" + x.AccountNo + "', '" + x.AccountName.Replace("'", "''") +
                         "','" + x.AccountName2.Replace("'", "''") + "','" + x.ChkType + "','" + x.CheckName.Replace("'", "''") + "','" + x.StartingSerial + "'," +
                         "'" + x.EndingSerial + "','" + x.DeliveryBrstn + "','" + x.DeliveryBranch + "','" + x.DeliveryBranchCode + "',1);";
 

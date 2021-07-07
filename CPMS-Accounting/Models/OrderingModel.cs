@@ -24,7 +24,8 @@ namespace CPMS_Accounting.Models
         public string CheckName { get; set; }
         public string BookType { get; set; }
         public int Style { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public string DeliveryDate { get; set; }
+       // public DateTime DeliveryDate { get; set; }
         public string DeliveryBrstn { get; set; }
         public string DeliveryBranch { get; set; }
         public string PickUpRc { get; set; }
@@ -33,7 +34,7 @@ namespace CPMS_Accounting.Models
         public string StartingSerial { get; set; }
         public string EndingSerial { get; set; }
         public string   Delivery0 { get; set; }
-        public DateTime OrderDate { get; set; }
+        public string OrderDate { get; set; }
         public string outputFolder { get; set; }
         public string DeliveryBranchCode { get; set; }
 

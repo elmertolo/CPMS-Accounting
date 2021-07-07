@@ -29,9 +29,9 @@ namespace CPMS_Accounting.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbDeliveryTo = new System.Windows.Forms.CheckBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -43,6 +43,7 @@ namespace CPMS_Accounting.Forms
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.maintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.branchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manualEncodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvOrdering = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -51,7 +52,7 @@ namespace CPMS_Accounting.Forms
             this.label5 = new System.Windows.Forms.Label();
             this.lblGrandTotal = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.manualEncodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.usersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdering)).BeginInit();
@@ -161,7 +162,8 @@ namespace CPMS_Accounting.Forms
             // maintenanceToolStripMenuItem
             // 
             this.maintenanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.branchesToolStripMenuItem});
+            this.branchesToolStripMenuItem,
+            this.usersToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
@@ -170,9 +172,18 @@ namespace CPMS_Accounting.Forms
             // branchesToolStripMenuItem
             // 
             this.branchesToolStripMenuItem.Name = "branchesToolStripMenuItem";
-            this.branchesToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
+            this.branchesToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
             this.branchesToolStripMenuItem.Text = "Branches";
             this.branchesToolStripMenuItem.Click += new System.EventHandler(this.branchesToolStripMenuItem_Click);
+            // 
+            // manualEncodeToolStripMenuItem
+            // 
+            this.manualEncodeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.manualEncodeToolStripMenuItem.Name = "manualEncodeToolStripMenuItem";
+            this.manualEncodeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.manualEncodeToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.manualEncodeToolStripMenuItem.Text = "Manual Encode [F6]";
+            this.manualEncodeToolStripMenuItem.Click += new System.EventHandler(this.manualEncodeToolStripMenuItem_Click);
             // 
             // dgvOrdering
             // 
@@ -224,20 +235,20 @@ namespace CPMS_Accounting.Forms
             // 
             this.dgvTypes.AllowUserToAddRows = false;
             this.dgvTypes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Transparent;
-            this.dgvTypes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Transparent;
+            this.dgvTypes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTypes.BackgroundColor = System.Drawing.Color.White;
             this.dgvTypes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTypes.ColumnHeadersVisible = false;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTypes.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTypes.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTypes.Enabled = false;
             this.dgvTypes.GridColor = System.Drawing.Color.White;
             this.dgvTypes.Location = new System.Drawing.Point(23, 169);
@@ -245,9 +256,9 @@ namespace CPMS_Accounting.Forms
             this.dgvTypes.ReadOnly = true;
             this.dgvTypes.RowHeadersVisible = false;
             this.dgvTypes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            this.dgvTypes.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            this.dgvTypes.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvTypes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvTypes.Size = new System.Drawing.Size(345, 413);
             this.dgvTypes.TabIndex = 17;
@@ -285,14 +296,12 @@ namespace CPMS_Accounting.Forms
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Types";
             // 
-            // manualEncodeToolStripMenuItem
+            // usersToolStripMenuItem
             // 
-            this.manualEncodeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
-            this.manualEncodeToolStripMenuItem.Name = "manualEncodeToolStripMenuItem";
-            this.manualEncodeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.manualEncodeToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
-            this.manualEncodeToolStripMenuItem.Text = "Manual Encode [F6]";
-            this.manualEncodeToolStripMenuItem.Click += new System.EventHandler(this.manualEncodeToolStripMenuItem_Click);
+            this.usersToolStripMenuItem.Name = "usersToolStripMenuItem";
+            this.usersToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.usersToolStripMenuItem.Text = "Users";
+            this.usersToolStripMenuItem.Click += new System.EventHandler(this.usersToolStripMenuItem_Click);
             // 
             // frmOrdering
             // 
@@ -351,5 +360,6 @@ namespace CPMS_Accounting.Forms
         private System.Windows.Forms.ToolStripMenuItem maintenanceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem branchesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualEncodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem usersToolStripMenuItem;
     }
 }
