@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using CPMS_Accounting.Procedures;
 using static CPMS_Accounting.GlobalVariables;
 using CPMS_Accounting.Models;
+using System.Threading;
 
 namespace CPMS_Accounting.Forms
 {
@@ -99,7 +100,8 @@ namespace CPMS_Accounting.Forms
             {
                 proc.DeleteTextFile(orderList,"Output");//Deleting All Text file in designated folder in the order file
                 proc.Process(orderList, this,Application.StartupPath+ "\\Output");//Generating TextFile and dbf file Data output
-                proc.SaveToPackingDBF(orderList, batchFile, this);
+                proc.SaveToPackingDBF(orderList, batchFile, this); // Consolidated
+                proc.SaveToPackingDBF2(orderList, batchFile, this); // Separated by Check Name
                 string zipFile =  proc.ZipFileS(gUser.FirstName, this, orderList); // Zipping Folders
                 proc.SaveData(orderList, zipFile); // Saving Data to database
                // proc.SaveDataToAccounting(orderList, zipFile); // Saving Data to database
@@ -109,6 +111,7 @@ namespace CPMS_Accounting.Forms
             MessageBox.Show("Data has been processed!!!!");
 
             proc.DeleteFile("SQL", @"C:\Head");
+            Thread.Sleep(5000);
             proc.DeleteFile("csv", @"C:\Head");
             Environment.Exit(0);
         }

@@ -8017,176 +8017,31 @@ namespace CPMS_Accounting.Procedures
         }//end of Function
         public void SaveToPackingDBF(List<OrderingModel> _checks, string _batchNumber, frmOrdering _mainForm)
         {
-            string dbConnection;
+           // string dbConnection;
             string tempCheckType = "";
             int blockNo = 0, blockCounter = 0;
             _checks.OrderBy(x => x.BranchName);
-            //   db.GetAllData(_checks, _mainForm._batchfile);
-
-            //   var listofchecks = _checks.Select(e => e.ChkType).Distinct().ToList();
-
-            //var listofChequeProduct = frmOrdering.productList.Select(x => new { x.BookStyle, x.ChequeName });
-
-
-            //if (_checks.Regular_Commercial.Count > 0 || _checks.Regular_Personal.Count > 0)
-            //{
-
-
-
-            // if (_checks.Ordering_Regular_Personal.Count > 0)
             InsertoDBFFile(_checks, _batchNumber, blockNo, tempCheckType, blockCounter);
-            //  if (_checks.Ordering_Regular_Commercial.Count > 0)
-            //  InsertoDBFFile(_checks, _batchNumber, blockNo,  tempCheckType, blockCounter);
-            // if (_checks.Ordering_DragonBlue_Personal.Count > 0)
-            //      InsertoDBFFile(_checks.Ordering_DragonBlue_Personal, _batchNumber, blockNo,tempCheckType, blockCounter);
-            //  if (_checks.Ordering_DragonBlue_Commercial.Count > 0)
-            //     InsertoDBFFile(_checks.Ordering_DragonBlue_Commercial, _batchNumber, blockNo, tempCheckType, blockCounter);
-            //foreach (var check in _checks.Regular_Personal)
-            //    {
+          
 
-            //        if (tempCheckType != check.ChkType)
-            //            blockNo = 1;
+        }
+        public void SaveToPackingDBF2(List<OrderingModel> _checks, string _batchNumber, frmOrdering _mainForm)
+        {
+            // string dbConnection;
+            string tempCheckType = "";
+            int blockNo = 0, blockCounter = 0;
+            _checks.OrderBy(x => x.BranchName);
+            var perCheckType = _checks.Select(x => x.CheckName).Distinct().ToList();
+            perCheckType.ForEach(x => {
 
-            //        tempCheckType = check.ChkType;
+                var sorted = _checks.Where(r => r.CheckName == x).ToList();
 
-            //        if (blockCounter < 4)
-            //            blockCounter++;
-            //        else
-            //        {
-            //            blockCounter = 1;
-            //            blockNo++;
-            //        }
+                InsertoDBFFile2(sorted, _batchNumber, blockNo, tempCheckType, blockCounter);
 
-            //        string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
-            //         "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE,DELIVERTO) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
-            //         "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkType + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
-            //        check.StartingSerial + "','" + check.EndingSerial + "','" + check.BranchCode + "','" + check.OldBranchCode + "','" + check.DeliveryTo + "')";
+            });
 
-            //        oCommand = new OleDbCommand(sql, oConnect);
+            
 
-            //        oCommand.ExecuteNonQuery();
-            //    }
-            //    foreach (var check in _checks.Regular_Commercial)
-            //    {
-            //        if (tempCheckType != check.ChkType)
-            //            blockNo = 1;
-
-            //        tempCheckType = check.ChkType;
-
-            //        if (blockCounter < 4)
-            //            blockCounter++;
-            //        else
-            //        {
-            //            blockCounter = 1;
-            //            blockNo++;
-            //        }
-
-            //        string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
-            //          "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
-            //          "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkType + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
-            //         check.StartingSerial + "','" + check.EndingSerial + "','" + check.BranchCode + "','" + check.OldBranchCode + "')";
-
-            //        oCommand = new OleDbCommand(sql, oConnect);
-
-            //        oCommand.ExecuteNonQuery();
-            //    }
-
-            // oConnect.Close();
-            //}
-            //    if (_checks.EC1.Count > 0 || _checks.EP1.Count > 0)
-            //    {
-            //        dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\" + _checks.EP1[0].outputFolder + "\\Packing.dbf" + "; Mode=ReadWrite;";
-
-            //        OleDbConnection oConnect = new OleDbConnection(dbConnection);
-            //        OleDbCommand oCommand;
-            //        oConnect.Open();
-            //        oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
-            //        oCommand.ExecuteNonQuery();
-            //        foreach (var check in _checks.EP1)
-            //        {
-            //            if (tempCheckType != check.ChkType)
-            //                blockNo = 1;
-
-            //            tempCheckType = check.ChkType;
-
-            //            if (blockCounter < 4)
-            //                blockCounter++;
-            //            else
-            //            {
-            //                blockCounter = 1;
-            //                blockNo++;
-            //            }
-
-            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
-            //              "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
-            //              "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
-            //             check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
-
-            //            oCommand = new OleDbCommand(sql, oConnect);
-
-            //            oCommand.ExecuteNonQuery();
-            //        }
-            //        foreach (var check in _checks.EC1)
-            //        {
-            //            if (tempCheckType != check.ChkType)
-            //                blockNo = 1;
-
-            //            tempCheckType = check.ChkType;
-
-            //            if (blockCounter < 4)
-            //                blockCounter++;
-            //            else
-            //            {
-            //                blockCounter = 1;
-            //                blockNo++;
-            //            }
-
-            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
-            //              "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
-            //              "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
-            //             check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
-
-            //            oCommand = new OleDbCommand(sql, oConnect);
-
-            //            oCommand.ExecuteNonQuery();
-            //        }
-            //        oConnect.Close();
-            //    }
-            //    if (_checks.MC.Count > 0)
-            //    {
-            //        dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\" + _checks.MC[0].outputFolder + "\\Packing.dbf" + "; Mode=ReadWrite;";
-
-            //        OleDbConnection oConnect = new OleDbConnection(dbConnection);
-            //        OleDbCommand oCommand;
-            //        oConnect.Open();
-            //        oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
-            //        oCommand.ExecuteNonQuery();
-            //        foreach (var check in _checks.EP1)
-            //        {
-            //            if (tempCheckType != check.ChkType)
-            //                blockNo = 1;
-
-            //            tempCheckType = check.ChkType;
-
-            //            if (blockCounter < 4)
-            //                blockCounter++;
-            //            else
-            //            {
-            //                blockCounter = 1;
-            //                blockNo++;
-            //            }
-
-            //            string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
-            //             "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + check.BRSTN + "','" + check.BranchName +
-            //             "','" + check.AccountNo + "','" + check.AccountNo + "','" + check.ChkTypeDbf + "','" + check.Name1.Replace("'", "''") + "','" + check.Name2.Replace("'", "''") + "',1,'" +
-            //            check.StartingSerial + "','" + check.EndingSerial + "','" + check.AccBranchCode + "','" + check.OldBranchCode + "')";
-
-            //            oCommand = new OleDbCommand(sql, oConnect);
-
-            //            oCommand.ExecuteNonQuery();
-            //        }
-            //        oConnect.Close();
-            //    }
 
         }
         private void InsertoDBFFile(List<OrderingModel> _orders, string _batchNumber, int blockNo, string tempCheckType, int blockCounter)
@@ -8194,6 +8049,58 @@ namespace CPMS_Accounting.Procedures
             try
             {
                 string dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\Packing.dbf" + "; Mode=ReadWrite;";
+
+
+                OleDbConnection oConnect = new OleDbConnection(dbConnection);
+                OleDbCommand oCommand;
+                oConnect.Open();
+                oCommand = new OleDbCommand("DELETE FROM PACKING", oConnect);
+                oCommand.ExecuteNonQuery();
+                //_orders.OrderBy(x => new {x.BranchName,x.ChkType });
+                //_orders = _orders.OrderBy(x => new { x.CheckName,x.BranchName}).ToList();
+                var sortedList = from o in _orders
+                                 orderby o.BranchName, o.ChkType, o.CheckName
+                                 select o;
+                foreach (var item in sortedList)
+                {
+
+                    if (tempCheckType != item.ChkType)
+                        blockNo = 1;
+
+                    tempCheckType = item.ChkType;
+
+                    if (blockCounter < 4)
+                        blockCounter++;
+                    else
+                    {
+                        blockCounter = 1;
+                        blockNo++;
+                    }
+
+                    string sql = "INSERT INTO PACKING (BATCHNO,BLOCK, RT_NO,BRANCH, ACCT_NO, ACCT_NO_P, CHKTYPE, ACCT_NAME1,ACCT_NAME2," +
+                      "NO_BKS, CK_NO_B, CK_NO_E, BRANCHCODE, OLDBCODE,DELIVERTO,CHECKNAME) VALUES('" + _batchNumber + "'," + blockNo.ToString() + ",'" + item.BRSTN + "','" + item.BranchName +
+                      "','" + item.AccountNo + "','" + item.AccountNo + "','" + item.ChkType + "','" + item.AccountName.Replace("'", "''") + "','" + item.AccountName2.Replace("'", "''") + "',1,'" +
+                    item.StartingSerial + "','" + item.EndingSerial + "','" + item.BranchCode + "','" + item.DeliveryBranchCode + "','" + item.DeliveryBrstn + "','" + item.CheckName + "')";
+
+                    oCommand = new OleDbCommand(sql, oConnect);
+
+                    oCommand.ExecuteNonQuery();
+                }
+                oConnect.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "InsertoDBFFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        private void InsertoDBFFile2(List<OrderingModel> _orders, string _batchNumber, int blockNo, string tempCheckType, int blockCounter)
+        {
+            try
+            {
+                string dbConnection = "Provider=VfpOleDB.1; Data Source=" + Application.StartupPath + "\\Output\\" + _orders[0].outputFolder +"\\Packing.dbf" + "; Mode=ReadWrite;";
 
 
                 OleDbConnection oConnect = new OleDbConnection(dbConnection);
